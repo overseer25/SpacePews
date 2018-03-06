@@ -1,18 +1,12 @@
 fileFormatVersion: 2
-guid: 88b62e580453d3a4fb5544eacc936b67
-timeCreated: 1520218547
+guid: ffdbb397556fc49429d4a0daca4c7063
+timeCreated: 1520293259
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: miningLaserContact_0
-    21300002: miningLaserContact_1
-    21300004: miningLaserContact_2
-    21300006: miningLaserContact_3
-    21300008: miningLaserContact_4
-    21300010: miningLaserContact_5
-    21300012: miningLaserContact_6
-    21300014: miningLaserContact_7
-    21300016: miningLaserContact_8
+    21300000: baseprojectile_fireParticle_0
+    21300002: baseprojectile_fireParticle_1
+    21300004: baseprojectile_fireParticle_2
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -87,12 +81,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: miningLaserContact_0
+      name: baseprojectile_fireParticle_0
       rect:
         serializedVersion: 2
-        x: 12
+        x: 2
         y: 0
-        width: 74
+        width: 98
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -101,12 +95,12 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_1
+      name: baseprojectile_fireParticle_1
       rect:
         serializedVersion: 2
-        x: 91
+        x: 130
         y: 0
-        width: 68
+        width: 90
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,96 +109,12 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_2
+      name: baseprojectile_fireParticle_2
       rect:
         serializedVersion: 2
-        x: 174
+        x: 232
         y: 0
-        width: 83
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_3
-      rect:
-        serializedVersion: 2
-        x: 282
-        y: 0
-        width: 69
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_4
-      rect:
-        serializedVersion: 2
-        x: 383
-        y: 0
-        width: 69
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_5
-      rect:
-        serializedVersion: 2
-        x: 481
-        y: 0
-        width: 80
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_6
-      rect:
-        serializedVersion: 2
-        x: 593
-        y: 0
-        width: 77
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_7
-      rect:
-        serializedVersion: 2
-        x: 679
-        y: 0
-        width: 77
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_8
-      rect:
-        serializedVersion: 2
-        x: 764
-        y: 0
-        width: 75
+        width: 107
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}

@@ -32,6 +32,7 @@ public class PlayerTurretController : MonoBehaviour
     private bool playingMiningLaser = false;
     private bool cursorSet; // To stop the update function from constantly refreshing the cursor texture;
     private GameObject turret;
+    public SpriteRenderer miningLaserParticles;
     public AudioSource miningLaserAudio;
     public Transform shotSpawn;
 
@@ -53,6 +54,7 @@ public class PlayerTurretController : MonoBehaviour
                 turret.GetComponent<LineRenderer>().enabled = false;
                 playingMiningLaser = false;
                 miningLaserAudio.Stop();
+                miningLaserParticles.enabled = false;
             }
             // Create projectiles
             FireProjectile();
@@ -68,6 +70,7 @@ public class PlayerTurretController : MonoBehaviour
                 {
                     playingMiningLaser = true;
                     miningLaserAudio.Play();
+                    miningLaserParticles.enabled = true;
                 }
             }
             // Stop the mining sound
@@ -78,6 +81,7 @@ public class PlayerTurretController : MonoBehaviour
                 {
                     playingMiningLaser = false;
                     miningLaserAudio.Stop();
+                    miningLaserParticles.enabled = false;
                 }
             }
         }
@@ -107,6 +111,7 @@ public class PlayerTurretController : MonoBehaviour
         if (Input.GetMouseButton(0) && (Time.time > nextFire))
         {
             Projectile proj;
+
             // If both, do Quintuple shot synergy
             if (doubleShot && tripleShot)
             {

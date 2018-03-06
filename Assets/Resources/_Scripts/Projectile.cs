@@ -32,6 +32,10 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+
+        if(collision.gameObject.tag == "Player" && gameObject.tag == "PlayerProjectile") { return; }
+        if(collision.gameObject.tag == "Enemy" && gameObject.tag == "EnemyProjectile") { return; }
+
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Asteroid" || collision.gameObject.tag == "Mineable")
         {
             if(!bounce)

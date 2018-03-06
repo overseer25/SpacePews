@@ -1,18 +1,21 @@
 fileFormatVersion: 2
-guid: 88b62e580453d3a4fb5544eacc936b67
-timeCreated: 1520218547
+guid: ebc09ceb979d22648b3aee93d297d122
+timeCreated: 1520216391
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: miningLaserContact_0
-    21300002: miningLaserContact_1
-    21300004: miningLaserContact_2
-    21300006: miningLaserContact_3
-    21300008: miningLaserContact_4
-    21300010: miningLaserContact_5
-    21300012: miningLaserContact_6
-    21300014: miningLaserContact_7
-    21300016: miningLaserContact_8
+    21300000: star_bright_0
+    21300002: star_bright_1
+    21300004: star_bright_2
+    21300006: star_bright_3
+    21300008: star_bright_4
+    21300010: star_bright_5
+    21300012: star_bright_6
+    21300014: star_bright_7
+    21300016: star_bright_8
+    21300018: star_bright_9
+    21300020: star_bright_10
+    21300022: star_bright_11
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -87,13 +90,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: miningLaserContact_0
+      name: star_bright_0
       rect:
         serializedVersion: 2
-        x: 12
+        x: 0
         y: 0
-        width: 74
-        height: 80
+        width: 76
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -101,13 +104,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_1
+      name: star_bright_1
       rect:
         serializedVersion: 2
-        x: 91
+        x: 76
+        y: 0
+        width: 66
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: star_bright_2
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 0
+        width: 77
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: star_bright_3
+      rect:
+        serializedVersion: 2
+        x: 222
         y: 0
         width: 68
-        height: 80
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,13 +146,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_2
+      name: star_bright_4
       rect:
         serializedVersion: 2
-        x: 174
+        x: 290
         y: 0
-        width: 83
-        height: 80
+        width: 79
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,13 +160,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_3
+      name: star_bright_5
       rect:
         serializedVersion: 2
-        x: 282
+        x: 369
         y: 0
-        width: 69
-        height: 80
+        width: 67
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,27 +174,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_4
+      name: star_bright_6
       rect:
         serializedVersion: 2
-        x: 383
-        y: 0
-        width: 69
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: miningLaserContact_5
-      rect:
-        serializedVersion: 2
-        x: 481
+        x: 436
         y: 0
         width: 80
-        height: 80
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,13 +188,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_6
+      name: star_bright_7
       rect:
         serializedVersion: 2
-        x: 593
+        x: 516
         y: 0
-        width: 77
-        height: 80
+        width: 69
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -185,13 +202,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_7
+      name: star_bright_8
       rect:
         serializedVersion: 2
-        x: 679
+        x: 585
         y: 0
-        width: 77
-        height: 80
+        width: 78
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -199,13 +216,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: miningLaserContact_8
+      name: star_bright_9
       rect:
         serializedVersion: 2
-        x: 764
+        x: 663
         y: 0
-        width: 75
-        height: 80
+        width: 68
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: star_bright_10
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 0
+        width: 79
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: star_bright_11
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 0
+        width: 68
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
