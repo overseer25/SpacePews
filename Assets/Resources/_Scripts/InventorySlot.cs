@@ -7,9 +7,6 @@ public class InventorySlot : MonoBehaviour {
 
     public Sprite empty; // The default image for the slot, used if no item is present.
     public GameObject tooltip;
-    public Button infoButton;
-    public Button destroyButton;
-    public Button destroySelectedButton;
     public Image item_sprite;
     public bool isEmpty = true; // All slots start out empty
     public int quantity = 0; // The amount of the item stored in inventory.
@@ -17,14 +14,13 @@ public class InventorySlot : MonoBehaviour {
     private Item item; // The item in the slot.
     private Image slot_sprite;
     private bool isDragging = false;
+    private bool tooltipActive = false;
 
 	// Use this for initialization
 	void Start () {
 
         slot_sprite = GetComponentInChildren<Image>();
         slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-
-        destroyButton.onClick.AddListener(Destroy);
     }
 	
     /// <summary>
@@ -38,10 +34,12 @@ public class InventorySlot : MonoBehaviour {
             item_sprite.sprite = item.sprite;
             item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
             GetComponentInChildren<Text>().text = quantity + "";
+            GetComponentInChildren<Text>().enabled = true;
         }
         else
         {
             item_sprite.enabled = false;
+            GetComponentInChildren<Text>().enabled = false;
         }
 		
 	}
@@ -58,6 +56,7 @@ public class InventorySlot : MonoBehaviour {
     {
         slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
         item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        tooltipActive = false;
     }
 
     // Handle mouse down input on the inventory slot
@@ -68,25 +67,26 @@ public class InventorySlot : MonoBehaviour {
         {
             Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newPos.z = transform.position.z;
-
+            tooltipActive = !tooltipActive;
             tooltip.transform.position = newPos;
-            tooltip.gameObject.SetActive(true);
+            tooltip.GetComponent<InventoryTooltip>().SetSlot(this);
+            tooltip.gameObject.SetActive(tooltipActive);
         }
     }
 
-    // Handle mouse up input on the inventory slot
-    void OnMouseUp()
-    {
-        // Left click
-        if (Input.GetMouseButtonUp(0))
-        {
-            tooltip.gameObject.SetActive(false);
-        }
-    }
 
     public void SetItem(Item item)
     {
-        isEmpty = false;
+        if(item == null)
+        {
+            isEmpty = true;
+            quantity = 0;
+        }
+        else
+        {
+            isEmpty = false;
+        }
+        
         this.item = item;
     }
     public Item GetItem()
@@ -94,16 +94,4 @@ public class InventorySlot : MonoBehaviour {
         return item;
     }
 
-    void Destroy()
-    {
-        Debug.Log("Destroying");
-        isEmpty = true;
-        item = null;
-        UpdateSlot();
-    }
-
-    void Information()
-    {
-
-    }
 }

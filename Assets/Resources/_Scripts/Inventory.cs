@@ -52,7 +52,7 @@ public class Inventory : MonoBehaviour {
     {
         foreach(InventorySlot slot in slots)
         {
-            if(slot.quantity == 0) { return true; } // Empty slot found
+            if(slot.isEmpty) { return true; } // Empty slot found
         }
 
         return false;
