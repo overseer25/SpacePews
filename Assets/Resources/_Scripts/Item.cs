@@ -7,7 +7,6 @@ public class Item : MonoBehaviour {
 
     public Sprite[] spriteAnim; // For animation
     public Sprite sprite; // For no animation
-    public Sprite inventorySprite; // The inventory sprite representing the object
     public SpriteRenderer hoverTextSprite; // When the mouse hovers over the object, display this text.
     public GameObject collectSprite;
     public int quantity = 1;

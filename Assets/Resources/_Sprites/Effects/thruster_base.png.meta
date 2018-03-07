@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 02727129e7d0a9745bc325d948384e7f
-timeCreated: 1520055106
+timeCreated: 1520403582
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -88,9 +88,9 @@ TextureImporter:
       name: thruster_base_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 9
         y: 0
-        width: 61
+        width: 45
         height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -102,12 +102,12 @@ TextureImporter:
       name: thruster_base_1
       rect:
         serializedVersion: 2
-        x: 73
+        x: 76
         y: 0
-        width: 38
+        width: 32
         height: 68
       alignment: 9
-      pivot: {x: 0.49305704, y: 0.558199}
+      pivot: {x: 0.5, y: 0.5547684}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -116,12 +116,12 @@ TextureImporter:
       name: thruster_base_2
       rect:
         serializedVersion: 2
-        x: 134
+        x: 136
         y: 0
-        width: 34
+        width: 29
         height: 68
       alignment: 9
-      pivot: {x: 0.48448047, y: 0.5892384}
+      pivot: {x: 0.50000054, y: 0.57119894}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -130,12 +130,12 @@ TextureImporter:
       name: thruster_base_3
       rect:
         serializedVersion: 2
-        x: 195
+        x: 194
         y: 0
-        width: 34
+        width: 36
         height: 68
       alignment: 9
-      pivot: {x: 0.5000005, y: 0.5969982}
+      pivot: {x: 0.5, y: 0.57119894}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: thruster_base_4
       rect:
         serializedVersion: 2
-        x: 254
+        x: 256
         y: 0
-        width: 39
+        width: 35
         height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.58535844}
+      pivot: {x: 0.5, y: 0.5766758}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -158,12 +158,12 @@ TextureImporter:
       name: thruster_base_5
       rect:
         serializedVersion: 2
-        x: 313
+        x: 316
         y: 0
-        width: 42
+        width: 35
         height: 68
       alignment: 9
-      pivot: {x: 0.5000007, y: 0.54655915}
+      pivot: {x: 0.5, y: 0.5273842}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -172,12 +172,12 @@ TextureImporter:
       name: thruster_base_6
       rect:
         serializedVersion: 2
-        x: 379
+        x: 376
         y: 0
-        width: 29
+        width: 36
         height: 68
-      alignment: 9
-      pivot: {x: 0.51819587, y: 0.5193997}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

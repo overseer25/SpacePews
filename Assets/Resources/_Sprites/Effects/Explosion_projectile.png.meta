@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 31e8501220472664caadf5bb7287a676
-timeCreated: 1519446084
+timeCreated: 1520403406
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -9,6 +9,8 @@ TextureImporter:
     21300004: Explosion_projectile_2
     21300006: Explosion_projectile_3
     21300008: Explosion_projectile_4
+    21300010: Explosion_projectile_5
+    21300012: Explosion_projectile_6
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -36,7 +38,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -1
     wrapU: 1
@@ -86,9 +88,9 @@ TextureImporter:
       name: Explosion_projectile_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 28
+        width: 34
         height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -100,9 +102,9 @@ TextureImporter:
       name: Explosion_projectile_1
       rect:
         serializedVersion: 2
-        x: 28
+        x: 37
         y: 0
-        width: 28
+        width: 23
         height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -114,9 +116,9 @@ TextureImporter:
       name: Explosion_projectile_2
       rect:
         serializedVersion: 2
-        x: 56
+        x: 64
         y: 0
-        width: 31
+        width: 28
         height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,9 +130,9 @@ TextureImporter:
       name: Explosion_projectile_3
       rect:
         serializedVersion: 2
-        x: 86
+        x: 93
         y: 0
-        width: 30
+        width: 26
         height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -142,9 +144,37 @@ TextureImporter:
       name: Explosion_projectile_4
       rect:
         serializedVersion: 2
-        x: 115
+        x: 120
         y: 0
-        width: 26
+        width: 27
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Explosion_projectile_5
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 0
+        width: 25
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Explosion_projectile_6
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 0
+        width: 24
         height: 34
       alignment: 0
       pivot: {x: 0, y: 0}

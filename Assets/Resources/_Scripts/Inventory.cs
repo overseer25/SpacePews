@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
 
@@ -19,13 +20,14 @@ public class Inventory : MonoBehaviour {
     /// <param name="item"></param>
     public void AddItem(Item item)
     {
-        Item temp = itemList.Find(x => (item.name.Contains(x.name))); // Find element in item list equivalent to the parameter.
+        Item temp = itemList.Find(x => (item.name.Contains(x.name))); // Find element in item list with name equivalent to the parameter.
 
         foreach(InventorySlot slot in slots)
         {
             if(!slot.isEmpty && temp.name.Contains(slot.GetItem().name))
             {
                 slot.quantity++;
+                slot.UpdateSlot();
                 return;
             }
         }
@@ -36,6 +38,7 @@ public class Inventory : MonoBehaviour {
             {
                 slot.SetItem(temp); // Add to the slot
                 slot.quantity++;
+                slot.UpdateSlot();
                 return;
             }
         }
@@ -62,8 +65,18 @@ public class Inventory : MonoBehaviour {
     /// <returns></returns>
     public bool ContainsItem(Item item)
     {
-        Item temp = itemList.Find(x => (item.name.Contains(x.name))); // Find element in item list equivalent to the parameter.
+        // Find element in item list equivalent to the parameter.
+        foreach(InventorySlot slot in slots)
+        {
+            if(slot.GetItem() != null)
+            {
+                if (item.name.Contains(slot.GetItem().name))
+                {
+                    return true;
+                }
+            }
 
-        return temp.name.Contains(item.name); // Find element in item list equivalent to the parameter.
+        }
+        return false; // Find element in item list equivalent to the parameter.
     }
 }

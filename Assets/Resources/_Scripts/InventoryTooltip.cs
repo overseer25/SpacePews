@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour {
+public class InventoryTooltip : MonoBehaviour {
 
-    public Sprite[] coinSprites;
 	// Use this for initialization
 	void Start () {
 		
@@ -14,4 +13,6 @@ public class Coin : MonoBehaviour {
 	void Update () {
 		
 	}
+
+
 }

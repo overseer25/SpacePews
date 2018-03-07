@@ -19,9 +19,6 @@ public class PlayerTurretController : MonoBehaviour
     public float shotSpeed = 1.0f;
     public float fireRate = 0.5f;
 
-    public Texture2D gunCursor;
-    public Texture2D miningCursor;
-
     public AudioSource projectileSoundSource;
     public AudioClip[] projectileSounds; // Holds possible sounds for different shot types.
 
@@ -31,6 +28,7 @@ public class PlayerTurretController : MonoBehaviour
                                            // Negative values increase firerate, positive values decrease.
     private bool playingMiningLaser = false;
     private bool cursorSet; // To stop the update function from constantly refreshing the cursor texture;
+    public bool menuOpen = false;
     private GameObject turret;
     public SpriteRenderer miningLaserParticles;
     public AudioSource miningLaserAudio;
@@ -45,51 +43,48 @@ public class PlayerTurretController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (!isMiningLaser)
+        // Don't shoot if a menu is open
+        if(!menuOpen)
         {
-            SetCursor(gunCursor);
-            if (playingMiningLaser)
+            if (!isMiningLaser)
             {
-                turret.GetComponent<LineRenderer>().enabled = false;
-                playingMiningLaser = false;
-                miningLaserAudio.Stop();
-                miningLaserParticles.enabled = false;
-            }
-            // Create projectiles
-            FireProjectile();
-        }
-        else
-        {
-            SetCursor(miningCursor);
-            // Create mining projectiles
-            if (Input.GetMouseButton(0))
-            {
-                turret.GetComponent<LineRenderer>().enabled = true;
-                if (!playingMiningLaser)
-                {
-                    playingMiningLaser = true;
-                    miningLaserAudio.Play();
-                    miningLaserParticles.enabled = true;
-                }
-            }
-            // Stop the mining sound
-            else
-            {
-                turret.GetComponent<LineRenderer>().enabled = false;
                 if (playingMiningLaser)
                 {
+                    turret.GetComponent<LineRenderer>().enabled = false;
                     playingMiningLaser = false;
                     miningLaserAudio.Stop();
                     miningLaserParticles.enabled = false;
                 }
+                // Create projectiles
+                FireProjectile();
+            }
+            else
+            {
+                // Create mining projectiles
+                if (Input.GetMouseButton(0))
+                {
+                    turret.GetComponent<LineRenderer>().enabled = true;
+                    if (!playingMiningLaser)
+                    {
+                        playingMiningLaser = true;
+                        miningLaserAudio.Play();
+                        miningLaserParticles.enabled = true;
+                    }
+                }
+                // Stop the mining sound
+                else
+                {
+                    turret.GetComponent<LineRenderer>().enabled = false;
+                    if (playingMiningLaser)
+                    {
+                        playingMiningLaser = false;
+                        miningLaserAudio.Stop();
+                        miningLaserParticles.enabled = false;
+                    }
+                }
             }
         }
-    }
-
-    void SetCursor(Texture2D cursor)
-    {
-        Cursor.SetCursor(cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.Auto);
+        
     }
 
     /// <summary>
