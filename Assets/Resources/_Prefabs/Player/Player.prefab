@@ -873,6 +873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopHUD: {fileID: 0}
   inventoryHUD: {fileID: 0}
+  menuCursor: {fileID: 0}
 --- !u!120 &120278573648910496
 LineRenderer:
   m_ObjectHideFlags: 1

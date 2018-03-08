@@ -65,6 +65,11 @@ public class InventorySlot : MonoBehaviour {
         // Left click
         if(Input.GetMouseButtonDown(0))
         {
+            if(isEmpty)
+            {
+                tooltip.gameObject.SetActive(false);
+                return;
+            }
             Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newPos.z = transform.position.z;
             tooltipActive = !tooltipActive;

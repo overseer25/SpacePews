@@ -133,6 +133,9 @@ MonoBehaviour:
   collectSprite: {fileID: 1694115334812216, guid: 05cf622d09747b14987c5e87d341d9cb,
     type: 2}
   quantity: 1
+  value: 100
+  description: A rare metal typically found in asteroid fields.
+  type: Ore
   playspeed: 0.5
 --- !u!212 &212012160709596678
 SpriteRenderer:

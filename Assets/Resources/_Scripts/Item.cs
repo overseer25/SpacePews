@@ -10,6 +10,9 @@ public class Item : MonoBehaviour {
     public SpriteRenderer hoverTextSprite; // When the mouse hovers over the object, display this text.
     public GameObject collectSprite;
     public int quantity = 1;
+    public int value;
+    public string description;
+    public string type;
     private float changeSprite = 0.0f;
     public float playspeed = 0.5f;
     private int index = 0;
