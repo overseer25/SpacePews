@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 114566772678998232}
   - component: {fileID: 114368725486015344}
   - component: {fileID: 60157011305777264}
-  - component: {fileID: 82077886877385896}
   m_Layer: 0
   m_Name: Asteroid3
   m_TagString: Asteroid
@@ -66,7 +65,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1851969125785588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.572116, y: 2.3540177, z: 0}
+  m_LocalPosition: {x: 2.3740473, y: -1.3861625, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4179111096332702}
@@ -82,7 +81,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -97,107 +96,28 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.20425034, y: -0.10508156}
-      - {x: 0.32653904, y: -0.048837185}
-      - {x: 0.30056667, y: 0.022944689}
-      - {x: 0.34890842, y: 0.07888913}
-      - {x: 0.2866993, y: 0.12755251}
-      - {x: 0.27378368, y: 0.20590234}
-      - {x: 0.20398235, y: 0.2662425}
-      - {x: 0.15184402, y: 0.30694413}
-      - {x: -0.0720644, y: 0.30304146}
-      - {x: -0.17194653, y: 0.21101403}
-      - {x: -0.2971487, y: 0.16969371}
-      - {x: -0.30335045, y: 0.08490968}
-      - {x: -0.36016464, y: 0.027144432}
-      - {x: -0.2555809, y: -0.03237152}
-      - {x: -0.33166885, y: -0.090517044}
-      - {x: -0.3450775, y: -0.22999072}
-      - {x: -0.14579296, y: -0.2759626}
-      - {x: 0.015059471, y: -0.25644636}
-      - {x: 0.117938995, y: -0.30112076}
-      - {x: 0.20811939, y: -0.2142787}
-      - {x: 0.26918697, y: -0.19685411}
---- !u!82 &82077886877385896
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1851969125785588}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5d487eab6552984438914c2b82ffcf9f, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
+    - - {x: 0.5947697, y: -0.45086646}
+      - {x: 0.73519397, y: -0.36076903}
+      - {x: 0.8131988, y: -0.17896473}
+      - {x: 0.9244108, y: -0.04685092}
+      - {x: 0.8742919, y: 0.22669363}
+      - {x: 0.67276645, y: 0.2711904}
+      - {x: 0.6489084, y: 0.3339486}
+      - {x: 0.36321044, y: 0.38870955}
+      - {x: 0.14458966, y: 0.30936205}
+      - {x: -0.02367425, y: 0.3826816}
+      - {x: -0.22756243, y: 0.37665236}
+      - {x: -0.4192617, y: 0.4102924}
+      - {x: -0.6878245, y: 0.3641976}
+      - {x: -0.9223676, y: 0.09485054}
+      - {x: -0.7996483, y: -0.09765959}
+      - {x: -0.61941993, y: -0.2573644}
+      - {x: -0.49862528, y: -0.30857825}
+      - {x: -0.4710244, y: -0.42951035}
+      - {x: -0.18564081, y: -0.56596017}
+      - {x: 0.011543512, y: -0.6130526}
+      - {x: 0.13799524, y: -0.67734027}
+      - {x: 0.46746922, y: -0.59462774}
 --- !u!114 &114368725486015344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -220,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef86973a2617464691bde408d9713f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 0
 --- !u!212 &212844901975652144
 SpriteRenderer:
   m_ObjectHideFlags: 1

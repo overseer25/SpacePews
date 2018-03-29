@@ -132,6 +132,7 @@ MonoBehaviour:
   hoverTextSprite: {fileID: 212071069753712308}
   collectSprite: {fileID: 1694115334812216, guid: 05cf622d09747b14987c5e87d341d9cb,
     type: 2}
+  name: Stone
   quantity: 1
   value: 1
   description: A common resource, stone is often harvested in large quantities.

@@ -21,10 +21,10 @@ public class InfoButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         screen.itemImage.sprite = slot.item_sprite.sprite;
         screen.description.text = slot.GetItem().description;
         screen.stats.text = "";
-        screen.stats.text += "Name: " + slot.item_sprite.sprite.name + "\n";
+        screen.stats.text += "Name: " + slot.GetItem().name + "\n";
         screen.stats.text += "Type: " + slot.GetItem().type + "\n";
-        screen.stats.text += "Quantity: " + slot.GetItem().quantity + "\n"; // need to change quantity to store in the slot, not item.
-        screen.stats.text += "Value: " + slot.GetItem().value * slot.GetItem().quantity;
+        screen.stats.text += "Quantity: " + slot.quantity + "\n"; // need to change quantity to store in the slot, not item.
+        screen.stats.text += "Value: " + slot.GetItem().value * slot.quantity;
 
         screen.gameObject.SetActive(true);
         AudioSource.PlayClipAtPoint(menuOpenSound.clip, GameObject.FindGameObjectWithTag("Player").transform.position);

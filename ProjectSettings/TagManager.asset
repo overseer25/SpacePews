@@ -13,6 +13,8 @@ TagManager:
   - Item
   - Upgrade
   - Mineable
+  - Missile
+  - Mine
   layers:
   - Default
   - TransparentFX

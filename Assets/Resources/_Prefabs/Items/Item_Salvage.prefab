@@ -132,6 +132,7 @@ MonoBehaviour:
   hoverTextSprite: {fileID: 212048418178389800}
   collectSprite: {fileID: 1694115334812216, guid: 05cf622d09747b14987c5e87d341d9cb,
     type: 2}
+  name: Salvage
   quantity: 1
   value: 10
   description: Scrap metal. Unusable in it's current state.

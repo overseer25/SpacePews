@@ -20,8 +20,7 @@ public class Menu_Enter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown("q") && GetComponent<CheckCollision>().incomingCollision.tag == "Shop" 
-            && !inventoryHUD.enabled)
+        if (Input.GetKeyDown("q") && !inventoryHUD.enabled)
         {
             Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
             shopHUD.enabled = !shopHUD.enabled;
@@ -31,7 +30,7 @@ public class Menu_Enter : MonoBehaviour {
         else if(Input.GetKeyDown("i") && !shopHUD.enabled)
         {
             Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
-            player.GetComponent<PlayerTurretController>().menuOpen = !player.GetComponent<PlayerTurretController>().menuOpen;
+            player.GetComponent<PlayerWeaponController>().menuOpen = !player.GetComponent<PlayerWeaponController>().menuOpen;
             inventoryHUD.enabled = !inventoryHUD.enabled;
             inventoryHUD.transform.Find("Currency_UI").GetComponentInChildren<Text>().text = "Currency: $" + GetComponent<PlayerController>().currency;
         }

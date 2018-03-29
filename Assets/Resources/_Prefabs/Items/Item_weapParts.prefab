@@ -142,6 +142,7 @@ MonoBehaviour:
   hoverTextSprite: {fileID: 212348049530646280}
   collectSprite: {fileID: 1694115334812216, guid: 05cf622d09747b14987c5e87d341d9cb,
     type: 2}
+  name: Weapon Parts
   quantity: 1
   value: 25
   description: Common weapon parts that survived its owner's demise.

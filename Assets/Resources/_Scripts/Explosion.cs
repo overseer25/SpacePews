@@ -8,7 +8,15 @@ public class Explosion : MonoBehaviour {
     public float playspeed = 0.1f;
     private float changeSprite = 0.0f;
     private int index = 0;
-	
+    private AudioSource explosionSound;
+
+    public void Initialize(AudioClip clip)
+    {
+        explosionSound = GetComponent<AudioSource>();
+        explosionSound.clip = clip;
+        explosionSound.Play();
+    }
+
 	// Update is called once per frame
 	void Update ()
     {

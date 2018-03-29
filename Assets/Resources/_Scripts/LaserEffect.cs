@@ -5,7 +5,7 @@ using UnityEngine;
 public class LaserEffect : MonoBehaviour
 {
 
-    private float interactionRange = 15.0f;
+    private float interactionRange = 10.0f;
     private float width = 0.02f;
     private LineRenderer line;
     private GameObject player;

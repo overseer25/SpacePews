@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class rotateObject : MonoBehaviour {
 
-    private float rotationSpeed = 0.1f;
+    public float rotationSpeed = 0.0f;
 
     void Start()
     {
-        randomRotationSpeed();
+        if (rotationSpeed == 0.0f) { randomRotationSpeed(); }
     }
 	// Update is called once per frame
 	void Update ()
     {
-
         transform.Rotate(0.0f, 0.0f, rotationSpeed);
 	}
 

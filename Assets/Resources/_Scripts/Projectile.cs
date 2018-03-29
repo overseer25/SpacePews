@@ -9,8 +9,10 @@ public class Projectile : MonoBehaviour {
     public float speed;
     public float lifetime = 1.0f;
     public GameObject explosion;
+    public int damage = 1;
+    public AudioClip collisionSound;
 
-    private bool bounce = false;
+    private bool collided = false; // Check to see if a collision sound should be played on destroy.
 
 	// Use this for initialization
 	void Start () {
@@ -20,36 +22,45 @@ public class Projectile : MonoBehaviour {
         Destroy(gameObject, lifetime);
 	}
 
-    public void Initialize(float shotSpeed, bool bounce)
+    public void Initialize(float shotSpeed)
     {
         speed = shotSpeed;
-        this.bounce = bounce;
 
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.velocity = transform.up * speed;
 
     }
 
+    /// <summary>
+    /// When the projectile collides with an object, play the explosion animation
+    /// </summary>
+    void OnDestroy()
+    {
+        if(collided)
+        {
+            Explosion exp = Instantiate(explosion, transform.position, Quaternion.identity).GetComponent<Explosion>();
+            exp.Initialize(collisionSound);
+        }
+
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
-
+        // If friendly fire, ignore
         if(collision.gameObject.tag == "Player" && gameObject.tag == "PlayerProjectile") { return; }
         if(collision.gameObject.tag == "Enemy" && gameObject.tag == "EnemyProjectile") { return; }
 
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Asteroid" || collision.gameObject.tag == "Mineable")
+        switch(collision.gameObject.tag)
         {
-            if(!bounce)
-            {
-                Instantiate(explosion, transform.position, Quaternion.identity);
+            case "Player":
+            case "Enemy":
+            case "Asteroid":
+            case "Mineable":
+            case "Mine":
+                collided = true;
                 Destroy(gameObject);
-            }
-            else
-            {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 15.0f, ~(1 << 5));
-                rigidBody.velocity = hit.normal * speed;
+                break;
 
-            }
-            
         }
     }
 

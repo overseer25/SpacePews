@@ -35,8 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4316932876453034}
   - component: {fileID: 212588298868302490}
-  - component: {fileID: 114316748877735316}
-  - component: {fileID: 114844789874972312}
+  - component: {fileID: 114523591381253818}
   - component: {fileID: 114484077914778948}
   - component: {fileID: 60221103612231596}
   - component: {fileID: 82659049716947646}
@@ -100,7 +99,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1043255158863498}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.092475, y: -0.86043274, z: 0}
+  m_LocalPosition: {x: -12.42883, y: 5.5985837, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4638647395988768}
@@ -272,26 +271,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114316748877735316
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1043255158863498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 234263f6f653699488971af25a7da761, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 2
-  speed: 2
-  stoppingDistance: 6
-  retreatDistance: 4
-  viewDistance: 10
-  shotSpawn: {fileID: 4346769531671308}
-  shotSpawn2: {fileID: 4021164298602728}
-  explosion: {fileID: 1324451771930796, guid: 40fbc23882585774398db148d87c2bc1, type: 2}
-  shot: {fileID: 1700274951855188, guid: 489198a139ac2284fab60c5e49798453, type: 2}
 --- !u!114 &114355265070620504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -328,7 +307,7 @@ MonoBehaviour:
     chance: 0.3
   - item: {fileID: 114634439281968476, guid: 97e54f07b6af1704d897f66697e18567, type: 2}
     chance: 0.1
---- !u!114 &114844789874972312
+--- !u!114 &114523591381253818
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -336,12 +315,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1043255158863498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0c71a381779d2345929da5d70613ece, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e3d1a17c1799394284083e029c73d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hit: {fileID: 82659049716947646}
-  collisionSound: {fileID: 0}
-  incomingCollision: {fileID: 0}
+  health: 2
+  maxSpeed: 2
+  stoppingDistance: 3
+  retreatDistance: 5
+  viewDistance: 7
+  viewDistanceTurrets: 0
+  fireRate: 0.7
+  shipTracksPlayerOnHalt: 1
+  explosion: {fileID: 1324451771930796, guid: 40fbc23882585774398db148d87c2bc1, type: 2}
+  shot: {fileID: 1700274951855188, guid: 489198a139ac2284fab60c5e49798453, type: 2}
+  shotSpawns:
+  - {fileID: 4346769531671308}
+  - {fileID: 4021164298602728}
+  turrets: []
+  thrusters:
+  - {fileID: 1815333547729364}
 --- !u!212 &212588298868302490
 SpriteRenderer:
   m_ObjectHideFlags: 1

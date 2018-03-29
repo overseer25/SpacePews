@@ -80,8 +80,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 0586743879333a447bb9491c2300237d, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   - {fileID: 21300008, guid: 31e8501220472664caadf5bb7287a676, type: 3}
   - {fileID: 21300010, guid: 31e8501220472664caadf5bb7287a676, type: 3}
   - {fileID: 21300012, guid: 31e8501220472664caadf5bb7287a676, type: 3}
-  playspeed: 0.02
+  playspeed: 0.05
 --- !u!212 &212615446930975072
 SpriteRenderer:
   m_ObjectHideFlags: 1
