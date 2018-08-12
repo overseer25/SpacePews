@@ -15,9 +15,9 @@ public class EnemyScript : MonoBehaviour {
 
     public GameObject explosion;
     public GameObject shot;
-    public Transform[] shotSpawns; // For fixed weapons
+    public Transform[] shotSpawns; // For fixed weapons.
     public GameObject[] turrets; // For gimbal turrets. I think in the future these should have a TURRET script attached that handles fireRate, projectiles, etc.
-    public GameObject[] thrusters; // All thruster ports on the ship
+    public GameObject[] thrusters; // All thruster ports on the ship.
 
     private Rigidbody2D rigidBody;
     private Transform player;

@@ -21,10 +21,11 @@ GameObject:
   - component: {fileID: 4624367788240442}
   - component: {fileID: 114350251338486952}
   - component: {fileID: 114523558889503264}
+  - component: {fileID: 114553674002348986}
   - component: {fileID: 60238952160589496}
   m_Layer: 0
   m_Name: Asteroid1
-  m_TagString: Asteroid
+  m_TagString: Mineable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1601864409949134}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.44, y: -2.18, z: 0}
+  m_LocalPosition: {x: -12.405, y: -2.208, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4865783528242454}
@@ -81,7 +82,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,6 +146,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54a289a45b61f2448bf92bc8c200daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114553674002348986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1601864409949134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e258b8e41d0aff47818bebcb23baffc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount: 20
+  mineRate: 0.1
+  resource: {fileID: 1396439090011740, guid: a583431315adeb24a834f3f8c490a603, type: 2}
+  explosion: {fileID: 1808627111132406, guid: 512859f07d4d3bd4fb333b398da510dd, type: 2}
 --- !u!212 &212250360642981540
 SpriteRenderer:
   m_ObjectHideFlags: 1

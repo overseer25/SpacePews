@@ -26,7 +26,8 @@ public class Hotbar : MonoBehaviour {
 	
         if(Input.GetKeyDown("1"))
         {
-            SetCursor(gunCursor);
+            Cursor.SetCursor(gunCursor, new Vector2(gunCursor.width / 2, gunCursor.height / 2), CursorMode.Auto);
+
             transform.Find("Hotbar_item 1").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             transform.Find("Hotbar_item 2").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWeaponController>().isMiningLaser = false;
@@ -34,7 +35,8 @@ public class Hotbar : MonoBehaviour {
         }
         else if (Input.GetKeyDown("2"))
         {
-            SetCursor(miningCursor);
+            Cursor.SetCursor(miningCursor, new Vector2(miningCursor.width / 2, miningCursor.height / 2), CursorMode.Auto);
+
             transform.Find("Hotbar_item 1").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             transform.Find("Hotbar_item 2").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWeaponController>().isMiningLaser = true;
@@ -44,7 +46,6 @@ public class Hotbar : MonoBehaviour {
 
     void SetCursor(Texture2D cursor)
     {
-        Cursor.SetCursor(cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.Auto);
     }
 
 }

@@ -17,7 +17,6 @@ public class Thruster : MonoBehaviour {
     {
         if (Input.GetButton("Boost"))
         {
-            Debug.Log("pressing shift");
             if (Time.time > changeSprite)
             {
                 changeSprite = Time.time + playspeed;
@@ -28,7 +27,6 @@ public class Thruster : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Not pressing shift");
             if (Time.time > changeSprite)
             {
                 changeSprite = Time.time + playspeed;
