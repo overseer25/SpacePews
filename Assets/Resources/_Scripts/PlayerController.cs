@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
     public AudioSource engine; // Engine sound
     public bool inertialDamp = true; // Are inertial dampeners on?
     public float maxSpeed = 3.0f; // Max speed of the player.
+    public float afterburnerMod = 1.0f; // Multiplier that increases speed when "Boost" key is pressed.
 
     /// <summary>
     /// Use this for initialization
@@ -92,12 +93,31 @@ public class PlayerController : MonoBehaviour {
         /** Move the ship **/
         if (moveInput == Vector2.zero && inertialDamp)
         {
-            rigidBody.velocity = rigidBody.velocity * 0.95f;
+            rigidBody.velocity *= 0.95f;
         }
         else
         {
-            rigidBody.AddForce(moveInput * acceleration);
-            rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
+            // If boosting
+            if(Input.GetButton("Boost"))
+            {
+                rigidBody.AddForce(moveInput * acceleration * afterburnerMod);
+                rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed * afterburnerMod);
+            }
+            else
+            {
+                // Return to original max speed after using afterburner
+                if(rigidBody.velocity.magnitude > maxSpeed)
+                {
+                    rigidBody.velocity *= 0.99f;
+                }
+                // Otherwise, move as normal.
+                else
+                {
+                    rigidBody.AddForce(moveInput * acceleration);
+                    rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
+                }
+                
+            }
         }
 
         /** Rotating the ship **/
