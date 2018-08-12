@@ -70,8 +70,8 @@ public class InventorySlot : MonoBehaviour {
                 tooltip.gameObject.SetActive(false);
                 return;
             }
-            Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            newPos.z = transform.position.z;
+            var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
+            Vector3 newPos = Camera.main.ScreenToWorldPoint(pos);
             tooltipActive = !tooltipActive;
             tooltip.transform.position = newPos;
             tooltip.GetComponent<InventoryTooltip>().SetSlot(this);

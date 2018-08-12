@@ -28,8 +28,8 @@ public class InfoScreen : MonoBehaviour, IDragHandler {
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // How can I manipulate this so the window's centerpoint doesn't snap to cursor when dragging?
-        pos.z = 0;
+        var mouse = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
+        var pos = Camera.main.ScreenToWorldPoint(mouse);
         transform.position = pos;
     }
 }

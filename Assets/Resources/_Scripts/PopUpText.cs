@@ -34,7 +34,6 @@ public class PopUpText : MonoBehaviour {
     {
         if (Time.time > fadeTime)
         {
-            print("Time: " + Time.deltaTime + ", fadeTime: " + fadeTime + ", Color: " + renderer.material.color);
             fadeTime = Time.deltaTime + fadeSpeed;
 
             if(delay == 100)

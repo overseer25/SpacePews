@@ -130,15 +130,6 @@ public class PlayerController : MonoBehaviour {
         else if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -90.0f), turnSpeed * Time.deltaTime); } // East
         else if (!Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 90.0f), turnSpeed * Time.deltaTime); } // West
 
-        /** Code below is used to rotate the turret with the mouse **/
-
-        // Distance from camera to object.  We need this to get the proper calculation.
-        float camDis = Camera.main.transform.position.y - turret.transform.position.y;
-        // Get the mouse position in world space. Using camDis for the Z axis.
-        Vector3 mouse = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, camDis));
-        float AngleRad = Mathf.Atan2(mouse.y - turret.transform.position.y, mouse.x - turret.transform.position.x);
-        float angle = (180 / Mathf.PI) * AngleRad;
-        turret.transform.rotation = Quaternion.Euler(0, 0, angle - 90.0f); // turret follows mouse
 
     }
 
