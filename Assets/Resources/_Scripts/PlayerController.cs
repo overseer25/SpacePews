@@ -6,7 +6,8 @@ using UnityEngine.UI;
 /// <summary>
 /// Converts inputs given by the player into actions and movements of the player character.
 /// </summary>
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     private float acceleration;
     private Rigidbody2D rigidBody;
@@ -15,8 +16,12 @@ public class PlayerController : MonoBehaviour {
     private Vector2 moveInput;
     private bool playingEngine = false;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
-    public int health = 5; // The amount of health the player currently has.
-    public int maxHealth = 5; // Max health the player can currently have.
+    [SerializeField]
+    private int healthChunk = 20;
+    private float healthToDisplay;
+
+    public int health = 200; // The amount of health the player currently has.
+    public int maxHealth = 200; // Max health the player can currently have.
     public int currency = 5; // Amount of currency the player currently has.
     public float turnSpeed;
 
@@ -28,29 +33,30 @@ public class PlayerController : MonoBehaviour {
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start () {
+    void Start()
+    {
 
         rigidBody = GetComponent<Rigidbody2D>();
         turret = transform.Find("turret").gameObject;
         thruster = transform.Find("thruster").gameObject;
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z); // Center on the player character.
-
+        healthToDisplay = maxHealth / healthChunk;
     }
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    void Update () {
-
+    void Update()
+    {
         // Gets the movement vector given by WASD.
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         // If moving
         if (moveInput != Vector2.zero)
         {
             thruster.GetComponent<SpriteRenderer>().enabled = true;
-            if(acceleration < maxSpeed)
+            if (acceleration < maxSpeed)
                 acceleration += 0.01f;
-            if(!playingEngine)
+            if (!playingEngine)
             {
                 engine.Play(); // Play engine sound while moving
                 playingEngine = true;
@@ -65,12 +71,12 @@ public class PlayerController : MonoBehaviour {
             thruster.GetComponent<SpriteRenderer>().enabled = false; // Disable thruster graphic
 
             // Decelerate
-            if(acceleration > 0)
+            if (acceleration > 0)
                 acceleration -= 0.003f;
 
             engine.volume -= 0.005f; // Quiet the engine down as ship slows
             if (engine.pitch > 0.0f) { engine.pitch -= 0.005f; } // Reduce pitch when slowing down to represent engine slowing
-            if(engine.volume <= 0)
+            if (engine.volume <= 0)
             {
                 engine.Stop(); // Stop the engine sound when not moving
                 playingEngine = false;
@@ -98,7 +104,7 @@ public class PlayerController : MonoBehaviour {
         else
         {
             // If boosting
-            if(Input.GetButton("Boost"))
+            if (Input.GetButton("Boost"))
             {
                 rigidBody.AddForce(moveInput * acceleration * afterburnerMod);
                 rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed * afterburnerMod);
@@ -106,7 +112,7 @@ public class PlayerController : MonoBehaviour {
             else
             {
                 // Return to original max speed after using afterburner
-                if(rigidBody.velocity.magnitude > maxSpeed)
+                if (rigidBody.velocity.magnitude > maxSpeed)
                 {
                     rigidBody.velocity *= 0.99f;
                 }
@@ -116,7 +122,7 @@ public class PlayerController : MonoBehaviour {
                     rigidBody.AddForce(moveInput * acceleration);
                     rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
                 }
-                
+
             }
         }
 
@@ -140,7 +146,7 @@ public class PlayerController : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collider)
     {
 
-        switch(collider.gameObject.tag)
+        switch (collider.gameObject.tag)
         {
             case "Item":
                 Item item = collider.gameObject.GetComponent<Item>();
@@ -202,9 +208,16 @@ public class PlayerController : MonoBehaviour {
             case "EnemyProjectile":
                 health -= collider.gameObject.GetComponent<Projectile>().damage;
                 break;
-        
-        }
 
+        }
+        DisplayHealth();
+    }
+
+    private void DisplayHealth()
+    {
+        healthToDisplay = (float)health / healthChunk;
+        int fullDisplayHealth = health / healthChunk;
+        float remainingHealth = healthToDisplay - fullDisplayHealth;
     }
 
     /// <summary>
