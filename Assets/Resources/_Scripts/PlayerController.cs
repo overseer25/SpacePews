@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private int healthChunk = 20;
     private float healthToDisplay;
+    private PlayerHealth healthUI;
 
     public int health = 200; // The amount of health the player currently has.
     public int maxHealth = 200; // Max health the player can currently have.
@@ -35,12 +36,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-
         rigidBody = GetComponent<Rigidbody2D>();
         turret = transform.Find("turret").gameObject;
         thruster = transform.Find("thruster").gameObject;
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z); // Center on the player character.
         healthToDisplay = maxHealth / healthChunk;
+        healthUI = this.GetComponent<PlayerHealth>();
+        healthUI.SetupHealthSprite((int)healthToDisplay);
     }
 
     /// <summary>
@@ -217,6 +219,7 @@ public class PlayerController : MonoBehaviour
         healthToDisplay = (float)health / healthChunk;
         int fullDisplayHealth = health / healthChunk;
         float remainingHealth = healthToDisplay - fullDisplayHealth;
+        healthUI.RedrawHealthSprites(fullDisplayHealth, remainingHealth);
     }
 
     /// <summary>
