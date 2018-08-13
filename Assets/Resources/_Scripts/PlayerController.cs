@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour {
             case "Item":
                 Item item = collider.gameObject.GetComponent<Item>();
                 Inventory inventory = GameObject.Find("InventoryHUD").GetComponent<Inventory>();
-                Debug.Log("IsEmpty: " + inventory.IsEmptySlot() + ", Contains: " + inventory.ContainsItem(item));
                 // Only add the item to the player's inventory list if there is an empty slot for it, or a slot contains the item already.
                 if (inventory.IsEmptySlot() || inventory.ContainsItem(item))
                 {

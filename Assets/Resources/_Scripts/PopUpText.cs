@@ -23,7 +23,6 @@ public class PopUpText : MonoBehaviour {
         textMesh = GetComponent<TextMesh>();
         textMesh.text = text;
         renderer = GetComponent<MeshRenderer>();
-        Debug.Log("Renderer: " + renderer);
         
         transform.position = new Vector3(target.transform.position.x, 
             target.transform.position.y, target.transform.position.z); // Set this once
