@@ -251,6 +251,7 @@ public class PlayerController : MonoBehaviour
         {
             this.GetComponent<SpriteRenderer>().enabled = false;
             dead = true;
+            this.SendMessage("UpdateDead", true);
         }
         return health <= 0;
     }
