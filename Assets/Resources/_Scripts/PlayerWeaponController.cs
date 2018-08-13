@@ -19,6 +19,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private bool playingMiningLaser = false;
     private bool cursorSet; // To stop the update function from constantly refreshing the cursor texture;
+    private bool dead = false;
     public bool menuOpen = false;
     private GameObject turret;
     public SpriteRenderer miningLaserParticles;
@@ -35,8 +36,8 @@ public class PlayerWeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Don't shoot if a menu is open
-        if(!menuOpen)
+        // Don't shoot if a menu is open and don't shoot if dead
+        if(!menuOpen && !dead)
         {
             if (!isMiningLaser)
             {
@@ -93,5 +94,10 @@ public class PlayerWeaponController : MonoBehaviour
             Instantiate(missile, missileShotSpawn.position, missileShotSpawn.rotation);
             nextFireMissile = Time.time + fireRateMissile;
         }
+    }
+
+    public void UpdateDead(bool isDead)
+    {
+        dead = isDead;
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine.UI;
 /// <summary>
 /// Converts inputs given by the player into actions and movements of the player character.
 /// </summary>
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     private float acceleration;
     private Rigidbody2D rigidBody;
@@ -15,8 +16,14 @@ public class PlayerController : MonoBehaviour {
     private Vector2 moveInput;
     private bool playingEngine = false;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
-    public int health = 5; // The amount of health the player currently has.
-    public int maxHealth = 5; // Max health the player can currently have.
+    [SerializeField]
+    private int healthChunk = 20;
+    private float healthToDisplay;
+    private PlayerHealth healthUI;
+    private bool dead = false;
+
+    public int health = 200; // The amount of health the player currently has.
+    public int maxHealth = 200; // Max health the player can currently have.
     public int currency = 5; // Amount of currency the player currently has.
     public float turnSpeed;
 
@@ -28,29 +35,31 @@ public class PlayerController : MonoBehaviour {
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start () {
-
+    void Start()
+    {
         rigidBody = GetComponent<Rigidbody2D>();
         turret = transform.Find("turret").gameObject;
         thruster = transform.Find("thruster").gameObject;
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z); // Center on the player character.
-
+        healthToDisplay = maxHealth / healthChunk;
+        healthUI = this.GetComponent<PlayerHealth>();
+        healthUI.SetupHealthSprite((int)healthToDisplay);
     }
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    void Update () {
-
+    void Update()
+    {
         // Gets the movement vector given by WASD.
-        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        moveInput = !dead ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero;
         // If moving
         if (moveInput != Vector2.zero)
         {
             thruster.GetComponent<SpriteRenderer>().enabled = true;
-            if(acceleration < maxSpeed)
+            if (acceleration < maxSpeed)
                 acceleration += 0.01f;
-            if(!playingEngine)
+            if (!playingEngine)
             {
                 engine.Play(); // Play engine sound while moving
                 playingEngine = true;
@@ -65,12 +74,12 @@ public class PlayerController : MonoBehaviour {
             thruster.GetComponent<SpriteRenderer>().enabled = false; // Disable thruster graphic
 
             // Decelerate
-            if(acceleration > 0)
+            if (acceleration > 0)
                 acceleration -= 0.003f;
 
             engine.volume -= 0.005f; // Quiet the engine down as ship slows
             if (engine.pitch > 0.0f) { engine.pitch -= 0.005f; } // Reduce pitch when slowing down to represent engine slowing
-            if(engine.volume <= 0)
+            if (engine.volume <= 0)
             {
                 engine.Stop(); // Stop the engine sound when not moving
                 playingEngine = false;
@@ -78,7 +87,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Toggle inertial dampeners
-        if (Input.GetKeyDown("f"))
+        if (Input.GetKeyDown("f") && !dead)
         {
             inertialDamp = !inertialDamp;
         }
@@ -98,7 +107,7 @@ public class PlayerController : MonoBehaviour {
         else
         {
             // If boosting
-            if(Input.GetButton("Boost"))
+            if (Input.GetButton("Boost") && !dead)
             {
                 rigidBody.AddForce(moveInput * acceleration * afterburnerMod);
                 rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed * afterburnerMod);
@@ -106,7 +115,7 @@ public class PlayerController : MonoBehaviour {
             else
             {
                 // Return to original max speed after using afterburner
-                if(rigidBody.velocity.magnitude > maxSpeed)
+                if (rigidBody.velocity.magnitude > maxSpeed)
                 {
                     rigidBody.velocity *= 0.99f;
                 }
@@ -116,20 +125,22 @@ public class PlayerController : MonoBehaviour {
                     rigidBody.AddForce(moveInput * acceleration);
                     rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
                 }
-                
+
             }
         }
 
-        /** Rotating the ship **/
-        if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), turnSpeed * Time.deltaTime); } // North
-        else if (Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 45.0f), turnSpeed * Time.deltaTime); } // Northwest
-        else if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -45.0f), turnSpeed * Time.deltaTime); } // Northeast
-        else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 180.0f), turnSpeed * Time.deltaTime); } // South
-        else if (!Input.GetKey("w") && Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 135.0f), turnSpeed * Time.deltaTime); } // Southwest
-        else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -135.0f), turnSpeed * Time.deltaTime); } // Southeast
-        else if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -90.0f), turnSpeed * Time.deltaTime); } // East
-        else if (!Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 90.0f), turnSpeed * Time.deltaTime); } // West
-
+        if (!dead)
+        {
+            /** Rotating the ship **/
+            if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), turnSpeed * Time.deltaTime); } // North
+            else if (Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 45.0f), turnSpeed * Time.deltaTime); } // Northwest
+            else if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -45.0f), turnSpeed * Time.deltaTime); } // Northeast
+            else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 180.0f), turnSpeed * Time.deltaTime); } // South
+            else if (!Input.GetKey("w") && Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 135.0f), turnSpeed * Time.deltaTime); } // Southwest
+            else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -135.0f), turnSpeed * Time.deltaTime); } // Southeast
+            else if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -90.0f), turnSpeed * Time.deltaTime); } // East
+            else if (!Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 90.0f), turnSpeed * Time.deltaTime); } // West
+        }
 
     }
 
@@ -140,7 +151,7 @@ public class PlayerController : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collider)
     {
 
-        switch(collider.gameObject.tag)
+        switch (collider.gameObject.tag)
         {
             case "Item":
                 Item item = collider.gameObject.GetComponent<Item>();
@@ -201,9 +212,24 @@ public class PlayerController : MonoBehaviour {
             case "EnemyProjectile":
                 health -= collider.gameObject.GetComponent<Projectile>().damage;
                 break;
-        
-        }
 
+        }
+        if (!CheckIfDead())
+        {
+            DisplayHealth();
+        }        
+    }
+
+    /// <summary>
+    /// Calculates number of hearts to draw, and transparency of last one if necessary. Sends to
+    /// UI for updating.
+    /// </summary>
+    private void DisplayHealth()
+    {
+        healthToDisplay = (float)health / healthChunk;
+        int fullDisplayHealth = health / healthChunk;
+        float remainingHealth = healthToDisplay - fullDisplayHealth;
+        healthUI.RedrawHealthSprites(fullDisplayHealth, remainingHealth);
     }
 
     /// <summary>
@@ -218,4 +244,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+
+    public bool CheckIfDead()
+    {
+        if(health <= 0)
+        {
+            this.GetComponent<SpriteRenderer>().enabled = false;
+            dead = true;
+            this.SendMessage("UpdateDead", true);
+        }
+        return health <= 0;
+    }
 }
