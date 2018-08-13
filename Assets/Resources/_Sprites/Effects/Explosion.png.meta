@@ -1,14 +1,15 @@
 fileFormatVersion: 2
 guid: dcefb18f3d9268e44b2092998685075a
-timeCreated: 1519444527
+timeCreated: 1534118997
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Explosion 1_0
-    21300002: Explosion 1_1
-    21300004: Explosion 1_2
-    21300006: Explosion 1_3
-    21300008: Explosion 1_4
+    21300000: Explosion_0
+    21300002: Explosion_1
+    21300004: Explosion_2
+    21300006: Explosion_3
+    21300008: Explosion_4
+    21300010: Explosion_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -37,7 +38,7 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
+    aniso: 1
     mipBias: -1
     wrapU: 1
     wrapV: 1
@@ -83,27 +84,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Explosion 1_0
+      name: Explosion_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 56
-        height: 68
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Explosion 1_1
-      rect:
-        serializedVersion: 2
-        x: 55
-        y: 0
-        width: 57
-        height: 68
+        x: 39
+        y: 146
+        width: 26
+        height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,13 +98,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Explosion 1_2
+      name: Explosion_1
       rect:
         serializedVersion: 2
-        x: 110
-        y: 0
-        width: 60
-        height: 68
+        x: 103
+        y: 145
+        width: 35
+        height: 33
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,13 +112,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Explosion 1_3
+      name: Explosion_2
       rect:
         serializedVersion: 2
-        x: 170
-        y: 0
-        width: 49
-        height: 68
+        x: 162
+        y: 134
+        width: 59
+        height: 51
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,13 +126,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Explosion 1_4
+      name: Explosion_3
       rect:
         serializedVersion: 2
-        x: 222
-        y: 0
-        width: 60
-        height: 68
+        x: 258
+        y: 120
+        width: 80
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Explosion_4
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 19
+        width: 91
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Explosion_5
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 22
+        width: 83
+        height: 73
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -139,7 +139,7 @@ MonoBehaviour:
   - {fileID: 21300004, guid: dcefb18f3d9268e44b2092998685075a, type: 3}
   - {fileID: 21300006, guid: dcefb18f3d9268e44b2092998685075a, type: 3}
   - {fileID: 21300008, guid: dcefb18f3d9268e44b2092998685075a, type: 3}
-  playspeed: 0.1
+  playspeed: 0.05
 --- !u!212 &212969790977067620
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -179,7 +179,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.56, y: 0.68}
+  m_Size: {x: 0.26, y: 0.27}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
