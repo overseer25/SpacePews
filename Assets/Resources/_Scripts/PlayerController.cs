@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private int healthChunk = 20;
     private float healthToDisplay;
     private PlayerHealth healthUI;
+    private bool dead = false;
 
     public int health = 200; // The amount of health the player currently has.
     public int maxHealth = 200; // Max health the player can currently have.
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Gets the movement vector given by WASD.
-        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        moveInput = !dead ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero;
         // If moving
         if (moveInput != Vector2.zero)
         {
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Toggle inertial dampeners
-        if (Input.GetKeyDown("f"))
+        if (Input.GetKeyDown("f") && !dead)
         {
             inertialDamp = !inertialDamp;
         }
@@ -106,7 +107,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // If boosting
-            if (Input.GetButton("Boost"))
+            if (Input.GetButton("Boost") && !dead)
             {
                 rigidBody.AddForce(moveInput * acceleration * afterburnerMod);
                 rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed * afterburnerMod);
@@ -128,16 +129,18 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        /** Rotating the ship **/
-        if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), turnSpeed * Time.deltaTime); } // North
-        else if (Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 45.0f), turnSpeed * Time.deltaTime); } // Northwest
-        else if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -45.0f), turnSpeed * Time.deltaTime); } // Northeast
-        else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 180.0f), turnSpeed * Time.deltaTime); } // South
-        else if (!Input.GetKey("w") && Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 135.0f), turnSpeed * Time.deltaTime); } // Southwest
-        else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -135.0f), turnSpeed * Time.deltaTime); } // Southeast
-        else if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -90.0f), turnSpeed * Time.deltaTime); } // East
-        else if (!Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 90.0f), turnSpeed * Time.deltaTime); } // West
-
+        if (!dead)
+        {
+            /** Rotating the ship **/
+            if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), turnSpeed * Time.deltaTime); } // North
+            else if (Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 45.0f), turnSpeed * Time.deltaTime); } // Northwest
+            else if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -45.0f), turnSpeed * Time.deltaTime); } // Northeast
+            else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 180.0f), turnSpeed * Time.deltaTime); } // South
+            else if (!Input.GetKey("w") && Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 135.0f), turnSpeed * Time.deltaTime); } // Southwest
+            else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -135.0f), turnSpeed * Time.deltaTime); } // Southeast
+            else if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -90.0f), turnSpeed * Time.deltaTime); } // East
+            else if (!Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 90.0f), turnSpeed * Time.deltaTime); } // West
+        }
 
     }
 
@@ -211,9 +214,16 @@ public class PlayerController : MonoBehaviour
                 break;
 
         }
-        DisplayHealth();
+        if (!CheckIfDead())
+        {
+            DisplayHealth();
+        }        
     }
 
+    /// <summary>
+    /// Calculates number of hearts to draw, and transparency of last one if necessary. Sends to
+    /// UI for updating.
+    /// </summary>
     private void DisplayHealth()
     {
         healthToDisplay = (float)health / healthChunk;
@@ -234,4 +244,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    public bool CheckIfDead()
+    {
+        if(health <= 0)
+        {
+            this.GetComponent<SpriteRenderer>().enabled = false;
+            dead = true;
+        }
+        return health <= 0;
+    }
 }
