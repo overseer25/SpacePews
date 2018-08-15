@@ -17,6 +17,8 @@ public class PlayerHealth : MonoBehaviour {
     private List<bool> heartsActive = new List<bool>();
     private int lastActiveIndex = 0;
 
+    private bool dead = false;
+
     //void Update()
     //{
     //    // If killed
@@ -45,14 +47,18 @@ public class PlayerHealth : MonoBehaviour {
 
     public void RedrawHealthSprites(int numToDraw, float transparencyOfLast)
     {
-        Debug.Log(numToDraw);
+        if (dead)
+        {
+            DrawNoHealth();
+            return;
+        }
         int currentHeartCount = lastActiveIndex + 1;
         //number of new full hearts equals total number hearts displayed
-        if(numToDraw == currentHeartCount)
+        if (numToDraw == currentHeartCount)
         {
-            heartUI.transform.GetChild(currentHeartCount - 1).GetComponent<Image>().color = Color.white;            
+            heartUI.transform.GetChild(currentHeartCount - 1).GetComponent<Image>().color = Color.white;
         }
-        else if(numToDraw > currentHeartCount) // number of full hearts is more than total current heart count
+        else if (numToDraw > currentHeartCount) // number of full hearts is more than total current heart count
         {
             heartUI.transform.GetChild(currentHeartCount - 1).GetComponent<Image>().color = Color.white;
             for (int i = currentHeartCount; i < heartsActive.Count; i++)
@@ -62,7 +68,7 @@ public class PlayerHealth : MonoBehaviour {
                 heartsActive[i] = true;
             }
             //not enough hearts currently parented, need to add more
-            if(heartsActive.Count < numToDraw)
+            if (heartsActive.Count < numToDraw)
             {
                 int currentAmountActive = heartsActive.Count;
                 for (int i = 0; i < numToDraw - currentAmountActive; i++)
@@ -75,7 +81,7 @@ public class PlayerHealth : MonoBehaviour {
         }
         else // number of full hearts is less than the total currently shown
         {
-            for (int i = currentHeartCount - 1; i > numToDraw; i--)
+            for (int i = currentHeartCount - 1; i >= numToDraw; i--)
             {
                 heartUI.transform.GetChild(i).GetComponent<Image>().enabled = false;
                 heartsActive[i] = false;
@@ -86,7 +92,7 @@ public class PlayerHealth : MonoBehaviour {
         //If there is to be a heart that is slightly damaged
         if (transparencyOfLast > 0)
         {
-            if(currentHeartCount > heartsActive.Count)
+            if (currentHeartCount > heartsActive.Count)
             {
                 GameObject heart = Instantiate(healthSpritePrefab, heartUI.transform, false);
                 heart.GetComponent<Image>().color = new Color(1, 1, 1, transparencyOfLast);
@@ -101,5 +107,22 @@ public class PlayerHealth : MonoBehaviour {
                 heartsActive[lastActiveIndex] = true;
             }
         }
+    }
+
+    public void DrawNoHealth()
+    {
+        for (int i = 0; i < heartsActive.Count; i++)
+        {
+            heartsActive[i] = false;
+            lastActiveIndex = -1;
+            heartUI.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+            heartUI.transform.GetChild(i).GetComponent<Image>().enabled = false;
+        }
+    }
+
+
+    public void SetIsDead(bool isDead)
+    {
+        dead = isDead;
     }
 }
