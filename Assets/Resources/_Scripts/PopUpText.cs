@@ -18,10 +18,11 @@ public class PopUpText : MonoBehaviour {
     /// </summary>
     /// <param name="text"></param>
     /// <param name="fadeTime"></param>
-    public void Initialize(GameObject target, string text)
+    public void Initialize(GameObject target, string text, ItemColorSelector itemTier)
     {
         textMesh = GetComponent<TextMesh>();
         textMesh.text = text;
+        textMesh.color = ItemColors.colors[(int)itemTier];
         renderer = GetComponent<MeshRenderer>();
         
         transform.position = new Vector3(target.transform.position.x, 
