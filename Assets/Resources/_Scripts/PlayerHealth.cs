@@ -10,30 +10,23 @@ public class PlayerHealth : MonoBehaviour {
 
     public GameObject heartUI;
 
-    private float startingXPos = 29.5f;
-    private float startingYPos = -28.1f;
-    private float shiftAmout = 50f;
+    public float heartSize = 20f;
 
     private List<bool> heartsActive = new List<bool>();
     private int lastActiveIndex = 0;
 
     private bool dead = false;
 
-    //void Update()
-    //{
-    //    // If killed
-    //    if (player.health <= 0)
-    //    {
-    //        Instantiate(explosion, transform.position, Quaternion.identity);
-    //        //heartUI.sprite = healthSprites[0];
-    //        Destroy(gameObject);
-    //    }
-    //    else
-    //    {
-    //        //heartUI.sprite = healthSprites[player.health];
-    //    }        
-    //}
+    private void Start()
+    {
+        heartUI.GetComponent<GridLayoutGroup>().cellSize = new Vector2(heartSize, heartSize);
+    }
 
+    /// <summary>
+    /// Draw starting health hearts at full opacity.
+    /// Setup array to track active hearts.
+    /// </summary>
+    /// <param name="numToDraw"></param>
     public void SetupHealthSprite(int numToDraw)
     {
         for (int i = 0; i < numToDraw; i++)
@@ -44,7 +37,11 @@ public class PlayerHealth : MonoBehaviour {
         lastActiveIndex = heartsActive.Count - 1;
     }
 
-
+    /// <summary>
+    /// Redraw the number of hearts that should be displayed representing players health.
+    /// </summary>
+    /// <param name="numToDraw">How many full hearts the player has. Determined by health / healthChunk</param>
+    /// <param name="transparencyOfLast">If the last heart is damaged, and what opacity it should represent.</param>
     public void RedrawHealthSprites(int numToDraw, float transparencyOfLast)
     {
         if (dead)
@@ -109,6 +106,9 @@ public class PlayerHealth : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// When the player is dead, hide all drawn hearts, and show that none are active.
+    /// </summary>
     public void DrawNoHealth()
     {
         for (int i = 0; i < heartsActive.Count; i++)
@@ -120,9 +120,22 @@ public class PlayerHealth : MonoBehaviour {
         }
     }
 
-
+    /// <summary>
+    /// Called by other scripts to inform the UI that the player has died.
+    /// </summary>
+    /// <param name="isDead">Is the player dead?</param>
     public void SetIsDead(bool isDead)
     {
         dead = isDead;
+    }
+
+    /// <summary>
+    /// Change the size of the heart icon in the player HUD.
+    /// </summary>
+    /// <param name="newSize"></param>
+    public void ChangeHeartSize(float newSize)
+    {
+        heartSize = newSize;
+        heartUI.GetComponent<GridLayoutGroup>().cellSize = new Vector2(heartSize, heartSize);
     }
 }
