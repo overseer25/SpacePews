@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour {
-
-
+public class Item : MonoBehaviour
+{
+    public ItemColorSelector itemTier = ItemColorSelector.Tier1;
     public Sprite[] spriteAnim; // For animation
     public Sprite sprite; // For no animation
     public GameObject collectSprite;
@@ -28,6 +28,12 @@ public class Item : MonoBehaviour {
     private GameObject dropper;
     private float waitTime = 5.0f;
     private float timer = 0.0f;
+    private Color itemColor;
+
+    private void Start()
+    {
+        itemColor = ItemColors.colors[(int)itemTier];
+    }
 
     /// <summary>
     /// Instantiate the object with additional parameters. Used when the item is dropped from an inventory.
@@ -45,14 +51,15 @@ public class Item : MonoBehaviour {
     {
         Instantiate(collectSprite, transform.position, Quaternion.identity);
         var collected = Instantiate(collectedText, transform.position, Quaternion.identity);
-        collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name);
+        collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier);
         Destroy(gameObject);
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        if(spriteAnim.Length > 0)
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (spriteAnim.Length > 0)
         {
             // Player sprite animation
             if (Time.time > changeSprite)
@@ -75,12 +82,12 @@ public class Item : MonoBehaviour {
         var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
         float distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
         waitTime += Time.time;
-        
+
         if (distanceToPlayer <= MAXDISTANCE)
         {
             if (dropped)
             {
-                if(Time.time >= waitTime)
+                if (Time.time >= waitTime)
                     transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
             }
             else
@@ -91,6 +98,7 @@ public class Item : MonoBehaviour {
     void OnMouseOver()
     {
         hoverText.SetActive(true);
+        hoverText.GetComponent<TextMesh>().color = itemColor;
     }
 
     // Remove highlight on image when no longer hovering
