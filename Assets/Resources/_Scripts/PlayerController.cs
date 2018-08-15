@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
     [SerializeField]
     private int healthChunk = 20;
+    private int prevHealth;
     private float healthToDisplay;
     private PlayerHealth healthUI;
     private bool dead = false;
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
         healthToDisplay = maxHealth / healthChunk;
         healthUI = this.GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
+        prevHealth = health;
     }
 
     /// <summary>
@@ -144,6 +146,15 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void LateUpdate()
+    {
+        if (!CheckIfDead() && prevHealth != health)
+        {
+            prevHealth = health;
+            DisplayHealth();
+        }
+    }
+
     /// <summary>
     /// Deals with all collisions with the player character
     /// </summary>
@@ -213,11 +224,7 @@ public class PlayerController : MonoBehaviour
                 health -= collider.gameObject.GetComponent<Projectile>().damage;
                 break;
 
-        }
-        if (!CheckIfDead())
-        {
-            DisplayHealth();
-        }        
+        }       
     }
 
     /// <summary>
@@ -244,7 +251,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Check to see if the player is dead, set some variables if he is and render them dead.
+    /// </summary>
+    /// <returns>Returns true if health is less than or equal to 0</returns>
     public bool CheckIfDead()
     {
         if(health <= 0)
@@ -252,6 +262,8 @@ public class PlayerController : MonoBehaviour
             this.GetComponent<SpriteRenderer>().enabled = false;
             dead = true;
             this.SendMessage("UpdateDead", true);
+            healthUI.SetIsDead(true);
+            healthUI.RedrawHealthSprites(0, 0);
         }
         return health <= 0;
     }
