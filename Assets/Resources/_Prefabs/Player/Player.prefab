@@ -1107,6 +1107,7 @@ MonoBehaviour:
     type: 2}
   explosion: {fileID: 1324451771930796, guid: 40fbc23882585774398db148d87c2bc1, type: 2}
   heartUI: {fileID: 0}
+  heartSize: 20
 --- !u!114 &114886678128643460
 MonoBehaviour:
   m_ObjectHideFlags: 1
