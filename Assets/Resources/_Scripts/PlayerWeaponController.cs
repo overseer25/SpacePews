@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerWeaponController : MonoBehaviour
 {
 
-    public GameObject projectile; // Contains the sprite for the projectile
+    public GameObject projectileObject; // Contains the sprite for the projectile
     public GameObject missile; // Contains the sprite for the missile
 
     
@@ -17,16 +17,20 @@ public class PlayerWeaponController : MonoBehaviour
     private bool dead = false;
 
     // Variables used within the functions
-    private float shotSpeed = 1.0f;
-    private float fireRate = 0.5f;
     private float nextFire = 0.0f;
-    public float fireRateMissile = 1.0f;
+    private float fireRateMissile = 1.0f;
     private float nextFireMissile = 0.0f;
     private GameObject turret;
+    private Projectile projectile;
 
     public bool menuOpen = false;
     public SpriteRenderer miningLaserParticles;
-    public AudioSource miningLaserAudio;
+
+    [Header("Audio")]
+    public AudioSource audioPlayer;
+    public AudioClip miningLaserAudio;
+
+    [Header("Other")]
     public Transform turretShotSpawn;
     public Transform missileShotSpawn;
 
@@ -34,6 +38,7 @@ public class PlayerWeaponController : MonoBehaviour
     void Start()
     {
         turret = transform.Find("turret").gameObject;
+        projectile = projectileObject.GetComponent<Projectile>();
     }
 
     // Update is called once per frame
@@ -48,14 +53,17 @@ public class PlayerWeaponController : MonoBehaviour
                 {
                     turret.GetComponent<LineRenderer>().enabled = false;
                     playingMiningLaser = false;
-                    miningLaserAudio.Stop();
+                    audioPlayer.Stop();
                     miningLaserParticles.enabled = false;
                 }
                 // Create projectiles
+                audioPlayer.clip = projectile.fireSound;
+                audioPlayer.loop = false;
                 FireProjectile();
             }
             else
             {
+                audioPlayer.clip = miningLaserAudio;
                 // Create mining projectiles
                 if (Input.GetMouseButton(0))
                 {
@@ -63,7 +71,8 @@ public class PlayerWeaponController : MonoBehaviour
                     if (!playingMiningLaser)
                     {
                         playingMiningLaser = true;
-                        miningLaserAudio.Play();
+                        audioPlayer.loop = true;
+                        audioPlayer.Play();
                         miningLaserParticles.enabled = true;
                     }
                 }
@@ -74,7 +83,7 @@ public class PlayerWeaponController : MonoBehaviour
                     if (playingMiningLaser)
                     {
                         playingMiningLaser = false;
-                        miningLaserAudio.Stop();
+                        audioPlayer.Stop();
                         miningLaserParticles.enabled = false;
                     }
                 }
@@ -83,20 +92,26 @@ public class PlayerWeaponController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Fires projectiles from the player's turret.
+    /// </summary>
     void FireProjectile()
     {
         if (Input.GetMouseButton(0) && (Time.time > nextFire))
         {
-            GameObject projectile = ObjectPool.current.GetPooledObject();
-            if(projectile == null)
+            // Get an unused projectile, if it exists.
+            GameObject proj = ObjectPool.current.GetPooledObject();
+            if(proj == null)
             {
                 return;
             }
 
-            projectile.transform.position = turret.transform.position;
-            projectile.transform.rotation = turret.transform.rotation;
-            projectile.SetActive(true);
-            nextFire = Time.time + fireRate;
+            // Prepare and activate the projectile.
+            proj.transform.position = turretShotSpawn.transform.position;
+            proj.transform.rotation = turretShotSpawn.transform.rotation;
+            proj.SetActive(true);
+            nextFire = Time.time + (1/projectile.fireRate);
+            audioPlayer.Play();
         }
 
         if (Input.GetMouseButton(1) && (Time.time > nextFireMissile))
@@ -106,6 +121,10 @@ public class PlayerWeaponController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update the controller on the state of the player.
+    /// </summary>
+    /// <param name="isDead"></param>
     public void UpdateDead(bool isDead)
     {
         dead = isDead;

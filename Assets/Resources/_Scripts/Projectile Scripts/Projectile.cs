@@ -40,6 +40,17 @@ public class Projectile : MonoBehaviour
     public float critChance;
 
     /// <summary>
+    /// Firing sound.
+    /// </summary>
+    [Header("Audio")]
+    public AudioClip fireSound;
+
+    /// <summary>
+    /// Sound that the projectile makes when colliding with something.
+    /// </summary>
+    public AudioClip collisionSound;
+
+    /// <summary>
     /// The lifetime of the projectile.
     /// </summary>
     [Header("Other")]
@@ -50,8 +61,9 @@ public class Projectile : MonoBehaviour
     /// </summary>
     public float fireRate;
 
+    // Explosion sprite.
     public GameObject explosion;
-    public AudioClip collisionSound;
+
 
     private Rigidbody2D rigidBody;
     private bool collided = false; // Check to see if a collision sound should be played on destroy.
@@ -118,6 +130,7 @@ public class Projectile : MonoBehaviour
     private IEnumerator RemoveAfterSeconds(int seconds)
     {
         yield return new WaitForSeconds(seconds);
+        collided = false;
         gameObject.SetActive(false);
     }
 
