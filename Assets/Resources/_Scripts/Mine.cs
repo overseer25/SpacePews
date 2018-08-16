@@ -59,7 +59,7 @@ public class Mine : MonoBehaviour
                 break;
             case "PlayerProjectile":
             case "EnemyProjectile":
-                health -= collision.gameObject.GetComponent<Projectile>().damage;
+                health -= collision.gameObject.GetComponent<Projectile>().GetDamage();
                 break;
             case "Missile":
                 health -= collision.gameObject.GetComponent<Missile>().damage;

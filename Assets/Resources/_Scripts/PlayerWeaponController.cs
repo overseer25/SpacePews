@@ -8,20 +8,23 @@ public class PlayerWeaponController : MonoBehaviour
     public GameObject projectile; // Contains the sprite for the projectile
     public GameObject missile; // Contains the sprite for the missile
 
-    public float shotSpeed = 1.0f;
-    public float fireRate = 0.5f;
-    public float fireRateMissile = 1.0f;
+    
     public bool isMiningLaser;
 
-    // Variables used within the functions
-    private float nextFire = 0.0f;
-    private float nextFireMissile = 0.0f;
-
     private bool playingMiningLaser = false;
-    private bool cursorSet; // To stop the update function from constantly refreshing the cursor texture;
+    // To stop the update function from constantly refreshing the cursor texture;
+    private bool cursorSet; 
     private bool dead = false;
-    public bool menuOpen = false;
+
+    // Variables used within the functions
+    private float shotSpeed = 1.0f;
+    private float fireRate = 0.5f;
+    private float nextFire = 0.0f;
+    public float fireRateMissile = 1.0f;
+    private float nextFireMissile = 0.0f;
     private GameObject turret;
+
+    public bool menuOpen = false;
     public SpriteRenderer miningLaserParticles;
     public AudioSource miningLaserAudio;
     public Transform turretShotSpawn;
@@ -84,8 +87,15 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && (Time.time > nextFire))
         {
+            GameObject projectile = ObjectPool.current.GetPooledObject();
+            if(projectile == null)
+            {
+                return;
+            }
 
-            Instantiate(projectile, turretShotSpawn.position, turretShotSpawn.rotation).GetComponent<Projectile>().Initialize(shotSpeed);
+            projectile.transform.position = turret.transform.position;
+            projectile.transform.rotation = turret.transform.rotation;
+            projectile.SetActive(true);
             nextFire = Time.time + fireRate;
         }
 
