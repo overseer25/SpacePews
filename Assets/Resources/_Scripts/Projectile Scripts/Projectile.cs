@@ -66,7 +66,7 @@ public class Projectile : MonoBehaviour
 
 
     private Rigidbody2D rigidBody;
-    private bool collided = false; // Check to see if a collision sound should be played on destroy.
+    private bool collided = false; // Check to see if a collision sound should be played on deactivation.
     private System.Random random;
 
     // Use this for initialization
