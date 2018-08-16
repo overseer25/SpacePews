@@ -221,7 +221,7 @@ public class PlayerController : MonoBehaviour
                 rigidBody.AddForce(direction); // Apply the force
                 break;
             case "EnemyProjectile":
-                health -= collider.gameObject.GetComponent<Projectile>().damage;
+                health -= collider.gameObject.GetComponent<Projectile>().GetDamage();
                 break;
 
         }       
