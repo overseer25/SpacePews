@@ -10,7 +10,7 @@ public class ObjectPool : MonoBehaviour
     // The object pooled.
     public GameObject pooledObject;
     // How many of the object to pool.
-    public int amountPooled;
+    public int amountPooled = 20;
 
     // The internal list of objects.
     private List<GameObject> objectPool;
@@ -28,7 +28,7 @@ public class ObjectPool : MonoBehaviour
     /// </summary>
     void Start()
     {
-        objectPool = new List<GameObject>();
+        objectPool = new List<GameObject>(amountPooled);
         for (int i = 0; i < amountPooled; i++)
         {
             GameObject obj = Instantiate(pooledObject) as GameObject;

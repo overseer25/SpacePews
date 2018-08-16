@@ -67,7 +67,7 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     private bool collided = false; // Check to see if a collision sound should be played on deactivation.
-    private System.Random random;
+    private static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds
 
     // Use this for initialization
     void Start()
@@ -92,7 +92,6 @@ public class Projectile : MonoBehaviour
         {
             result = random.Next(minDamage, maxDamage);
         }
-
         return result;
     }
 
@@ -102,6 +101,7 @@ public class Projectile : MonoBehaviour
     void OnEnable()
     {
         random = new System.Random();
+        random.Next();
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.velocity = transform.up * speed;
 
