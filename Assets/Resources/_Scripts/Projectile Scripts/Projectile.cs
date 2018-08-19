@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
     public int maxDamage;
 
     /// <summary>
-    /// The current computed damage of the projectile, determined on enable.
+    /// The current computed damage of the projectile, determined on collision.
     /// </summary>
     public int Damage { get; internal set; }
 
