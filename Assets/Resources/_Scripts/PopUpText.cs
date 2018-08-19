@@ -4,33 +4,43 @@ using UnityEngine;
 
 public class PopUpText : MonoBehaviour {
 
+    private new MeshRenderer renderer;
     private TextMesh textMesh;
     private float fadeTime = 0.0f;
     private float fadeSpeed = 0.2f;
     private int delay = 0;
-    private int timeBeforeFade = 0; // A counter that will count up to a certain number. Once it reaches
-                                    // this number, the sprite will begin to fade.
-
-    private new MeshRenderer renderer;
 
     /// <summary>
     /// Initializes the pop-up text by allowing the callee to specify text and fade time.
     /// </summary>
+    /// <param name="target"></param>
     /// <param name="text"></param>
-    /// <param name="fadeTime"></param>
-    public void Initialize(GameObject target, string text, ItemColorSelector itemTier)
+    /// <param name="itemTier"></param>
+    public void Initialize(GameObject target, string text, ItemColorSelector itemTier, AudioClip sound = null)
     {
         textMesh = GetComponent<TextMesh>();
         textMesh.text = text;
         textMesh.color = ItemColors.colors[(int)itemTier];
         renderer = GetComponent<MeshRenderer>();
-        
+        renderer.material.color = new Color(1f, 1f, 1f, 1f); // Reset the alpha.
+
         transform.position = new Vector3(target.transform.position.x, 
             target.transform.position.y, target.transform.position.z); // Set this once
+
+        gameObject.SetActive(true);
+
+        // If a sound was provided, play it.
+        if(sound != null)
+        {
+            GetComponent<AudioSource>().clip = sound;
+            GetComponent<AudioSource>().Play();
+        }
     }
-	
-	// Update is called once per frame
-	void Update()
+
+    /// <summary>
+    /// Deals with fading and disabling the text.
+    /// </summary>
+    void Update()
     {
         if (Time.time > fadeTime)
         {
@@ -45,19 +55,25 @@ public class PopUpText : MonoBehaviour {
                 // If the sprite is invisible, destroy the PopUpText object.
                 if (colorAlpha <= 0)
                 {
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
             }
             else { delay++; }
-
 
             // Move the sprite upward
             transform.position = new Vector3(transform.position.x,
                 transform.position.y + (0.01f), transform.position.z); // Set this once
 
         }
+    }
 
-
+    /// <summary>
+    /// Called when the object is set to active.
+    /// </summary>
+    void OnEnable()
+    {
+        fadeTime = 0.0f;
+        delay = 0;
 
     }
 }

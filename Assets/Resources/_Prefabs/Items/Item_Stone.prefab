@@ -192,8 +192,6 @@ MonoBehaviour:
   itemTier: 0
   spriteAnim: []
   sprite: {fileID: 21300000, guid: fb3a37b9ec6a5f043ad4abcd5f78e5ea, type: 3}
-  collectSprite: {fileID: 1694115334812216, guid: 05cf622d09747b14987c5e87d341d9cb,
-    type: 2}
   hoverText: {fileID: 1435595243253918}
   collectedText: {fileID: 1852789895724044, guid: 064fea774e1161b4aa4db6cb2ade451e,
     type: 2}
@@ -202,7 +200,7 @@ MonoBehaviour:
   value: 1
   description: A common resource, stone is often harvested in large quantities.
   type: Material
-  playspeed: 0.5
+  sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
 --- !u!212 &212249651118916000
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -5,23 +5,28 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public ItemColorSelector itemTier = ItemColorSelector.Tier1;
+
+    [Header("Display")]
     public Sprite[] spriteAnim; // For animation
     public Sprite sprite; // For no animation
-    public GameObject collectSprite;
     public GameObject hoverText;
     public GameObject collectedText; // text displayed when the object is collected.
+
+    [Header("Attributes")]
     public new string name;
     public int quantity = 1;
     public int value;
     public string description;
     public string type;
-    public float playspeed = 0.5f;
 
+    [Header("Other")]
+    public AudioClip sound;
+
+    private float playspeed = 0.5f;
     private float changeSprite = 0.0f;
     private int index = 0;
     private int followSpeed = 5;
     private const float MAXDISTANCE = 1.0f;
-
     // If the item has been dropped from player inventory. If it has been, then it must wait a certain amount of time before hovering toward the player that dropped it.
     private bool dropped = false;
     // The player who dropped the item.
@@ -47,18 +52,23 @@ public class Item : MonoBehaviour
     }
 
     // Creates the object to play the collection sprite, and destroys the item.
-    public void CreateCollectItemSprite()
+    private void DisplayHoverText()
     {
-        Instantiate(collectSprite, transform.position, Quaternion.identity);
-        var collected = Instantiate(collectedText, transform.position, Quaternion.identity);
-        collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier);
+        var collected = PopUpTextPool.current.GetPooledObject();
+
+        // if there is an available pop up text, display it.
+        if(collected != null)
+        {
+            collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier, sound);
+        }
+
+        // TODO: Create an item pool, and don't destroy the items.
         Destroy(gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (spriteAnim.Length > 0)
         {
             // Player sprite animation
@@ -70,7 +80,6 @@ public class Item : MonoBehaviour
                 GetComponentInChildren<SpriteRenderer>().sprite = spriteAnim[index];
             }
         }
-
         HoverTowardPlayer();
     }
 
@@ -80,7 +89,7 @@ public class Item : MonoBehaviour
     void HoverTowardPlayer()
     {
         var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
-        float distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
+        var distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
         waitTime += Time.time;
 
         if (distanceToPlayer <= MAXDISTANCE)
@@ -95,15 +104,34 @@ public class Item : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Activate the hover text.
+    /// </summary>
     void OnMouseOver()
     {
         hoverText.SetActive(true);
         hoverText.GetComponent<TextMesh>().color = itemColor;
     }
-
-    // Remove highlight on image when no longer hovering
+    
+    /// <summary>
+    /// Disable the hover text.
+    /// </summary>
     void OnMouseExit()
     {
         hoverText.SetActive(false);
+    }
+
+    /// <summary>
+    /// Deals with object collisions.
+    /// </summary>
+    /// <param name="collider"></param>
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        switch (collider.gameObject.tag)
+        {
+            case "Player":
+                DisplayHoverText();
+                break;
+        }
     }
 }

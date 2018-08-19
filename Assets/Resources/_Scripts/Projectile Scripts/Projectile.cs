@@ -29,6 +29,11 @@ public class Projectile : MonoBehaviour
     public int maxDamage;
 
     /// <summary>
+    /// The current computed damage of the projectile, determined on enable.
+    /// </summary>
+    public int Damage { get; internal set; }
+
+    /// <summary>
     /// Critical chance damage;
     /// </summary>
     [Header("Critical")]
@@ -64,35 +69,25 @@ public class Projectile : MonoBehaviour
     // Explosion sprite.
     public GameObject explosion;
 
-
     private Rigidbody2D rigidBody;
     private bool collided = false; // Check to see if a collision sound should be played on deactivation.
     private static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds
-
-    // Use this for initialization
-    void Start()
-    {
-        
-    }
 
     /// <summary>
     /// Returns a random damage value based on the damage parameters of the projectile.
     /// Chance for a critical attack.
     /// </summary>
     /// <returns></returns>
-    public int GetDamage()
+    private void ComputeDamage()
     {
-        var result = 0;
-
         if(random.NextDouble() <= critChance)
         {
-            result = (int)Math.Round(random.Next(minDamage, maxDamage) * critMultiplier);
+            Damage = (int)Math.Round(random.Next(minDamage, maxDamage) * critMultiplier);
         }
         else
         {
-            result = random.Next(minDamage, maxDamage);
+            Damage = random.Next(minDamage, maxDamage);
         }
-        return result;
     }
 
     /// <summary>
@@ -104,6 +99,7 @@ public class Projectile : MonoBehaviour
         random.Next();
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.velocity = transform.up * speed;
+        Damage = 0;
 
         // Start the clock to disabling again.
         StartCoroutine(RemoveAfterSeconds(lifetime));
@@ -118,6 +114,13 @@ public class Projectile : MonoBehaviour
         {
             Explosion exp = Instantiate(explosion, transform.position, Quaternion.identity).GetComponent<Explosion>();
             exp.Initialize(collisionSound);
+
+            // Current damage is set on collisions with entities that can take damage.
+            if(Damage != 0)
+            {
+                var popUptext = PopUpTextPool.current.GetPooledObject();
+                popUptext.GetComponent<PopUpText>().Initialize(gameObject, Damage.ToString(), ItemColorSelector.Tier1);
+            }
         }
 
     }
@@ -148,6 +151,10 @@ public class Projectile : MonoBehaviour
         {
             case "Player":
             case "Enemy":
+                collided = true;
+                ComputeDamage();
+                gameObject.SetActive(false);
+                break;
             case "Asteroid":
             case "Mineable":
             case "Mine":

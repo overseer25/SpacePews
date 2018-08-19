@@ -283,7 +283,8 @@ Prefab:
       propertyPath: m_RootOrder
       value: 24
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114021518291250186, guid: 112fde1b0f2edfe41975576e9f7f32b9, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 112fde1b0f2edfe41975576e9f7f32b9, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1001 &517842813
@@ -987,6 +988,39 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc7de57fb05d5804299fb797205e474e, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1450028650 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1925310684449260, guid: 112fde1b0f2edfe41975576e9f7f32b9,
+    type: 2}
+  m_PrefabInternal: {fileID: 486918612}
+--- !u!114 &1450028651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1450028650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151ce57745cfa79469293d1b9ea2ff17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObject: {fileID: 1027994767850796, guid: 06c2498a86f900d42b6c6288fd22001e,
+    type: 2}
+  amountPooled: 25
+--- !u!114 &1450028652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1450028650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff54de4d34e0963479eceb91062135a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObject: {fileID: 1769040215680550, guid: aae4b6b44afd4de4f8fba3d779994b64,
+    type: 2}
+  amountPooled: 20
 --- !u!1001 &1552891283
 Prefab:
   m_ObjectHideFlags: 0
@@ -1275,7 +1309,7 @@ Prefab:
     - target: {fileID: 224705419100699474, guid: f9eca5d268f69bb4897c7ec40f96f1c3,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -49.40004
+      value: -49.400024
       objectReference: {fileID: 0}
     - target: {fileID: 224059236853178662, guid: f9eca5d268f69bb4897c7ec40f96f1c3,
         type: 2}
@@ -1296,6 +1330,11 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.x
       value: 38.780212
+      objectReference: {fileID: 0}
+    - target: {fileID: 224705419100699474, guid: f9eca5d268f69bb4897c7ec40f96f1c3,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -262.02988
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9eca5d268f69bb4897c7ec40f96f1c3, type: 2}
