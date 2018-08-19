@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
                 if (inventory.IsEmptySlot() || inventory.ContainsItem(item))
                 {
                     GameObject.Find("InventoryHUD").GetComponent<Inventory>().AddItem(item); // Add the item to the player inventory.
-                    collider.gameObject.GetComponent<Item>().CreateCollectItemSprite();
+                    //collider.gameObject.GetComponent<Item>().CreateCollectItemSprite();
                 }
                 break;
             case "Immovable":
@@ -221,7 +221,7 @@ public class PlayerController : MonoBehaviour
                 rigidBody.AddForce(direction); // Apply the force
                 break;
             case "EnemyProjectile":
-                health -= collider.gameObject.GetComponent<Projectile>().GetDamage();
+                health -= collider.gameObject.GetComponent<Projectile>().Damage;
                 break;
 
         }       

@@ -155,7 +155,7 @@ public class EnemyScript : MonoBehaviour {
         switch(collider.gameObject.tag)
         {
             case "PlayerProjectile":
-                health -= collider.gameObject.GetComponent<Projectile>().GetDamage();
+                health -= collider.gameObject.GetComponent<Projectile>().Damage;
                 break;
             case "Immovable":
             case "Asteroid":

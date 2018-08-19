@@ -192,8 +192,6 @@ MonoBehaviour:
   itemTier: 1
   spriteAnim: []
   sprite: {fileID: 21300000, guid: f048a54220ab9704a9f374db3e6e008e, type: 3}
-  collectSprite: {fileID: 1694115334812216, guid: 05cf622d09747b14987c5e87d341d9cb,
-    type: 2}
   hoverText: {fileID: 1357634753983974}
   collectedText: {fileID: 1852789895724044, guid: 064fea774e1161b4aa4db6cb2ade451e,
     type: 2}
@@ -202,7 +200,7 @@ MonoBehaviour:
   value: 100
   description: Used in the production of energy shields.
   type: Ore
-  playspeed: 0.5
+  sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
 --- !u!212 &212900971957393866
 SpriteRenderer:
   m_ObjectHideFlags: 1

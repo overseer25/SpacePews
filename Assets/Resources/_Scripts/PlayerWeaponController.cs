@@ -100,7 +100,7 @@ public class PlayerWeaponController : MonoBehaviour
         if (Input.GetMouseButton(0) && (Time.time > nextFire))
         {
             // Get an unused projectile, if it exists.
-            GameObject proj = ObjectPool.current.GetPooledObject();
+            GameObject proj = ProjectilePool.current.GetPooledObject();
             if(proj == null)
             {
                 return;

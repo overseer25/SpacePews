@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ProjectilePool : MonoBehaviour
 {
 
     // The instance.
-    public static ObjectPool current;
+    public static ProjectilePool current;
     // The object pooled.
     public GameObject pooledObject;
     // How many of the object to pool.
