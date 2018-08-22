@@ -45,7 +45,7 @@ public class PlayerWeaponController : MonoBehaviour
     void Update()
     {
         // Don't shoot if a menu is open and don't shoot if dead
-        if(!menuOpen && !dead)
+        if(!menuOpen && !dead && !PauseMenuScript.IsPaused)
         {
             if (!isMiningLaser)
             {
