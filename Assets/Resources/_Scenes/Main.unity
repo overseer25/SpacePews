@@ -389,17 +389,17 @@ Prefab:
     - target: {fileID: 224664302287443032, guid: 31f286b83c068c845855d0a68fb1c4f2,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -518.2867
+      value: -584.4357
       objectReference: {fileID: 0}
     - target: {fileID: 224311591906523094, guid: 31f286b83c068c845855d0a68fb1c4f2,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -588.2867
+      value: -654.4357
       objectReference: {fileID: 0}
     - target: {fileID: 224075305301206258, guid: 31f286b83c068c845855d0a68fb1c4f2,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -553.2867
+      value: -619.4357
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31f286b83c068c845855d0a68fb1c4f2, type: 2}
@@ -901,11 +901,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4624367788240442, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.884436
+      value: 5.81
       objectReference: {fileID: 0}
     - target: {fileID: 4624367788240442, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3.7346625
+      value: 7.17
       objectReference: {fileID: 0}
     - target: {fileID: 4624367788240442, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -934,10 +934,6 @@ Prefab:
     - target: {fileID: 1601864409949134, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
       propertyPath: m_Name
       value: Asteroid1 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4624367788240442, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -65.36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
@@ -1145,6 +1141,11 @@ Prefab:
         type: 2}
       propertyPath: m_Volume
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114659148280329402, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 2}
+      propertyPath: playerMineRateModifier
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d23582f2dd340bb49ad08c784c0e5364, type: 2}
@@ -1472,6 +1473,10 @@ Prefab:
     - target: {fileID: 4949445348445040, guid: 342b11eec5a461d4b8a12f8e60fa680e, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1871667116306782, guid: 342b11eec5a461d4b8a12f8e60fa680e, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 342b11eec5a461d4b8a12f8e60fa680e, type: 2}

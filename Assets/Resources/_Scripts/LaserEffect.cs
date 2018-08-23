@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LaserEffect : MonoBehaviour
 {
+    public float playerMineRateModifier = 1.0f;
 
     private float interactionRange = 10.0f;
     private float width = 0.02f;
@@ -39,7 +40,6 @@ public class LaserEffect : MonoBehaviour
         // If laser is disabled, don't do raycasting.
         if(line.enabled)
         {
-
             // Raycast for detecting collision/ "~(1 << 5) is a LayerMask. Layer 5 is the UI layer, and we don't want the raycast detecting the UI."
             RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, interactionRange, ~(1 << 5));
 
@@ -181,21 +181,16 @@ public class LaserEffect : MonoBehaviour
     /// <param name="objectHit"></param>
     void MineResource(Mineable objectHit)
     {
-        if(Time.time > mineTime)
+        //All out of resources, return
+        if (objectHit.depleted)
         {
-            mineTime = Time.time + objectHit.mineRate;
-            counter++;
+            return;
         }
-        if(counter >= objectHit.amount)
+        //otherwise still resources to be had, spawn us some if we are over the time of being able to
+        float currentMineTime = objectHit.AddTimeMined(Time.deltaTime * playerMineRateModifier);
+        if(currentMineTime >= objectHit.mineRate)
         {
-            for(int i = 0; i < objectHit.amount; i++)
-            {
-                Instantiate(objectHit.resource, objectHit.transform.position + new Vector3(Random.insideUnitCircle.x * 0.5f, Random.insideUnitCircle.y * 0.5f, 0), Quaternion.identity);
-            }
-            Instantiate(objectHit.explosion, objectHit.transform.position, Quaternion.identity);
-
-            Destroy(objectHit.gameObject);
-            counter = 0;
+            objectHit.SpawnLoot();
         }
     }
 }
