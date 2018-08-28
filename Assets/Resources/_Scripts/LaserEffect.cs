@@ -44,7 +44,6 @@ public class LaserEffect : MonoBehaviour
             int mask = 1 << LayerMask.NameToLayer("UI");
             mask |= 1 << LayerMask.NameToLayer("Item"); 
             mask = ~mask;
-            Debug.Log(mask);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, interactionRange, mask);
 
             // Laser is contacting something.

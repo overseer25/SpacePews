@@ -81,7 +81,6 @@ public class Missile : MonoBehaviour {
         switch(collision.gameObject.tag)
         {
             case "Enemy":
-                collision.gameObject.GetComponent<EnemyScript>().health -= damage;
                 Destroy(gameObject);
                 break;
             case "Asteroid":

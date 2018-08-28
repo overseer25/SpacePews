@@ -31,11 +31,9 @@ public class Menu_Enter : MonoBehaviour
             else if (Input.GetKeyDown("i") && !shopHUD.enabled)
             {
                 Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
-                player.GetComponent<PlayerWeaponController>().menuOpen = !player.GetComponent<PlayerWeaponController>().menuOpen;
+                player.GetComponent<WeaponController>().menuOpen = !player.GetComponent<WeaponController>().menuOpen;
                 inventoryHUD.enabled = !inventoryHUD.enabled;
-                inventoryHUD.transform.Find("Currency_UI").GetComponentInChildren<Text>().text = "Currency: $" + GetComponent<PlayerController>().currency;
             }
-            shopHUD.transform.Find("Currency_UI").GetComponentInChildren<Text>().text = "Currency: $" + GetComponent<PlayerController>().currency;
         }
     }
 
@@ -46,7 +44,7 @@ public class Menu_Enter : MonoBehaviour
     {
         shopHUD.enabled = false;
         Time.timeScale = 1.0f;
-        player.GetComponent<PlayerWeaponController>().menuOpen = false;
+        player.GetComponent<WeaponController>().menuOpen = false;
         inventoryHUD.enabled = false;
     }
 }

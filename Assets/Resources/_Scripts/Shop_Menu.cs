@@ -22,7 +22,7 @@ public class Shop_Menu : MonoBehaviour {
 
         if(player != null)
         {
-            repairButton.GetComponentInChildren<Text>().text = "Repair: $" + (player.GetComponent<PlayerController>().maxHealth - player.GetComponent<PlayerController>().health);
+            repairButton.GetComponentInChildren<Text>().text = "Repair: $" + (player.GetComponent<PlayerController>().maxHealth - player.GetComponent<PlayerController>().GetHealth());
         }
         
 	}
@@ -32,8 +32,6 @@ public class Shop_Menu : MonoBehaviour {
     /// </summary>
     void RepairShip()
     {
-        player.GetComponent<PlayerController>().currency -= player.GetComponent<PlayerController>().maxHealth - player.GetComponent<PlayerController>().health;
-        player.GetComponent<PlayerController>().health = player.GetComponent<PlayerController>().maxHealth;
-
+        player.GetComponent<PlayerController>().currency -= player.GetComponent<PlayerController>().maxHealth - player.GetComponent<PlayerController>().GetHealth();
     }
 }
