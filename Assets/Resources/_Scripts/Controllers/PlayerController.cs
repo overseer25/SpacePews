@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidBody;
     private MovementController movementController;
     private GameObject turret;
-    private GameObject thruster; // Contains the thruster sprite that plays when moving.
+    private Thruster[] thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private bool playingEngine = false;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private PlayerHealth healthUI;
     private bool dead = false;
 
-    private int health = 200; // The amount of health the player currently has.
+    private int health; // The amount of health the player currently has.
     public int maxHealth = 200; // Max health the player can currently have.
     public int currency = 5; // Amount of currency the player currently has.
 
@@ -36,60 +36,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
+        health = maxHealth;
         movementController = GetComponentInParent<MovementController>();
         healthToDisplay = maxHealth / healthChunk;
         healthUI = this.GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
+
+        thrusters = GetComponentsInChildren<Thruster>();
     }
-
-    ///// <summary>
-    ///// Update is called once per frame
-    ///// </summary>
-    //void Update()
-    //{
-    //    // Gets the movement vector given by WASD.
-    //    moveInput = !dead ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero;
-    //    // If moving
-    //    if (moveInput != Vector2.zero)
-    //    {
-    //        thruster.GetComponent<SpriteRenderer>().enabled = true;
-    //        if (acceleration < maxSpeed)
-    //            acceleration += 0.01f;
-    //        if (!playingEngine)
-    //        {
-    //            engine.Play(); // Play engine sound while moving
-    //            playingEngine = true;
-    //        }
-    //        engine.volume = 1.0f; // Max ship volume when accelerating
-    //        if (engine.pitch < 1.0f) { engine.pitch += 0.1f; } // Increase pitch to signify accelerating
-
-    //    }
-    //    // Otherwise, if player isn't pressing WASD.
-    //    else
-    //    {
-    //        thruster.GetComponent<SpriteRenderer>().enabled = false; // Disable thruster graphic
-
-    //        // Decelerate
-    //        if (acceleration > 0)
-    //            acceleration -= 0.003f;
-
-    //        engine.volume -= 0.005f; // Quiet the engine down as ship slows
-    //        if (engine.pitch > 0.0f) { engine.pitch -= 0.005f; } // Reduce pitch when slowing down to represent engine slowing
-    //        if (engine.volume <= 0)
-    //        {
-    //            engine.Stop(); // Stop the engine sound when not moving
-    //            playingEngine = false;
-    //        }
-    //    }
-
-    //    // Toggle inertial dampeners
-    //    if (Input.GetKeyDown("f") && !dead)
-    //    {
-    //        inertialDamp = !inertialDamp;
-    //    }
-
-    //}
 
     /// <summary>
     /// Gets the current health value of the player.
@@ -100,14 +55,19 @@ public class PlayerController : MonoBehaviour
         return health;
     }
 
+    /// <summary>
+    /// Deals with inputs.
+    /// </summary>
     void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.W))
         {
+            SetThrusterState(true);
             movementController.MoveForward();
         }
         else
         {
+            SetThrusterState(false);
             movementController.Decelerate();
         }
         if(Input.GetKey(KeyCode.D))
@@ -119,6 +79,16 @@ public class PlayerController : MonoBehaviour
             movementController.RotateLeft();
         }
 
+    }
+
+    /// <summary>
+    /// Set the state of all thrusters on the ship.
+    /// </summary>
+    /// <param name="state"></param>
+    private void SetThrusterState(bool state)
+    {
+        foreach (var thruster in thrusters)
+            thruster.gameObject.SetActive(state);
     }
 
     private void LateUpdate()
@@ -215,18 +185,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Deals with all collisions exiting the player
-    /// </summary>
-    /// <param name="collision"></param>
-    void OnTriggerExit2D(Collider2D collider)
-    {
-        switch (collider.gameObject.tag)
-        {
-            // Does nothing yet.
-        }
-    }
-
-    /// <summary>
     /// Check to see if the player is dead, set some variables if he is and render them dead.
     /// </summary>
     /// <returns>Returns true if health is less than or equal to 0</returns>
@@ -234,7 +192,7 @@ public class PlayerController : MonoBehaviour
     {
         if(health <= 0)
         {
-            this.GetComponent<SpriteRenderer>().enabled = false;
+            this.GetComponentInChildren<SpriteRenderer>().enabled = false;
             dead = true;
             this.SendMessage("UpdateDead", true);
             healthUI.SetIsDead(true);

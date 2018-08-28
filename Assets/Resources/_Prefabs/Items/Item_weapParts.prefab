@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4165609025543576}
   - component: {fileID: 212321080440925832}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4174642001678058}
   - component: {fileID: 23365551269828764}
   - component: {fileID: 102011577304801576}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hoverText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4029733374429232}
   - component: {fileID: 114634439281968476}
   - component: {fileID: 61559358348368176}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Item_weapParts
   m_TagString: Item
   m_Icon: {fileID: 0}

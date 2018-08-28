@@ -32,6 +32,7 @@ public class MovementController : MonoBehaviour {
 	void FixedUpdate ()
     {
         playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
+
 	}
 
     /// <summary>

@@ -1882,6 +1882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b743101311b6076408b8d09378e7df9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMineRateModifier: 5
   laserContactSprite: {fileID: 1658563534823934, guid: 50f6842a466960141b1b646917392599,
     type: 2}
   laserContactSound: {fileID: 1080933549}

@@ -33,9 +33,7 @@ public class Menu_Enter : MonoBehaviour
                 Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
                 player.GetComponent<WeaponController>().menuOpen = !player.GetComponent<WeaponController>().menuOpen;
                 inventoryHUD.enabled = !inventoryHUD.enabled;
-                inventoryHUD.transform.Find("Currency_UI").GetComponentInChildren<Text>().text = "Currency: $" + GetComponent<PlayerController>().currency;
             }
-            //shopHUD.transform.Find("Currency_UI").GetComponentInChildren<Text>().text = "Currency: $" + GetComponent<PlayerController>().currency;
         }
     }
 

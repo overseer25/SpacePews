@@ -29,11 +29,14 @@ public class Item : MonoBehaviour
     private const float MAXDISTANCE = 1.0f;
     // If the item has been dropped from player inventory. If it has been, then it must wait a certain amount of time before hovering toward the player that dropped it.
     private bool dropped = false;
+    private bool mined = false;
     // The player who dropped the item.
     private GameObject dropper;
     private float waitTime = 5.0f;
     private float timer = 0.0f;
     private Color itemColor;
+
+    private Transform playerPos;
 
     private void Start()
     {
@@ -80,7 +83,14 @@ public class Item : MonoBehaviour
                 GetComponentInChildren<SpriteRenderer>().sprite = spriteAnim[index];
             }
         }
-        HoverTowardPlayer();
+        if (mined)
+        {
+            HoverTowardsTargetPlayer();
+        }
+        else
+        {
+            HoverTowardPlayer();
+        }
     }
 
     /// <summary>
@@ -101,6 +111,25 @@ public class Item : MonoBehaviour
             }
             else
                 transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
+        }
+    }
+
+    /// <summary>
+    /// Cause the item that was just mined to fly towards the player who obtained
+    /// this resource.
+    /// </summary>
+    /// <param name="playerPos">The reference to the player and where they are.</param>
+    private void HoverTowardsTargetPlayer()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, playerPos.position, followSpeed * Time.deltaTime);
+    }
+
+    public void SetWasMined(bool mined, Transform target = null)
+    {
+        this.mined = mined;
+        if(target != null)
+        {
+            playerPos = target;
         }
     }
 

@@ -14,28 +14,13 @@ public class Thruster : MonoBehaviour {
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetButton("Boost"))
+    { 
+        if (Time.time > changeSprite)
         {
-            if (Time.time > changeSprite)
-            {
-                changeSprite = Time.time + playspeed;
-                index++;
-                if (index >= afterburnerAnim.Length) { index = 0; } // Restart animation
-                GetComponent<SpriteRenderer>().sprite = afterburnerAnim[index];
-            }
+            changeSprite = Time.time + playspeed;
+            index++;
+            if (index >= thrusterAnim.Length) { index = 0; } // Restart animation
+            GetComponent<SpriteRenderer>().sprite = thrusterAnim[index];
         }
-        else
-        {
-            if (Time.time > changeSprite)
-            {
-                changeSprite = Time.time + playspeed;
-                index++;
-                if (index >= thrusterAnim.Length) { index = 0; } // Restart animation
-                GetComponent<SpriteRenderer>().sprite = thrusterAnim[index];
-            }
-        }
-
-        
     }
 }
