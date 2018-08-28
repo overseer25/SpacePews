@@ -48,12 +48,10 @@ public class Mine : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                collision.gameObject.GetComponent<EnemyScript>().health -= damage;
                 collided = true;
                 Destroy(gameObject);
                 break;
             case "Player":
-                collision.gameObject.GetComponent<PlayerController>().health -= damage;
                 collided = true;
                 Destroy(gameObject);
                 break;

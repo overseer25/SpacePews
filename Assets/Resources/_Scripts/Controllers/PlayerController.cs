@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     private float acceleration;
     private Rigidbody2D rigidBody;
+    private MovementController movementController;
     private GameObject turret;
     private GameObject thruster; // Contains the thruster sprite that plays when moving.
     private Vector2 moveInput;
@@ -23,125 +24,99 @@ public class PlayerController : MonoBehaviour
     private PlayerHealth healthUI;
     private bool dead = false;
 
-    public int health = 200; // The amount of health the player currently has.
+    private int health = 200; // The amount of health the player currently has.
     public int maxHealth = 200; // Max health the player can currently have.
     public int currency = 5; // Amount of currency the player currently has.
-    public float turnSpeed;
 
     public AudioSource engine; // Engine sound
     public bool inertialDamp = true; // Are inertial dampeners on?
-    public float maxSpeed = 3.0f; // Max speed of the player.
-    public float afterburnerMod = 1.0f; // Multiplier that increases speed when "Boost" key is pressed.
 
     /// <summary>
     /// Use this for initialization
     /// </summary>
     void Start()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
-        turret = transform.Find("turret").gameObject;
-        thruster = transform.Find("thruster").gameObject;
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z); // Center on the player character.
+        movementController = GetComponentInParent<MovementController>();
         healthToDisplay = maxHealth / healthChunk;
         healthUI = this.GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
     }
 
+    ///// <summary>
+    ///// Update is called once per frame
+    ///// </summary>
+    //void Update()
+    //{
+    //    // Gets the movement vector given by WASD.
+    //    moveInput = !dead ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero;
+    //    // If moving
+    //    if (moveInput != Vector2.zero)
+    //    {
+    //        thruster.GetComponent<SpriteRenderer>().enabled = true;
+    //        if (acceleration < maxSpeed)
+    //            acceleration += 0.01f;
+    //        if (!playingEngine)
+    //        {
+    //            engine.Play(); // Play engine sound while moving
+    //            playingEngine = true;
+    //        }
+    //        engine.volume = 1.0f; // Max ship volume when accelerating
+    //        if (engine.pitch < 1.0f) { engine.pitch += 0.1f; } // Increase pitch to signify accelerating
+
+    //    }
+    //    // Otherwise, if player isn't pressing WASD.
+    //    else
+    //    {
+    //        thruster.GetComponent<SpriteRenderer>().enabled = false; // Disable thruster graphic
+
+    //        // Decelerate
+    //        if (acceleration > 0)
+    //            acceleration -= 0.003f;
+
+    //        engine.volume -= 0.005f; // Quiet the engine down as ship slows
+    //        if (engine.pitch > 0.0f) { engine.pitch -= 0.005f; } // Reduce pitch when slowing down to represent engine slowing
+    //        if (engine.volume <= 0)
+    //        {
+    //            engine.Stop(); // Stop the engine sound when not moving
+    //            playingEngine = false;
+    //        }
+    //    }
+
+    //    // Toggle inertial dampeners
+    //    if (Input.GetKeyDown("f") && !dead)
+    //    {
+    //        inertialDamp = !inertialDamp;
+    //    }
+
+    //}
+
     /// <summary>
-    /// Update is called once per frame
+    /// Gets the current health value of the player.
     /// </summary>
-    void Update()
+    /// <returns></returns>
+    public int GetHealth()
     {
-        // Gets the movement vector given by WASD.
-        moveInput = !dead ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero;
-        // If moving
-        if (moveInput != Vector2.zero)
-        {
-            thruster.GetComponent<SpriteRenderer>().enabled = true;
-            if (acceleration < maxSpeed)
-                acceleration += 0.01f;
-            if (!playingEngine)
-            {
-                engine.Play(); // Play engine sound while moving
-                playingEngine = true;
-            }
-            engine.volume = 1.0f; // Max ship volume when accelerating
-            if (engine.pitch < 1.0f) { engine.pitch += 0.1f; } // Increase pitch to signify accelerating
-
-        }
-        // Otherwise, if player isn't pressing WASD.
-        else
-        {
-            thruster.GetComponent<SpriteRenderer>().enabled = false; // Disable thruster graphic
-
-            // Decelerate
-            if (acceleration > 0)
-                acceleration -= 0.003f;
-
-            engine.volume -= 0.005f; // Quiet the engine down as ship slows
-            if (engine.pitch > 0.0f) { engine.pitch -= 0.005f; } // Reduce pitch when slowing down to represent engine slowing
-            if (engine.volume <= 0)
-            {
-                engine.Stop(); // Stop the engine sound when not moving
-                playingEngine = false;
-            }
-        }
-
-        // Toggle inertial dampeners
-        if (Input.GetKeyDown("f") && !dead)
-        {
-            inertialDamp = !inertialDamp;
-        }
-
+        return health;
     }
 
     void FixedUpdate()
     {
-        // Floaty camera movement
-        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position, new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
-
-        /** Move the ship **/
-        if (moveInput == Vector2.zero && inertialDamp)
+        if (Input.GetKey(KeyCode.W))
         {
-            rigidBody.velocity *= 0.95f;
+            movementController.MoveForward();
         }
         else
         {
-            // If boosting
-            if (Input.GetButton("Boost") && !dead)
-            {
-                rigidBody.AddForce(moveInput * acceleration * afterburnerMod);
-                rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed * afterburnerMod);
-            }
-            else
-            {
-                // Return to original max speed after using afterburner
-                if (rigidBody.velocity.magnitude > maxSpeed)
-                {
-                    rigidBody.velocity *= 0.99f;
-                }
-                // Otherwise, move as normal.
-                else
-                {
-                    rigidBody.AddForce(moveInput * acceleration);
-                    rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
-                }
-
-            }
+            movementController.Decelerate();
         }
-
-        if (!dead)
+        if(Input.GetKey(KeyCode.D))
         {
-            /** Rotating the ship **/
-            if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 0.0f), turnSpeed * Time.deltaTime); } // North
-            else if (Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 45.0f), turnSpeed * Time.deltaTime); } // Northwest
-            else if (Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -45.0f), turnSpeed * Time.deltaTime); } // Northeast
-            else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 180.0f), turnSpeed * Time.deltaTime); } // South
-            else if (!Input.GetKey("w") && Input.GetKey("a") && Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 135.0f), turnSpeed * Time.deltaTime); } // Southwest
-            else if (!Input.GetKey("w") && !Input.GetKey("a") && Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -135.0f), turnSpeed * Time.deltaTime); } // Southeast
-            else if (!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, -90.0f), turnSpeed * Time.deltaTime); } // East
-            else if (!Input.GetKey("w") && Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 0.0f, 90.0f), turnSpeed * Time.deltaTime); } // West
+            movementController.RotateRight();
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            movementController.RotateLeft();
         }
 
     }
@@ -190,16 +165,16 @@ public class PlayerController : MonoBehaviour
                     // Different damage values depending on speed of collision.
                     if (rigidBody.velocity.magnitude >= 3 && rigidBody.velocity.magnitude < 5)
                     {
-                        gameObject.GetComponent<PlayerController>().health--;
+                        health--;
                     }
                     else if (rigidBody.velocity.magnitude >= 5 && rigidBody.velocity.magnitude < 10)
                     {
 
-                        gameObject.GetComponent<PlayerController>().health -= 2;
+                        health -= 2;
                     }
                     else if (rigidBody.velocity.magnitude >= 10)
                     {
-                        gameObject.GetComponent<PlayerController>().health -= 3;
+                        health -= 3;
                     }
                     direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * (rigidBody.velocity.magnitude * 100);
                 }

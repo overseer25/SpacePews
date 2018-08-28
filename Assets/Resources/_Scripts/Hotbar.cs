@@ -30,7 +30,7 @@ public class Hotbar : MonoBehaviour {
 
             transform.Find("Hotbar_item 1").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             transform.Find("Hotbar_item 2").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWeaponController>().isMiningLaser = false;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponController>().isMiningLaser = false;
             switchSound.Play();
         }
         else if (Input.GetKeyDown("2"))
@@ -39,7 +39,7 @@ public class Hotbar : MonoBehaviour {
 
             transform.Find("Hotbar_item 1").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             transform.Find("Hotbar_item 2").GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWeaponController>().isMiningLaser = true;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponController>().isMiningLaser = true;
             switchSound.Play();
         }
     }

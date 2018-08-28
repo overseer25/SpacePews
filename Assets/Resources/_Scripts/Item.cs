@@ -127,7 +127,7 @@ public class Item : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter2D(Collider2D collider)
     {
-        switch (collider.gameObject.tag)
+        switch (collider.attachedRigidbody.gameObject.tag)
         {
             case "Player":
                 DisplayHoverText();

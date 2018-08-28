@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWeaponController : MonoBehaviour
+public class WeaponController : MonoBehaviour
 {
 
     public GameObject projectileObject; // Contains the sprite for the projectile
@@ -20,7 +20,7 @@ public class PlayerWeaponController : MonoBehaviour
     private float nextFire = 0.0f;
     private float fireRateMissile = 1.0f;
     private float nextFireMissile = 0.0f;
-    private GameObject turret;
+    public GameObject turret;
     private Projectile projectile;
 
     public bool menuOpen = false;
@@ -30,14 +30,9 @@ public class PlayerWeaponController : MonoBehaviour
     public AudioSource audioPlayer;
     public AudioClip miningLaserAudio;
 
-    [Header("Other")]
-    public Transform turretShotSpawn;
-    public Transform missileShotSpawn;
-
     // Use this for initialization
     void Start()
     {
-        turret = transform.Find("turret").gameObject;
         projectile = projectileObject.GetComponent<Projectile>();
     }
 
@@ -107,17 +102,11 @@ public class PlayerWeaponController : MonoBehaviour
             }
 
             // Prepare and activate the projectile.
-            proj.transform.position = turretShotSpawn.transform.position;
-            proj.transform.rotation = turretShotSpawn.transform.rotation;
+            proj.transform.position = turret.transform.position;
+            proj.transform.rotation = turret.transform.rotation;
             proj.SetActive(true);
             nextFire = Time.time + (1/projectile.fireRate);
             audioPlayer.Play();
-        }
-
-        if (Input.GetMouseButton(1) && (Time.time > nextFireMissile))
-        {
-            Instantiate(missile, missileShotSpawn.position, missileShotSpawn.rotation);
-            nextFireMissile = Time.time + fireRateMissile;
         }
     }
 

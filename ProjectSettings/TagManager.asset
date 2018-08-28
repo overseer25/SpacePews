@@ -15,6 +15,7 @@ TagManager:
   - Mineable
   - Missile
   - Mine
+  - Ship
   layers:
   - Default
   - TransparentFX
