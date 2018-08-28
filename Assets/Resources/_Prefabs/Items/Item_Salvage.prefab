@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4949445348445040}
   - component: {fileID: 114110558911866624}
   - component: {fileID: 58543652330524578}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Item_Salvage
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4928171525573556}
   - component: {fileID: 212133920102351962}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4759516529447324}
   - component: {fileID: 23320608892591492}
   - component: {fileID: 102129073862577298}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hoverText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
