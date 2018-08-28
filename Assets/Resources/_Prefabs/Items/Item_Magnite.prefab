@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4479189212657222}
   - component: {fileID: 23909399213582746}
   - component: {fileID: 102844830179455044}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hoverText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4866219921117010}
   - component: {fileID: 212900971957393866}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4890290071139064}
   - component: {fileID: 114015251917194782}
   - component: {fileID: 58804853858600098}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Item_Magnite
   m_TagString: Item
   m_Icon: {fileID: 0}

@@ -41,7 +41,11 @@ public class LaserEffect : MonoBehaviour
         if(line.enabled)
         {
             // Raycast for detecting collision/ "~(1 << 5) is a LayerMask. Layer 5 is the UI layer, and we don't want the raycast detecting the UI."
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, interactionRange, ~(1 << 5));
+            int mask = 1 << LayerMask.NameToLayer("UI");
+            mask |= 1 << LayerMask.NameToLayer("Item"); 
+            mask = ~mask;
+            Debug.Log(mask);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, interactionRange, mask);
 
             // Laser is contacting something.
             if (hit)
@@ -54,12 +58,11 @@ public class LaserEffect : MonoBehaviour
                     case "Immovable":
                     case "Shop":
                     case "Asteroid":
-                    case "Item":
                         // Draw line to collision
                         line.SetPosition(0, transform.position);
                         line.SetPosition(1, transform.position + (transform.up * Vector3.Distance(transform.position, hit.point)));
 
-                        if(Time.time > timePassed)
+                        if (Time.time > timePassed)
                         {
                             timePassed = Time.time + contactSpriteFrequency;
                             Instantiate(laserContactSprite, hit.point, transform.rotation);
@@ -79,6 +82,31 @@ public class LaserEffect : MonoBehaviour
                         }
 
                         break;
+                    //case "Item":
+                    //    // Draw line to collision
+                    //    line.SetPosition(0, transform.position);
+                    //    line.SetPosition(1, transform.position + (transform.up * Vector3.Distance(transform.position, hit.point)));
+
+                    //    if(Time.time > timePassed)
+                    //    {
+                    //        timePassed = Time.time + contactSpriteFrequency;
+                    //        Instantiate(laserContactSprite, hit.point, transform.rotation);
+                    //    }
+
+                    //    // Play contact audio
+                    //    if (!playingContactAudio)
+                    //    {
+                    //        laserContactSound.Play();
+                    //        playingContactAudio = true;
+                    //    }
+                    //    // If playing mining audio, turn it off
+                    //    if (playingContactAudioMineable)
+                    //    {
+                    //        mineableContactSound.Stop();
+                    //        playingContactAudioMineable = false;
+                    //    }
+
+                    //    break;
                     case "Mineable": // This should only do something special for mining lasers
 
                         if(isMiningLaser)
@@ -190,7 +218,7 @@ public class LaserEffect : MonoBehaviour
         float currentMineTime = objectHit.AddTimeMined(Time.deltaTime * playerMineRateModifier);
         if(currentMineTime >= objectHit.mineRate)
         {
-            objectHit.SpawnLoot();
+            objectHit.SpawnLoot(player.transform);
         }
     }
 }

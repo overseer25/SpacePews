@@ -85,7 +85,7 @@ public class Mineable : MonoBehaviour
     /// <summary>
     /// Called after mineRate time has passed that the player has been mining.
     /// </summary>
-    public void SpawnLoot()
+    public void SpawnLoot(Transform posOfMiner)
     {
         timeMinedSoFar = 0;
         int chance = rand.Next(101); //want a number that is [0,100]
@@ -97,7 +97,8 @@ public class Mineable : MonoBehaviour
         {
             if(percentChance <= spawnChance[i] + chanceThusFar)
             {
-                Instantiate(lootPossible[i], this.transform.position + new Vector3(directionModifierX * percentChance * (this.transform.localScale.x+1), directionModifierY * (1-percentChance) * (this.transform.localScale.y+1), 0), Quaternion.identity);
+                GameObject loot = Instantiate(lootPossible[i], this.transform.position, Quaternion.identity);
+                loot.GetComponent<Item>().SetWasMined(true, posOfMiner);
                 break;
             }
             chanceThusFar += spawnChance[i];
