@@ -1,18 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
 
-    private List<InventorySlot> slots;
+    public GameObject tooltip;
 
-    public List<Item> itemList; // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
+    private InventorySlot[] slots;
+    // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
+    private List<Item> itemList; 
+
 
 	// Use this for initialization
-	void Start () {
-        slots = new List<InventorySlot>(GetComponentsInChildren<InventorySlot>());
-	}
+	void Start ()
+    {
+        slots = GetComponentsInChildren<InventorySlot>();
+
+        var i = 0;
+        foreach (var slot in slots)
+            slot.SetIndex(i++);
+
+        itemList = new List<Item>();
+        foreach(var obj in Resources.LoadAll("_Prefabs/Items"))
+        {
+            GameObject itemObj = obj as GameObject;
+            itemList.Add(itemObj.GetComponent<Item>());
+        }
+    }
+
+    /// <summary>
+    /// Populates the tooltip with the information of the item in the inventory slot at the given index
+    /// and displays the tooltip.
+    /// </summary>
+    /// <param name="index"></param>
+    public void HoverTooltip(int index)
+    {
+        if(slots[index].isEmpty)
+        {
+            tooltip.SetActive(false);
+        }
+        else
+        {
+            tooltip.SetActive(true);
+            var item = slots[index].GetItem();
+            tooltip.GetComponent<InfoScreen>().SetInfo(item.name, item.type, item.quantity.ToString(), item.value.ToString(), item.description);
+        }
+    }
 	
     /// <summary>
     /// TODO: Maybe switch to Dictionary?

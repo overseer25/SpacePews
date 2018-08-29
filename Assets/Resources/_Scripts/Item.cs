@@ -21,6 +21,8 @@ public class Item : MonoBehaviour
 
     [Header("Other")]
     public AudioClip sound;
+    public bool stackable;
+    public int stackSize;
 
     private float playspeed = 0.5f;
     private float changeSprite = 0.0f;

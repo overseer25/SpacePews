@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class InventoryTooltip : MonoBehaviour {
 
     private InventorySlot inventorySlot;
-    public DestroyButton destroyButton;
-    public InfoButton infoButton;
 
     /// <summary>
     /// Sets the slot the tooltip is currently able to manipulate
@@ -15,8 +13,6 @@ public class InventoryTooltip : MonoBehaviour {
     public void SetSlot(InventorySlot slot)
     {
         inventorySlot = slot;
-        destroyButton.slot = inventorySlot;
-        infoButton.slot = inventorySlot;
     }
 
     public InventorySlot GetSlot()

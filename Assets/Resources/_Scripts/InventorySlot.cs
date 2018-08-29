@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class InventorySlot : MonoBehaviour {
 
     public Sprite empty; // The default image for the slot, used if no item is present.
-    public GameObject tooltip;
     public Image item_sprite;
     public bool isEmpty = true; // All slots start out empty
     public int quantity = 0; // The amount of the item stored in inventory.
@@ -15,6 +14,7 @@ public class InventorySlot : MonoBehaviour {
     private Image slot_sprite;
     private bool isDragging = false;
     private bool tooltipActive = false;
+    private int index;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +23,15 @@ public class InventorySlot : MonoBehaviour {
         slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
     }
 	
+    /// <summary>
+    /// Sets the index of the slot in the inventory slot array.
+    /// </summary>
+    /// <param name="index"></param>
+    public void SetIndex(int index)
+    {
+        this.index = index;
+    }
+
     /// <summary>
     /// Update the item and quantity of the slot. Called whenever Inventory attempts to add and item.
     /// </summary>
@@ -49,6 +58,7 @@ public class InventorySlot : MonoBehaviour {
     {
         slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        SendMessageUpwards("HoverTooltip", index);
     }
 
     // Remove highlight on image when no longer hovering
@@ -56,27 +66,6 @@ public class InventorySlot : MonoBehaviour {
     {
         slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
         item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-        tooltipActive = false;
-    }
-
-    // Handle mouse down input on the inventory slot
-    void OnMouseDown()
-    {
-        // Left click
-        if(Input.GetMouseButtonDown(0))
-        {
-            if(isEmpty)
-            {
-                tooltip.gameObject.SetActive(false);
-                return;
-            }
-            var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
-            Vector3 newPos = Camera.main.ScreenToWorldPoint(pos);
-            tooltipActive = !tooltipActive;
-            tooltip.transform.position = newPos;
-            tooltip.GetComponent<InventoryTooltip>().SetSlot(this);
-            tooltip.gameObject.SetActive(tooltipActive);
-        }
     }
 
 
