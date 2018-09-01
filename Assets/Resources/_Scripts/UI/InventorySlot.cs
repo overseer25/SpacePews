@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : InteractableElement
 {
     [Header("State")]
     public bool isEmpty = true; // All slots start out empty
@@ -81,6 +81,7 @@ public class InventorySlot : MonoBehaviour
         {
             inventoryItem.hidden = true;
             isEmpty = true;
+            inventoryItem.Display();
         }
         else
         {

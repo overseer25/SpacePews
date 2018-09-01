@@ -8,13 +8,15 @@ public class Inventory : MonoBehaviour
 {
     [Header("Tool Tip")]
     public GameObject tooltip;
+
     [Header("Sounds")]
     public AudioClip inventoryOpen;
     public AudioClip inventoryClose;
+    public AudioClip clearSlotSound;
 
     private InfoScreen infoScreen;
     private InventorySlot[] slots;
-    private AudioSource audio;
+    private AudioSource audioSource;
     private bool isOpen = false;
 
     // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
@@ -36,7 +38,7 @@ public class Inventory : MonoBehaviour
             GameObject itemObj = obj as GameObject;
             itemList.Add(itemObj.GetComponent<Item>());
         }
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         infoScreen = tooltip.GetComponent<InfoScreen>();
     }
 
@@ -47,15 +49,15 @@ public class Inventory : MonoBehaviour
     {
         if(!isOpen)
         {
-            audio.clip = inventoryOpen;
-            audio.Play();
+            audioSource.clip = inventoryOpen;
+            audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = true;
             isOpen = true;
         }
         else
         {
-            audio.clip = inventoryClose;
-            audio.Play();
+            audioSource.clip = inventoryClose;
+            audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = false;
             isOpen = false;
         }
@@ -87,6 +89,21 @@ public class Inventory : MonoBehaviour
     public void HideHoverTooltip()
     {
         infoScreen.Hide();
+    }
+
+    /// <summary>
+    /// Clears a slot in the inventory, given the index of the slot.
+    /// </summary>
+    public void ClearSlot(int index)
+    {
+        Item item = slots[index].GetItem();
+        item.quantity = -1;
+        slots[index].SetItem(item);
+
+        // Play the error sound if not swapping.
+        audioSource.Stop();
+        audioSource.clip = clearSlotSound;
+        audioSource.Play();
     }
 
     /// <summary>

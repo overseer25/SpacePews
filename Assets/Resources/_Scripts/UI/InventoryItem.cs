@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [Header("Sound")]
-    public AudioClip errorSound;
     public AudioClip hoverSound;
     public AudioClip swapSound;
 
@@ -22,6 +21,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     // If swapping slots, send off these positions.
     private int[] positions;
     internal static bool dragging = false;
+    internal bool destroying = false;
     internal bool hidden = true;
     private bool highlighted = false;
 
@@ -133,6 +133,11 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
         if (image == null) { return; }
         dragging = false;
 
+        if(destroying)
+        {
+            SendMessageUpwards("ClearSlot", positions[0]);
+            destroying = false;
+        }
         if (swapping)
         {
             // Play the swap sound if swapping.
@@ -143,20 +148,13 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
         }
-        else
-        {
-            // Play the error sound if not swapping.
-            audioSource.Stop();
-            audioSource.clip = errorSound;
-            audioSource.Play();
-        }
 
         transform.localPosition = Vector3.zero;
 
     }
 
     /// <summary>
-    /// Deals with object collisions.
+    /// Deals with changing slots.
     /// </summary>
     /// <param name="collider"></param>
     void OnTriggerEnter2D(Collider2D collider)
@@ -166,6 +164,10 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
             case ("InventorySlot"):
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
+                break;
+            case ("DeleteZone"):
+                collider.gameObject.GetComponent<Image>();
+                destroying = true;
                 break;
         }
     }
@@ -182,6 +184,9 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
                 break;
+            case ("DeleteZone"):
+                destroying = true;
+                break;
         }
     }
 
@@ -192,5 +197,6 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     void OnTriggerExit2D(Collider2D collider)
     {
         swapping = false;
+        destroying = false;
     }
 }

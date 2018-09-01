@@ -21,23 +21,19 @@ public class Item : MonoBehaviour
     public string type;
 
     [Header("Other")]
-    public AudioClip sound;
+    [SerializeField]
+    private AudioClip sound;
     public bool stackable;
     public int stackSize;
 
+    // For playing a sprite animation, if it exists.
     internal float playspeed = 0.5f;
     internal float changeSprite = 0.0f;
     internal int index = 0;
 
     private int followSpeed = 5;
     private const float MAXDISTANCE = 1.0f;
-    // If the item has been dropped from player inventory. If it has been, then it must wait a certain amount of time before hovering toward the player that dropped it.
-    private bool dropped = false;
     private bool mined = false;
-    // The player who dropped the item.
-    private GameObject dropper;
-    private float waitTime = 5.0f;
-    private float timer = 0.0f;
     private Color itemColor;
 
     private Transform playerPos;
@@ -45,17 +41,6 @@ public class Item : MonoBehaviour
     private void Start()
     {
         itemColor = ItemColors.colors[(int)itemTier];
-    }
-
-    /// <summary>
-    /// Instantiate the object with additional parameters. Used when the item is dropped from an inventory.
-    /// </summary>
-    /// <param name="dropped"></param>
-    /// <param name="dropper"></param>
-    public void Initialize(bool dropped, GameObject dropper)
-    {
-        this.dropped = dropped;
-        this.dropper = dropper;
     }
 
     // Creates the object to play the collection sprite, and destroys the item.
@@ -109,17 +94,10 @@ public class Item : MonoBehaviour
             return;
 
         var distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
-        waitTime += Time.time;
 
         if (distanceToPlayer <= MAXDISTANCE)
         {
-            if (dropped)
-            {
-                if (Time.time >= waitTime)
-                    transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
-            }
-            else
-                transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
         }
     }
 

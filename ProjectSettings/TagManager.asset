@@ -18,6 +18,7 @@ TagManager:
   - Ship
   - InventorySlot
   - InventoryItem
+  - DeleteZone
   layers:
   - Default
   - TransparentFX

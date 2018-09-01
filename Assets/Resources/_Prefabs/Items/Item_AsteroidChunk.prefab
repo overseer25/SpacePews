@@ -170,7 +170,7 @@ MonoBehaviour:
   type: Ore
   sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 1
-  stackSize: 999
+  stackSize: 99
 --- !u!114 &114609533219150640
 MonoBehaviour:
   m_ObjectHideFlags: 1
