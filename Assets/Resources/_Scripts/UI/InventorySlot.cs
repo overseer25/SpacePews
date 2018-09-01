@@ -50,17 +50,11 @@ public class InventorySlot : MonoBehaviour
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
-        if (!isEmpty && !inventoryItem.dragging)
+        if (!isEmpty && !InventoryItem.dragging)
         {
             slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             inventoryItem.Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
-
-            // If right click, display context menu.
-            if(Input.GetMouseButton(1))
-            {
-
-            }
         }
     }
 
@@ -70,7 +64,7 @@ public class InventorySlot : MonoBehaviour
         if (!isEmpty)
             slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
 
-        if (!inventoryItem.hidden && !inventoryItem.dragging)
+        if (!inventoryItem.hidden && !InventoryItem.dragging)
         {
             inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
@@ -118,5 +112,7 @@ public class InventorySlot : MonoBehaviour
         inventoryItem.spriteAnim = item.spriteAnim;
         inventoryItem.type = item.type;
         inventoryItem.value = item.value;
+        inventoryItem.stackable = item.stackable;
+        inventoryItem.stackSize = item.stackSize;
     }
 }

@@ -282,8 +282,8 @@ MonoBehaviour:
   description: A rare metal typically found in asteroid fields.
   type: Ore
   sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
-  stackable: 0
-  stackSize: 0
+  stackable: 1
+  stackSize: 999
 --- !u!212 &212012160709596678
 SpriteRenderer:
   m_ObjectHideFlags: 1

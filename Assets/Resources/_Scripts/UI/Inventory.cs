@@ -98,10 +98,14 @@ public class Inventory : MonoBehaviour
         Item temp = itemList.Find(x => (item.name.Contains(x.name))); // Find element in item list with name equivalent to the parameter.
         foreach (InventorySlot slot in slots)
         {
-            if (!slot.isEmpty && temp.name.Contains(slot.GetItem().name))
+            if (!slot.isEmpty && slot.GetItem().name.Contains(temp.name))
             {
-                slot.IncrementQuantity();
-                return;
+                if (slot.GetItem().stackable && slot.GetItem().quantity < slot.GetItem().stackSize)
+                {
+                    
+                    slot.IncrementQuantity();
+                    return;
+                }
             }
         }
         // If the item doesn't yet exist in the list, add it to an empty slot.
@@ -152,7 +156,7 @@ public class Inventory : MonoBehaviour
     /// Checks to see if an inventory slot contains the given item.
     /// </summary>
     /// <param name="item"></param>
-    /// <returns></returns>
+    /// <returns> False if the inventory contains the item, but the item is at max stack. </returns>
     public bool ContainsItem(Item item)
     {
         // Find element in item list equivalent to the parameter.
@@ -160,7 +164,7 @@ public class Inventory : MonoBehaviour
         {
             if (slot.GetItem() != null)
             {
-                if (item.name.Contains(slot.GetItem().name))
+                if (slot.GetItem().name.Contains(item.name) && slot.GetItem().quantity < slot.GetItem().stackSize)
                     return true;
             }
         }

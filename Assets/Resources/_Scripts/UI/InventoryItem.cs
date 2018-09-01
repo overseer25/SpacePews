@@ -21,7 +21,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
 
     // If swapping slots, send off these positions.
     private int[] positions;
-    internal bool dragging = false;
+    internal static bool dragging = false;
     internal bool hidden = true;
     private bool highlighted = false;
 
