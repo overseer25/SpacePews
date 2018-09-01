@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour
 {
-    public ItemColorSelector itemTier = ItemColorSelector.Tier1;
 
     [Header("Display")]
     public Sprite[] spriteAnim; // For animation
     public Sprite sprite; // For no animation
     public GameObject hoverText;
-    public GameObject collectedText; // text displayed when the object is collected.
+    public ItemColorSelector itemTier = ItemColorSelector.Tier1;
 
     [Header("Attributes")]
     public new string name;
-    public int quantity = 1;
+    public int quantity = 0;
     public int value;
     public string description;
     public string type;
@@ -24,9 +24,10 @@ public class Item : MonoBehaviour
     public bool stackable;
     public int stackSize;
 
-    private float playspeed = 0.5f;
-    private float changeSprite = 0.0f;
-    private int index = 0;
+    internal float playspeed = 0.5f;
+    internal float changeSprite = 0.0f;
+    internal int index = 0;
+
     private int followSpeed = 5;
     private const float MAXDISTANCE = 1.0f;
     // If the item has been dropped from player inventory. If it has been, then it must wait a certain amount of time before hovering toward the player that dropped it.
@@ -140,8 +141,11 @@ public class Item : MonoBehaviour
     /// </summary>
     void OnMouseOver()
     {
-        hoverText.SetActive(true);
-        hoverText.GetComponent<TextMesh>().color = itemColor;
+        if(hoverText != null)
+        {
+            hoverText.SetActive(true);
+            hoverText.GetComponent<TextMesh>().color = itemColor;
+        }
     }
     
     /// <summary>
@@ -149,7 +153,8 @@ public class Item : MonoBehaviour
     /// </summary>
     void OnMouseExit()
     {
-        hoverText.SetActive(false);
+        if(hoverText != null)
+            hoverText.SetActive(false);
     }
 
     /// <summary>

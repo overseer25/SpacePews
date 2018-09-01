@@ -16,6 +16,8 @@ TagManager:
   - Missile
   - Mine
   - Ship
+  - InventorySlot
+  - InventoryItem
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - 
   - Player
   - Item
-  - 
+  - InventoryItem
   - 
   - 
   - 

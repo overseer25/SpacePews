@@ -10,8 +10,6 @@ public class MovementController : MonoBehaviour {
     public float accelerationRate = 2.5f;
     public float decelerationRate = 0.005f;
     public float rotationSpeed = 50.0f;
-    [Header("Camera")]
-    public Camera playerCamera;
 
     private Vector3 velocity;
     private Rigidbody2D rigidBody;
@@ -38,8 +36,8 @@ public class MovementController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        playerCamera.transform.position = Vector3.Slerp(playerCamera.transform.position, 
-                                        new Vector3(ship.transform.position.x, ship.transform.position.y, playerCamera.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
+        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position, 
+                                        new Vector3(ship.transform.position.x, ship.transform.position.y, Camera.main.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
 	}
 
     /// <summary>

@@ -12,11 +12,13 @@ public class InfoScreen : MonoBehaviour {
     [Header("Displays")]
     public new GameObject name;
     public GameObject type;
-    public GameObject quantity;
     public GameObject value;
     public GameObject description;
     public GameObject damage;
     public GameObject critChance;
+
+    [Header("Sounds")]
+    public AudioClip hoverOver;
 
     void Start()
     {
@@ -25,27 +27,49 @@ public class InfoScreen : MonoBehaviour {
 
     void Update()
     {
-        Debug.Log("Mouse: " + Input.mousePosition);
         var newPos = Input.mousePosition;
         newPos.z = transform.position.z - Camera.main.transform.position.z;
 
         transform.position = Camera.main.ScreenToWorldPoint(newPos);
+    }
 
-        Debug.Log(transform.position);
+    /// <summary>
+    /// Shows the info screen.
+    /// </summary>
+    public void Show()
+    {
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+
+            gameObject.GetComponent<AudioSource>().clip = hoverOver;
+            gameObject.GetComponent<AudioSource>().Play();
+        }
+    }
+
+    /// <summary>
+    /// Hides the info screen.
+    /// </summary>
+    public void Hide()
+    {
+        if (gameObject.activeSelf)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
     /// Sets the information to display to the user.
     /// </summary>
-    public void SetInfo(string name, string type, string quantity, string value, string description, string damage = null, string critChance = null)
+    public void SetInfo(Item item)
     {
-        this.name.GetComponent<TextMeshProUGUI>().text = name;
-        this.type.GetComponent<TextMeshProUGUI>().text = type;
-        this.quantity.GetComponent<TextMeshProUGUI>().text = quantity;
-        this.value.GetComponent<TextMeshProUGUI>().text = value;
-        this.description.GetComponent<TextMeshProUGUI>().text = description;
-        this.damage.GetComponent<TextMeshProUGUI>().text = damage;
-        this.critChance.GetComponent<TextMeshProUGUI>().text = critChance;
+        name.GetComponent<TextMeshProUGUI>().text = item.name;
+        name.GetComponent<TextMeshProUGUI>().color = ItemColors.colors[(int)item.itemTier];
+        type.GetComponent<TextMeshProUGUI>().text = item.type;
+        value.GetComponent<TextMeshProUGUI>().text = item.value.ToString();
+        description.GetComponent<TextMeshProUGUI>().text = item.description;
+        damage.GetComponent<TextMeshProUGUI>().text = "";
+        critChance.GetComponent<TextMeshProUGUI>().text = "";
     }
 
 }

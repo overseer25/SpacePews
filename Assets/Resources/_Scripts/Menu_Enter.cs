@@ -28,12 +28,6 @@ public class Menu_Enter : MonoBehaviour
                 shopHUD.enabled = !shopHUD.enabled;
                 Time.timeScale = (Time.timeScale == 1.0f) ? 0.0f : 1.0f;
             }
-            else if (Input.GetKeyDown("i") && !shopHUD.enabled)
-            {
-                Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
-                player.GetComponent<WeaponController>().menuOpen = !player.GetComponent<WeaponController>().menuOpen;
-                inventoryHUD.enabled = !inventoryHUD.enabled;
-            }
         }
     }
 

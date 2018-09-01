@@ -1,28 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour {
-
-    public Sprite empty; // The default image for the slot, used if no item is present.
-    public Image item_sprite;
+public class InventorySlot : MonoBehaviour
+{
+    [Header("State")]
     public bool isEmpty = true; // All slots start out empty
-    public int quantity = 0; // The amount of the item stored in inventory.
+    public InventoryItem inventoryItem; // The item in the slot.
 
-    private Item item; // The item in the slot.
-    private Image slot_sprite;
-    private bool isDragging = false;
-    private bool tooltipActive = false;
+    private Image slot_sprite; // The default image for the slot.
     private int index;
 
-	// Use this for initialization
-	void Start () {
-
-        slot_sprite = GetComponentInChildren<Image>();
+    // Use this for initialization
+    void Awake()
+    {
+        slot_sprite = GetComponent<Image>();
+        inventoryItem = GetComponentInChildren<InventoryItem>();
         slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
     }
-	
+
     /// <summary>
     /// Sets the index of the slot in the inventory slot array.
     /// </summary>
@@ -33,59 +31,88 @@ public class InventorySlot : MonoBehaviour {
     }
 
     /// <summary>
-    /// Update the item and quantity of the slot. Called whenever Inventory attempts to add and item.
+    /// Get the index of the slot.
     /// </summary>
-	public void UpdateSlot () {
+    /// <param name="index"></param>
+    public int GetIndex()
+    {
+        return index;
+    }
 
-        if(item != null)
-        {
-            item_sprite.enabled = true;
-            item_sprite.sprite = item.sprite;
-            item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-            GetComponentInChildren<Text>().text = quantity + "";
-            GetComponentInChildren<Text>().enabled = true;
-        }
-        else
-        {
-            item_sprite.enabled = false;
-            GetComponentInChildren<Text>().enabled = false;
-        }
-		
-	}
+    /// <summary>
+    /// Increase the quantity of the item by 1.
+    /// </summary>
+    public void IncrementQuantity()
+    {
+        inventoryItem.quantity++;
+    }
 
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
-        slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        SendMessageUpwards("HoverTooltip", index);
+        if (!isEmpty)
+            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+        if (!inventoryItem.hidden && !inventoryItem.dragging)
+        {
+            inventoryItem.Highlight();
+            SendMessageUpwards("ShowHoverTooltip", index);
+        }
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-        item_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        if (!isEmpty)
+            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+
+        if (!inventoryItem.hidden && !inventoryItem.dragging)
+        {
+            inventoryItem.Dehighlight();
+            SendMessageUpwards("HideHoverTooltip");
+        }
     }
 
-
+    /// <summary>
+    /// Sets the item of the inventory slot.
+    /// </summary>
+    /// <param name="item"></param>
     public void SetItem(Item item)
     {
-        if(item == null)
+        if (item.quantity == -1)
         {
+            inventoryItem.hidden = true;
             isEmpty = true;
-            quantity = 0;
         }
         else
         {
+            ItemToInventoryItem(item);
+            inventoryItem.hidden = false;
+            inventoryItem.Display();
             isEmpty = false;
         }
-        
-        this.item = item;
-    }
-    public Item GetItem()
-    {
-        return item;
     }
 
+    // Gets the item of the inventory slot.
+    public Item GetItem()
+    {
+        return inventoryItem;
+    }
+
+
+    /// <summary>
+    /// Converts the provided item to an InventoryItem.
+    /// </summary>
+    /// <param name="item"></param>
+    public void ItemToInventoryItem(Item item)
+    {
+        inventoryItem.name = item.name;
+        inventoryItem.quantity = item.quantity;
+        inventoryItem.itemTier = item.itemTier;
+        inventoryItem.description = item.description;
+        inventoryItem.sprite = item.sprite;
+        inventoryItem.spriteAnim = item.spriteAnim;
+        inventoryItem.type = item.type;
+        inventoryItem.value = item.value;
+    }
 }
