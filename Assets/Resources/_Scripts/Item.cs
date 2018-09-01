@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -144,7 +145,7 @@ public class Item : MonoBehaviour
         if(hoverText != null)
         {
             hoverText.SetActive(true);
-            hoverText.GetComponent<TextMesh>().color = itemColor;
+            hoverText.GetComponent<TextMeshPro>().color = itemColor;
         }
     }
     

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PopUpText : MonoBehaviour {
 
-    private new MeshRenderer renderer;
-    private TextMesh textMesh;
+    public TextMeshPro textMesh;
     private float fadeTime = 0.0f;
     private float fadeSpeed = 0.2f;
     private int delay = 0;
@@ -18,11 +18,9 @@ public class PopUpText : MonoBehaviour {
     /// <param name="itemTier"></param>
     public void Initialize(GameObject target, string text, ItemColorSelector itemTier, AudioClip sound = null)
     {
-        textMesh = GetComponent<TextMesh>();
         textMesh.text = text;
         textMesh.color = ItemColors.colors[(int)itemTier];
-        renderer = GetComponent<MeshRenderer>();
-        renderer.material.color = new Color(1f, 1f, 1f, 1f); // Reset the alpha.
+        textMesh.alpha = 1.0f;
 
         transform.position = new Vector3(target.transform.position.x, 
             target.transform.position.y, target.transform.position.z); // Set this once
@@ -46,14 +44,12 @@ public class PopUpText : MonoBehaviour {
         {
             fadeTime = Time.deltaTime + fadeSpeed;
 
-            if(delay == 100)
+            if(delay == 50)
             {
-                float colorAlpha = renderer.material.color.a;
-                renderer.material.color = new Color(1f, 1f, 1f, (colorAlpha - 0.01f)); // Slowly fade the sprite
+                textMesh.alpha -= 0.01f; // Slowly fade the sprite
 
-
-                // If the sprite is invisible, destroy the PopUpText object.
-                if (colorAlpha <= 0)
+                // If the text is invisible, deactivate the PopUpText object.
+                if (textMesh.alpha <= 0)
                 {
                     gameObject.SetActive(false);
                 }
@@ -62,7 +58,7 @@ public class PopUpText : MonoBehaviour {
 
             // Move the sprite upward
             transform.position = new Vector3(transform.position.x,
-                transform.position.y + (0.01f), transform.position.z); // Set this once
+                transform.position.y + (0.02f), transform.position.z); // Set this once
 
         }
     }

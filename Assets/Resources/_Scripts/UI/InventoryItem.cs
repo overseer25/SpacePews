@@ -7,19 +7,28 @@ using UnityEngine.UI;
 
 public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    [Header("Sound")]
+    public AudioClip errorSound;
+    public AudioClip hoverSound;
+    public AudioClip swapSound;
+
     private Image image;
-    private bool canSwap;
+    private bool swapping;
 
     // Tracks and displays the quantity of this inventory item.
     private TextMeshProUGUI count;
+    private AudioSource audioSource;
 
     // If swapping slots, send off these positions.
     private int[] positions;
     internal bool dragging = false;
     internal bool hidden = true;
+    private bool highlighted = false;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         image = GetComponent<Image>();
         count = GetComponentInChildren<TextMeshProUGUI>();
         positions = new int[2];
@@ -43,7 +52,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     // Update is called once per frame.
     void FixedUpdate()
     {
-        if(quantity != 0)
+        if (quantity != 0)
             count.text = quantity.ToString();
 
         if (spriteAnim.Length > 0)
@@ -64,7 +73,13 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// </summary>
     public void Highlight()
     {
-        image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        if (!highlighted)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            audioSource.clip = hoverSound;
+            audioSource.Play();
+            highlighted = true;
+        }
     }
 
     /// <summary>
@@ -72,7 +87,11 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// </summary>
     public void Dehighlight()
     {
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        if (highlighted)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            highlighted = false;
+        }
     }
 
     /// <summary>
@@ -81,9 +100,12 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
-        dragging = true;
-        SendMessageUpwards("HideHoverTooltip");
+        if (Input.GetMouseButton(0))
+        {
+            positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
+            dragging = true;
+            SendMessageUpwards("HideHoverTooltip");
+        }
     }
 
     /// <summary>
@@ -91,11 +113,15 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        if (image == null) { return; }
+        if (Input.GetMouseButton(0))
+        {
+            if (image == null) { return; }
 
-        var newPos = Input.mousePosition;
-        newPos.z = transform.position.z - Camera.main.transform.position.z;
-        transform.position = Camera.main.ScreenToWorldPoint(newPos);
+            var newPos = Input.mousePosition;
+            newPos.z = transform.position.z - Camera.main.transform.position.z;
+            transform.position = Camera.main.ScreenToWorldPoint(newPos);
+        }
+
     }
 
     /// <summary>
@@ -105,13 +131,24 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     public void OnEndDrag(PointerEventData eventData)
     {
         if (image == null) { return; }
-
         dragging = false;
 
-        if (canSwap)
+        if (swapping)
         {
+            // Play the swap sound if swapping.
+            audioSource.Stop();
+            audioSource.clip = swapSound;
+            audioSource.Play();
+
             SendMessageUpwards("SwapSlots", positions);
-            canSwap = false;
+            swapping = false;
+        }
+        else
+        {
+            // Play the error sound if not swapping.
+            audioSource.Stop();
+            audioSource.clip = errorSound;
+            audioSource.Play();
         }
 
         transform.localPosition = Vector3.zero;
@@ -128,7 +165,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
         {
             case ("InventorySlot"):
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
-                canSwap = true;
+                swapping = true;
                 break;
         }
     }
@@ -143,7 +180,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
         {
             case ("InventorySlot"):
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
-                canSwap = true;
+                swapping = true;
                 break;
         }
     }
@@ -154,6 +191,6 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// <param name="collider"></param>
     void OnTriggerExit2D(Collider2D collider)
     {
-        canSwap = false;
+        swapping = false;
     }
 }

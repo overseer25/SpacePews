@@ -5,7 +5,6 @@ using UnityEngine;
 public class Thruster : MonoBehaviour {
 
     public Sprite[] thrusterAnim;
-    public Sprite[] afterburnerAnim;
 
     public float playspeed = 0.1f;
     private float changeSprite = 0.0f;

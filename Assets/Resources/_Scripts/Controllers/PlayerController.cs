@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Deals with inputs.
     /// </summary>
-    void FixedUpdate()
+    void Update()
     {
         if (Input.GetKey(KeyCode.W))
         {
@@ -122,9 +122,8 @@ public class PlayerController : MonoBehaviour
         {
             case "Item":
                 Item item = collider.gameObject.GetComponent<Item>();
-                Inventory inventory = GameObject.Find("InventoryHUD").GetComponent<Inventory>();
                 // Only add the item to the player's inventory list if there is an empty slot for it, or a slot contains the item already.
-                GameObject.Find("InventoryHUD").GetComponent<Inventory>().AddItem(item); // Add the item to the player inventory.
+                inventory.AddItem(item); // Add the item to the player inventory.
                 //collider.gameObject.GetComponent<Item>().CreateCollectItemSprite();
                 break;
             case "Immovable":

@@ -50,13 +50,17 @@ public class InventorySlot : MonoBehaviour
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
-        if (!isEmpty)
-            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-        if (!inventoryItem.hidden && !inventoryItem.dragging)
+        if (!isEmpty && !inventoryItem.dragging)
         {
+            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             inventoryItem.Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
+
+            // If right click, display context menu.
+            if(Input.GetMouseButton(1))
+            {
+
+            }
         }
     }
 

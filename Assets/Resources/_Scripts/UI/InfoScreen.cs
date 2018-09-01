@@ -16,9 +16,7 @@ public class InfoScreen : MonoBehaviour {
     public GameObject description;
     public GameObject damage;
     public GameObject critChance;
-
-    [Header("Sounds")]
-    public AudioClip hoverOver;
+    public GameObject quantity;
 
     void Start()
     {
@@ -41,9 +39,6 @@ public class InfoScreen : MonoBehaviour {
         if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
-
-            gameObject.GetComponent<AudioSource>().clip = hoverOver;
-            gameObject.GetComponent<AudioSource>().Play();
         }
     }
 
@@ -66,10 +61,11 @@ public class InfoScreen : MonoBehaviour {
         name.GetComponent<TextMeshProUGUI>().text = item.name;
         name.GetComponent<TextMeshProUGUI>().color = ItemColors.colors[(int)item.itemTier];
         type.GetComponent<TextMeshProUGUI>().text = item.type;
-        value.GetComponent<TextMeshProUGUI>().text = item.value.ToString();
+        value.GetComponent<TextMeshProUGUI>().text = item.value + ((item.value == 1) ? " Unit " : " Units ") + "(" + item.value * item.quantity + ")";
         description.GetComponent<TextMeshProUGUI>().text = item.description;
         damage.GetComponent<TextMeshProUGUI>().text = "";
         critChance.GetComponent<TextMeshProUGUI>().text = "";
+        quantity.GetComponent<TextMeshProUGUI>().text = item.quantity.ToString();
     }
 
 }
