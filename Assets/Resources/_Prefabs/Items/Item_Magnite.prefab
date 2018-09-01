@@ -165,7 +165,7 @@ MonoBehaviour:
   itemTier: 1
   name: Magnite Ore
   quantity: 1
-  value: 100
+  value: 50
   description: Used in the production of energy shields.
   type: Ore
   sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}

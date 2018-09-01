@@ -120,12 +120,6 @@ public class PlayerController : MonoBehaviour
 
         switch (collider.gameObject.tag)
         {
-            case "Item":
-                Item item = collider.gameObject.GetComponent<Item>();
-                // Only add the item to the player's inventory list if there is an empty slot for it, or a slot contains the item already.
-                inventory.AddItem(item); // Add the item to the player inventory.
-                //collider.gameObject.GetComponent<Item>().CreateCollectItemSprite();
-                break;
             case "Immovable":
             case "Asteroid":
             case "Mineable":

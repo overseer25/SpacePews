@@ -103,6 +103,11 @@ public class Item : MonoBehaviour
     void HoverTowardPlayer()
     {
         var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
+
+        // If the player's inventory is full, don't hover toward them.
+        if (!closestPlayer.GetComponent<PlayerController>().inventory.ContainsEmptySlot())
+            return;
+
         var distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
         waitTime += Time.time;
 
@@ -164,10 +169,16 @@ public class Item : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter2D(Collider2D collider)
     {
-        switch (collider.attachedRigidbody.gameObject.tag)
+        var obj = collider.attachedRigidbody.gameObject;
+        switch (obj.tag)
         {
             case "Player":
-                DisplayHoverText();
+                // If the player's inventory is full, don't add to their inventory.
+                if(obj.GetComponent<PlayerController>().inventory.ContainsEmptySlot() || obj.GetComponent<PlayerController>().inventory.ContainsItem(this))
+                {
+                    obj.GetComponent<PlayerController>().inventory.AddItem(this);
+                    DisplayHoverText();
+                }
                 break;
         }
     }

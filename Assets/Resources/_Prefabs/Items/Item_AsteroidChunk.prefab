@@ -163,11 +163,11 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: fb3a37b9ec6a5f043ad4abcd5f78e5ea, type: 3}
   hoverText: {fileID: 1978838462777328}
   itemTier: 0
-  name: Stone
+  name: Asteroid Chunk
   quantity: 1
   value: 1
-  description: A common resource, stone is often harvested in large quantities.
-  type: Material
+  description: Typically harvested from Asteroids. Who knew!
+  type: Ore
   sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0

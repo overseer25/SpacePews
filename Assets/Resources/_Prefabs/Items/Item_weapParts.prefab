@@ -176,7 +176,7 @@ MonoBehaviour:
   name: Weapon Parts
   quantity: 1
   value: 25
-  description: Common weapon parts that survived its owner's demise.
+  description: Used in the production of weaponry.
   type: Material
   sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0

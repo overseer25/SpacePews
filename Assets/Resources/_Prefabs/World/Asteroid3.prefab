@@ -222,7 +222,7 @@ MonoBehaviour:
   depleted: 0
   explosion: {fileID: 1808627111132406, guid: 512859f07d4d3bd4fb333b398da510dd, type: 2}
   lootPossible:
-  - {fileID: 1396439090011740, guid: a583431315adeb24a834f3f8c490a603, type: 2}
+  - {fileID: 1942279051846368, guid: 499f5c455bec73b4ba6f4fc1daeb8291, type: 2}
   - {fileID: 1849846899141644, guid: 4173df838abbb1345b4ff5307b9ccb45, type: 2}
   - {fileID: 1572262975895466, guid: 81dbb57f685d7fc46bd1dab3690a1ee0, type: 2}
   spawnChance:
