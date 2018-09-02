@@ -1244,6 +1244,10 @@ Prefab:
       propertyPath: amountLootSpawned
       value: 10000
       objectReference: {fileID: 0}
+    - target: {fileID: 1601864409949134, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
+      propertyPath: m_Name
+      value: Asteroid1_Cheat
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6ad2cd002083d848bdd72d02916046a, type: 2}
   m_IsPrefabAsset: 0
