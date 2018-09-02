@@ -222,7 +222,7 @@ MonoBehaviour:
   depleted: 0
   explosion: {fileID: 1808627111132406, guid: 512859f07d4d3bd4fb333b398da510dd, type: 2}
   lootPossible:
-  - {fileID: 1396439090011740, guid: a583431315adeb24a834f3f8c490a603, type: 2}
+  - {fileID: 1942279051846368, guid: 499f5c455bec73b4ba6f4fc1daeb8291, type: 2}
   - {fileID: 1849846899141644, guid: 4173df838abbb1345b4ff5307b9ccb45, type: 2}
   - {fileID: 1572262975895466, guid: 81dbb57f685d7fc46bd1dab3690a1ee0, type: 2}
   spawnChance:
@@ -286,7 +286,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a65a95cc2ba94ea4191006dad57702f2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

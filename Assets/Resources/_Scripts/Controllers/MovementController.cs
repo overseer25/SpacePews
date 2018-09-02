@@ -13,26 +13,31 @@ public class MovementController : MonoBehaviour {
 
     private Vector3 velocity;
     private Rigidbody2D rigidBody;
-    private Camera playerCamera;
     private float desiredRotation;
 
-    // The ship sprite to rotate/manipulate.
-    private SpriteRenderer ship;
+    // The ship variables.
+    private SpriteRenderer shipRenderer;
+    private GameObject ship;
 
     void Start()
     {
         velocity = Vector3.zero;
-        playerCamera = GetComponentInChildren<Camera>();
         rigidBody = GetComponent<Rigidbody2D>();
-        if ((ship = GetComponentInChildren<SpriteRenderer>()) == null)
+        if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
             Debug.LogError("Ship contains no Sprite Renderer :(");
+        else
+        {
+            ship = shipRenderer.gameObject;
+        }
+
+        
     }
 
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
-
+        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position, 
+                                        new Vector3(ship.transform.position.x, ship.transform.position.y, Camera.main.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
 	}
 
     /// <summary>
@@ -43,7 +48,6 @@ public class MovementController : MonoBehaviour {
         rigidBody.AddForce(ship.transform.up * accelerationRate * speed * Time.deltaTime);
         rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
     }
-
     /// <summary>
     /// Rotates the ship to the left.
     /// </summary>

@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1863825539523952}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.3645067, y: 1.9853375, z: 0}
+  m_LocalPosition: {x: 6.12, y: 1.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4206729104650898}
@@ -239,7 +239,7 @@ MonoBehaviour:
   depleted: 0
   explosion: {fileID: 1808627111132406, guid: 512859f07d4d3bd4fb333b398da510dd, type: 2}
   lootPossible:
-  - {fileID: 1396439090011740, guid: a583431315adeb24a834f3f8c490a603, type: 2}
+  - {fileID: 1942279051846368, guid: 499f5c455bec73b4ba6f4fc1daeb8291, type: 2}
   - {fileID: 1849846899141644, guid: 4173df838abbb1345b4ff5307b9ccb45, type: 2}
   - {fileID: 1112666981998942, guid: 342b11eec5a461d4b8a12f8e60fa680e, type: 2}
   spawnChance:

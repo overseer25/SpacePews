@@ -1,39 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour
 {
-    public ItemColorSelector itemTier = ItemColorSelector.Tier1;
 
     [Header("Display")]
     public Sprite[] spriteAnim; // For animation
     public Sprite sprite; // For no animation
     public GameObject hoverText;
-    public GameObject collectedText; // text displayed when the object is collected.
+    public ItemColorSelector itemTier = ItemColorSelector.Tier1;
 
     [Header("Attributes")]
     public new string name;
-    public int quantity = 1;
+    public int quantity = 0;
     public int value;
     public string description;
     public string type;
 
     [Header("Other")]
-    public AudioClip sound;
+    [SerializeField]
+    private AudioClip sound;
+    public bool stackable;
+    public int stackSize;
 
-    private float playspeed = 0.5f;
-    private float changeSprite = 0.0f;
-    private int index = 0;
+    // For playing a sprite animation, if it exists.
+    internal float playspeed = 0.5f;
+    internal float changeSprite = 0.0f;
+    internal int index = 0;
+
     private int followSpeed = 5;
     private const float MAXDISTANCE = 1.0f;
-    // If the item has been dropped from player inventory. If it has been, then it must wait a certain amount of time before hovering toward the player that dropped it.
-    private bool dropped = false;
     private bool mined = false;
-    // The player who dropped the item.
-    private GameObject dropper;
-    private float waitTime = 5.0f;
-    private float timer = 0.0f;
     private Color itemColor;
 
     private Transform playerPos;
@@ -41,17 +41,6 @@ public class Item : MonoBehaviour
     private void Start()
     {
         itemColor = ItemColors.colors[(int)itemTier];
-    }
-
-    /// <summary>
-    /// Instantiate the object with additional parameters. Used when the item is dropped from an inventory.
-    /// </summary>
-    /// <param name="dropped"></param>
-    /// <param name="dropper"></param>
-    public void Initialize(bool dropped, GameObject dropper)
-    {
-        this.dropped = dropped;
-        this.dropper = dropper;
     }
 
     // Creates the object to play the collection sprite, and destroys the item.
@@ -99,18 +88,16 @@ public class Item : MonoBehaviour
     void HoverTowardPlayer()
     {
         var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
+
+        // If the player's inventory is full, don't hover toward them.
+        if (!closestPlayer.GetComponent<PlayerController>().inventory.ContainsEmptySlot())
+            return;
+
         var distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
-        waitTime += Time.time;
 
         if (distanceToPlayer <= MAXDISTANCE)
         {
-            if (dropped)
-            {
-                if (Time.time >= waitTime)
-                    transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
-            }
-            else
-                transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
         }
     }
 
@@ -138,8 +125,11 @@ public class Item : MonoBehaviour
     /// </summary>
     void OnMouseOver()
     {
-        hoverText.SetActive(true);
-        hoverText.GetComponent<TextMesh>().color = itemColor;
+        if(hoverText != null)
+        {
+            hoverText.SetActive(true);
+            hoverText.GetComponent<TextMeshPro>().color = itemColor;
+        }
     }
     
     /// <summary>
@@ -147,7 +137,8 @@ public class Item : MonoBehaviour
     /// </summary>
     void OnMouseExit()
     {
-        hoverText.SetActive(false);
+        if(hoverText != null)
+            hoverText.SetActive(false);
     }
 
     /// <summary>
@@ -156,10 +147,16 @@ public class Item : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter2D(Collider2D collider)
     {
-        switch (collider.attachedRigidbody.gameObject.tag)
+        var obj = collider.attachedRigidbody.gameObject;
+        switch (obj.tag)
         {
             case "Player":
-                DisplayHoverText();
+                // If the player's inventory is full, don't add to their inventory.
+                if(obj.GetComponent<PlayerController>().inventory.ContainsEmptySlot() || obj.GetComponent<PlayerController>().inventory.ContainsItem(this))
+                {
+                    obj.GetComponent<PlayerController>().inventory.AddItem(this);
+                    DisplayHoverText();
+                }
                 break;
         }
     }

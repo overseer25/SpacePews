@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    [Header("State")]
+    public Inventory inventory;
 
     private float acceleration;
     private Rigidbody2D rigidBody;
@@ -37,7 +39,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        movementController = GetComponentInParent<MovementController>();
+        movementController = gameObject.GetComponent<MovementController>();
         healthToDisplay = maxHealth / healthChunk;
         healthUI = this.GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
@@ -58,17 +60,20 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Deals with inputs.
     /// </summary>
-    void FixedUpdate()
+    void Update()
     {
         if (Input.GetKey(KeyCode.W))
         {
             SetThrusterState(true);
             movementController.MoveForward();
+            if(!engine.isPlaying)
+                engine.Play();
         }
         else
         {
             SetThrusterState(false);
             movementController.Decelerate();
+            engine.Stop();
         }
         if(Input.GetKey(KeyCode.D))
         {
@@ -77,6 +82,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             movementController.RotateLeft();
+        }
+
+        if (Input.GetKeyDown("i"))
+        {
+            gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
+            inventory.Toggle();
         }
 
     }
@@ -109,16 +120,6 @@ public class PlayerController : MonoBehaviour
 
         switch (collider.gameObject.tag)
         {
-            case "Item":
-                Item item = collider.gameObject.GetComponent<Item>();
-                Inventory inventory = GameObject.Find("InventoryHUD").GetComponent<Inventory>();
-                // Only add the item to the player's inventory list if there is an empty slot for it, or a slot contains the item already.
-                if (inventory.IsEmptySlot() || inventory.ContainsItem(item))
-                {
-                    GameObject.Find("InventoryHUD").GetComponent<Inventory>().AddItem(item); // Add the item to the player inventory.
-                    //collider.gameObject.GetComponent<Item>().CreateCollectItemSprite();
-                }
-                break;
             case "Immovable":
             case "Asteroid":
             case "Mineable":
