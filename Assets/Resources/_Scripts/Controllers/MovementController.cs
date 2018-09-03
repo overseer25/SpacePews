@@ -22,7 +22,7 @@ public class MovementController : MonoBehaviour {
     void Start()
     {
         velocity = Vector3.zero;
-        rigidBody = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponentInChildren<Rigidbody2D>();
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
             Debug.LogError("Ship contains no Sprite Renderer :(");
         else

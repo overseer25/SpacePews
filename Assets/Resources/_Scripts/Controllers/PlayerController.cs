@@ -151,25 +151,6 @@ public class PlayerController : MonoBehaviour
                 }
                 rigidBody.AddForce(direction); // Apply the force
                 break;
-            case "Mine":
-                rigidBody = gameObject.GetComponent<Rigidbody2D>();
-                direction = Vector2.zero; // Direction of the collision, with the magnitude applied being the speed of the player.
-                // If the player isn't moving, we need to move them away, as they would be able to clip into the immovable otherwise.
-                if (rigidBody.velocity == Vector2.zero)
-                {
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position) * 20;
-                }
-                // The difference here is the player has a velocity, so we will propel them away from the immovable using their velocity magnitude.
-                else
-                {
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * (rigidBody.velocity.magnitude * 100);
-                }
-                rigidBody.AddForce(direction); // Apply the force
-                break;
-            case "EnemyProjectile":
-                health -= collider.gameObject.GetComponent<Projectile>().Damage;
-                break;
-
         }       
     }
 

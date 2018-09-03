@@ -16,7 +16,7 @@ public class PopUpText : MonoBehaviour {
     /// <param name="target"></param>
     /// <param name="text"></param>
     /// <param name="itemTier"></param>
-    public void Initialize(GameObject target, string text, ItemColorSelector itemTier, AudioClip sound = null)
+    public void Initialize(GameObject target, string text, ItemTier itemTier, AudioClip sound = null)
     {
         textMesh.text = text;
         textMesh.color = ItemColors.colors[(int)itemTier];

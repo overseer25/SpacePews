@@ -6,12 +6,11 @@ using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour
 {
-
     [Header("Display")]
     public Sprite[] spriteAnim; // For animation
     public Sprite sprite; // For no animation
     public GameObject hoverText;
-    public ItemColorSelector itemTier = ItemColorSelector.Tier1;
+    public ItemTier itemTier = ItemTier.Tier1;
 
     [Header("Attributes")]
     public new string name;
@@ -22,7 +21,7 @@ public class Item : MonoBehaviour
 
     [Header("Other")]
     [SerializeField]
-    private AudioClip sound;
+    private AudioClip pickupSound;
     public bool stackable;
     public int stackSize;
 
@@ -34,7 +33,7 @@ public class Item : MonoBehaviour
     private int followSpeed = 5;
     private const float MAXDISTANCE = 1.0f;
     private bool mined = false;
-    private Color itemColor;
+    internal Color itemColor;
 
     private Transform playerPos;
 
@@ -44,14 +43,14 @@ public class Item : MonoBehaviour
     }
 
     // Creates the object to play the collection sprite, and destroys the item.
-    private void DisplayHoverText()
+    internal void DisplayHoverText()
     {
         var collected = PopUpTextPool.current.GetPooledObject();
 
         // if there is an available pop up text, display it.
         if(collected != null)
         {
-            collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier, sound);
+            collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier, pickupSound);
         }
 
         // TODO: Create an item pool, and don't destroy the items.
@@ -85,16 +84,17 @@ public class Item : MonoBehaviour
     /// <summary>
     /// The logic to move toward the player.
     /// </summary>
-    void HoverTowardPlayer()
+    internal virtual void HoverTowardPlayer()
     {
         var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
 
         // If the player's inventory is full, don't hover toward them.
         if (!closestPlayer.GetComponent<PlayerController>().inventory.ContainsEmptySlot())
+        {
             return;
+        }
 
         var distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
-
         if (distanceToPlayer <= MAXDISTANCE)
         {
             transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
@@ -147,8 +147,11 @@ public class Item : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter2D(Collider2D collider)
     {
-        var obj = collider.attachedRigidbody.gameObject;
-        switch (obj.tag)
+        var obj = collider.GetComponentInParent<Rigidbody2D>();
+
+        if (obj == null)
+            return;
+        switch (obj.gameObject.tag)
         {
             case "Player":
                 // If the player's inventory is full, don't add to their inventory.
@@ -158,6 +161,8 @@ public class Item : MonoBehaviour
                     DisplayHoverText();
                 }
                 break;
+            default:
+                return;
         }
     }
 }

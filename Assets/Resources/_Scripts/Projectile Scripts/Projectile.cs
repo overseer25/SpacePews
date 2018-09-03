@@ -9,62 +9,28 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// Dictates the shot speed of the projectile.
     /// </summary>
-    [Header("Movement")]
-    public float speed;
-
-    /// <summary>
-    /// Used if the projectile gets faster as it exists.
-    /// </summary>
-    public float acceleration;
-
-    /// <summary>
-    /// Minimum damage.
-    /// </summary>
-    [Header("Damage")]
-    public int minDamage;
-
-    /// <summary>
-    /// Maximum damage.
-    /// </summary>
-    public int maxDamage;
+    private float speed = 0.0f;
 
     /// <summary>
     /// The current computed damage of the projectile, determined on collision.
     /// </summary>
-    public int Damage { get; internal set; }
-
-    /// <summary>
-    /// Critical chance damage;
-    /// </summary>
-    [Header("Critical")]
-    public float critMultiplier;
-
-    /// <summary>
-    /// Critical chance percentage.
-    /// </summary>
-    public float critChance;
-
-    /// <summary>
-    /// Firing sound.
-    /// </summary>
-    [Header("Audio")]
-    public AudioClip fireSound;
+    private int damage = 0;
 
     /// <summary>
     /// Sound that the projectile makes when colliding with something.
     /// </summary>
-    public AudioClip collisionSound;
+    [Header("Sound")]
+    [SerializeField]
+    private AudioClip collisionSound;
+    [SerializeField]
+    private AudioClip fireSound;
 
     /// <summary>
     /// The lifetime of the projectile.
     /// </summary>
     [Header("Other")]
-    public int lifetime;
-
-    /// <summary>
-    /// How quickly the projectile can be fired.
-    /// </summary>
-    public float fireRate;
+    [SerializeField]
+    private int lifetime;
 
     // Explosion sprite.
     public GameObject explosion;
@@ -73,21 +39,28 @@ public class Projectile : MonoBehaviour
     private bool collided = false; // Check to see if a collision sound should be played on deactivation.
     private static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds
 
+    void Start()
+    {
+        random = new System.Random();
+        random.Next();
+    }
+
     /// <summary>
-    /// Returns a random damage value based on the damage parameters of the projectile.
-    /// Chance for a critical attack.
+    /// Give the projectile data from the weapon it is being fired from.
+    /// </summary>
+    public void Initialize(int damage, float speed)
+    {
+        this.damage = damage;
+        this.speed = speed;
+    }
+
+    /// <summary>
+    /// Get the fire sound of the projectile.
     /// </summary>
     /// <returns></returns>
-    private void ComputeDamage()
+    public AudioClip GetFireSound()
     {
-        if(random.NextDouble() <= critChance)
-        {
-            Damage = (int)Math.Round(random.Next(minDamage, maxDamage) * critMultiplier);
-        }
-        else
-        {
-            Damage = random.Next(minDamage, maxDamage);
-        }
+        return fireSound;
     }
 
     /// <summary>
@@ -95,12 +68,9 @@ public class Projectile : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
-        random = new System.Random();
-        random.Next();
         rigidBody = GetComponent<Rigidbody2D>();
-        rigidBody.velocity = transform.up * speed;
-        Damage = 0;
 
+        rigidBody.velocity = transform.up * speed;
         // Start the clock to disabling again.
         StartCoroutine(RemoveAfterSeconds(lifetime));
     }
@@ -116,11 +86,10 @@ public class Projectile : MonoBehaviour
             exp.Initialize(collisionSound);
 
             // Current damage is set on collisions with entities that can take damage.
-            if(Damage != 0)
-            {
-                var popUptext = PopUpTextPool.current.GetPooledObject();
-                popUptext.GetComponent<PopUpText>().Initialize(gameObject, Damage.ToString(), ItemColorSelector.Tier1);
-            }
+            var popUptext = PopUpTextPool.current.GetPooledObject();
+            if(popUptext == null)
+                return;
+            popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), ItemTier.Tier1);
         }
 
     }
@@ -152,7 +121,6 @@ public class Projectile : MonoBehaviour
             case "Player":
             case "Enemy":
                 collided = true;
-                ComputeDamage();
                 gameObject.SetActive(false);
                 break;
             case "Asteroid":

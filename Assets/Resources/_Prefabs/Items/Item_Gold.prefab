@@ -243,11 +243,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 23065922479857512}
@@ -281,7 +281,7 @@ MonoBehaviour:
   value: 100
   description: A rare metal typically found in asteroid fields.
   type: Ore
-  sound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
+  pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 1
   stackSize: 999
 --- !u!212 &212012160709596678

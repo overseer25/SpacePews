@@ -112,7 +112,8 @@ public class Inventory : MonoBehaviour
     /// <param name="item"></param>
     public void AddItem(Item item)
     {
-        Item temp = itemList.Find(x => (item.name.Contains(x.name))); // Find element in item list with name equivalent to the parameter.
+        Item temp = itemList.Find(x => (x.name.Equals(item.name))); // Find element in item list with name equivalent to the parameter.
+
         foreach (InventorySlot slot in slots)
         {
             if (!slot.isEmpty && slot.GetItem().name.Contains(temp.name))

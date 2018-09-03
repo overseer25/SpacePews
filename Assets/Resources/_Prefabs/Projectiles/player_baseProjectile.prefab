@@ -65,7 +65,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1769040215680550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.59, y: -1.02, z: 0}
+  m_LocalPosition: {x: 0.59164584, y: 0.34829527, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4029441861575650}
@@ -128,16 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5772291fa23934ea0cddc3fd4ca0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  acceleration: 0
-  minDamage: 1
-  maxDamage: 5
-  critMultiplier: 1.1
-  critChance: 0.1
-  fireSound: {fileID: 8300000, guid: 14be63b2bfeff474ca311449410bedd3, type: 3}
   collisionSound: {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
+  fireSound: {fileID: 8300000, guid: 14be63b2bfeff474ca311449410bedd3, type: 3}
   lifetime: 3
-  fireRate: 2
   explosion: {fileID: 1570939830461566, guid: 39fffa447ffea104d902c5285d13f3d2, type: 2}
 --- !u!212 &212273659148085114
 SpriteRenderer:
