@@ -44,7 +44,7 @@ public class InventorySlot : InteractableElement
     /// </summary>
     public void IncrementQuantity()
     {
-        inventoryItem.quantity++;
+        inventoryItem.item.quantity++;
     }
 
     // Highlight the image when hovering over it
@@ -85,7 +85,7 @@ public class InventorySlot : InteractableElement
         }
         else
         {
-            ItemToInventoryItem(item);
+            inventoryItem.item = item;
             inventoryItem.hidden = false;
             inventoryItem.Display();
             isEmpty = false;
@@ -95,25 +95,6 @@ public class InventorySlot : InteractableElement
     // Gets the item of the inventory slot.
     public Item GetItem()
     {
-        return inventoryItem;
-    }
-
-
-    /// <summary>
-    /// Converts the provided item to an InventoryItem.
-    /// </summary>
-    /// <param name="item"></param>
-    public void ItemToInventoryItem(Item item)
-    {
-        inventoryItem.name = item.name;
-        inventoryItem.quantity = item.quantity;
-        inventoryItem.itemTier = item.itemTier;
-        inventoryItem.description = item.description;
-        inventoryItem.sprite = item.sprite;
-        inventoryItem.spriteAnim = item.spriteAnim;
-        inventoryItem.type = item.type;
-        inventoryItem.value = item.value;
-        inventoryItem.stackable = item.stackable;
-        inventoryItem.stackSize = item.stackSize;
+        return inventoryItem.item;
     }
 }

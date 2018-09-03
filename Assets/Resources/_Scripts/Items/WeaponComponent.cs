@@ -76,6 +76,24 @@ public class WeaponComponent : ShipComponent
     }
 
     /// <summary>
+    /// Returns a string representation of the damage range of this weapon component.
+    /// </summary>
+    /// <returns></returns>
+    public string GetDamageString()
+    {
+        return minDamage + "-" + maxDamage;
+    }
+
+    /// <summary>
+    /// Returns a string representation of the critical chance and critical damage multiplier.
+    /// </summary>
+    /// <returns></returns>
+    public string GetCriticalChanceString()
+    {
+        return MathUtils.ConvertToPercent(critChance) + " (" + critMultiplier + "x)";
+    }
+
+    /// <summary>
     /// Fire the projectile.
     /// </summary>
     /// <param name="time"> The current time that has passed. If the</param>

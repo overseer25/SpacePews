@@ -5,8 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    [Header("Item")]
+    public Item item;
+
     [Header("Sound")]
     public AudioClip hoverSound;
     public AudioClip swapSound;
@@ -44,7 +47,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
         else
         {
             gameObject.SetActive(true);
-            image.sprite = sprite;
+            image.sprite = item.sprite;
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
         }
     }
@@ -52,20 +55,8 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     // Update is called once per frame.
     void FixedUpdate()
     {
-        if (quantity != 0)
-            count.text = quantity.ToString();
-
-        if (spriteAnim.Length > 0)
-        {
-            // Player sprite animation
-            if (Time.time > changeSprite)
-            {
-                changeSprite = Time.time + playspeed;
-                index++;
-                if (index >= spriteAnim.Length) { index = 0; } // Restart animation
-                GetComponentInChildren<SpriteRenderer>().sprite = spriteAnim[index];
-            }
-        }
+        if (item.quantity != 0)
+            count.text = item.quantity.ToString();
     }
 
     /// <summary>
@@ -100,7 +91,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Dragged Type: " + this);
+
         if (Input.GetMouseButton(0))
         {
             positions[0] = GetComponentInParent<InventorySlot>().GetIndex();

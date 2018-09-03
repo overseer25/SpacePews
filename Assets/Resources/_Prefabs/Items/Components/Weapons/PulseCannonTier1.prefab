@@ -385,7 +385,8 @@ MonoBehaviour:
   name: Pulse Cannon Mk I
   quantity: 1
   value: 500
-  description: Mark I Pulse Cannon
+  description: Slow firing pulse energy weapon with low damage and high energy usage.
+    Replace as soon as possible.
   type: Weapon Component
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0

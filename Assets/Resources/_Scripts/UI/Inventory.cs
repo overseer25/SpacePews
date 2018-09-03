@@ -112,6 +112,7 @@ public class Inventory : MonoBehaviour
     /// <param name="item"></param>
     public void AddItem(Item item)
     {
+        Debug.Log("Adding item: " + item);
         if (item == null || !item.gameObject.activeSelf)
             return;
 
@@ -119,7 +120,7 @@ public class Inventory : MonoBehaviour
 
         foreach (InventorySlot slot in slots)
         {
-            if (!slot.isEmpty && slot.GetItem().name.Contains(temp.name))
+            if (!slot.isEmpty && slot.GetItem().name.Equals(temp.name))
             {
                 if (slot.GetItem().stackable && slot.GetItem().quantity < slot.GetItem().stackSize)
                 {   
