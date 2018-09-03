@@ -52,9 +52,6 @@ public class Item : MonoBehaviour
         {
             collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier, pickupSound);
         }
-
-        // TODO: Create an item pool, and don't destroy the items.
-        Destroy(gameObject);
     }
 
     // Update is called once per frame
@@ -159,6 +156,7 @@ public class Item : MonoBehaviour
                 {
                     obj.GetComponent<PlayerController>().inventory.AddItem(this);
                     DisplayHoverText();
+                    gameObject.SetActive(false);
                 }
                 break;
             default:

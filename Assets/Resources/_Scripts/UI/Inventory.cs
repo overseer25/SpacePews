@@ -112,6 +112,9 @@ public class Inventory : MonoBehaviour
     /// <param name="item"></param>
     public void AddItem(Item item)
     {
+        if (item == null || !item.gameObject.activeSelf)
+            return;
+
         Item temp = itemList.Find(x => (x.name.Equals(item.name))); // Find element in item list with name equivalent to the parameter.
 
         foreach (InventorySlot slot in slots)
@@ -119,8 +122,7 @@ public class Inventory : MonoBehaviour
             if (!slot.isEmpty && slot.GetItem().name.Contains(temp.name))
             {
                 if (slot.GetItem().stackable && slot.GetItem().quantity < slot.GetItem().stackSize)
-                {
-                    
+                {   
                     slot.IncrementQuantity();
                     return;
                 }

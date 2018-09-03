@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4743501439746272}
   - component: {fileID: 212105511646037080}
-  - component: {fileID: 61606025298989140}
   - component: {fileID: 114642743436515338}
+  - component: {fileID: 61207145865684788}
   - component: {fileID: 82812145636206966}
   m_Layer: 0
   m_Name: PulseCannonTier1
@@ -134,7 +134,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1539526441648292}
   m_Mesh: {fileID: 0}
---- !u!61 &61606025298989140
+--- !u!61 &61207145865684788
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,7 +146,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.06515063}
+  m_Offset: {x: 0, y: 0.069202304}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -157,7 +157,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.05924116, y: 0.2135928}
+  m_Size: {x: 0.039210595, y: 0.20141566}
   m_EdgeRadius: 0
 --- !u!82 &82812145636206966
 AudioSource:

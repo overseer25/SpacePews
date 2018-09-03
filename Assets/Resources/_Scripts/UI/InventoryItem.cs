@@ -100,6 +100,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log("Dragged Type: " + this);
         if (Input.GetMouseButton(0))
         {
             positions[0] = GetComponentInParent<InventorySlot>().GetIndex();

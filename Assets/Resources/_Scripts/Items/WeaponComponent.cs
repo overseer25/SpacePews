@@ -38,7 +38,6 @@ public class WeaponComponent : ShipComponent
         componentType = ComponentType.Weapon;
     }
 
-
     /// <summary>
     /// Returns a random damage value based on the damage parameters of the projectile.
     /// Chance for a critical attack.
