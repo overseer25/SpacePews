@@ -82,7 +82,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0586743879333a447bb9491c2300237d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -183,8 +183,6 @@ MonoBehaviour:
   - {fileID: 21300004, guid: 31e8501220472664caadf5bb7287a676, type: 3}
   - {fileID: 21300006, guid: 31e8501220472664caadf5bb7287a676, type: 3}
   - {fileID: 21300008, guid: 31e8501220472664caadf5bb7287a676, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
   playspeed: 0.05
 --- !u!212 &212615446930975072
 SpriteRenderer:
@@ -226,7 +224,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.18, y: 0.2}
+  m_Size: {x: 2.48, y: 6.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

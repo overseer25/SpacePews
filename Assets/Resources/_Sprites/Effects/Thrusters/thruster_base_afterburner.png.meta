@@ -1,18 +1,16 @@
 fileFormatVersion: 2
-guid: 02727129e7d0a9745bc325d948384e7f
-timeCreated: 1520403582
-licenseType: Free
+guid: 3e91ad49f5ab5b84aa91418fcaa009f2
 TextureImporter:
   fileIDToRecycleName:
-    21300000: thruster_base_0
-    21300002: thruster_base_1
-    21300004: thruster_base_2
-    21300006: thruster_base_3
-    21300008: thruster_base_4
-    21300010: thruster_base_5
-    21300012: thruster_base_6
+    21300000: thruster_base_afterburner_0
+    21300002: thruster_base_afterburner_1
+    21300004: thruster_base_afterburner_2
+    21300006: thruster_base_afterburner_3
+    21300008: thruster_base_afterburner_4
+    21300010: thruster_base_afterburner_5
+    21300012: thruster_base_afterburner_6
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 7
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -30,6 +28,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -40,7 +40,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -52,18 +52,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -72,7 +75,9 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -81,110 +86,161 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: thruster_base_0
+      name: thruster_base_afterburner_0
       rect:
         serializedVersion: 2
-        x: 9
+        x: 3
         y: 0
-        width: 45
-        height: 68
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: thruster_base_1
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 0
-        width: 32
-        height: 68
+        width: 610
+        height: 680
       alignment: 9
-      pivot: {x: 0.5, y: 0.5547684}
+      pivot: {x: 0.5, y: 0.55695295}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 449ce45633e80e9438175b36a9fb8e6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_2
+      name: thruster_base_afterburner_1
       rect:
         serializedVersion: 2
-        x: 136
+        x: 611
         y: 0
-        width: 29
-        height: 68
+        width: 641
+        height: 680
       alignment: 9
-      pivot: {x: 0.50000054, y: 0.57119894}
+      pivot: {x: 0.5, y: 0.5854295}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8d88279c29955a14d800562e7040ba57
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_3
+      name: thruster_base_afterburner_2
       rect:
         serializedVersion: 2
-        x: 194
+        x: 1252
         y: 0
-        width: 36
-        height: 68
+        width: 528
+        height: 680
       alignment: 9
-      pivot: {x: 0.5, y: 0.57119894}
+      pivot: {x: 0.5, y: 0.5783104}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 22452cfd0a2b4cd4fadd4ced1d3c5a24
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_4
+      name: thruster_base_afterburner_3
       rect:
         serializedVersion: 2
-        x: 256
+        x: 1782
         y: 0
-        width: 35
-        height: 68
+        width: 702
+        height: 680
       alignment: 9
-      pivot: {x: 0.5, y: 0.5766758}
+      pivot: {x: 0.5034479, y: 0.5818699}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c84bbc87b8ea7874f9e4eac7c5ef3250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_5
+      name: thruster_base_afterburner_4
       rect:
         serializedVersion: 2
-        x: 316
+        x: 2484
         y: 0
-        width: 35
-        height: 68
+        width: 492
+        height: 680
       alignment: 9
-      pivot: {x: 0.5, y: 0.5273842}
+      pivot: {x: 0.5049195, y: 0.5818699}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 943ffa77f9dad7241ac6ee2a60947b78
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_6
+      name: thruster_base_afterburner_5
       rect:
         serializedVersion: 2
-        x: 376
+        x: 2975
         y: 0
-        width: 36
-        height: 68
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 690
+        height: 680
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5818699}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 01fb5a0cab2981945b1acf11ba7b6631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thruster_base_afterburner_6
+      rect:
+        serializedVersion: 2
+        x: 3667
+        y: 0
+        width: 563
+        height: 680
+      alignment: 9
+      pivot: {x: 0.49570045, y: 0.5783104}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22e4076624c90754c86307642ca2a388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: aa76544370908a847a5f8c77f528c98e
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

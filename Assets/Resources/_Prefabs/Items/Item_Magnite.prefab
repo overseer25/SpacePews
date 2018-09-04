@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1849846899141644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9931929, y: 1.2803595, z: 0}
+  m_LocalPosition: {x: -13.25, y: 10.82, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4866219921117010}
@@ -147,7 +147,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.18
+  m_Radius: 0.6219878
 --- !u!114 &114015251917194782
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,12 +159,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c37061b8d4eb6459b99671e0ec608b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteAnim: []
-  sprite: {fileID: 21300000, guid: f048a54220ab9704a9f374db3e6e008e, type: 3}
+  inventorySpriteAnim: []
+  inventorySprite: {fileID: 21300000, guid: f048a54220ab9704a9f374db3e6e008e, type: 3}
   hoverText: {fileID: 1512402741494344}
   itemTier: 1
   name: Magnite Ore
-  quantity: 1
   value: 50
   description: Used in the production of energy shields.
   type: Ore
@@ -324,7 +323,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

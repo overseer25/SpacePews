@@ -37,7 +37,8 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     private bool collided = false; // Check to see if a collision sound should be played on deactivation.
-    private static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds
+    private static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds.
+    private bool isCritical = false; // Is this shot a critical hit?
 
     void Start()
     {
@@ -48,10 +49,11 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// Give the projectile data from the weapon it is being fired from.
     /// </summary>
-    public void Initialize(int damage, float speed)
+    public void Initialize(int damage, float speed, bool isCritical)
     {
         this.damage = damage;
         this.speed = speed;
+        this.isCritical = isCritical;
     }
 
     /// <summary>
@@ -89,7 +91,12 @@ public class Projectile : MonoBehaviour
             var popUptext = PopUpTextPool.current.GetPooledObject();
             if(popUptext == null)
                 return;
-            popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), ItemTier.Tier1);
+
+            // Spawn popup text within a radius of 2 from the collision.
+            if (!isCritical)
+                popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), ItemTier.Tier1, radius: true);
+            else
+                popUptext.GetComponent<PopUpText>().Initialize(gameObject, "<style=\"CritHit\">" + damage.ToString() + "</style>", ItemTier.Tier1, radius: true);
         }
 
     }
@@ -120,9 +127,6 @@ public class Projectile : MonoBehaviour
         {
             case "Player":
             case "Enemy":
-                collided = true;
-                gameObject.SetActive(false);
-                break;
             case "Asteroid":
             case "Mineable":
             case "Mine":

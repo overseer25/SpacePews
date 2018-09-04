@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PopUpText : MonoBehaviour {
+public class PopUpText : MonoBehaviour
+{
 
     public TextMeshPro textMesh;
     private float fadeTime = 0.0f;
     private float fadeSpeed = 0.2f;
     private int delay = 0;
+    private static System.Random random;
+
+    void Awake()
+    {
+        random = new System.Random();
+    }
 
     /// <summary>
     /// Initializes the pop-up text by allowing the callee to specify text and fade time.
@@ -16,19 +23,34 @@ public class PopUpText : MonoBehaviour {
     /// <param name="target"></param>
     /// <param name="text"></param>
     /// <param name="itemTier"></param>
-    public void Initialize(GameObject target, string text, ItemTier itemTier, AudioClip sound = null)
+    public void Initialize(GameObject target, string text, ItemTier itemTier, AudioClip sound = null, bool radius = false)
     {
-        textMesh.text = text;
         textMesh.color = ItemColors.colors[(int)itemTier];
+        textMesh.text = text;
         textMesh.alpha = 1.0f;
 
-        transform.position = new Vector3(target.transform.position.x, 
-            target.transform.position.y, target.transform.position.z); // Set this once
+        // Set this once.
+        float x;
+
+        if (radius)
+        {
+            // Make the value negative half the time.
+            if (random.NextDouble() > 0.5f)
+                x = target.transform.position.x + (float)(random.NextDouble() / 2) * -1;
+            else
+                x = target.transform.position.x + (float)(random.NextDouble() / 2);
+        }
+        else
+        {
+            x = target.transform.position.x;
+        }
+
+        transform.position = new Vector3(x, target.transform.position.y, target.transform.position.z);
 
         gameObject.SetActive(true);
 
         // If a sound was provided, play it.
-        if(sound != null)
+        if (sound != null)
         {
             GetComponent<AudioSource>().clip = sound;
             GetComponent<AudioSource>().Play();
@@ -44,7 +66,7 @@ public class PopUpText : MonoBehaviour {
         {
             fadeTime = Time.deltaTime + fadeSpeed;
 
-            if(delay == 50)
+            if (delay == 50)
             {
                 textMesh.alpha -= 0.01f; // Slowly fade the sprite
 

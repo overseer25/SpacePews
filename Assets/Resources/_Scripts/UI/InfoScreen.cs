@@ -10,12 +10,12 @@ public class InfoScreen : MonoBehaviour {
     private RectTransform rt;
 
     [Header("Displays")]
-    public new TextMeshProUGUI name;
-    public TextMeshProUGUI type;
+    public TextMeshProUGUI text1;
+    public TextMeshProUGUI text2;
+    public TextMeshProUGUI text3;
+    public TextMeshProUGUI text4;
+    public TextMeshProUGUI text5;
     public TextMeshProUGUI value;
-    public TextMeshProUGUI description;
-    public TextMeshProUGUI bonusText1;
-    public TextMeshProUGUI bonusText2;
     public TextMeshProUGUI quantity;
 
     void Start()
@@ -26,6 +26,7 @@ public class InfoScreen : MonoBehaviour {
     void Update()
     {
         var newPos = Input.mousePosition;
+        newPos.y = Input.mousePosition.y + 30.0f - Camera.main.transform.position.y;
         newPos.z = transform.position.z - Camera.main.transform.position.z;
 
         transform.position = Camera.main.ScreenToWorldPoint(newPos);
@@ -56,28 +57,32 @@ public class InfoScreen : MonoBehaviour {
     /// <summary>
     /// Sets the information to display to the user.
     /// </summary>
-    public void SetInfo(Item item)
+    public void SetInfo(Item item, int count)
     {
-        name.text = item.name;
-        name.color = ItemColors.colors[(int)item.itemTier];
-        type.text = item.type;
-        value.text = item.value + ((item.value == 1) ? " Unit " : " Units ") + "(" + item.value * item.quantity + ")";
-        description.text = item.description;
-
-        // Display additional stats if it is a weapon component.
+        // Display stats different if item is a weapon component.
         if(item is WeaponComponent)
         {
             var weapComp = item as WeaponComponent;
-            bonusText1.text = "Damage (" + weapComp.GetDamageString() + ")";
-            bonusText2.text = "Crit Chance: " + weapComp.GetCriticalChanceString() ;
+            text1.text = item.name;
+            text1.color = ItemColors.colors[(int)item.itemTier];
+            text2.text = "<style=\"Type\">" + item.type + "</style>";
+            text3.text = "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)";
+            text4.text = "Crit Chance: " + weapComp.GetCriticalChanceString() + " (<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)";
+            text5.text = "<style=\"Description\">" + item.description + "</style>";
         }
+        // Generic weapon
         else
         {
-            bonusText1.text = "";
-            bonusText2.text = "";
+            text1.text = item.name;
+            text1.color = ItemColors.colors[(int)item.itemTier];
+            text2.text = "<style=\"Type\">" + item.type + "</style>";
+            text3.text = "<style=\"Description\">" + item.description + "</style>";
+            text4.text = "";
+            text5.text = "";
         }
 
-        quantity.text = item.quantity.ToString();
+        value.text = "<style=\"Value\">" + item.value + ((item.value == 1) ? " Unit " : " Units ") + "(" + item.value * count + ")</style>";
+        quantity.text = (item.stackable) ? count.ToString() : " ";
 
         // Resize the window to accomodate the new text.
         ResizeWindow();
@@ -90,18 +95,16 @@ public class InfoScreen : MonoBehaviour {
     {
         float height = 0.0f;
         float spacing = GetComponentInChildren<VerticalLayoutGroup>().spacing;
-        height += (name.text != "") ? name.preferredHeight + spacing : 0;
-        height += (type.text != "") ? type.preferredHeight + spacing : 0;
+        height += (text1.text != "") ? text1.preferredHeight + spacing : 0;
+        height += (text2.text != "") ? text2.preferredHeight + spacing : 0;
+        height += (text3.text != "") ? text3.preferredHeight + spacing : 0;
+        height += (text4.text != "") ? text4.preferredHeight + spacing : 0;
+        height += (text5.text != "") ? text5.preferredHeight + spacing : 0;
         height += (value.text != "") ? value.preferredHeight + spacing : 0;
-        height += (description.text != "") ? description.preferredHeight + spacing : 0;
-        height += (bonusText1.text != "") ? bonusText1.preferredHeight + spacing : 0;
-        height += (bonusText2.text != "") ? bonusText2.preferredHeight + spacing : 0;
         height += (quantity.text != "") ? quantity.preferredHeight + spacing : 0;
-
 
         var panel = GetComponent<RectTransform>();
         panel.sizeDelta = new Vector2(panel.sizeDelta.x, height);
-        Debug.Log(panel.sizeDelta);
     }
 
 }

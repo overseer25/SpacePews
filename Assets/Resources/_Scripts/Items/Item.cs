@@ -7,14 +7,13 @@ using UnityEngine.EventSystems;
 public class Item : MonoBehaviour
 {
     [Header("Display")]
-    public Sprite[] spriteAnim; // For animation
-    public Sprite sprite; // For no animation
+    public Sprite[] inventorySpriteAnim; // For animation
+    public Sprite inventorySprite; // For no animation
     public GameObject hoverText;
     public ItemTier itemTier = ItemTier.Tier1;
 
     [Header("Attributes")]
     public new string name;
-    public int quantity = 0;
     public int value;
     public string description;
     public string type;
@@ -31,7 +30,7 @@ public class Item : MonoBehaviour
     internal int index = 0;
 
     private int followSpeed = 5;
-    private const float MAXDISTANCE = 1.0f;
+    private const float MAXDISTANCE = 15.0f;
     private bool mined = false;
     internal Color itemColor;
 
@@ -57,15 +56,15 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (spriteAnim.Length > 0)
+        if (inventorySpriteAnim.Length > 0)
         {
             // Player sprite animation
             if (Time.time > changeSprite)
             {
                 changeSprite = Time.time + playspeed;
                 index++;
-                if (index >= spriteAnim.Length) { index = 0; } // Restart animation
-                GetComponentInChildren<SpriteRenderer>().sprite = spriteAnim[index];
+                if (index >= inventorySpriteAnim.Length) { index = 0; } // Restart animation
+                GetComponentInChildren<SpriteRenderer>().sprite = inventorySpriteAnim[index];
             }
         }
         if (mined)

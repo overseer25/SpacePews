@@ -12,6 +12,7 @@ public class InventorySlot : InteractableElement
 
     private Image slot_sprite; // The default image for the slot.
     private int index;
+    private int quantity;
 
     // Use this for initialization
     void Awake()
@@ -44,12 +45,21 @@ public class InventorySlot : InteractableElement
     /// </summary>
     public void IncrementQuantity()
     {
-        inventoryItem.item.quantity++;
+        quantity++;
+        inventoryItem.SetQuantity(quantity);
     }
 
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
+        // Shift clicking will clear the slot.
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
+        {
+            SendMessageUpwards("ClearSlot", index);
+            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            return;
+        }
+
         if (!isEmpty && !InventoryItem.dragging)
         {
             slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -64,11 +74,20 @@ public class InventorySlot : InteractableElement
         if (!isEmpty)
             slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
 
-        if (!inventoryItem.hidden && !InventoryItem.dragging)
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
             inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
         }
+    }
+
+    /// <summary>
+    /// "Empty" the slot.
+    /// </summary>
+    public void ClearSlot()
+    {
+        inventoryItem.gameObject.SetActive(false);
+        isEmpty = true;
     }
 
     /// <summary>
@@ -77,24 +96,24 @@ public class InventorySlot : InteractableElement
     /// <param name="item"></param>
     public void SetItem(Item item)
     {
-        if (item.quantity == -1)
-        {
-            inventoryItem.hidden = true;
-            isEmpty = true;
-            inventoryItem.Display();
-        }
-        else
-        {
-            inventoryItem.item = item;
-            inventoryItem.hidden = false;
-            inventoryItem.Display();
-            isEmpty = false;
-        }
+        quantity = 1;
+        inventoryItem.SetItem(item, quantity);
+        inventoryItem.gameObject.SetActive(true);
+        isEmpty = false;
     }
 
     // Gets the item of the inventory slot.
     public Item GetItem()
     {
         return inventoryItem.item;
+    }
+
+    /// <summary>
+    /// Gets the count of the item in the slot.
+    /// </summary>
+    /// <returns></returns>
+    public int GetQuantity()
+    {
+        return quantity;
     }
 }

@@ -24,7 +24,7 @@ public class WeaponComponent : ShipComponent
     [SerializeField]
     private GameObject shotSpawn;
 
-    private System.Random random;
+    private static System.Random random;
     private AudioSource audioSource;
 
     // What time the last shot was fired.
@@ -35,6 +35,7 @@ public class WeaponComponent : ShipComponent
         itemColor = ItemColors.colors[(int)itemTier];
         audioSource = GetComponent<AudioSource>();
         random = new System.Random();
+        random.Next();
         componentType = ComponentType.Weapon;
     }
 
@@ -45,14 +46,16 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     private int ComputeDamage()
     {
-        var damage = 0;
-        if (random.NextDouble() <= critChance)
+        var damage = random.Next(minDamage, maxDamage + 1);
+
+        // If adding the multiplier to the current damage is larger than max damage and is a critical hit.
+        if ((damage * critMultiplier > maxDamage) && random.NextDouble() <= critChance)
         {
-            damage = (int)Math.Round(random.Next(minDamage, maxDamage) * critMultiplier);
+            damage = (int)(damage * critMultiplier);
         }
         else
         {
-            damage = random.Next(minDamage, maxDamage);
+            damage = random.Next(minDamage, maxDamage+1);
         }
 
         return damage;
@@ -85,12 +88,21 @@ public class WeaponComponent : ShipComponent
     }
 
     /// <summary>
-    /// Returns a string representation of the critical chance and critical damage multiplier.
+    /// Returns a string representation of the critical chance.
     /// </summary>
     /// <returns></returns>
     public string GetCriticalChanceString()
     {
-        return MathUtils.ConvertToPercent(critChance) + " (" + critMultiplier + "x)";
+        return MathUtils.ConvertToPercent(critChance); ;
+    }
+
+    /// <summary>
+    /// Returns a string representation of the critical damage multiplier.
+    /// </summary>
+    /// <returns></returns>
+    public string GetCriticalMultiplierString()
+    {
+        return critMultiplier + "x";
     }
 
     /// <summary>
@@ -99,14 +111,12 @@ public class WeaponComponent : ShipComponent
     /// <param name="time"> The current time that has passed. If the</param>
     public void Fire()
     {
-        random.Next();
-
         var projectile = ProjectilePool.current.GetPooledObject();
         if (projectile == null)
             return;
 
         var damage = ComputeDamage();
-        projectile.GetComponent<Projectile>().Initialize(damage, shotSpeed);
+        projectile.GetComponent<Projectile>().Initialize(damage, shotSpeed, (damage > maxDamage) ? true : false);
         projectile.transform.position = shotSpawn.transform.position;
         projectile.transform.rotation = shotSpawn.transform.rotation;
         audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();

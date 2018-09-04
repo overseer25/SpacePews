@@ -78,7 +78,7 @@ public class Inventory : MonoBehaviour
         {
             var item = slots[index].GetItem();
 
-            infoScreen.SetInfo(item);
+            infoScreen.SetInfo(item, slots[index].GetQuantity());
             infoScreen.Show();
         }
     }
@@ -96,14 +96,14 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void ClearSlot(int index)
     {
-        Item item = slots[index].GetItem();
-        item.quantity = -1;
-        slots[index].SetItem(item);
+        slots[index].ClearSlot();
 
         // Play the error sound if not swapping.
         audioSource.Stop();
         audioSource.clip = clearSlotSound;
         audioSource.Play();
+        infoScreen.Hide();
+
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class Inventory : MonoBehaviour
         {
             if (!slot.isEmpty && slot.GetItem().name.Equals(temp.name))
             {
-                if (slot.GetItem().stackable && slot.GetItem().quantity < slot.GetItem().stackSize)
+                if (slot.GetItem().stackable && slot.GetQuantity() < slot.GetItem().stackSize)
                 {   
                     slot.IncrementQuantity();
                     return;
@@ -185,7 +185,7 @@ public class Inventory : MonoBehaviour
         {
             if (slot.GetItem() != null)
             {
-                if (slot.GetItem().name.Contains(item.name) && slot.GetItem().quantity < slot.GetItem().stackSize)
+                if (slot.GetItem().name.Contains(item.name) && slot.GetQuantity() < slot.GetItem().stackSize)
                     return true;
             }
         }

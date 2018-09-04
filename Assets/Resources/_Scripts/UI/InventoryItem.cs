@@ -15,6 +15,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public AudioClip swapSound;
 
     private Image image;
+    private int quantity;
     private bool swapping;
 
     // Tracks and displays the quantity of this inventory item.
@@ -25,7 +26,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private int[] positions;
     internal static bool dragging = false;
     internal bool destroying = false;
-    internal bool hidden = true;
     private bool highlighted = false;
 
     void Start()
@@ -38,25 +38,38 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
     }
 
-    public void Display()
+    /// <summary>
+    /// Set the quantity of the inventory item.
+    /// </summary>
+    public void SetQuantity(int num)
     {
-        if (hidden)
-        {
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            gameObject.SetActive(true);
-            image.sprite = item.sprite;
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-        }
+        quantity = num;
+    }
+
+    public void SetItem(Item item, int quantity)
+    {
+        this.item = item;
+        this.quantity = quantity;
+
+        image.sprite = item.inventorySprite;
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
     }
 
     // Update is called once per frame.
     void FixedUpdate()
     {
-        if (item.quantity != 0)
-            count.text = item.quantity.ToString();
+        if (item.stackable)
+            count.text = quantity.ToString();
+        else
+            count.text = "";
+    }
+
+    /// <summary>
+    /// Called when the gameobject is disabled.
+    /// </summary>
+    void OnDisable()
+    {
+        highlighted = false;
     }
 
     /// <summary>
@@ -125,7 +138,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         if (image == null) { return; }
         dragging = false;
 
-        if(destroying)
+        if (destroying)
         {
             SendMessageUpwards("ClearSlot", positions[0]);
             destroying = false;
