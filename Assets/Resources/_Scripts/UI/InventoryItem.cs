@@ -18,6 +18,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private int quantity;
     private bool swapping;
 
+    // For mounting slots.
+    private bool mounting;
+    private MountSlot mountSlot;
+
     // Tracks and displays the quantity of this inventory item.
     private TextMeshProUGUI count;
     private AudioSource audioSource;
@@ -58,10 +62,13 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     // Update is called once per frame.
     void FixedUpdate()
     {
-        if (item.stackable)
-            count.text = quantity.ToString();
-        else
-            count.text = "";
+        if(count != null)
+        {
+            if (item.stackable)
+                count.text = quantity.ToString();
+            else
+                count.text = "";
+        }
     }
 
     /// <summary>
@@ -138,6 +145,12 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         if (image == null) { return; }
         dragging = false;
 
+        if(mounting)
+        {
+            SendMessageUpwards("ClearSlot", positions[0]);
+            mountSlot.SetItem(item);
+            mounting = false;
+        }
         if (destroying)
         {
             SendMessageUpwards("ClearSlot", positions[0]);
@@ -145,6 +158,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         }
         if (swapping)
         {
+            if(mountSlot != null)
+            {
+                mountSlot.ClearSlot();
+            }
             // Play the swap sound if swapping.
             audioSource.Stop();
             audioSource.clip = swapSound;
@@ -167,8 +184,13 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         switch (collider.gameObject.tag)
         {
             case ("InventorySlot"):
+                mountSlot = collider.gameObject.GetComponent<MountSlot>();
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
+                break;
+            case ("MountSlot"):
+                mountSlot = collider.gameObject.GetComponent<MountSlot>();
+                mounting = true;
                 break;
             case ("DeleteZone"):
                 collider.gameObject.GetComponent<Image>();
@@ -186,8 +208,13 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         switch (collider.gameObject.tag)
         {
             case ("InventorySlot"):
+                Debug.Log("Hovering over inventory slot");
+                mountSlot = collider.gameObject.GetComponent<MountSlot>();
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
+                break;
+            case ("MountSlot"):
+                mounting = true;
                 break;
             case ("DeleteZone"):
                 destroying = true;
@@ -203,5 +230,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         swapping = false;
         destroying = false;
+        mounting = false;
+        mountSlot = null;
     }
 }

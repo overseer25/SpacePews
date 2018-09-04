@@ -19,6 +19,7 @@ TagManager:
   - InventorySlot
   - InventoryItem
   - DeleteZone
+  - MountSlot
   layers:
   - Default
   - TransparentFX

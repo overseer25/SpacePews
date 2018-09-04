@@ -14,6 +14,15 @@ public class ShipMountController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Gets all the mounts on the ship.
+    /// </summary>
+    /// <returns></returns>
+    public ShipMount[] GetAllMounts()
+    {
+        return mounts;
+    }
+
+    /// <summary>
     /// Gets all the weapon mounts being managed.
     /// </summary>
     /// <returns></returns>

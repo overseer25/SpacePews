@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class InventorySlot : InteractableElement
 {
     [Header("State")]
-    public bool isEmpty = true; // All slots start out empty
+    public bool isEmpty = true; // All slots start out empty.
     public InventoryItem inventoryItem; // The item in the slot.
 
     private Image slot_sprite; // The default image for the slot.
@@ -94,7 +94,7 @@ public class InventorySlot : InteractableElement
     /// Sets the item of the inventory slot.
     /// </summary>
     /// <param name="item"></param>
-    public void SetItem(Item item)
+    public virtual void SetItem(Item item)
     {
         quantity = 1;
         inventoryItem.SetItem(item, quantity);

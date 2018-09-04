@@ -15,7 +15,8 @@ public class Inventory : MonoBehaviour
     public AudioClip clearSlotSound;
 
     private InfoScreen infoScreen;
-    private InventorySlot[] slots;
+    private InventorySlot[] inventorySlots;
+    private MountSlot[] mountSlots;
     private AudioSource audioSource;
     private bool isOpen = false;
 
@@ -26,10 +27,11 @@ public class Inventory : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        slots = GetComponentsInChildren<InventorySlot>();
+        inventorySlots = GetComponentsInChildren<InventorySlot>().Where(s => !(s is MountSlot)).ToArray();
+        mountSlots = GetComponentsInChildren<MountSlot>();
 
         var i = 0;
-        foreach (var slot in slots)
+        foreach (var slot in inventorySlots)
             slot.SetIndex(i++);
 
         itemList = new List<Item>();
@@ -70,15 +72,15 @@ public class Inventory : MonoBehaviour
     /// <param name="index"></param>
     public void ShowHoverTooltip(int index)
     {
-        if (slots[index].isEmpty)
+        if (inventorySlots[index].isEmpty)
         {
             infoScreen.Hide();
         }
         else
         {
-            var item = slots[index].GetItem();
+            var item = inventorySlots[index].GetItem();
 
-            infoScreen.SetInfo(item, slots[index].GetQuantity());
+            infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
             infoScreen.Show();
         }
     }
@@ -96,29 +98,27 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void ClearSlot(int index)
     {
-        slots[index].ClearSlot();
+        inventorySlots[index].ClearSlot();
 
         // Play the error sound if not swapping.
         audioSource.Stop();
         audioSource.clip = clearSlotSound;
         audioSource.Play();
         infoScreen.Hide();
-
     }
 
     /// <summary>
-    /// TODO: Maybe switch to Dictionary?
+    /// Adds an item to the inventory.
     /// </summary>
     /// <param name="item"></param>
     public void AddItem(Item item)
     {
-        Debug.Log("Adding item: " + item);
         if (item == null || !item.gameObject.activeSelf)
             return;
 
         Item temp = itemList.Find(x => (x.name.Equals(item.name))); // Find element in item list with name equivalent to the parameter.
 
-        foreach (InventorySlot slot in slots)
+        foreach (InventorySlot slot in inventorySlots)
         {
             if (!slot.isEmpty && slot.GetItem().name.Equals(temp.name))
             {
@@ -130,7 +130,7 @@ public class Inventory : MonoBehaviour
             }
         }
         // If the item doesn't yet exist in the list, add it to an empty slot.
-        foreach (InventorySlot slot in slots.OrderBy(s => s.transform.GetSiblingIndex()))
+        foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.transform.GetSiblingIndex()))
         {
             if (slot.isEmpty)
             {
@@ -151,12 +151,14 @@ public class Inventory : MonoBehaviour
         var index2 = indices[1];
 
         // Index of the first slot.
-        var ind1 = slots[index1].transform.GetSiblingIndex();
+        var ind1 = inventorySlots[index1].SetItem(item;
 
         // Swap the slots. Make sure to reorder their slots to remain consistent.
-        slots[index1].transform.SetSiblingIndex(slots[index2].transform.GetSiblingIndex());
-        slots[index2].transform.SetSiblingIndex(ind1);
+        inventorySlots[index1].transform.SetSiblingIndex(inventorySlots[index2].transform.GetSiblingIndex());
+        inventorySlots[index2].transform.SetSiblingIndex(ind1);
     }
+
+
 
     /// <summary>
     /// Checks the list of Inventory Slots to see if an empty one exists.
@@ -165,7 +167,7 @@ public class Inventory : MonoBehaviour
     public bool ContainsEmptySlot()
     {
         // Since we can swap inventory slots around, we need to search based on their ordering in the object hierarchy.
-        foreach (InventorySlot slot in slots.OrderBy(s => s.transform.GetSiblingIndex()))
+        foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.transform.GetSiblingIndex()))
         {
             if (slot.isEmpty) { return true; } // Empty slot found
         }
@@ -181,7 +183,7 @@ public class Inventory : MonoBehaviour
     public bool ContainsItem(Item item)
     {
         // Find element in item list equivalent to the parameter.
-        foreach (InventorySlot slot in slots)
+        foreach (InventorySlot slot in inventorySlots)
         {
             if (slot.GetItem() != null)
             {

@@ -11,6 +11,12 @@ public class ShipMount : MonoBehaviour {
     [SerializeField]
     private ItemTier mountTier;
 
+    // The direction to display the UI element of the ship mount.
+    [Header("UI Element Attributes")]
+    [SerializeField]
+    private Vector2 uiDirection;
+    private float distanceFromShip;
+
 
     private ShipComponent component;
     private bool isEmpty = false;
@@ -28,6 +34,26 @@ public class ShipMount : MonoBehaviour {
             Debug.LogError("Component class not equal to mount class!");
         if (component.GetComponentTier() != mountTier)
             Debug.LogError("Component tier not equal to mount tier!");
+    }
+
+    /// <summary>
+    /// Get the direction to face the UI element associated with this
+    /// mount.
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetUIDirection()
+    {
+        return uiDirection;
+    }
+
+    /// <summary>
+    /// Get the distance away from the ship to place the UI element associated
+    /// with this mount.
+    /// </summary>
+    /// <returns></returns>
+    public float GetDistanceFromShip()
+    {
+        return distanceFromShip;
     }
 
     /// <summary>
