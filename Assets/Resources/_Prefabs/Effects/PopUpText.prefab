@@ -228,8 +228,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 2
-  m_fontSizeBase: 2
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -266,7 +266,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 8.997817, y: 2.2514846, z: 8.998798, w: 2.3961508}
+  m_margin: {x: -0.036794662, y: 0.037368774, z: 0.0150876045, w: -0.012485743}
   m_textInfo:
     textComponent: {fileID: 114618570001216896}
     characterCount: 11
@@ -277,7 +277,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -327,6 +327,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.49891585, y: 0.14494854}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: -9.553, y: 4.791}
+  m_SizeDelta: {x: 19.165, y: 2.185}
   m_Pivot: {x: 0.5, y: 0.5}

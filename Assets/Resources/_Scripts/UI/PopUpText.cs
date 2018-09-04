@@ -36,9 +36,9 @@ public class PopUpText : MonoBehaviour
         {
             // Make the value negative half the time.
             if (random.NextDouble() > 0.5f)
-                x = target.transform.position.x + (float)(random.NextDouble() / 2) * -1;
+                x = target.transform.position.x + (float)(random.NextDouble()) * -1;
             else
-                x = target.transform.position.x + (float)(random.NextDouble() / 2);
+                x = target.transform.position.x + (float)(random.NextDouble());
         }
         else
         {
@@ -66,9 +66,9 @@ public class PopUpText : MonoBehaviour
         {
             fadeTime = Time.deltaTime + fadeSpeed;
 
-            if (delay == 50)
+            if (delay == 10)
             {
-                textMesh.alpha -= 0.01f; // Slowly fade the sprite
+                textMesh.alpha -= 0.02f; // Slowly fade the sprite
 
                 // If the text is invisible, deactivate the PopUpText object.
                 if (textMesh.alpha <= 0)
@@ -80,7 +80,7 @@ public class PopUpText : MonoBehaviour
 
             // Move the sprite upward
             transform.position = new Vector3(transform.position.x,
-                transform.position.y + (0.02f), transform.position.z); // Set this once
+                transform.position.y + (0.2f), transform.position.z); // Set this once
 
         }
     }

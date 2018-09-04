@@ -29,8 +29,8 @@ public class Item : MonoBehaviour
     internal float changeSprite = 0.0f;
     internal int index = 0;
 
-    private int followSpeed = 5;
-    private const float MAXDISTANCE = 15.0f;
+    private int followSpeed = 20;
+    private const float MAXDISTANCE = 10.0f;
     private bool mined = false;
     internal Color itemColor;
 
