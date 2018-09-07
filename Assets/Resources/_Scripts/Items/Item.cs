@@ -10,13 +10,13 @@ public class Item : MonoBehaviour
     public Sprite[] inventorySpriteAnim; // For animation
     public Sprite inventorySprite; // For no animation
     public GameObject hoverText;
-    public ItemTier itemTier = ItemTier.Tier1;
 
     [Header("Attributes")]
+    public ItemType type;
+    public ItemTier itemTier = ItemTier.Tier1;
     public new string name;
     public int value;
     public string description;
-    public string type;
 
     [Header("Other")]
     [SerializeField]

@@ -8,7 +8,7 @@ public class ShipMountController : MonoBehaviour {
     // Each mount on the ship.
     private ShipMount[] mounts;
 
-    void Start()
+    void Awake()
     {
         mounts = GetComponentsInChildren<ShipMount>();
     }
@@ -28,7 +28,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetWeaponMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ComponentType.Weapon).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Weapon).ToArray();
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetUtilityMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ComponentType.Utility).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Utility).ToArray();
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetThrusterMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ComponentType.Thruster).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Thruster).ToArray();
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetStorageMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ComponentType.Storage).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Storage).ToArray();
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetShieldMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ComponentType.Shield).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Shield).ToArray();
     }
 
     /// <summary>
@@ -73,6 +73,6 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetUpgradeMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ComponentType.Upgrade).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Upgrade).ToArray();
     }
 }

@@ -15,7 +15,7 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         weapons = new List<WeaponComponent>();
-        foreach (var mount in mountController.GetWeaponMounts().Where(m => m.GetMountType() == ComponentType.Weapon))
+        foreach (var mount in mountController.GetWeaponMounts().Where(m => m.GetMountType() == ItemType.Weapon))
             weapons.Add(mount.GetShipComponent() as WeaponComponent);
     }
 

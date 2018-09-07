@@ -12,11 +12,11 @@ public class Inventory : MonoBehaviour
     [Header("Sounds")]
     public AudioClip inventoryOpen;
     public AudioClip inventoryClose;
+    public AudioClip swapSound;
     public AudioClip clearSlotSound;
 
     private InfoScreen infoScreen;
     private InventorySlot[] inventorySlots;
-    private MountSlot[] mountSlots;
     private AudioSource audioSource;
     private bool isOpen = false;
 
@@ -27,8 +27,7 @@ public class Inventory : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        inventorySlots = GetComponentsInChildren<InventorySlot>().Where(s => !(s is MountSlot)).ToArray();
-        mountSlots = GetComponentsInChildren<MountSlot>();
+        inventorySlots = GetComponentsInChildren<InventorySlot>().ToArray();
 
         var i = 0;
         foreach (var slot in inventorySlots)
@@ -94,13 +93,27 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Deletes the item in a slot in the inventory, given the index of the slot.
+    /// </summary>
+    public void DeleteSlot(int index)
+    {
+        inventorySlots[index].DeleteSlot();
+
+        // Play the delete sound.
+        audioSource.Stop();
+        audioSource.clip = clearSlotSound;
+        audioSource.Play();
+        infoScreen.Hide();
+    }
+
+    /// <summary>
     /// Clears a slot in the inventory, given the index of the slot.
     /// </summary>
     public void ClearSlot(int index)
     {
         inventorySlots[index].ClearSlot();
 
-        // Play the error sound if not swapping.
+        // Play the delete sound.
         audioSource.Stop();
         audioSource.clip = clearSlotSound;
         audioSource.Play();
@@ -134,7 +147,8 @@ public class Inventory : MonoBehaviour
         {
             if (slot.isEmpty)
             {
-                slot.SetItem(temp); // Add to the slot
+                var result = Instantiate(temp, slot.inventoryItem.transform.position, Quaternion.identity, slot.inventoryItem.transform) as Item;
+                slot.SetItem(result); // Add to the slot
                 return;
             }
         }
@@ -150,12 +164,26 @@ public class Inventory : MonoBehaviour
         var index1 = indices[0];
         var index2 = indices[1];
 
-        // Index of the first slot.
-        var ind1 = inventorySlots[index1].SetItem(item;
+        // Swap the values of the two, if they both contain an item.
+        if(!inventorySlots[index1].isEmpty && !inventorySlots[index2].isEmpty)
+        {
+            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].inventoryItem.transform;
+            inventorySlots[index2].GetItem().gameObject.transform.parent = inventorySlots[index1].inventoryItem.transform;
+            var temp = inventorySlots[index2].GetItem();
 
-        // Swap the slots. Make sure to reorder their slots to remain consistent.
-        inventorySlots[index1].transform.SetSiblingIndex(inventorySlots[index2].transform.GetSiblingIndex());
-        inventorySlots[index2].transform.SetSiblingIndex(ind1);
+            inventorySlots[index2].SetItem(inventorySlots[index1].GetItem());
+            inventorySlots[index1].SetItem(temp);
+
+        }
+        else if(inventorySlots[index2].isEmpty)
+        {
+            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].inventoryItem.transform;
+            inventorySlots[index2].SetItem(inventorySlots[index1].GetItem());
+            inventorySlots[index1].ClearSlot();
+        }
+
+        audioSource.clip = swapSound;
+        audioSource.Play();
     }
 
 

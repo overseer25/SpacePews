@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ComponentType
+public enum ItemType
 {
-    Weapon = 0,
+    Item = 0,
+    Weapon,
     Utility,
     Storage,
     Shield,

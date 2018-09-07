@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShipMount : MonoBehaviour {
 
     [SerializeField]
-    private ComponentType mountType;
+    private ItemType mountType;
     [SerializeField]
     private ItemClass mountClass;
     [SerializeField]
@@ -28,7 +28,7 @@ public class ShipMount : MonoBehaviour {
     {
         component = GetComponentInChildren<ShipComponent>();
         component.mounted = true;
-        if (component.GetComponentType() != mountType)
+        if (component.GetItemType() != mountType)
             Debug.LogError("Component type not equal to mount type!");
         if (component.GetComponentClass() != mountClass)
             Debug.LogError("Component class not equal to mount class!");
@@ -60,7 +60,7 @@ public class ShipMount : MonoBehaviour {
     /// Gets the type of this mount.
     /// </summary>
     /// <returns></returns>
-    public ComponentType GetMountType()
+    public ItemType GetMountType()
     {
         return mountType;
     }

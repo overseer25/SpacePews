@@ -10,10 +10,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     [Header("Item")]
     public Item item;
 
-    [Header("Sound")]
-    public AudioClip hoverSound;
-    public AudioClip swapSound;
-
     private Image image;
     private int quantity;
     private bool swapping;
@@ -24,7 +20,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     // Tracks and displays the quantity of this inventory item.
     private TextMeshProUGUI count;
-    private AudioSource audioSource;
 
     // If swapping slots, send off these positions.
     private int[] positions;
@@ -34,12 +29,11 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-
         image = GetComponent<Image>();
         count = GetComponentInChildren<TextMeshProUGUI>();
         positions = new int[2];
         positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
+        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -48,6 +42,14 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void SetQuantity(int num)
     {
         quantity = num;
+
+        if (count != null)
+        {
+            if (item != null && item.stackable && num > 0)
+                count.text = quantity.ToString();
+            else
+                count.text = "";
+        }
     }
 
     public void SetItem(Item item, int quantity)
@@ -55,16 +57,12 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         this.item = item;
         this.quantity = quantity;
 
-        image.sprite = item.inventorySprite;
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-    }
+        image.sprite = (item != null) ? item.inventorySprite : null;
+        image.color = (item != null) ? new Color(1.0f, 1.0f, 1.0f, 0.7f) : new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
-    // Update is called once per frame.
-    void FixedUpdate()
-    {
-        if(count != null)
+        if (count != null)
         {
-            if (item.stackable)
+            if (item != null && item.stackable && quantity > 0)
                 count.text = quantity.ToString();
             else
                 count.text = "";
@@ -84,11 +82,9 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void Highlight()
     {
-        if (!highlighted)
+        if (!highlighted && item != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            audioSource.clip = hoverSound;
-            audioSource.Play();
             highlighted = true;
         }
     }
@@ -98,7 +94,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void Dehighlight()
     {
-        if (highlighted)
+        if (highlighted && item != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
             highlighted = false;
@@ -147,26 +143,22 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
         if(mounting)
         {
-            SendMessageUpwards("ClearSlot", positions[0]);
-            mountSlot.SetItem(item);
-            mounting = false;
+            if(item.type == mountSlot.type)
+            {
+                var result = Instantiate(item, mountSlot.GetInventoryItem().transform.position, Quaternion.identity, mountSlot.GetInventoryItem().transform) as Item;
+                result.transform.parent = mountSlot.GetInventoryItem().transform;
+                mountSlot.SetItem(result); // Add to the slot
+                SendMessageUpwards("DeleteSlot", positions[0]);
+                mounting = false;
+            }
         }
         if (destroying)
         {
-            SendMessageUpwards("ClearSlot", positions[0]);
+            SendMessageUpwards("DeleteSlot", positions[0]);
             destroying = false;
         }
         if (swapping)
         {
-            if(mountSlot != null)
-            {
-                mountSlot.ClearSlot();
-            }
-            // Play the swap sound if swapping.
-            audioSource.Stop();
-            audioSource.clip = swapSound;
-            audioSource.Play();
-
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
         }
@@ -208,7 +200,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         switch (collider.gameObject.tag)
         {
             case ("InventorySlot"):
-                Debug.Log("Hovering over inventory slot");
                 mountSlot = collider.gameObject.GetComponent<MountSlot>();
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;

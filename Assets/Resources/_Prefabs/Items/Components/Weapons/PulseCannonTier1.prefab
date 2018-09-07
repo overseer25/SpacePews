@@ -381,12 +381,12 @@ MonoBehaviour:
   inventorySpriteAnim: []
   inventorySprite: {fileID: 21300000, guid: d342eb8df80242a4eaf50c05ab6830f9, type: 3}
   hoverText: {fileID: 1539526441648292}
+  type: 1
   itemTier: 0
   name: Pulse Cannon Mk I
   value: 500
   description: Slow firing pulse energy weapon with low damage and high energy usage.
     Replace as soon as possible.
-  type: Weapon Component
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0

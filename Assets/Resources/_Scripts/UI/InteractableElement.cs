@@ -11,14 +11,14 @@ public class InteractableElement : MonoBehaviour {
     public AudioClip exitSound;
 
     // Highlight the image when hovering over it
-    private Image image;
+    internal Image image;
     private TextMeshProUGUI text;
-    private AudioSource audioSource;
+    internal AudioSource audioSource;
     private bool hovering = false;
     // Keep track of the original color, as we will be changing it to red when hovering.
     private Color originalColor;
 
-    void Start()
+    void Awake()
     {
         image = GetComponent<Image>();
         text = GetComponentInChildren<TextMeshProUGUI>();

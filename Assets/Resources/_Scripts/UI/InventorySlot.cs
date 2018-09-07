@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class InventorySlot : InteractableElement
@@ -10,16 +7,17 @@ public class InventorySlot : InteractableElement
     public bool isEmpty = true; // All slots start out empty.
     public InventoryItem inventoryItem; // The item in the slot.
 
-    private Image slot_sprite; // The default image for the slot.
+    private Image image; // The default image for the slot.
     private int index;
     private int quantity;
 
     // Use this for initialization
     void Awake()
     {
-        slot_sprite = GetComponent<Image>();
+        audioSource = GetComponent<AudioSource>();
+        image = GetComponent<Image>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
     }
 
     /// <summary>
@@ -49,6 +47,21 @@ public class InventorySlot : InteractableElement
         inventoryItem.SetQuantity(quantity);
     }
 
+    /// <summary>
+    /// Plays hover sound.
+    /// </summary>
+    void OnMouseEnter()
+    {
+        if (!isEmpty && !InventoryItem.dragging)
+        {
+            if (enterSound != null)
+            {
+                audioSource.clip = enterSound;
+                audioSource.Play();
+            }
+        }
+    }
+
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
@@ -56,15 +69,16 @@ public class InventorySlot : InteractableElement
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
             SendMessageUpwards("ClearSlot", index);
-            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
             return;
         }
 
         if (!isEmpty && !InventoryItem.dragging)
         {
-            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             inventoryItem.Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
+
         }
     }
 
@@ -72,13 +86,30 @@ public class InventorySlot : InteractableElement
     void OnMouseExit()
     {
         if (!isEmpty)
-            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
             inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
+            if (exitSound != null)
+            {
+                audioSource.clip = exitSound;
+                audioSource.Play();
+            }
         }
+    }
+
+    /// <summary>
+    /// Deletes the item gameobject on the slot.
+    /// </summary>
+    public void DeleteSlot()
+    {
+        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        inventoryItem.SetQuantity(0);
+        Destroy(inventoryItem.item.gameObject);
+        inventoryItem.gameObject.SetActive(false);
+        isEmpty = true;
     }
 
     /// <summary>
@@ -86,6 +117,9 @@ public class InventorySlot : InteractableElement
     /// </summary>
     public void ClearSlot()
     {
+        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        inventoryItem.SetQuantity(0);
+        inventoryItem.SetItem(null, 0);
         inventoryItem.gameObject.SetActive(false);
         isEmpty = true;
     }
@@ -94,12 +128,21 @@ public class InventorySlot : InteractableElement
     /// Sets the item of the inventory slot.
     /// </summary>
     /// <param name="item"></param>
-    public virtual void SetItem(Item item)
+    public virtual void SetItem(Item item, int? quantity = null)
     {
-        quantity = 1;
-        inventoryItem.SetItem(item, quantity);
         inventoryItem.gameObject.SetActive(true);
-        isEmpty = false;
+        this.quantity = (item.stackable) ? quantity ?? 1 : 0;
+        inventoryItem.SetItem(item, this.quantity);
+        if (item != null)
+        {
+            inventoryItem.item.gameObject.SetActive(false);
+            isEmpty = false;
+        }
+        else
+        {
+            inventoryItem.gameObject.SetActive(false);
+            isEmpty = true;
+        }
     }
 
     // Gets the item of the inventory slot.

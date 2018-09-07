@@ -13,7 +13,7 @@ public class ShipComponent : Item
     internal bool mounted = false;
 
     // The type of component.
-    internal ComponentType componentType;
+    internal ItemType ItemType;
 
     // The amount of health the component currently has.
     internal int currentHealth;
@@ -39,9 +39,9 @@ public class ShipComponent : Item
     /// Gets the type of this component.
     /// </summary>
     /// <returns></returns>
-    public ComponentType GetComponentType()
+    public ItemType GetItemType()
     {
-        return componentType;
+        return ItemType;
     }
 
     /// <summary>
