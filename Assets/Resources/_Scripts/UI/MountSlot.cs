@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class MountSlot : InteractableElement
@@ -7,20 +8,37 @@ public class MountSlot : InteractableElement
     public ItemType type;
     public ItemTier tier;
     public ItemClass itemClass;
+    [Header("Other")]
+    // Distance from the physical mount.
+    private float distanceFromMount;
+    private float angleFromMount;
+    private float speed = 3.0f;
 
     // The mount associated with this slot.
     private ShipMount mount;
-    private Image sprite_slot; // The default image for the slot.
     private InventoryItem inventoryItem;
-    private int index;
 
     [HideInInspector]
     public bool isEmpty;
 
-    void Start()
+    void Awake()
     {
+        image = GetComponent<Image>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        sprite_slot = GetComponent<Image>();
+        audioSource = GetComponent<AudioSource>();
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        gameObject.SetActive(false);
+    }
+
+    void FixedUpdate()
+    {
+        if (mount != null)
+        {
+            var x = Camera.main.ScreenToWorldPoint(mount.transform.position).x + distanceFromMount * Math.Cos(Math.PI / 180 * angleFromMount);
+            var y = Camera.main.ScreenToWorldPoint(mount.transform.position).y + distanceFromMount * Math.Sin(Math.PI / 180 * angleFromMount);
+            var vect = new Vector3((float)x, (float)y, mount.transform.position.z);
+            transform.position = Vector3.Slerp(transform.position, vect, Time.deltaTime * speed);
+        }
     }
 
     /// <summary>
@@ -30,23 +48,6 @@ public class MountSlot : InteractableElement
     public InventoryItem GetInventoryItem()
     {
         return inventoryItem;
-    }
-
-    /// <summary>
-    /// Sets the index of the slot.
-    /// </summary>
-    public void SetIndex(int i)
-    {
-        index = i;
-    }
-
-    /// <summary>
-    /// Gets the index of the slot.
-    /// </summary>
-    /// <returns></returns>
-    public int GetIndex()
-    {
-        return index;
     }
 
     /// <summary>
@@ -67,6 +68,11 @@ public class MountSlot : InteractableElement
     public void Initialize(ShipMount mount, int i)
     {
         this.mount = mount;
+        type = mount.GetMountType();
+        tier = mount.GetMountTier();
+        itemClass = mount.GetMountClass();
+        distanceFromMount = mount.distanceFromShip;
+        angleFromMount = mount.uiAngle;
         index = i;
     }
 

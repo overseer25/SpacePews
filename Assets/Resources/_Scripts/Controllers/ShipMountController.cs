@@ -8,6 +8,8 @@ public class ShipMountController : MonoBehaviour {
     // Each mount on the ship.
     private ShipMount[] mounts;
 
+    public MountUI mountUI;
+
     void Awake()
     {
         mounts = GetComponentsInChildren<ShipMount>();

@@ -396,7 +396,7 @@ MonoBehaviour:
   maxDamage: 5
   critChance: 0.1
   critMultiplier: 2
-  fireRate: 0.2
+  fireRate: 1
   shotSpeed: 50
   projectile: {fileID: 114565647420798162, guid: aae4b6b44afd4de4f8fba3d779994b64,
     type: 2}

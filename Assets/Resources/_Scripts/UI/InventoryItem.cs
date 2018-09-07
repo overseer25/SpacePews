@@ -32,8 +32,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         image = GetComponent<Image>();
         count = GetComponentInChildren<TextMeshProUGUI>();
         positions = new int[2];
-        positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
-        gameObject.SetActive(false);
+        positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
     }
 
     /// <summary>

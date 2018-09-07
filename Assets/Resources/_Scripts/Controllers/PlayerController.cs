@@ -89,6 +89,10 @@ public class PlayerController : MonoBehaviour
             gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
             inventory.Toggle();
         }
+        if(Input.GetKeyDown("g"))
+        {
+            gameObject.GetComponent<ShipMountController>().mountUI.Toggle();
+        }
 
     }
 

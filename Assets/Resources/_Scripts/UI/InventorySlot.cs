@@ -5,37 +5,16 @@ public class InventorySlot : InteractableElement
 {
     [Header("State")]
     public bool isEmpty = true; // All slots start out empty.
-    public InventoryItem inventoryItem; // The item in the slot.
-
-    private Image image; // The default image for the slot.
-    private int index;
+    private InventoryItem inventoryItem; // The item in the slot.
     private int quantity;
 
     // Use this for initialization
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         image = GetComponent<Image>();
+        audioSource = GetComponent<AudioSource>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
         image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-    }
-
-    /// <summary>
-    /// Sets the index of the slot in the inventory slot array.
-    /// </summary>
-    /// <param name="index"></param>
-    public void SetIndex(int index)
-    {
-        this.index = index;
-    }
-
-    /// <summary>
-    /// Get the index of the slot.
-    /// </summary>
-    /// <param name="index"></param>
-    public int GetIndex()
-    {
-        return index;
     }
 
     /// <summary>
@@ -45,6 +24,15 @@ public class InventorySlot : InteractableElement
     {
         quantity++;
         inventoryItem.SetQuantity(quantity);
+    }
+
+    /// <summary>
+    /// Get the inventory item of this slot.
+    /// </summary>
+    /// <returns></returns>
+    public InventoryItem GetInventoryItem()
+    {
+        return inventoryItem;
     }
 
     /// <summary>

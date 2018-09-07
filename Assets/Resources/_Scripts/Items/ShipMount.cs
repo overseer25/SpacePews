@@ -13,9 +13,8 @@ public class ShipMount : MonoBehaviour {
 
     // The direction to display the UI element of the ship mount.
     [Header("UI Element Attributes")]
-    [SerializeField]
-    private Vector2 uiDirection;
-    private float distanceFromShip;
+    public float uiAngle;
+    public float distanceFromShip;
 
 
     private ShipComponent component;
@@ -41,9 +40,9 @@ public class ShipMount : MonoBehaviour {
     /// mount.
     /// </summary>
     /// <returns></returns>
-    public Vector2 GetUIDirection()
+    public float GetUIDirection()
     {
-        return uiDirection;
+        return uiAngle;
     }
 
     /// <summary>

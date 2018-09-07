@@ -147,7 +147,7 @@ public class Inventory : MonoBehaviour
         {
             if (slot.isEmpty)
             {
-                var result = Instantiate(temp, slot.inventoryItem.transform.position, Quaternion.identity, slot.inventoryItem.transform) as Item;
+                var result = Instantiate(temp, slot.GetInventoryItem().transform.position, Quaternion.identity, slot.GetInventoryItem().transform) as Item;
                 slot.SetItem(result); // Add to the slot
                 return;
             }
@@ -167,8 +167,8 @@ public class Inventory : MonoBehaviour
         // Swap the values of the two, if they both contain an item.
         if(!inventorySlots[index1].isEmpty && !inventorySlots[index2].isEmpty)
         {
-            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].inventoryItem.transform;
-            inventorySlots[index2].GetItem().gameObject.transform.parent = inventorySlots[index1].inventoryItem.transform;
+            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].GetInventoryItem().transform;
+            inventorySlots[index2].GetItem().gameObject.transform.parent = inventorySlots[index1].GetInventoryItem().transform;
             var temp = inventorySlots[index2].GetItem();
 
             inventorySlots[index2].SetItem(inventorySlots[index1].GetItem());
@@ -177,7 +177,7 @@ public class Inventory : MonoBehaviour
         }
         else if(inventorySlots[index2].isEmpty)
         {
-            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].inventoryItem.transform;
+            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].GetInventoryItem().transform;
             inventorySlots[index2].SetItem(inventorySlots[index1].GetItem());
             inventorySlots[index1].ClearSlot();
         }

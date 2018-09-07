@@ -13,10 +13,9 @@ public class InteractableElement : MonoBehaviour {
     // Highlight the image when hovering over it
     internal Image image;
     private TextMeshProUGUI text;
+    internal int index;
     internal AudioSource audioSource;
     private bool hovering = false;
-    // Keep track of the original color, as we will be changing it to red when hovering.
-    private Color originalColor;
 
     void Awake()
     {
@@ -24,7 +23,23 @@ public class InteractableElement : MonoBehaviour {
         text = GetComponentInChildren<TextMeshProUGUI>();
         audioSource = GetComponent<AudioSource>();
         image.color = new Color(image.color.r, image.color.g, image.color.b, 0.7f);
-        originalColor = image.color;
+    }
+
+    /// <summary>
+    /// Sets the index of the slot.
+    /// </summary>
+    public void SetIndex(int i)
+    {
+        index = i;
+    }
+
+    /// <summary>
+    /// Gets the index of the slot.
+    /// </summary>
+    /// <returns></returns>
+    public int GetIndex()
+    {
+        return index;
     }
 
     // Remove highlight when no longer hovering
@@ -32,7 +47,7 @@ public class InteractableElement : MonoBehaviour {
     {
         if(!hovering && InventoryItem.dragging)
         {
-            image.color = new Color(Color.red.r, Color.red.g, Color.red.b, 1.0f);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 1.0f);
             if (text != null)
                 text.color = new Color(text.color.r, text.color.g, text.color.b, 1.0f);
             hovering = true;
@@ -46,7 +61,7 @@ public class InteractableElement : MonoBehaviour {
         // If item is no longer being dragged, do not highlight.
         else if(hovering && !InventoryItem.dragging)
         {
-            image.color = originalColor;
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 0.7f);
             if (text != null)
                 text.color = new Color(text.color.r, text.color.g, text.color.b, 0.7f);
             hovering = false;
@@ -58,7 +73,7 @@ public class InteractableElement : MonoBehaviour {
     {
         if (hovering && InventoryItem.dragging)
         {
-            image.color = originalColor;
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 0.7f);
             if (text != null)
                 text.color = new Color(text.color.r, text.color.g, text.color.b, 0.7f);
             hovering = false;
