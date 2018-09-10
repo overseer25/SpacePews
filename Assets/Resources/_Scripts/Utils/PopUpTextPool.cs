@@ -62,7 +62,7 @@ public class PopUpTextPool : MonoBehaviour
     {
         foreach (var obj in objectPool)
         {
-            if (!obj.activeInHierarchy)
+            if (obj != null && !obj.activeInHierarchy)
             {
                 return obj;
             }

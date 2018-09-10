@@ -85,7 +85,7 @@ public class Item : MonoBehaviour
         var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
 
         // If the player's inventory is full, don't hover toward them.
-        if (!closestPlayer.GetComponent<PlayerController>().inventory.ContainsEmptySlot())
+        if (!closestPlayer.GetComponent<PlayerController>().inventory.ContainsEmptySlot() && !closestPlayer.GetComponent<PlayerController>().inventory.ContainsItem(this))
         {
             return;
         }

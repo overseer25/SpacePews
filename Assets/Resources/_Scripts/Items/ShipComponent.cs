@@ -13,7 +13,7 @@ public class ShipComponent : Item
     internal bool mounted = false;
 
     // The type of component.
-    internal ItemType ItemType;
+    internal ItemType itemType;
 
     // The amount of health the component currently has.
     internal int currentHealth;
@@ -41,7 +41,7 @@ public class ShipComponent : Item
     /// <returns></returns>
     public ItemType GetItemType()
     {
-        return ItemType;
+        return itemType;
     }
 
     /// <summary>
@@ -69,5 +69,15 @@ public class ShipComponent : Item
     public int GetRemainingHealth()
     {
         return currentHealth;
+    }
+
+    /// <summary>
+    /// Checks that this ship component is the same as another, comparing
+    /// their type, tier, and class.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsSameComponentType(ShipComponent other)
+    {
+        return itemType == other.GetItemType() && itemTier == other.GetComponentTier() && componentClass == other.GetComponentClass();
     }
 }

@@ -30,13 +30,13 @@ public class WeaponComponent : ShipComponent
     // What time the last shot was fired.
     private float lastShot = 0.0f;
 
-    void Start()
+    void Awake()
     {
         itemColor = ItemColors.colors[(int)itemTier];
         audioSource = GetComponent<AudioSource>();
         random = new System.Random();
         random.Next();
-        ItemType = ItemType.Weapon;
+        itemType = ItemType.Weapon;
     }
 
     /// <summary>

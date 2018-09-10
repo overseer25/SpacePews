@@ -12,7 +12,7 @@ public class MountSlot : InteractableElement
     // Distance from the physical mount.
     private float distanceFromMount;
     private float angleFromMount;
-    private float speed = 3.0f;
+    private float speed = 10.0f;
 
     // The mount associated with this slot.
     private ShipMount mount;
@@ -30,15 +30,38 @@ public class MountSlot : InteractableElement
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Reset position of slot when enabled.
+    /// </summary>
+    private void OnEnable()
+    {
+        transform.position = mount.transform.position;
+    }
+
+    /// <summary>
+    /// Smooth movement.
+    /// </summary>
     void FixedUpdate()
     {
         if (mount != null)
         {
             var x = Camera.main.ScreenToWorldPoint(mount.transform.position).x + distanceFromMount * Math.Cos(Math.PI / 180 * angleFromMount);
             var y = Camera.main.ScreenToWorldPoint(mount.transform.position).y + distanceFromMount * Math.Sin(Math.PI / 180 * angleFromMount);
-            var vect = new Vector3((float)x, (float)y, mount.transform.position.z);
+            var vect = new Vector3((float)x, (float)y, gameObject.transform.parent.transform.position.z);
             transform.position = Vector3.Slerp(transform.position, vect, Time.deltaTime * speed);
         }
+    }
+
+    /// <summary>
+    /// Checks to see if the provided component can fit in this mount.
+    /// </summary>
+    /// <param name="component"></param>
+    /// <returns></returns>
+    public bool IsComponentCompatible(ShipComponent component)
+    {
+        if (component == null)
+            return false;
+        return type == component.GetItemType() && tier == component.GetComponentTier() && itemClass == component.GetComponentClass();
     }
 
     /// <summary>
@@ -51,6 +74,15 @@ public class MountSlot : InteractableElement
     }
 
     /// <summary>
+    /// Gets the item of the mount slot.
+    /// </summary>
+    /// <returns></returns>
+    public Item GetItem()
+    {
+        return inventoryItem.item;
+    }
+
+    /// <summary>
     /// Sets the item of the mount slot.
     /// </summary>
     /// <param name="item"></param>
@@ -58,7 +90,97 @@ public class MountSlot : InteractableElement
     {
         inventoryItem.SetItem(item, 0);
         inventoryItem.gameObject.SetActive(true);
+        if (item is WeaponComponent)
+            mount.SetComponent(item as WeaponComponent);
         isEmpty = false;
+    }
+
+    /// <summary>
+    /// Deletes the item gameobject on the slot.
+    /// </summary>
+    public void DeleteSlot()
+    {
+        mount.ClearMount();
+        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        inventoryItem.SetQuantity(0);
+        inventoryItem.SetItem(null, 0);
+        inventoryItem.gameObject.SetActive(false);
+        isEmpty = true;
+    }
+
+    /// <summary>
+    /// "Empty" the slot.
+    /// </summary>
+    public void ClearSlot()
+    {
+        mount.ClearMount();
+        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        inventoryItem.SetQuantity(0);
+        inventoryItem.SetItem(null, 0);
+        inventoryItem.gameObject.SetActive(false);
+        isEmpty = true;
+    }
+
+    /// <summary>
+    /// Compare this mount slot to another, comparing their type, tier, and class.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool IsSameSlotType(MountSlot other)
+    {
+        return type == other.type && tier == other.tier && itemClass == other.itemClass;
+    }
+    /// <summary>
+    /// Plays hover sound.
+    /// </summary>
+    void OnMouseEnter()
+    {
+        if (!isEmpty && !InventoryItem.dragging)
+        {
+            if (enterSound != null)
+            {
+                audioSource.clip = enterSound;
+                audioSource.Play();
+            }
+        }
+    }
+
+    // Highlight the image when hovering over it
+    void OnMouseOver()
+    {
+        // Shift clicking will clear the slot.
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
+        {
+            SendMessageUpwards("ClearSlot", index);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            return;
+        }
+
+        if (!isEmpty && !InventoryItem.dragging)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            inventoryItem.Highlight();
+            SendMessageUpwards("ShowHoverTooltip", index);
+
+        }
+    }
+
+    // Remove highlight on image when no longer hovering
+    void OnMouseExit()
+    {
+        if (!isEmpty)
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        {
+            inventoryItem.Dehighlight();
+            SendMessageUpwards("HideHoverTooltip");
+            if (exitSound != null)
+            {
+                audioSource.clip = exitSound;
+                audioSource.Play();
+            }
+        }
     }
 
     /// <summary>
@@ -73,6 +195,13 @@ public class MountSlot : InteractableElement
         itemClass = mount.GetMountClass();
         distanceFromMount = mount.distanceFromShip;
         angleFromMount = mount.uiAngle;
+
+        if (mount.GetShipComponent() != null)
+        {
+            inventoryItem.SetItem(mount.GetShipComponent(), 0);
+            inventoryItem.gameObject.SetActive(true);
+            isEmpty = false;
+        }
         index = i;
     }
 

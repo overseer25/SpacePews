@@ -10,26 +10,23 @@ public class WeaponController : MonoBehaviour
 
     [SerializeField]
     private ShipMountController mountController;
-    private List<WeaponComponent> weapons;
 
-    void Start()
-    {
-        weapons = new List<WeaponComponent>();
-        foreach (var mount in mountController.GetWeaponMounts().Where(m => m.GetMountType() == ItemType.Weapon))
-            weapons.Add(mount.GetShipComponent() as WeaponComponent);
-    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButton(0) && !menuOpen)
         {
-            foreach (var weapon in weapons)
+            foreach (var mount in mountController.GetWeaponMounts())
             {
-                if (Time.time > weapon.GetNextShotTime())
+                var weapon = mount.GetShipComponent() as WeaponComponent;
+                if(weapon != null)
                 {
-                    weapon.Fire();
-                    weapon.SetLastShot(Time.time);
+                    if (Time.time > weapon.GetNextShotTime())
+                    {
+                        weapon.Fire();
+                        weapon.SetLastShot(Time.time);
+                    }
                 }
             }
         }

@@ -224,16 +224,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5772291fa23934ea0cddc3fd4ca0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  acceleration: 0
-  minDamage: 1
-  maxDamage: 5
-  critMultiplier: 0
-  critChance: 0
-  lifetime: 3
-  fireRate: 1
-  explosion: {fileID: 1570939830461566, guid: 39fffa447ffea104d902c5285d13f3d2, type: 2}
   collisionSound: {fileID: 8300000, guid: 2b56c10f722681a4090199f9e7944e77, type: 3}
+  fireSound: {fileID: 0}
+  lifetime: 3
+  explosion: {fileID: 1570939830461566, guid: 39fffa447ffea104d902c5285d13f3d2, type: 2}
 --- !u!212 &212302797721912656
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -23,16 +23,54 @@ public class ShipMount : MonoBehaviour {
     /// <summary>
     /// Initialization.
     /// </summary>
-    void Start()
+    void Awake()
     {
         component = GetComponentInChildren<ShipComponent>();
-        component.mounted = true;
-        if (component.GetItemType() != mountType)
-            Debug.LogError("Component type not equal to mount type!");
-        if (component.GetComponentClass() != mountClass)
-            Debug.LogError("Component class not equal to mount class!");
-        if (component.GetComponentTier() != mountTier)
-            Debug.LogError("Component tier not equal to mount tier!");
+        if(component != null)
+        {
+            if (component.GetItemType() != mountType)
+                Debug.LogError("Component type not equal to mount type!");
+            if (component.GetComponentClass() != mountClass)
+                Debug.LogError("Component class not equal to mount class!");
+            if (component.GetComponentTier() != mountTier)
+                Debug.LogError("Component tier not equal to mount tier!");
+        }
+    }
+
+    /// <summary>
+    /// Clear the mount.
+    /// </summary>
+    public void ClearMount()
+    {
+        Destroy(component.gameObject);
+    }
+
+    /// <summary>
+    /// Set the component of the mount.
+    /// </summary>
+    /// <param name="component"></param>
+    public void SetComponent(ShipComponent component)
+    {
+        if(this.component != null)
+        {
+            Destroy(this.component.gameObject);
+        }
+
+        this.component = Instantiate(component, transform.position, transform.rotation, transform);
+        this.component.gameObject.SetActive(true);
+        this.component.mounted = true;
+    }
+
+    /// <summary>
+    /// Checks to see if the provided component can fit in this mount.
+    /// </summary>
+    /// <param name="component"></param>
+    /// <returns></returns>
+    public bool IsComponentCompatible(ShipComponent component)
+    {
+        if (component == null)
+            return false;
+        return mountType == component.GetItemType() && mountTier == component.GetComponentTier() && mountClass == component.GetComponentClass();
     }
 
     /// <summary>

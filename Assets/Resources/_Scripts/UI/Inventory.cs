@@ -1,24 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
     [Header("Tool Tip")]
-    public GameObject tooltip;
+    public InfoScreen infoScreen;
 
     [Header("Sounds")]
-    public AudioClip inventoryOpen;
-    public AudioClip inventoryClose;
+    public AudioClip openSound;
+    public AudioClip closeSound;
     public AudioClip swapSound;
     public AudioClip clearSlotSound;
 
-    private InfoScreen infoScreen;
     private InventorySlot[] inventorySlots;
-    private AudioSource audioSource;
-    private bool isOpen = false;
+    internal AudioSource audioSource;
+    internal bool isOpen = false;
+
+    [SerializeField]
+    private ShipMountController mountController;
+    [SerializeField]
+    private GameObject mountUI;
+    private ShipMount[] mounts;
+    private List<MountSlot> mountSlotsUI;
 
     // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
     private List<Item> itemList;
@@ -40,26 +44,39 @@ public class Inventory : MonoBehaviour
             itemList.Add(itemObj.GetComponent<Item>());
         }
         audioSource = GetComponent<AudioSource>();
-        infoScreen = tooltip.GetComponent<InfoScreen>();
+
+        mountSlotsUI = new List<MountSlot>();
+        mounts = mountController.GetAllMounts();
+        foreach (var mount in mounts)
+        {
+            var prefabName = mount.GetMountType().ToString() + mount.GetMountTier().ToString() + mount.GetMountClass().ToString();
+            var slot = Instantiate(Resources.Load("_Prefabs/UI/MountingSystem/" + prefabName), mount.transform.position, mount.transform.rotation, mountUI.transform) as GameObject;
+            slot.GetComponent<MountSlot>().Initialize(mount, i++);
+            mountSlotsUI.Add(slot.GetComponent<MountSlot>());
+        }
     }
 
     /// <summary>
     /// Called to toggle display to inventory UI.
     /// </summary>
-    public void Toggle()
+    public virtual void Toggle()
     {
-        if(!isOpen)
+        if (!isOpen)
         {
-            audioSource.clip = inventoryOpen;
+            audioSource.clip = openSound;
             audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = true;
+            foreach (var mount in mountSlotsUI)
+                mount.gameObject.SetActive(true);
             isOpen = true;
         }
         else
         {
-            audioSource.clip = inventoryClose;
+            audioSource.clip = closeSound;
             audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = false;
+            foreach (var mount in mountSlotsUI)
+                mount.gameObject.SetActive(false);
             isOpen = false;
         }
     }
@@ -69,18 +86,37 @@ public class Inventory : MonoBehaviour
     /// and displays the tooltip.
     /// </summary>
     /// <param name="index"></param>
-    public void ShowHoverTooltip(int index)
+    public virtual void ShowHoverTooltip(int index)
     {
-        if (inventorySlots[index].isEmpty)
+        // If the provided index is greater than the number of inventory slots, then it is a mount slot.
+        if (index >= inventorySlots.Count())
         {
-            infoScreen.Hide();
+            index -= inventorySlots.Count();
+            if (mountSlotsUI[index].isEmpty)
+            {
+                infoScreen.Hide();
+            }
+            else if (!infoScreen.gameObject.activeSelf)
+            {
+                var item = mountSlotsUI[index].GetItem();
+
+                infoScreen.SetInfo(item, 0);
+                infoScreen.Show();
+            }
         }
         else
         {
-            var item = inventorySlots[index].GetItem();
+            if (inventorySlots[index].isEmpty)
+            {
+                infoScreen.Hide();
+            }
+            else if (!infoScreen.gameObject.activeSelf)
+            {
+                var item = inventorySlots[index].GetItem();
 
-            infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
-            infoScreen.Show();
+                infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
+                infoScreen.Show();
+            }
         }
     }
 
@@ -97,7 +133,10 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void DeleteSlot(int index)
     {
-        inventorySlots[index].DeleteSlot();
+        if (index < inventorySlots.Count())
+            inventorySlots[index].DeleteSlot();
+        else
+            mountSlotsUI[index - inventorySlots.Count()].DeleteSlot();
 
         // Play the delete sound.
         audioSource.Stop();
@@ -111,7 +150,10 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void ClearSlot(int index)
     {
-        inventorySlots[index].ClearSlot();
+        if (index < inventorySlots.Count())
+            inventorySlots[index].ClearSlot();
+        else
+            mountSlotsUI[index - inventorySlots.Count()].ClearSlot();
 
         // Play the delete sound.
         audioSource.Stop();
@@ -136,8 +178,8 @@ public class Inventory : MonoBehaviour
             if (!slot.isEmpty && slot.GetItem().name.Equals(temp.name))
             {
                 if (slot.GetItem().stackable && slot.GetQuantity() < slot.GetItem().stackSize)
-                {   
-                    slot.IncrementQuantity();
+                {
+                    slot.SetQuantity(slot.GetQuantity()+1);
                     return;
                 }
             }
@@ -163,27 +205,141 @@ public class Inventory : MonoBehaviour
     {
         var index1 = indices[0];
         var index2 = indices[1];
-
-        // Swap the values of the two, if they both contain an item.
-        if(!inventorySlots[index1].isEmpty && !inventorySlots[index2].isEmpty)
-        {
-            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].GetInventoryItem().transform;
-            inventorySlots[index2].GetItem().gameObject.transform.parent = inventorySlots[index1].GetInventoryItem().transform;
-            var temp = inventorySlots[index2].GetItem();
-
-            inventorySlots[index2].SetItem(inventorySlots[index1].GetItem());
-            inventorySlots[index1].SetItem(temp);
-
-        }
-        else if(inventorySlots[index2].isEmpty)
-        {
-            inventorySlots[index1].GetItem().gameObject.transform.parent = inventorySlots[index2].GetInventoryItem().transform;
-            inventorySlots[index2].SetItem(inventorySlots[index1].GetItem());
-            inventorySlots[index1].ClearSlot();
-        }
-
         audioSource.clip = swapSound;
-        audioSource.Play();
+
+        // If swapping between inventory slots.
+        if (index1 < inventorySlots.Count() && index2 < inventorySlots.Count())
+        {
+            var slot1 = inventorySlots[index1];
+            var slot2 = inventorySlots[index2];
+            // Swap the items of the two, if they both contain an item.
+            if (!slot1.isEmpty && !slot2.isEmpty)
+            {
+                slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+                slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
+                var tempItem = slot2.GetItem();
+                var tempQuantity = slot2.GetQuantity();
+
+                slot2.SetItem(slot1.GetItem());
+                slot2.SetQuantity(slot1.GetQuantity());
+                slot1.SetItem(tempItem);
+                slot1.SetQuantity(tempQuantity);
+
+            }
+            else if (slot2.isEmpty)
+            {
+                slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+                slot2.SetItem(slot1.GetItem());
+                slot2.SetQuantity(slot1.GetQuantity());
+                slot1.ClearSlot();
+            }
+            audioSource.Play();
+
+        }
+        // If swapping from a mounting slot.
+        else if (index1 >= inventorySlots.Count() && index2 < inventorySlots.Count())
+        {
+            var mountSlot = mountSlotsUI[index1 - inventorySlots.Count()];
+            var invSlot = inventorySlots[index2];
+
+            // Swap the items of the two, if they both contain an item.
+            if (!mountSlot.isEmpty && !invSlot.isEmpty)
+            {
+                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
+                ShipComponent mountComp = mountSlot.GetItem() as ShipComponent;
+
+                if (invComp != null && mountComp != null)
+                {
+                    // Only swap if the components are the same type/tier/class.
+                    if (invComp.IsSameComponentType(mountComp))
+                    {
+
+                        mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                        invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
+                        var temp = invSlot.GetItem();
+
+                        invSlot.SetItem(mountSlot.GetItem());
+                        
+                        mountSlot.SetItem(temp);
+                        audioSource.Play();
+                    }
+                }
+            }
+            else if (invSlot.isEmpty)
+            {
+                mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                invSlot.SetItem(mountSlot.GetItem());
+                mountSlot.ClearSlot();
+                audioSource.Play();
+            }
+        }
+        // If swapping to a mounting slot.
+        else if (index1 < inventorySlots.Count() && index2 >= inventorySlots.Count())
+        {
+            var mountSlot = mountSlotsUI[index2 - inventorySlots.Count()];
+            var invSlot = inventorySlots[index1];
+
+            // Swap the items of the two, if they both contain an item.
+            if (!mountSlot.isEmpty && !invSlot.isEmpty)
+            {
+                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
+                ShipComponent mountComp = mountSlot.GetItem() as ShipComponent;
+
+                if (invComp != null && mountComp != null)
+                {
+                    // Only swap if the types of the mount and the inventory slot are the same.
+                    if (invComp.IsSameComponentType(mountComp))
+                    {
+
+                        mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                        invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
+                        var temp = invSlot.GetItem();
+
+                        invSlot.SetItem(mountSlot.GetItem());
+                        mountSlot.SetItem(temp);
+                        audioSource.Play();
+                    }
+                }
+            }
+            else if (mountSlot.isEmpty)
+            {
+                if(mountSlot.IsComponentCompatible(invSlot.GetItem() as ShipComponent))
+                {
+                    invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
+                    mountSlot.SetItem(invSlot.GetItem());
+                    invSlot.ClearSlot();
+                    audioSource.Play();
+                }
+            }
+        }
+        // If swapping between mounting slots.
+        else
+        {
+            var slot1 = mountSlotsUI[index1 - inventorySlots.Count()];
+            var slot2 = mountSlotsUI[index2 - inventorySlots.Count()];
+            // Only swap their items if they are the same type of mount.
+            if (slot1.IsSameSlotType(slot2))
+            {
+                // Swap the items of the two, if they both contain an item.
+                if (!slot1.isEmpty && !slot2.isEmpty)
+                {
+                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+                    slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
+                    var temp = slot2.GetItem();
+
+                    slot2.SetItem(slot1.GetItem());
+                    slot1.SetItem(temp);
+
+                }
+                else if (slot2.isEmpty)
+                {
+                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+                    slot2.SetItem(slot1.GetItem());
+                    slot1.ClearSlot();
+                }
+                audioSource.Play();
+            }
+        }
     }
 
 
@@ -204,6 +360,20 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Get an empty slot if it exists. Otherwise returns null.
+    /// </summary>
+    /// <returns></returns>
+    public InventorySlot GetEmptySlot()
+    {
+        foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.transform.GetSiblingIndex()))
+        {
+            if (slot.isEmpty) { return slot; } // Empty slot found
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Checks to see if an inventory slot contains the given item.
     /// </summary>
     /// <param name="item"></param>
@@ -215,7 +385,7 @@ public class Inventory : MonoBehaviour
         {
             if (slot.GetItem() != null)
             {
-                if (slot.GetItem().name.Contains(item.name) && slot.GetQuantity() < slot.GetItem().stackSize)
+                if (slot.GetItem().name.Equals(item.name) && slot.GetQuantity() < slot.GetItem().stackSize)
                     return true;
             }
         }

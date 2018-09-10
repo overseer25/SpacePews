@@ -8,8 +8,6 @@ public class ShipMountController : MonoBehaviour {
     // Each mount on the ship.
     private ShipMount[] mounts;
 
-    public MountUI mountUI;
-
     void Awake()
     {
         mounts = GetComponentsInChildren<ShipMount>();
@@ -30,7 +28,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetWeaponMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ItemType.Weapon).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Weapon && m.GetShipComponent() != null).ToArray();
     }
 
     /// <summary>

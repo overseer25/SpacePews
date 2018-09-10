@@ -27,7 +27,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     internal bool destroying = false;
     private bool highlighted = false;
 
-    void Start()
+    void Awake()
     {
         image = GetComponent<Image>();
         count = GetComponentInChildren<TextMeshProUGUI>();
@@ -109,7 +109,8 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
         if (Input.GetMouseButton(0))
         {
-            positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
+            if(GetComponentInParent<InteractableElement>() != null)
+                positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
             dragging = true;
             SendMessageUpwards("HideHoverTooltip");
         }
@@ -140,23 +141,12 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         if (image == null) { return; }
         dragging = false;
 
-        if(mounting)
-        {
-            if(item.type == mountSlot.type)
-            {
-                var result = Instantiate(item, mountSlot.GetInventoryItem().transform.position, Quaternion.identity, mountSlot.GetInventoryItem().transform) as Item;
-                result.transform.parent = mountSlot.GetInventoryItem().transform;
-                mountSlot.SetItem(result); // Add to the slot
-                SendMessageUpwards("DeleteSlot", positions[0]);
-                mounting = false;
-            }
-        }
         if (destroying)
         {
             SendMessageUpwards("DeleteSlot", positions[0]);
             destroying = false;
         }
-        if (swapping)
+        if (swapping || mounting)
         {
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
@@ -175,12 +165,12 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         switch (collider.gameObject.tag)
         {
             case ("InventorySlot"):
-                mountSlot = collider.gameObject.GetComponent<MountSlot>();
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
                 break;
             case ("MountSlot"):
                 mountSlot = collider.gameObject.GetComponent<MountSlot>();
+                positions[1] = mountSlot.GetIndex();
                 mounting = true;
                 break;
             case ("DeleteZone"):
@@ -199,11 +189,12 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         switch (collider.gameObject.tag)
         {
             case ("InventorySlot"):
-                mountSlot = collider.gameObject.GetComponent<MountSlot>();
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
                 break;
             case ("MountSlot"):
+                mountSlot = collider.gameObject.GetComponent<MountSlot>();
+                positions[1] = mountSlot.GetIndex();
                 mounting = true;
                 break;
             case ("DeleteZone"):

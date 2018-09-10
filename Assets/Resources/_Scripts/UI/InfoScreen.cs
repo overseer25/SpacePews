@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using TMPro;
 
-public class InfoScreen : MonoBehaviour {
-
-    private RectTransform rt;
+public class InfoScreen : MonoBehaviour
+{
 
     [Header("Displays")]
     public TextMeshProUGUI text1;
@@ -18,18 +14,15 @@ public class InfoScreen : MonoBehaviour {
     public TextMeshProUGUI value;
     public TextMeshProUGUI quantity;
 
-    void Start()
-    {
-        rt = GetComponent<RectTransform>();
-    }
-
     void Update()
     {
-        var newPos = Input.mousePosition;
-        newPos.y = Input.mousePosition.y + 30.0f - Camera.main.transform.position.y;
-        newPos.z = transform.position.z - Camera.main.transform.position.z;
+        var mousePos = Input.mousePosition;
+        mousePos.y = Input.mousePosition.y + 30.0f;
+        mousePos.z = transform.position.z - Camera.main.transform.position.z;
 
-        transform.position = Camera.main.ScreenToWorldPoint(newPos);
+        var pos = Camera.main.ScreenToWorldPoint(mousePos);
+        pos.z = transform.parent.transform.position.z;
+        transform.position = Vector3.Slerp(transform.position, pos, Time.deltaTime * 10.0f);
     }
 
     /// <summary>
@@ -60,7 +53,7 @@ public class InfoScreen : MonoBehaviour {
     public void SetInfo(Item item, int count)
     {
         // Display stats different if item is a weapon component.
-        if(item is WeaponComponent)
+        if (item is WeaponComponent)
         {
             var weapComp = item as WeaponComponent;
             text1.text = item.name;
@@ -81,7 +74,8 @@ public class InfoScreen : MonoBehaviour {
             text5.text = "";
         }
 
-        value.text = "<style=\"Value\">" + item.value + ((item.value == 1) ? " Unit " : " Units ") + "(" + item.value * count + ")</style>";
+        value.text = "<style=\"Value\">" + item.value + ((item.value == 1) ? " Unit " : " Units ");
+        value.text += (count > 1) ? "(" + item.value * count + ")</style>" : "";
         quantity.text = (item.stackable) ? count.ToString() : " ";
 
         // Resize the window to accomodate the new text.

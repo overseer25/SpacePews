@@ -19,7 +19,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4693178225609636}
-  - component: {fileID: 114021518291250186}
+  - component: {fileID: 114038816990140908}
+  - component: {fileID: 114769851974658056}
   m_Layer: 0
   m_Name: ObjectPools
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114021518291250186
+--- !u!114 &114038816990140908
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,7 +49,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1925310684449260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab4e6379e6f2acf4ca88f34b3ce0ab8d, type: 3}
+  m_Script: {fileID: 11500000, guid: 151ce57745cfa79469293d1b9ea2ff17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObject: {fileID: 1027994767850796, guid: 06c2498a86f900d42b6c6288fd22001e,
+    type: 2}
+  amountPooled: 20
+--- !u!114 &114769851974658056
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1925310684449260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff54de4d34e0963479eceb91062135a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pooledObject: {fileID: 1769040215680550, guid: aae4b6b44afd4de4f8fba3d779994b64,

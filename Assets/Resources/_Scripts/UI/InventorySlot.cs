@@ -20,9 +20,9 @@ public class InventorySlot : InteractableElement
     /// <summary>
     /// Increase the quantity of the item by 1.
     /// </summary>
-    public void IncrementQuantity()
+    public void SetQuantity(int quantity)
     {
-        quantity++;
+        this.quantity = quantity;
         inventoryItem.SetQuantity(quantity);
     }
 
