@@ -5388,8 +5388,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 90
   distanceFromShip: 15
-  startingComponent: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
-    type: 2}
+  startingComponent: {fileID: 0}
 --- !u!1001 &366786183
 Prefab:
   m_ObjectHideFlags: 0
@@ -6014,7 +6013,8 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 45
   distanceFromShip: 15
-  startingComponent: {fileID: 0}
+  startingComponent: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
+    type: 2}
 --- !u!1001 &577610215
 Prefab:
   m_ObjectHideFlags: 0
@@ -6307,7 +6307,8 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 135
   distanceFromShip: 15
-  startingComponent: {fileID: 0}
+  startingComponent: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
+    type: 2}
 --- !u!1 &706311075
 GameObject:
   m_ObjectHideFlags: 0
@@ -8111,8 +8112,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 225
   distanceFromShip: 15
-  startingComponent: {fileID: 114014495002168244, guid: 3eb086622662d0d4fa527ffe99258b03,
-    type: 2}
+  startingComponent: {fileID: 0}
 --- !u!1 &1070592839
 GameObject:
   m_ObjectHideFlags: 0
@@ -8237,6 +8237,52 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 499f5c455bec73b4ba6f4fc1daeb8291, type: 2}
+  m_IsPrefabAsset: 0
+--- !u!1001 &1096541754
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -31.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 39.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_RootOrder
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1737855592854374, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
+      propertyPath: m_Name
+      value: GatlingPulseCannonTier1Light (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &1146421378
 Transform:

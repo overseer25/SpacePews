@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
             movementController.RotateLeft();
         }
 
-        if (Input.GetKeyDown("i"))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
             inventory.Toggle();
