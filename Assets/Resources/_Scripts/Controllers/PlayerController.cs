@@ -66,14 +66,11 @@ public class PlayerController : MonoBehaviour
         {
             SetThrusterState(true);
             movementController.MoveForward();
-            if(!engine.isPlaying)
-                engine.Play();
         }
         else
         {
             SetThrusterState(false);
             movementController.Decelerate();
-            engine.Stop();
         }
         if(Input.GetKey(KeyCode.D))
         {

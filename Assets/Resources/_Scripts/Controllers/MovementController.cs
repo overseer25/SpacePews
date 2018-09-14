@@ -39,6 +39,8 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
+        if (!_ship.engine.isPlaying)
+            _ship.engine.Play();
         rigidBody.AddForce(ship.transform.up * _ship.acceleration * 10.0f * Time.deltaTime);
         rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, _ship.maxSpeed);
     }
@@ -73,6 +75,8 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void Decelerate()
     {
+        if (_ship.engine.isPlaying)
+            _ship.engine.Stop();
         if (rigidBody.velocity.magnitude > 0)
             rigidBody.velocity *= (1 - _ship.deceleration);
     }

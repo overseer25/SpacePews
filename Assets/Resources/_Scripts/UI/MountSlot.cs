@@ -108,6 +108,8 @@ public class MountSlot : InteractableElement
         inventoryItem.gameObject.SetActive(true);
         if (item is WeaponComponent)
             mount.SetComponent(item as WeaponComponent);
+        else if (item is StorageComponent)
+            mount.SetComponent(item as StorageComponent);
         isEmpty = false;
     }
 

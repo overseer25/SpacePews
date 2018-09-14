@@ -8,6 +8,7 @@ public class Ship : MonoBehaviour
 
     public string shipName;
 
+    [Header("Stats")]
     public int health;
 
     public float maxSpeed;
@@ -17,5 +18,8 @@ public class Ship : MonoBehaviour
     public float deceleration;
 
     public float rotationSpeed;
+
+    [Header("Sounds")]
+    public AudioSource engine;
 
 }
