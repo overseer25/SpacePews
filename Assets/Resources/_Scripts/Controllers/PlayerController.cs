@@ -33,6 +33,11 @@ public class PlayerController : MonoBehaviour
     public AudioSource engine; // Engine sound
     public bool inertialDamp = true; // Are inertial dampeners on?
 
+    // The ship variables.
+    private SpriteRenderer shipRenderer;
+    private GameObject ship;
+    private Ship _ship;
+
     /// <summary>
     /// Use this for initialization
     /// </summary>
@@ -46,6 +51,15 @@ public class PlayerController : MonoBehaviour
         prevHealth = health;
 
         thrusters = GetComponentsInChildren<Thruster>();
+
+        if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
+            Debug.LogError("Ship contains no Sprite Renderer :(");
+        else
+        {
+            ship = shipRenderer.gameObject;
+            _ship = ship.GetComponent<Ship>();
+            inventory.AddSlots(_ship.inventorySize);
+        }
     }
 
     /// <summary>

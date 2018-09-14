@@ -19,6 +19,8 @@ public class Ship : MonoBehaviour
 
     public float rotationSpeed;
 
+    public int inventorySize;
+
     [Header("Sounds")]
     public AudioSource engine;
 

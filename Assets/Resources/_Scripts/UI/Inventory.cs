@@ -13,25 +13,31 @@ public class Inventory : MonoBehaviour
     public AudioClip swapSound;
     public AudioClip clearSlotSound;
 
-    private InventorySlot[] inventorySlots;
+    private List<InventorySlot> inventorySlots;
     internal AudioSource audioSource;
     internal bool isOpen = false;
 
+    [Header("Other")]
     [SerializeField]
     private ShipMountController mountController;
     [SerializeField]
+    private GameObject inventorySlot;
+    [SerializeField]
     private GameObject mountUI;
+    [SerializeField]
+    private GameObject inventoryUI;
     private ShipMount[] mounts;
     private List<MountSlot> mountSlotsUI;
 
     // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
     private List<Item> itemList;
+    private int inventorySize;
 
 
     // Use this for initialization
     void Start()
     {
-        inventorySlots = GetComponentsInChildren<InventorySlot>().ToArray();
+        inventorySlots = GetComponentsInChildren<InventorySlot>().ToList();
 
         var i = 0;
         foreach (var slot in inventorySlots)
@@ -57,6 +63,44 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Adds slots to the inventory.
+    /// </summary>
+    /// <param name="size"></param>
+    public void AddSlots(int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            var slot = Instantiate(inventorySlot, inventoryUI.transform);
+            slot.GetComponent<InventorySlot>().SetIndex(i + inventorySize);
+            inventorySlots.Add(slot.GetComponent<InventorySlot>());
+        }
+        int j = size + inventorySize;
+        foreach (var mountSlot in mountSlotsUI)
+            mountSlot.SetIndex(j++);
+
+        inventorySize += size;
+    }
+
+    /// <summary>
+    /// Remove Slots from the inventory.
+    /// </summary>
+    /// <param name="size"></param>
+    public void RemoveSlots(int size)
+    {
+        for (int i = inventorySize - 1; i > inventorySize - 1 - size; i--)
+        {
+            var slot = inventorySlots[i];
+            inventorySlots.RemoveAt(i);
+            Destroy(slot.gameObject);
+        }
+        int j = inventorySize - size;
+        foreach (var mountSlot in mountSlotsUI)
+            mountSlot.SetIndex(j++);
+
+        inventorySize -= size;
+    }
+
+    /// <summary>
     /// Called to toggle display to inventory UI.
     /// </summary>
     public virtual void Toggle()
@@ -66,6 +110,8 @@ public class Inventory : MonoBehaviour
             audioSource.clip = openSound;
             audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = true;
+            foreach (var inventorySlot in inventorySlots)
+                inventorySlot.gameObject.SetActive(true);
             foreach (var mount in mountSlotsUI)
                 mount.gameObject.SetActive(true);
             isOpen = true;
@@ -75,6 +121,8 @@ public class Inventory : MonoBehaviour
             audioSource.clip = closeSound;
             audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = false;
+            foreach (var inventorySlot in inventorySlots)
+                inventorySlot.gameObject.SetActive(false);
             foreach (var mount in mountSlotsUI)
                 mount.gameObject.SetActive(false);
             isOpen = false;
@@ -179,7 +227,7 @@ public class Inventory : MonoBehaviour
             {
                 if (slot.GetItem().stackable && slot.GetQuantity() < slot.GetItem().stackSize)
                 {
-                    slot.SetQuantity(slot.GetQuantity()+1);
+                    slot.SetQuantity(slot.GetQuantity() + 1);
                     return;
                 }
             }
@@ -253,13 +301,18 @@ public class Inventory : MonoBehaviour
                     // Only swap if the components are the same type/tier/class.
                     if (invComp.IsSameComponentType(mountComp))
                     {
-
+                        // Update size of inventory, if the component is a storage component.
+                        if (invComp is StorageComponent)
+                        {
+                            RemoveSlots((mountComp as StorageComponent).slotCount);
+                            AddSlots((invComp as StorageComponent).slotCount);
+                        }
                         mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
                         invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
                         var temp = invSlot.GetItem();
 
                         invSlot.SetItem(mountSlot.GetItem());
-                        
+
                         mountSlot.SetItem(temp);
                         audioSource.Play();
                     }
@@ -269,6 +322,10 @@ public class Inventory : MonoBehaviour
             {
                 mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
                 invSlot.SetItem(mountSlot.GetItem());
+                if (mountSlot.GetItem() is StorageComponent)
+                {
+                    RemoveSlots((mountSlot.GetItem() as StorageComponent).slotCount);
+                }
                 mountSlot.ClearSlot();
                 audioSource.Play();
             }
@@ -290,6 +347,15 @@ public class Inventory : MonoBehaviour
                     // Only swap if the types of the mount and the inventory slot are the same.
                     if (invComp.IsSameComponentType(mountComp))
                     {
+                        // Update size of inventory, if the component is a storage component.
+                        if (invComp is StorageComponent)
+                        {
+                            // If the mount slot gave more inventory space than the one being swapped in, remove slots.
+                            if((mountComp as StorageComponent).slotCount > (invComp as StorageComponent).slotCount)
+                                RemoveSlots((mountComp as StorageComponent).slotCount - (invComp as StorageComponent).slotCount);
+                            else
+                                AddSlots((invComp as StorageComponent).slotCount - (mountComp as StorageComponent).slotCount);
+                        }
 
                         mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
                         invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
@@ -303,10 +369,14 @@ public class Inventory : MonoBehaviour
             }
             else if (mountSlot.isEmpty)
             {
-                if(mountSlot.IsComponentCompatible(invSlot.GetItem() as ShipComponent))
+                if (mountSlot.IsComponentCompatible(invSlot.GetItem() as ShipComponent))
                 {
                     invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
                     mountSlot.SetItem(invSlot.GetItem());
+                    if (invSlot.GetItem() is StorageComponent)
+                    {
+                        AddSlots((invSlot.GetItem() as StorageComponent).slotCount);
+                    }
                     invSlot.ClearSlot();
                     audioSource.Play();
                 }
@@ -351,7 +421,7 @@ public class Inventory : MonoBehaviour
     public bool ContainsEmptySlot()
     {
         // Since we can swap inventory slots around, we need to search based on their ordering in the object hierarchy.
-        foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.transform.GetSiblingIndex()))
+        foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.GetIndex()))
         {
             if (slot.isEmpty) { return true; } // Empty slot found
         }
