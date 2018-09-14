@@ -31,6 +31,10 @@ public class MountSlot : InteractableElement
         inventoryItem = GetComponentInChildren<InventoryItem>();
         audioSource = GetComponent<AudioSource>();
         image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+    }
+
+    private void Start()
+    {
         gameObject.SetActive(false);
     }
 
@@ -39,7 +43,8 @@ public class MountSlot : InteractableElement
     /// </summary>
     private void OnEnable()
     {
-        transform.position = mount.transform.position;
+        if(mount != null)
+            transform.position = mount.transform.position;
     }
 
     /// <summary>
@@ -104,12 +109,15 @@ public class MountSlot : InteractableElement
     /// <param name="item"></param>
     public void SetItem(Item item)
     {
-        inventoryItem.SetItem(item, 0);
+        var component = item as ShipComponent;
+        inventoryItem.SetItem(component, 0);
         inventoryItem.gameObject.SetActive(true);
-        if (item is WeaponComponent)
-            mount.SetComponent(item as WeaponComponent);
-        else if (item is StorageComponent)
-            mount.SetComponent(item as StorageComponent);
+        component.mounted = true;
+        component.gameObject.SetActive(false);
+        if (component is WeaponComponent)
+            mount.SetComponent(component as WeaponComponent);
+        else if (component is StorageComponent)
+            mount.SetComponent(component as StorageComponent);
         isEmpty = false;
     }
 
@@ -214,11 +222,9 @@ public class MountSlot : InteractableElement
         distanceFromMount = mount.distanceFromShip;
         angleFromMount = mount.uiAngle;
 
-        if (mount.GetShipComponent() != null)
+        if (mount.startingComponent != null)
         {
-            inventoryItem.SetItem(mount.GetShipComponent(), 0);
-            inventoryItem.gameObject.SetActive(true);
-            isEmpty = false;
+            SetItem(Instantiate(mount.startingComponent, inventoryItem.transform.position, inventoryItem.transform.rotation, inventoryItem.transform) as ShipComponent);
         }
         index = i;
     }

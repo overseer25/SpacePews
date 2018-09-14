@@ -5388,6 +5388,8 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 90
   distanceFromShip: 15
+  startingComponent: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
+    type: 2}
 --- !u!1001 &366786183
 Prefab:
   m_ObjectHideFlags: 0
@@ -6012,6 +6014,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 45
   distanceFromShip: 15
+  startingComponent: {fileID: 0}
 --- !u!1001 &577610215
 Prefab:
   m_ObjectHideFlags: 0
@@ -6304,6 +6307,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 135
   distanceFromShip: 15
+  startingComponent: {fileID: 0}
 --- !u!1 &706311075
 GameObject:
   m_ObjectHideFlags: 0
@@ -8107,6 +8111,8 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 225
   distanceFromShip: 15
+  startingComponent: {fileID: 114014495002168244, guid: 3eb086622662d0d4fa527ffe99258b03,
+    type: 2}
 --- !u!1 &1070592839
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private float acceleration;
     private Rigidbody2D rigidBody;
     private MovementController movementController;
+    private ShipMountController mountController;
     private GameObject turret;
     private Thruster[] thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
@@ -45,8 +46,9 @@ public class PlayerController : MonoBehaviour
     {
         health = maxHealth;
         movementController = gameObject.GetComponent<MovementController>();
+        mountController = gameObject.GetComponent<ShipMountController>();
         healthToDisplay = maxHealth / healthChunk;
-        healthUI = this.GetComponent<PlayerHealth>();
+        healthUI = GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
 
@@ -59,6 +61,11 @@ public class PlayerController : MonoBehaviour
             ship = shipRenderer.gameObject;
             _ship = ship.GetComponent<Ship>();
             inventory.AddSlots(_ship.inventorySize);
+            foreach(var mount in mountController.GetStorageMounts())
+            {
+                if (mount.startingComponent != null)
+                    inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
+            }
         }
     }
 

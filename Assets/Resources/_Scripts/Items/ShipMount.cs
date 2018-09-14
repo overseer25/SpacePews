@@ -16,34 +16,17 @@ public class ShipMount : MonoBehaviour {
     public float uiAngle;
     public float distanceFromShip;
 
-
+    public ShipComponent startingComponent;
     private ShipComponent component;
     private bool isEmpty = false;
-
-    /// <summary>
-    /// Initialization.
-    /// </summary>
-    void Awake()
-    {
-        component = GetComponentInChildren<ShipComponent>();
-        if(component != null)
-        {
-            if (component.GetItemType() != mountType)
-                Debug.LogError("Component type not equal to mount type!");
-            if (component.GetComponentClass() != mountClass)
-                Debug.LogError("Component class not equal to mount class!");
-            if (component.GetComponentTier() != mountTier)
-                Debug.LogError("Component tier not equal to mount tier!");
-        }
-    }
 
     /// <summary>
     /// Clear the mount.
     /// </summary>
     public void ClearMount()
     {
-        if (this.component is WeaponComponent)
-            (this.component as WeaponComponent).SetMounted(false);
+        if (component is WeaponComponent)
+            (component as WeaponComponent).SetMounted(false);
         Destroy(component.gameObject);
     }
 
@@ -60,7 +43,7 @@ public class ShipMount : MonoBehaviour {
             Destroy(this.component.gameObject);
         }
 
-        this.component = Instantiate(component, transform.position, transform.rotation, transform);
+        this.component = Instantiate(component, transform.position, transform.rotation, transform) as ShipComponent;
         this.component.gameObject.SetActive(true);
         if(this.component is WeaponComponent)
             (this.component as WeaponComponent).SetMounted(true);
