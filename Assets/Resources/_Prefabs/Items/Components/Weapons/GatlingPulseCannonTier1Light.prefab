@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4689762219206790}
   - component: {fileID: 212293787602086494}
+  - component: {fileID: 114460123287093734}
   - component: {fileID: 114464189067452994}
   - component: {fileID: 61706399672114620}
   - component: {fileID: 82163975959380344}
@@ -254,6 +255,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &114460123287093734
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1737855592854374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff54de4d34e0963479eceb91062135a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObject: {fileID: 1260771655775398, guid: 654889b205a763c4e89008781d43fabf,
+    type: 2}
+  amountPooled: 100
 --- !u!114 &114464189067452994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -282,7 +297,7 @@ MonoBehaviour:
   maxDamage: 3
   critChance: 0.1
   critMultiplier: 2
-  fireRate: 0.1
+  fireRate: 0.2
   shotSpeed: 100
   projectile: {fileID: 114122166460085274, guid: 654889b205a763c4e89008781d43fabf,
     type: 2}

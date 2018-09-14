@@ -42,6 +42,8 @@ public class ShipMount : MonoBehaviour {
     /// </summary>
     public void ClearMount()
     {
+        if (this.component is WeaponComponent)
+            (this.component as WeaponComponent).SetMounted(false);
         Destroy(component.gameObject);
     }
 
@@ -53,12 +55,17 @@ public class ShipMount : MonoBehaviour {
     {
         if(this.component != null)
         {
+            if(this.component is WeaponComponent)
+                (this.component as WeaponComponent).SetMounted(false);
             Destroy(this.component.gameObject);
         }
 
         this.component = Instantiate(component, transform.position, transform.rotation, transform);
         this.component.gameObject.SetActive(true);
-        this.component.mounted = true;
+        if(this.component is WeaponComponent)
+            (this.component as WeaponComponent).SetMounted(true);
+        else
+            this.component.SetMounted(true);
     }
 
     /// <summary>

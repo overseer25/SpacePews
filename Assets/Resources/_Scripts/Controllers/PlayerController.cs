@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
         {
             gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
             inventory.Toggle();
+            inventory.infoScreen.Hide();
         }
 
     }

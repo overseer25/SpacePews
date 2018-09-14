@@ -40,6 +40,25 @@ public class WeaponComponent : ShipComponent
     }
 
     /// <summary>
+    /// Set the mounted status of the component.
+    /// </summary>
+    /// <param name="val"></param>
+    public override void SetMounted(bool val)
+    {
+        mounted = val;
+        // If the weapon component is being mounted, create the projectile pool.
+        if(val == true)
+        {
+            GetComponent<ProjectilePool>().CreatePool();
+        }
+        // Else, destroy the projectile pool.
+        else
+        {
+            GetComponent<ProjectilePool>().DestroyPool();
+        }
+    }
+
+    /// <summary>
     /// Returns a random damage value based on the damage parameters of the projectile.
     /// Chance for a critical attack.
     /// </summary>
@@ -111,7 +130,7 @@ public class WeaponComponent : ShipComponent
     /// <param name="time"> The current time that has passed. If the</param>
     public void Fire()
     {
-        var projectile = ProjectilePool.current.GetPooledObject();
+        var projectile = GetComponent<ProjectilePool>().GetPooledObject();
         if (projectile == null)
             return;
 

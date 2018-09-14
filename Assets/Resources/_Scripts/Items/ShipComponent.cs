@@ -27,6 +27,15 @@ public class ShipComponent : Item
     }
 
     /// <summary>
+    /// Set the mounted status of the component.
+    /// </summary>
+    /// <param name="val"></param>
+    public virtual void SetMounted(bool val)
+    {
+        mounted = val;
+    }
+
+    /// <summary>
     /// The logic to move toward the player.
     /// </summary>
     internal override void HoverTowardPlayer()

@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4743501439746272}
   - component: {fileID: 212105511646037080}
+  - component: {fileID: 114494438816226864}
   - component: {fileID: 114642743436515338}
   - component: {fileID: 61207145865684788}
   - component: {fileID: 82812145636206966}
@@ -84,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1077506197826314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.797932, y: 4.8367505, z: 0}
+  m_LocalPosition: {x: -6.921509, y: 4.556847, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4057281182317118}
@@ -367,6 +368,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &114494438816226864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1077506197826314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff54de4d34e0963479eceb91062135a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObject: {fileID: 1376649767103776, guid: 8120b250c6f494a40982052c7203a705,
+    type: 2}
+  amountPooled: 20
 --- !u!114 &114642743436515338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -396,7 +411,7 @@ MonoBehaviour:
   maxDamage: 5
   critChance: 0.1
   critMultiplier: 2
-  fireRate: 1
+  fireRate: 0.5
   shotSpeed: 100
   projectile: {fileID: 114757108629871906, guid: 8120b250c6f494a40982052c7203a705,
     type: 2}

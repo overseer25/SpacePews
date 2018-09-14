@@ -11,7 +11,6 @@ public class WeaponController : MonoBehaviour
     [SerializeField]
     private ShipMountController mountController;
 
-
     // Update is called once per frame
     void Update()
     {

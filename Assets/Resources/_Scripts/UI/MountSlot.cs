@@ -12,17 +12,21 @@ public class MountSlot : InteractableElement
     // Distance from the physical mount.
     private float distanceFromMount;
     private float angleFromMount;
-    private float speed = 10.0f;
+    private float speed = 7.0f;
 
     // The mount associated with this slot.
     private ShipMount mount;
     private InventoryItem inventoryItem;
+    private LineRenderer line;
 
     [HideInInspector]
     public bool isEmpty;
 
     void Awake()
     {
+        line = GetComponent<LineRenderer>();
+        line.startWidth = 0.1f;
+        line.endWidth = 0.1f;
         image = GetComponent<Image>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
         audioSource = GetComponent<AudioSource>();
@@ -45,10 +49,22 @@ public class MountSlot : InteractableElement
     {
         if (mount != null)
         {
-            var x = Camera.main.ScreenToWorldPoint(mount.transform.position).x + distanceFromMount * Math.Cos(Math.PI / 180 * angleFromMount);
-            var y = Camera.main.ScreenToWorldPoint(mount.transform.position).y + distanceFromMount * Math.Sin(Math.PI / 180 * angleFromMount);
+            var x = mount.transform.position.x + distanceFromMount * Math.Cos(Math.PI / 180 * (angleFromMount + mount.transform.rotation.eulerAngles.z));
+            var y = mount.transform.position.y + distanceFromMount * Math.Sin(Math.PI / 180 * (angleFromMount + mount.transform.rotation.eulerAngles.z));
             var vect = new Vector3((float)x, (float)y, gameObject.transform.parent.transform.position.z);
-            transform.position = Vector3.Slerp(transform.position, vect, Time.deltaTime * speed);
+            transform.position = Vector3.Lerp(transform.position, vect, Time.deltaTime * speed);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        Vector3 v = transform.position - mount.transform.position;
+        Vector3 startPos = transform.position - (v / 5);
+        Vector3 endPos = mount.transform.position + (v / 5);
+
+        if (mount != null)
+        {
+            line.SetPositions(new Vector3[] { startPos, endPos });
         }
     }
 
