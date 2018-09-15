@@ -37,7 +37,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetUtilityMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ItemType.Utility).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Utility && m.GetShipComponent() != null).ToArray();
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetThrusterMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ItemType.Thruster).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Thruster && m.GetShipComponent() != null).ToArray();
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetStorageMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ItemType.Storage).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Storage && m.GetShipComponent() != null).ToArray();
     }
 
     /// <summary>

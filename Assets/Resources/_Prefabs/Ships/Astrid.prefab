@@ -369,8 +369,8 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.4, y: 6.4}
-    newSize: {x: 6.4, y: 6.4}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -1045,6 +1045,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 90
   distanceFromShip: 10
+  startingComponent: {fileID: 0}
 --- !u!114 &114301600711339760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1061,6 +1062,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 45
   distanceFromShip: 10
+  startingComponent: {fileID: 0}
 --- !u!114 &114325505999490530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1072,7 +1074,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b1a8e5eb210e64a91d13e41092835a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mountUI: {fileID: 0}
 --- !u!114 &114336066590186360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1222,6 +1223,7 @@ MonoBehaviour:
   mountTier: 0
   uiAngle: 135
   distanceFromShip: 10
+  startingComponent: {fileID: 0}
 --- !u!114 &114540797773707756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1253,8 +1255,7 @@ MonoBehaviour:
   critMultiplier: 2
   fireRate: 1
   shotSpeed: 50
-  projectile: {fileID: 114565647420798162, guid: aae4b6b44afd4de4f8fba3d779994b64,
-    type: 2}
+  projectile: {fileID: 0}
   shotSpawn: {fileID: 1470728546430346}
 --- !u!198 &198215605340026392
 ParticleSystem:
@@ -5988,7 +5989,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.4, y: 6.4}
+  m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

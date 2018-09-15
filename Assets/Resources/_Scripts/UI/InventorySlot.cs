@@ -109,6 +109,7 @@ public class InventorySlot : InteractableElement
         inventoryItem.SetQuantity(0);
         inventoryItem.SetItem(null, 0);
         inventoryItem.gameObject.SetActive(false);
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
         isEmpty = true;
     }
 

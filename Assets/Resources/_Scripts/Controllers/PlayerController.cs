@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private MovementController movementController;
     private ShipMountController mountController;
     private GameObject turret;
-    private Thruster[] thrusters; // Contains the thrusters of the ship;
+    private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private bool playingEngine = false;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
@@ -52,7 +53,10 @@ public class PlayerController : MonoBehaviour
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
 
-        thrusters = GetComponentsInChildren<Thruster>();
+        // Initial thrusters.
+        thrusters = new List<Thruster>();
+        foreach (var thrusterObj in mountController.GetThrusterMounts())
+            thrusters.Add(thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true));
 
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
             Debug.LogError("Ship contains no Sprite Renderer :(");
@@ -83,14 +87,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && thrusters.FirstOrDefault() != null)
         {
-            SetThrusterState(true);
+            if(!GetThrusterState())
+                SetThrusterState(true);
             movementController.MoveForward();
         }
         else
         {
-            SetThrusterState(false);
+            if(GetThrusterState())
+                SetThrusterState(false);
             movementController.Decelerate();
         }
         if(Input.GetKey(KeyCode.D))
@@ -112,13 +118,44 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Update the list of thrusters.
+    /// </summary>
+    public void UpdateThrusterList()
+    {
+        if (mountController == null)
+            return;
+        thrusters = new List<Thruster>();
+        foreach (var thrusterObj in mountController.GetThrusterMounts())
+        {
+            var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
+            thrusters.Add(thruster);
+        }
+    }
+
+    /// <summary>
     /// Set the state of all thrusters on the ship.
     /// </summary>
     /// <param name="state"></param>
     private void SetThrusterState(bool state)
     {
-        foreach (var thruster in thrusters)
+        if (thrusters.FirstOrDefault() == null)
+            return;
+        foreach(var thruster in thrusters)
+        {
             thruster.gameObject.SetActive(state);
+        }
+    }
+
+    /// <summary>
+    /// Get the state of the thrusters on the ship.
+    /// </summary>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    private bool GetThrusterState()
+    {
+        if (thrusters.FirstOrDefault() == null)
+            return false;
+        return thrusters.FirstOrDefault().gameObject.activeSelf;
     }
 
     private void LateUpdate()

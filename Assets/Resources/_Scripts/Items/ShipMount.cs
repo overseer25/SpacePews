@@ -27,6 +27,8 @@ public class ShipMount : MonoBehaviour {
     {
         if (component is WeaponComponent)
             (component as WeaponComponent).SetMounted(false);
+        else
+            component.SetMounted(false);
         Destroy(component.gameObject);
     }
 
@@ -38,15 +40,22 @@ public class ShipMount : MonoBehaviour {
     {
         if(this.component != null)
         {
-            if(this.component is WeaponComponent)
+            if (this.component is WeaponComponent)
                 (this.component as WeaponComponent).SetMounted(false);
+            else
+                this.component.SetMounted(false);
             Destroy(this.component.gameObject);
         }
 
         this.component = Instantiate(component, transform.position, transform.rotation, transform) as ShipComponent;
         this.component.gameObject.SetActive(true);
-        if(this.component is WeaponComponent)
+        if (this.component is WeaponComponent)
             (this.component as WeaponComponent).SetMounted(true);
+        else if (this.component is ThrusterComponent)
+        {
+            SendMessageUpwards("UpdateThrusterList");
+            this.component.SetMounted(true);
+        }
         else
             this.component.SetMounted(true);
     }

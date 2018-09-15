@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1849846899141644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.31, y: 10.25, z: 0}
+  m_LocalPosition: {x: -13.25, y: 10.82, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4866219921117010}
@@ -162,11 +162,11 @@ MonoBehaviour:
   inventorySpriteAnim: []
   inventorySprite: {fileID: 21300000, guid: f048a54220ab9704a9f374db3e6e008e, type: 3}
   hoverText: {fileID: 1512402741494344}
+  type: 0
   itemTier: 1
   name: Magnite Ore
   value: 50
   description: Used in the production of energy shields.
-  type: Ore
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 1
   stackSize: 999
@@ -216,8 +216,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 1.5
-  m_fontSizeBase: 1.5
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -265,11 +265,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 23259287521938352}
@@ -351,6 +351,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.004, y: -0.015}
-  m_SizeDelta: {x: 1.0902, y: 0.6437}
+  m_AnchoredPosition: {x: 0.004, y: 1.1439}
+  m_SizeDelta: {x: 9.2401, y: 2.9615}
   m_Pivot: {x: 0.5, y: 0.5}

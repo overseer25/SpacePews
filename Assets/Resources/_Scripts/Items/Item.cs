@@ -16,6 +16,7 @@ public class Item : MonoBehaviour
     public ItemTier itemTier = ItemTier.Tier1;
     public new string name;
     public int value;
+    [TextArea(10,10)]
     public string description;
 
     [Header("Other")]

@@ -11,12 +11,6 @@ public class Ship : MonoBehaviour
     [Header("Stats")]
     public int health;
 
-    public float maxSpeed;
-
-    public float acceleration;
-
-    public float deceleration;
-
     public float rotationSpeed;
 
     public int inventorySize;

@@ -70,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1686670195154854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -100.26708, y: -50.777077, z: 4.164322}
+  m_LocalPosition: {x: -5.16, y: 12.82, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4165609025543576}
@@ -156,7 +156,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.57078105, y: 0.6572919}
+  m_Size: {x: 0.79100436, y: 0.820063}
   m_EdgeRadius: 0
 --- !u!114 &114634439281968476
 MonoBehaviour:
@@ -172,11 +172,11 @@ MonoBehaviour:
   inventorySpriteAnim: []
   inventorySprite: {fileID: 21300000, guid: 4e44c0e0735c3e84b9c1e1619b6e3d25, type: 3}
   hoverText: {fileID: 1466342625866538}
+  type: 0
   itemTier: 4
   name: Weapon Parts
   value: 25
   description: Used in the production of weaponry.
-  type: Material
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 1
   stackSize: 999
@@ -226,8 +226,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 1.5
-  m_fontSizeBase: 1.5
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -275,11 +275,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 23984518736477204}
@@ -361,6 +361,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.004, y: -0.008}
-  m_SizeDelta: {x: 1.0902, y: 0.6437}
+  m_AnchoredPosition: {x: -0.004, y: 1.3061}
+  m_SizeDelta: {x: 10.193, y: 3.2719}
   m_Pivot: {x: 0.5, y: 0.5}

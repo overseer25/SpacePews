@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
@@ -6,6 +7,10 @@ public class MovementController : MonoBehaviour
     private Vector3 velocity;
     private Rigidbody2D rigidBody;
     private float desiredRotation;
+    private ShipMountController mountController;
+    private float acceleration;
+    private float deceleration;
+    private float maxSpeed;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -16,6 +21,7 @@ public class MovementController : MonoBehaviour
     {
         velocity = Vector3.zero;
         rigidBody = GetComponentInChildren<Rigidbody2D>();
+        mountController = gameObject.GetComponent<ShipMountController>();
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
             Debug.LogError("Ship contains no Sprite Renderer :(");
         else
@@ -23,8 +29,6 @@ public class MovementController : MonoBehaviour
             ship = shipRenderer.gameObject;
             _ship = ship.GetComponent<Ship>();
         }
-
-
     }
 
     // Update is called once per frame
@@ -39,10 +43,15 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
+        foreach(var thruster in mountController.GetThrusterMounts())
+        {
+            acceleration = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).acceleration);
+            maxSpeed = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).maxSpeed);
+        }
         if (!_ship.engine.isPlaying)
             _ship.engine.Play();
-        rigidBody.AddForce(ship.transform.up * _ship.acceleration * 10.0f * Time.deltaTime);
-        rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, _ship.maxSpeed);
+        rigidBody.AddForce(ship.transform.up * acceleration * 10.0f * Time.deltaTime);
+        rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
     }
     /// <summary>
     /// Rotates the ship to the left.
@@ -75,9 +84,13 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void Decelerate()
     {
+        foreach (var thruster in mountController.GetThrusterMounts())
+        {
+            deceleration = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).deceleration);
+        }
         if (_ship.engine.isPlaying)
             _ship.engine.Stop();
         if (rigidBody.velocity.magnitude > 0)
-            rigidBody.velocity *= (1 - _ship.deceleration);
+            rigidBody.velocity *= (1 - deceleration);
     }
 }

@@ -63,7 +63,18 @@ public class InfoScreen : MonoBehaviour
             text4.text = "Crit Chance: " + weapComp.GetCriticalChanceString() + " (<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)";
             text5.text = "<style=\"Description\">" + item.description + "</style>";
         }
-        // Generic weapon
+        // If the item is a thruster component.
+        else if(item is ThrusterComponent)
+        {
+            var thrusterComp = item as ThrusterComponent;
+            text1.text = item.name;
+            text1.color = ItemColors.colors[(int)item.itemTier];
+            text2.text = "<style=\"Type\">" + item.type + "</style>";
+            text3.text = "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>";
+            text4.text = "<style=\"Acceleration\">" + "Acceleration: <style=\"AccNum\">" + thrusterComp.acceleration + "</style> m/s^2" + "</style>";
+            text5.text = "<style=\"Description\">" + item.description + "</style>";
+        }
+        // Generic item.
         else
         {
             text1.text = item.name;

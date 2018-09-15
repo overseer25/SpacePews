@@ -118,6 +118,8 @@ public class MountSlot : InteractableElement
             mount.SetComponent(component as WeaponComponent);
         else if (component is StorageComponent)
             mount.SetComponent(component as StorageComponent);
+        else if (component is ThrusterComponent)
+            mount.SetComponent(component as ThrusterComponent);
         isEmpty = false;
     }
 

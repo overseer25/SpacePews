@@ -1,18 +1,16 @@
 fileFormatVersion: 2
-guid: b3031b40b6f54734ea236b22f6be4e7f
-timeCreated: 1520902692
-licenseType: Free
+guid: 8b0efa0e3f2cfdb4bbab7cf2231df223
 TextureImporter:
   fileIDToRecycleName:
-    21300000: thruster_base_missile_0
-    21300002: thruster_base_missile_1
-    21300004: thruster_base_missile_2
-    21300006: thruster_base_missile_3
-    21300008: thruster_base_missile_4
-    21300010: thruster_base_missile_5
-    21300012: thruster_base_missile_6
+    21300000: VulcanThruster_Tier1Light_0
+    21300002: VulcanThruster_Tier1Light_1
+    21300004: VulcanThruster_Tier1Light_2
+    21300006: VulcanThruster_Tier1Light_3
+    21300008: VulcanThruster_Tier1Light_4
+    21300010: VulcanThruster_Tier1Light_5
+    21300012: VulcanThruster_Tier1Light_6
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 7
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -30,6 +28,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -40,7 +40,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -52,18 +52,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -72,7 +75,9 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -81,110 +86,161 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: thruster_base_missile_0
+      name: VulcanThruster_Tier1Light_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 78
         y: 0
-        width: 59
-        height: 68
+        width: 450
+        height: 666
       alignment: 9
-      pivot: {x: 0.50000006, y: 0.53278196}
+      pivot: {x: 0.5082761, y: 0.5782874}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c6ba1e82092d28f469ee47555a5ebbc4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_missile_1
+      name: VulcanThruster_Tier1Light_1
       rect:
         serializedVersion: 2
-        x: 59
+        x: 744
         y: 0
-        width: 63
-        height: 68
+        width: 365
+        height: 680
       alignment: 9
-      pivot: {x: 0.5027219, y: 0.54034704}
+      pivot: {x: 0.48979643, y: 0.5876293}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 9bfb6533d1a1c694dafb7673e02a1f89
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_missile_2
+      name: VulcanThruster_Tier1Light_2
       rect:
         serializedVersion: 2
-        x: 122
+        x: 1318
         y: 0
-        width: 61
-        height: 68
+        width: 395
+        height: 680
       alignment: 9
-      pivot: {x: 0.50281113, y: 0.54034704}
+      pivot: {x: 0.5, y: 0.57667565}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 3ab9a64ce23f8c74488d01ce1d70b661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_missile_3
+      name: VulcanThruster_Tier1Light_3
       rect:
         serializedVersion: 2
-        x: 183
+        x: 1914
         y: 0
-        width: 58
-        height: 68
+        width: 439
+        height: 680
       alignment: 9
-      pivot: {x: 0.5029565, y: 0.54034704}
+      pivot: {x: 0.50848377, y: 0.5821525}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 71714f10f9707384b893913e4e6be05c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_missile_4
+      name: VulcanThruster_Tier1Light_4
       rect:
         serializedVersion: 2
-        x: 241
+        x: 2487
         y: 0
-        width: 64
-        height: 68
+        width: 488
+        height: 680
       alignment: 9
-      pivot: {x: 0.5, y: 0.5378253}
+      pivot: {x: 0.4923681, y: 0.5821525}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 1c19eaf2482f972428f43040f701f8e2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_missile_5
+      name: VulcanThruster_Tier1Light_5
       rect:
         serializedVersion: 2
-        x: 305
+        x: 3128
         y: 0
-        width: 55
-        height: 68
+        width: 398
+        height: 680
       alignment: 9
-      pivot: {x: 0.5031172, y: 0.54034704}
+      pivot: {x: 0.5, y: 0.5876293}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2c27b2eaef414b9438ba6d7f7e3fe8d9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
-      name: thruster_base_missile_6
+      name: VulcanThruster_Tier1Light_6
       rect:
         serializedVersion: 2
-        x: 369
+        x: 3724
         y: 0
-        width: 54
-        height: 68
+        width: 436
+        height: 680
       alignment: 9
-      pivot: {x: 0.49682447, y: 0.5378253}
+      pivot: {x: 0.5, y: 0.57667565}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ce15c2c7cc70e1148b19760eddc4bb94
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: ef67935b4a904b34e980bd0b8956f8b9
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
