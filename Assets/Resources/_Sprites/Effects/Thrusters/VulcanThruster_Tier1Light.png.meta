@@ -94,18 +94,18 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_0
       rect:
         serializedVersion: 2
-        x: 78
+        x: 8
         y: 0
-        width: 450
-        height: 666
+        width: 45
+        height: 68
       alignment: 9
-      pivot: {x: 0.5082761, y: 0.5782874}
+      pivot: {x: 0.4917239, y: 0.5821525}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6ba1e82092d28f469ee47555a5ebbc4
+      spriteID: cdf5e2aab34e26c4bb2bedd311413357
       vertices: []
       indices: 
       edges: []
@@ -114,18 +114,18 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_1
       rect:
         serializedVersion: 2
-        x: 744
+        x: 75
         y: 0
-        width: 365
-        height: 680
+        width: 36
+        height: 68
       alignment: 9
-      pivot: {x: 0.48979643, y: 0.5876293}
+      pivot: {x: 0.48965496, y: 0.57667565}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9bfb6533d1a1c694dafb7673e02a1f89
+      spriteID: dd18fab0c385ba1468609c5f52d4368e
       vertices: []
       indices: 
       edges: []
@@ -134,18 +134,18 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_2
       rect:
         serializedVersion: 2
-        x: 1318
+        x: 129
         y: 0
-        width: 395
-        height: 680
+        width: 45
+        height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.57667565}
+      pivot: {x: 0.5, y: 0.5876293}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3ab9a64ce23f8c74488d01ce1d70b661
+      spriteID: 48312467c550ad64782e7dfd3ac25323
       vertices: []
       indices: 
       edges: []
@@ -154,18 +154,18 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_3
       rect:
         serializedVersion: 2
-        x: 1914
+        x: 194
         y: 0
-        width: 439
-        height: 680
+        width: 40
+        height: 68
       alignment: 9
-      pivot: {x: 0.50848377, y: 0.5821525}
+      pivot: {x: 0.48137894, y: 0.5821525}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71714f10f9707384b893913e4e6be05c
+      spriteID: 949ea4c3126ecb2468d5e8f87cbd6244
       vertices: []
       indices: 
       edges: []
@@ -174,18 +174,18 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_4
       rect:
         serializedVersion: 2
-        x: 2487
+        x: 256
         y: 0
-        width: 488
-        height: 680
+        width: 34
+        height: 68
       alignment: 9
-      pivot: {x: 0.4923681, y: 0.5821525}
+      pivot: {x: 0.48904687, y: 0.57667565}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c19eaf2482f972428f43040f701f8e2
+      spriteID: 81ebe9e2f049f7741b6b4472287298d2
       vertices: []
       indices: 
       edges: []
@@ -194,18 +194,18 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_5
       rect:
         serializedVersion: 2
-        x: 3128
+        x: 305
         y: 0
-        width: 398
-        height: 680
+        width: 54
+        height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.5876293}
+      pivot: {x: 0.4931036, y: 0.5876293}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c27b2eaef414b9438ba6d7f7e3fe8d9
+      spriteID: fc58872bc037b06498540d27bd770e81
       vertices: []
       indices: 
       edges: []
@@ -214,10 +214,10 @@ TextureImporter:
       name: VulcanThruster_Tier1Light_6
       rect:
         serializedVersion: 2
-        x: 3724
+        x: 377
         y: 0
-        width: 436
-        height: 680
+        width: 35
+        height: 68
       alignment: 9
       pivot: {x: 0.5, y: 0.57667565}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,7 +225,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce15c2c7cc70e1148b19760eddc4bb94
+      spriteID: c869ec45aa3c3b9429455349f59d7e01
       vertices: []
       indices: 
       edges: []
@@ -233,7 +233,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ef67935b4a904b34e980bd0b8956f8b9
+    spriteID: 7d709c739fde82843825467c02d93f08
     vertices: []
     indices: 
     edges: []

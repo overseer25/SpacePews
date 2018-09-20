@@ -58,10 +58,10 @@ public class InfoScreen : MonoBehaviour
             var weapComp = item as WeaponComponent;
             text1.text = item.name;
             text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + item.type + "</style>";
+            text2.text = "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>";
             text3.text = "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)";
             text4.text = "Crit Chance: " + weapComp.GetCriticalChanceString() + " (<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)";
-            text5.text = "<style=\"Description\">" + item.description + "</style>";
+            text5.text = "<style=\"Description\">" + weapComp.description + "</style>";
         }
         // If the item is a thruster component.
         else if(item is ThrusterComponent)
@@ -69,10 +69,19 @@ public class InfoScreen : MonoBehaviour
             var thrusterComp = item as ThrusterComponent;
             text1.text = item.name;
             text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + item.type + "</style>";
+            text2.text = "<style=\"Type\">" + thrusterComp.GetComponentClass() + " " + thrusterComp.GetItemType() + "</style>";
             text3.text = "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>";
             text4.text = "<style=\"Acceleration\">" + "Acceleration: <style=\"AccNum\">" + thrusterComp.acceleration + "</style> m/s^2" + "</style>";
-            text5.text = "<style=\"Description\">" + item.description + "</style>";
+            text5.text = "<style=\"Description\">" + thrusterComp.description + "</style>";
+        }
+        else if(item is StorageComponent)
+        {
+            var storageComp = item as StorageComponent;
+            text1.text = item.name;
+            text1.color = ItemColors.colors[(int)item.itemTier];
+            text2.text = "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>";
+            text3.text = "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>";
+            text5.text = "<style=\"Description\">" + storageComp.description + "</style>";
         }
         // Generic item.
         else

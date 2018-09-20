@@ -55,9 +55,8 @@ public class Inventory : MonoBehaviour
         mounts = mountController.GetAllMounts();
         foreach (var mount in mounts)
         {
-            var prefabName = mount.GetMountType().ToString() + mount.GetMountTier().ToString() + mount.GetMountClass().ToString();
-            var slot = Instantiate(Resources.Load("_Prefabs/UI/MountingSystem/" + prefabName), mount.transform.position, mount.transform.rotation, mountUI.transform) as GameObject;
-            slot.GetComponent<MountSlot>().Initialize(mount, i++);
+            var slot = Instantiate(Resources.Load("_Prefabs/UI/MountingSystem/MountSlot"), mount.transform.position, mount.transform.rotation, mountUI.transform) as GameObject;
+            slot.GetComponent<MountSlot>().Initialize(mount, mount.GetMountType(), mount.GetMountTier(), mount.GetMountClass(), i++);
             mountSlotsUI.Add(slot.GetComponent<MountSlot>());
         }
     }
@@ -184,7 +183,16 @@ public class Inventory : MonoBehaviour
         if (index < inventorySlots.Count())
             inventorySlots[index].DeleteSlot();
         else
-            mountSlotsUI[index - inventorySlots.Count()].DeleteSlot();
+        {
+            var slot = mountSlotsUI[index - inventorySlots.Count()];
+            var item = slot.GetItem();
+            // If the item being deleted is a mounted storage component, we need to remove the slots it added to the player ship.
+            if (item is StorageComponent)
+            {
+                RemoveSlots((slot.GetItem() as StorageComponent).slotCount);
+            }
+            slot.DeleteMountedItem();
+        }
 
         // Play the delete sound.
         audioSource.Stop();

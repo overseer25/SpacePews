@@ -9,6 +9,10 @@ public class ShipComponent : Item
     private ItemClass componentClass;
     [SerializeField]
     private int health;
+    // Whether or not the component is visible on the ship.
+    [SerializeField]
+    private bool visible = true;
+
     // Is this item mounted to the ship?
     internal bool mounted = false;
 
@@ -42,6 +46,15 @@ public class ShipComponent : Item
     {
         if (!mounted)
             base.HoverTowardPlayer();
+    }
+
+    /// <summary>
+    /// Is the component visible on the ship or not?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsVisible()
+    {
+        return visible;
     }
 
     /// <summary>

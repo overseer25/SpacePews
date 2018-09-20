@@ -1,14 +1,17 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MountSlot : InteractableElement
 {
-    [Header("Attributes")]
-    public ItemType type;
-    public ItemTier tier;
-    public ItemClass itemClass;
     [Header("Other")]
+    public TextMeshProUGUI header;
+    public TextMeshProUGUI footer;
+
+    private ItemType type;
+    private ItemTier tier;
+    private ItemClass itemClass;
     // Distance from the physical mount.
     private float distanceFromMount;
     private float angleFromMount;
@@ -18,6 +21,7 @@ public class MountSlot : InteractableElement
     private ShipMount mount;
     private InventoryItem inventoryItem;
     private LineRenderer line;
+    private Color color;
 
     [HideInInspector]
     public bool isEmpty;
@@ -30,7 +34,6 @@ public class MountSlot : InteractableElement
         image = GetComponent<Image>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
         audioSource = GetComponent<AudioSource>();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
     }
 
     private void Start()
@@ -64,7 +67,7 @@ public class MountSlot : InteractableElement
     private void LateUpdate()
     {
         Vector3 v = transform.position - mount.transform.position;
-        Vector3 startPos = transform.position - (v / 5);
+        Vector3 startPos = transform.position - (v / 3);
         Vector3 endPos = mount.transform.position + (v / 5);
 
         if (mount != null)
@@ -126,7 +129,7 @@ public class MountSlot : InteractableElement
     /// <summary>
     /// Deletes the item gameobject on the slot.
     /// </summary>
-    public void DeleteSlot()
+    public void DeleteMountedItem()
     {
         mount.ClearMount();
         inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -180,13 +183,13 @@ public class MountSlot : InteractableElement
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
             SendMessageUpwards("ClearSlot", index);
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(color.r, color.g, color.b, 0.7f);
             return;
         }
 
         if (!isEmpty && !InventoryItem.dragging)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            image.color = new Color(color.r, color.g, color.b, 1.0f);
             inventoryItem.Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
 
@@ -197,7 +200,7 @@ public class MountSlot : InteractableElement
     void OnMouseExit()
     {
         if (!isEmpty)
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(color.r, color.g, color.b, 0.7f);
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
@@ -215,8 +218,17 @@ public class MountSlot : InteractableElement
     /// Initialize a slot mount with the data of a mount.
     /// </summary>
     /// <param name="mount"></param>
-    public void Initialize(ShipMount mount, int i)
+    public void Initialize(ShipMount mount, ItemType type, ItemTier tier, ItemClass itemClass, int index)
     {
+
+        this.type = type;
+        this.tier = tier;
+        this.itemClass = itemClass;
+        header.text = type.ToString();
+        footer.text = itemClass.ToString();
+        color = ItemColors.colors[(int)tier];
+        image.color = new Color(color.r, color.g, color.b, 0.7f);
+
         this.mount = mount;
         type = mount.GetMountType();
         tier = mount.GetMountTier();
@@ -228,7 +240,7 @@ public class MountSlot : InteractableElement
         {
             SetItem(Instantiate(mount.startingComponent, inventoryItem.transform.position, inventoryItem.transform.rotation, inventoryItem.transform) as ShipComponent);
         }
-        index = i;
+        this.index = index;
     }
 
 }

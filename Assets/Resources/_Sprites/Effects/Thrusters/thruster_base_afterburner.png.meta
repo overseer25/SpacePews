@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3e91ad49f5ab5b84aa91418fcaa009f2
+guid: 6e0197ceb8ff172468935d296df6d5b4
 TextureImporter:
   fileIDToRecycleName:
     21300000: thruster_base_afterburner_0
@@ -94,18 +94,18 @@ TextureImporter:
       name: thruster_base_afterburner_0
       rect:
         serializedVersion: 2
-        x: 3
+        x: 0
         y: 0
-        width: 610
-        height: 680
+        width: 61
+        height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.55695295}
+      pivot: {x: 0.5, y: 0.5766758}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 449ce45633e80e9438175b36a9fb8e6d
+      spriteID: 3eb83c7766bed424e837fd52c2f71b79
       vertices: []
       indices: 
       edges: []
@@ -114,18 +114,18 @@ TextureImporter:
       name: thruster_base_afterburner_1
       rect:
         serializedVersion: 2
-        x: 611
+        x: 61
         y: 0
-        width: 641
-        height: 680
+        width: 64
+        height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.5854295}
+      pivot: {x: 0.49418092, y: 0.5821526}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d88279c29955a14d800562e7040ba57
+      spriteID: f8c166b90f0cabb46a80baf1a3bcc5c8
       vertices: []
       indices: 
       edges: []
@@ -134,18 +134,18 @@ TextureImporter:
       name: thruster_base_afterburner_2
       rect:
         serializedVersion: 2
-        x: 1252
+        x: 125
         y: 0
-        width: 528
-        height: 680
+        width: 53
+        height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.5783104}
+      pivot: {x: 0.5, y: 0.57119894}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22452cfd0a2b4cd4fadd4ced1d3c5a24
+      spriteID: 8d07f5094b8dd5d4b962581f33da7dd5
       vertices: []
       indices: 
       edges: []
@@ -154,18 +154,18 @@ TextureImporter:
       name: thruster_base_afterburner_3
       rect:
         serializedVersion: 2
-        x: 1782
+        x: 178
         y: 0
-        width: 702
-        height: 680
+        width: 71
+        height: 68
       alignment: 9
-      pivot: {x: 0.5034479, y: 0.5818699}
+      pivot: {x: 0.50524557, y: 0.5766758}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c84bbc87b8ea7874f9e4eac7c5ef3250
+      spriteID: 4b3dacd013bb94845825a19c1983c55f
       vertices: []
       indices: 
       edges: []
@@ -174,18 +174,18 @@ TextureImporter:
       name: thruster_base_afterburner_4
       rect:
         serializedVersion: 2
-        x: 2484
+        x: 249
         y: 0
-        width: 492
-        height: 680
+        width: 49
+        height: 68
       alignment: 9
-      pivot: {x: 0.5049195, y: 0.5818699}
+      pivot: {x: 0.49239925, y: 0.5821526}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 943ffa77f9dad7241ac6ee2a60947b78
+      spriteID: 9a0cdd6435e4bce47b437c47b5c4cfc3
       vertices: []
       indices: 
       edges: []
@@ -194,18 +194,18 @@ TextureImporter:
       name: thruster_base_afterburner_5
       rect:
         serializedVersion: 2
-        x: 2975
+        x: 298
         y: 0
-        width: 690
-        height: 680
+        width: 68
+        height: 68
       alignment: 9
-      pivot: {x: 0.5, y: 0.5818699}
+      pivot: {x: 0.5, y: 0.5766758}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01fb5a0cab2981945b1acf11ba7b6631
+      spriteID: cc02d730b28f5b349a4443703ab7e496
       vertices: []
       indices: 
       edges: []
@@ -214,18 +214,18 @@ TextureImporter:
       name: thruster_base_afterburner_6
       rect:
         serializedVersion: 2
-        x: 3667
+        x: 366
         y: 0
-        width: 563
-        height: 680
+        width: 57
+        height: 68
       alignment: 9
-      pivot: {x: 0.49570045, y: 0.5783104}
+      pivot: {x: 0.5, y: 0.5821526}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22e4076624c90754c86307642ca2a388
+      spriteID: 6748ba6f78cac15439bc34385bb2528a
       vertices: []
       indices: 
       edges: []
@@ -233,7 +233,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: aa76544370908a847a5f8c77f528c98e
+    spriteID: 6c95bff33e1bf994b89f2a15b2ff4d86
     vertices: []
     indices: 
     edges: []

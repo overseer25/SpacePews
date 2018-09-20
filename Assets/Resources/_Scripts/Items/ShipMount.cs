@@ -48,7 +48,7 @@ public class ShipMount : MonoBehaviour {
         }
 
         this.component = Instantiate(component, transform.position, transform.rotation, transform) as ShipComponent;
-        this.component.gameObject.SetActive(true);
+        this.component.gameObject.SetActive(component.IsVisible());
         if (this.component is WeaponComponent)
             (this.component as WeaponComponent).SetMounted(true);
         else if (this.component is ThrusterComponent)
