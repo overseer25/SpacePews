@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4625980506773184}
   - component: {fileID: 212636585373690866}
   - component: {fileID: 114963000138490368}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: thruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114298200944217438}
   - component: {fileID: 61544760815054904}
   - component: {fileID: 82579123259839270}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ThrusterTier1Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

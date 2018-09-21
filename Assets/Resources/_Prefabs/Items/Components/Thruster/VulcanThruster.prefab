@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114095088983589364}
   - component: {fileID: 61041811479338702}
   - component: {fileID: 82494965823600702}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: VulcanThruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 4287665328485688}
   - component: {fileID: 212061682031588550}
   - component: {fileID: 114092160918279852}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: thruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}

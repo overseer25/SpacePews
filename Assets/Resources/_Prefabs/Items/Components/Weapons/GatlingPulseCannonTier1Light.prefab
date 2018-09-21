@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4171709751286172}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: shotspawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 114460123287093734}
   - component: {fileID: 114464189067452994}
   - component: {fileID: 82163975959380344}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GatlingPulseCannonTier1Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4690181233508212}
   - component: {fileID: 212789628383015240}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
