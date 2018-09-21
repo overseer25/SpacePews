@@ -57,8 +57,9 @@ public class MountSlot : InteractableElement
     {
         if (mount != null)
         {
-            var x = mount.transform.position.x + distanceFromMount * Math.Cos(Math.PI / 180 * (angleFromMount + mount.transform.rotation.eulerAngles.z));
-            var y = mount.transform.position.y + distanceFromMount * Math.Sin(Math.PI / 180 * (angleFromMount + mount.transform.rotation.eulerAngles.z));
+            var parentZ = mount.transform.parent.transform.rotation.eulerAngles.z;
+            var x = mount.transform.position.x + distanceFromMount * Math.Cos(Math.PI / 180 * (angleFromMount + parentZ));
+            var y = mount.transform.position.y + distanceFromMount * Math.Sin(Math.PI / 180 * (angleFromMount + parentZ));
             var vect = new Vector3((float)x, (float)y, gameObject.transform.parent.transform.position.z);
             transform.position = Vector3.Lerp(transform.position, vect, Time.deltaTime * speed);
         }
@@ -224,7 +225,7 @@ public class MountSlot : InteractableElement
         this.type = type;
         this.tier = tier;
         this.itemClass = itemClass;
-        header.text = type.ToString();
+        header.text = (mount.IsGimbal()) ? "Gimbal" : type.ToString();
         footer.text = itemClass.ToString();
         color = ItemColors.colors[(int)tier];
         image.color = new Color(color.r, color.g, color.b, 0.7f);

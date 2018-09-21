@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ShipMount : MonoBehaviour {
 
@@ -10,6 +11,8 @@ public class ShipMount : MonoBehaviour {
     private ItemClass mountClass;
     [SerializeField]
     private ItemTier mountTier;
+    [SerializeField]
+    private bool isGimbal;
 
     // The direction to display the UI element of the ship mount.
     [Header("UI Element Attributes")]
@@ -19,6 +22,36 @@ public class ShipMount : MonoBehaviour {
     public ShipComponent startingComponent;
     private ShipComponent component;
     private bool isEmpty = false;
+
+    void Start()
+    {
+        if(isGimbal)
+        {
+            transform.GetComponent<SortingGroup>().sortingLayerName = "Ship";
+            transform.GetComponent<SortingGroup>().sortingOrder = 1;
+        }
+    }
+
+    void Update()
+    {
+        if(isGimbal)
+        {
+            var pos = Input.mousePosition;
+            pos.z = transform.position.z - Camera.main.transform.position.z;
+            pos = Camera.main.ScreenToWorldPoint(pos);
+
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, pos - transform.position);
+        }
+    }
+
+    /// <summary>
+    /// Is the mount a gimbal mount?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsGimbal()
+    {
+        return isGimbal;
+    }
 
     /// <summary>
     /// Clear the mount.

@@ -5858,7 +5858,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 522641761}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &481550113
 MonoBehaviour:
@@ -5875,6 +5875,7 @@ MonoBehaviour:
   mountType: 5
   mountClass: 0
   mountTier: 0
+  isGimbal: 0
   uiAngle: 270
   distanceFromShip: 5
   startingComponent: {fileID: 114298200944217438, guid: 42e8c05440db7084e89bde0f6154b9be,
@@ -5962,7 +5963,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 574662410}
-  - {fileID: 2113420311}
   - {fileID: 1049676438}
   - {fileID: 481550112}
   m_Father: {fileID: 1146421378}
@@ -6071,6 +6071,7 @@ GameObject:
   m_Component:
   - component: {fileID: 574662410}
   - component: {fileID: 574662411}
+  - component: {fileID: 574662412}
   m_Layer: 0
   m_Name: WeaponTier1Light
   m_TagString: Untagged
@@ -6086,7 +6087,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 574662409}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1011, y: -0.0401, z: 0}
+  m_LocalPosition: {x: 0.0013, y: -0.0464, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 522641761}
@@ -6107,10 +6108,21 @@ MonoBehaviour:
   mountType: 1
   mountClass: 0
   mountTier: 0
-  uiAngle: 0
+  isGimbal: 1
+  uiAngle: 90
   distanceFromShip: 5
   startingComponent: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
     type: 2}
+--- !u!210 &574662412
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 574662409}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -1
 --- !u!1001 &621684503
 Prefab:
   m_ObjectHideFlags: 0
@@ -7808,7 +7820,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -1245395911
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!114 &941233055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7915,7 +7927,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 522641761}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1049676439
 MonoBehaviour:
@@ -7932,6 +7944,7 @@ MonoBehaviour:
   mountType: 3
   mountClass: 0
   mountTier: 0
+  isGimbal: 0
   uiAngle: 225
   distanceFromShip: 5
   startingComponent: {fileID: 0}
@@ -8741,11 +8754,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -9131,7 +9144,7 @@ Canvas:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1368908822}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 904294578}
@@ -11184,56 +11197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b1a8e5eb210e64a91d13e41092835a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2113420310
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1781537890257426, guid: 3aeda49af69189c48b903aaa435af410,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2113420311}
-  - component: {fileID: 2113420312}
-  m_Layer: 0
-  m_Name: WeaponTier1Light (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2113420311
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4495179183366756, guid: 3aeda49af69189c48b903aaa435af410,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2113420310}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0999, y: -0.040100005, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
-  m_Children: []
-  m_Father: {fileID: 522641761}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2113420312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114520012963434764, guid: 3aeda49af69189c48b903aaa435af410,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2113420310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4992ceb6f796b1347b0ae9b4441fcc70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mountType: 1
-  mountClass: 0
-  mountTier: 0
-  uiAngle: 180
-  distanceFromShip: 5
-  startingComponent: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
-    type: 2}
 --- !u!1 &2144564640
 GameObject:
   m_ObjectHideFlags: 0
