@@ -32,6 +32,15 @@ public class ShipMountController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Gets all the mining laser mounts being managed.
+    /// </summary>
+    /// <returns></returns>
+    public ShipMount[] GetMiningMounts()
+    {
+        return mounts.Where(m => m.GetMountType() == ItemType.Mining && m.GetShipComponent() != null).ToArray();
+    }
+
+    /// <summary>
     /// Gets all the utility mounts being managed.
     /// </summary>
     /// <returns></returns>

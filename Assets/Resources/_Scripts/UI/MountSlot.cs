@@ -124,6 +124,8 @@ public class MountSlot : InteractableElement
             mount.SetComponent(component as StorageComponent);
         else if (component is ThrusterComponent)
             mount.SetComponent(component as ThrusterComponent);
+        else if (component is MiningComponent)
+            mount.SetComponent(component as MiningComponent);
         isEmpty = false;
     }
 
