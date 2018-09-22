@@ -90,6 +90,7 @@ public class InfoScreen : MonoBehaviour
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>";
             text3.text = "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>";
+            text4.text = "";
             text5.text = "<style=\"Description\">" + miningComp.description + "</style>";
         }
         // Generic item.
