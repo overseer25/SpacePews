@@ -19,6 +19,8 @@ public class WeaponComponent : ShipComponent
     [SerializeField]
     private float shotSpeed;
     [SerializeField]
+    private float shotSpread;
+    [SerializeField]
     private Projectile projectile;
     // If the component is a weapon, this is the gameobject where the projectile will spawn from.
     [SerializeField]
@@ -137,7 +139,10 @@ public class WeaponComponent : ShipComponent
         var damage = ComputeDamage();
         projectile.GetComponent<Projectile>().Initialize(damage, shotSpeed, (damage > maxDamage) ? true : false);
         projectile.transform.position = shotSpawn.transform.position;
-        projectile.transform.rotation = shotSpawn.transform.rotation;
+        Quaternion rotation = shotSpawn.transform.transform.rotation;
+        var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
+        rotation *= Quaternion.Euler(0, 0, angle);
+        projectile.transform.rotation = rotation;
         audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
         audioSource.Play();
         projectile.SetActive(true);

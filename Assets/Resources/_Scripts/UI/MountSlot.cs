@@ -224,7 +224,7 @@ public class MountSlot : InteractableElement
         this.type = type;
         this.tier = tier;
         this.itemClass = itemClass;
-        header.text = (mount.IsGimbal()) ? "Gimbal" : type.ToString();
+        header.text = type.ToDisplayString();
         footer.text = itemClass.ToString();
         color = ItemColors.colors[(int)tier];
         image.color = new Color(color.r, color.g, color.b, 0.7f);

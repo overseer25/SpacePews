@@ -56,7 +56,7 @@ public class MiningComponent : ShipComponent
         mask |= 1 << LayerMask.NameToLayer("Item");
         mask |= 1 << LayerMask.NameToLayer("ShipComponent");
         mask = ~mask;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, laserLength, mask);
+        RaycastHit2D hit = Physics2D.Raycast(lineSpawner.transform.position, lineSpawner.transform.up, laserLength, mask);
 
         if (!baseAudioSource.isPlaying)
         {
@@ -78,7 +78,7 @@ public class MiningComponent : ShipComponent
                     if (Time.time > timePassed)
                     {
                         timePassed = Time.time + contactSpriteFrequency;
-                        Instantiate(laserContactSprite, hit.point, transform.rotation);
+                        Instantiate(laserContactSprite, hit.point, lineSpawner.transform.rotation);
                     }
                     PlayContactAudio();
                     break;
@@ -88,7 +88,7 @@ public class MiningComponent : ShipComponent
                     if (Time.time > timePassed)
                     {
                         timePassed = Time.time + contactSpriteFrequency;
-                        Instantiate(laserContactSprite, hit.point, transform.rotation);
+                        Instantiate(laserContactSprite, hit.point, lineSpawner.transform.rotation);
                     }
                     PlayContactAudio();
 

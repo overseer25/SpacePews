@@ -94,7 +94,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1077506197826314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.071, y: 23.526, z: 0}
+  m_LocalPosition: {x: 13.71, y: 6.43, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 4057281182317118}
@@ -268,6 +268,7 @@ MonoBehaviour:
   critMultiplier: 2
   fireRate: 0.5
   shotSpeed: 50
+  shotSpread: 0
   projectile: {fileID: 114757108629871906, guid: 8120b250c6f494a40982052c7203a705,
     type: 2}
   shotSpawn: {fileID: 1316353260374330}

@@ -5023,11 +5023,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114642743436515338, guid: 9a7bd3edf38e0384d859852ab6468c24,
-        type: 2}
-      propertyPath: hoverText
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7bd3edf38e0384d859852ab6468c24, type: 2}
   m_IsPrefabAsset: 0
@@ -5458,11 +5453,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -7.56
+      value: -1.02
       objectReference: {fileID: 0}
     - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 23.59
+      value: 2.47
       objectReference: {fileID: 0}
     - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -5491,6 +5486,16 @@ Prefab:
     - target: {fileID: 1737855592854374, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
       propertyPath: m_Name
       value: GatlingPulseCannon
+      objectReference: {fileID: 0}
+    - target: {fileID: 114464189067452994, guid: 31583c333a19753468653c9ad4fa473d,
+        type: 2}
+      propertyPath: shotSpread
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114464189067452994, guid: 31583c333a19753468653c9ad4fa473d,
+        type: 2}
+      propertyPath: fireRate
+      value: 0.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31583c333a19753468653c9ad4fa473d, type: 2}
@@ -6444,8 +6449,7 @@ MonoBehaviour:
   isGimbal: 1
   uiAngle: 315
   distanceFromShip: 5
-  startingComponent: {fileID: 114289986303831286, guid: 2fa593189f045da4c9ce789456443371,
-    type: 2}
+  startingComponent: {fileID: 0}
 --- !u!1 &522641760
 GameObject:
   m_ObjectHideFlags: 0
@@ -10159,11 +10163,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -10549,7 +10553,7 @@ Canvas:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1368908822}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 904294578}
@@ -12459,6 +12463,16 @@ Prefab:
     - target: {fileID: 4825700120595650, guid: 64391918fd967a7429019ab6012989dc, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 108.26301
+      objectReference: {fileID: 0}
+    - target: {fileID: 114463774277680912, guid: 64391918fd967a7429019ab6012989dc,
+        type: 2}
+      propertyPath: amountLootSpawned
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 114463774277680912, guid: 64391918fd967a7429019ab6012989dc,
+        type: 2}
+      propertyPath: mineRate
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64391918fd967a7429019ab6012989dc, type: 2}
