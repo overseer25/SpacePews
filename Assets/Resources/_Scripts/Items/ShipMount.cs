@@ -30,6 +30,7 @@ public class ShipMount : MonoBehaviour {
             transform.GetComponent<SortingGroup>().sortingLayerName = "Ship";
             transform.GetComponent<SortingGroup>().sortingOrder = 1;
         }
+        
     }
 
     void Update()
@@ -71,7 +72,15 @@ public class ShipMount : MonoBehaviour {
     /// <param name="component"></param>
     public void SetComponent(ShipComponent component)
     {
-        if(this.component != null)
+
+        // If the starting component is not compatible with the ship mount.
+        if (component != null && !IsComponentCompatible(component))
+        {
+            Debug.LogError("Starting Component: " + component.name + " is not compatible with mount: " + this.name);
+            return;
+        }
+
+        if (this.component != null)
         {
             if (this.component is WeaponComponent)
                 (this.component as WeaponComponent).SetMounted(false);

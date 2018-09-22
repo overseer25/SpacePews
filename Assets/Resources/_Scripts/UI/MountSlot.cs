@@ -78,15 +78,12 @@ public class MountSlot : InteractableElement
     }
 
     /// <summary>
-    /// Checks to see if the provided component can fit in this mount.
+    /// Get the physical mount associated with this UI mount.
     /// </summary>
-    /// <param name="component"></param>
     /// <returns></returns>
-    public bool IsComponentCompatible(ShipComponent component)
+    public ShipMount GetMount()
     {
-        if (component == null)
-            return false;
-        return type == component.GetItemType() && tier == component.GetComponentTier() && itemClass == component.GetComponentClass();
+        return mount;
     }
 
     /// <summary>

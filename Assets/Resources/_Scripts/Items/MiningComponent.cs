@@ -38,7 +38,7 @@ public class MiningComponent : ShipComponent
     void Awake()
     {
         itemColor = ItemColors.colors[(int)itemTier];
-        itemType = ItemType.Mining;
+        itemType = ItemType.MiningLaser;
         baseAudioSource.clip = miningLaserBase;
         line = gameObject.GetComponent<LineRenderer>();
         line.startWidth = laserWidth;
@@ -122,6 +122,15 @@ public class MiningComponent : ShipComponent
             baseAudioSource.Stop();
         }
         StopContactAudio();
+    }
+
+    /// <summary>
+    /// Get the mining rate of this mining laser.
+    /// </summary>
+    /// <returns></returns>
+    public float GetMiningRate()
+    {
+        return miningRate;
     }
 
     /// <summary>

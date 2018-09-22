@@ -6,7 +6,7 @@ public enum ItemType
 {
     Item = 0,
     Weapon,
-    Mining,
+    MiningLaser,
     Utility,
     Storage,
     Shield,

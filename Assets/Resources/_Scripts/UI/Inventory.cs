@@ -377,7 +377,7 @@ public class Inventory : MonoBehaviour
             }
             else if (mountSlot.isEmpty)
             {
-                if (mountSlot.IsComponentCompatible(invSlot.GetItem() as ShipComponent))
+                if (mountSlot.GetMount().IsComponentCompatible(invSlot.GetItem() as ShipComponent))
                 {
                     invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
                     mountSlot.SetItem(invSlot.GetItem());

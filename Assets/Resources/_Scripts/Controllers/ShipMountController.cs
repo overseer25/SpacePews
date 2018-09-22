@@ -37,7 +37,7 @@ public class ShipMountController : MonoBehaviour {
     /// <returns></returns>
     public ShipMount[] GetMiningMounts()
     {
-        return mounts.Where(m => m.GetMountType() == ItemType.Mining && m.GetShipComponent() != null).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.MiningLaser && m.GetShipComponent() != null).ToArray();
     }
 
     /// <summary>

@@ -83,6 +83,15 @@ public class InfoScreen : MonoBehaviour
             text3.text = "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>";
             text5.text = "<style=\"Description\">" + storageComp.description + "</style>";
         }
+        else if(item is MiningComponent)
+        {
+            var miningComp = item as MiningComponent;
+            text1.text = item.name;
+            text1.color = ItemColors.colors[(int)item.itemTier];
+            text2.text = "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>";
+            text3.text = "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>";
+            text5.text = "<style=\"Description\">" + miningComp.description + "</style>";
+        }
         // Generic item.
         else
         {

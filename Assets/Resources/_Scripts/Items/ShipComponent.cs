@@ -23,14 +23,6 @@ public class ShipComponent : Item
     internal int currentHealth;
 
     /// <summary>
-    /// Initialization.
-    /// </summary>
-    void Awake()
-    {
-        currentHealth = health;
-    }
-
-    /// <summary>
     /// Set the mounted status of the component.
     /// </summary>
     /// <param name="val"></param>
