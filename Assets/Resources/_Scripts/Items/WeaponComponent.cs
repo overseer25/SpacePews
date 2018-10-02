@@ -38,7 +38,7 @@ public class WeaponComponent : ShipComponent
         audioSource = GetComponent<AudioSource>();
         random = new System.Random();
         random.Next();
-        itemType = ItemType.Weapon;
+        itemType = ItemType.Turret;
     }
 
     /// <summary>

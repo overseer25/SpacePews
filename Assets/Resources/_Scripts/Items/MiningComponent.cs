@@ -38,7 +38,7 @@ public class MiningComponent : ShipComponent
     void Awake()
     {
         itemColor = ItemColors.colors[(int)itemTier];
-        itemType = ItemType.MiningLaser;
+        itemType = ItemType.Turret;
         baseAudioSource.clip = miningLaserBase;
         line = gameObject.GetComponent<LineRenderer>();
         line.startWidth = laserWidth;

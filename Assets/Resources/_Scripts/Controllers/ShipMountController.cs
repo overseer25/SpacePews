@@ -22,22 +22,9 @@ public class ShipMountController : MonoBehaviour {
         return mounts;
     }
 
-    /// <summary>
-    /// Gets all the weapon mounts being managed.
-    /// </summary>
-    /// <returns></returns>
-    public ShipMount[] GetWeaponMounts()
+    public ShipMount GetTurretMount()
     {
-        return mounts.Where(m => m.GetMountType() == ItemType.Weapon && m.GetShipComponent() != null).ToArray();
-    }
-
-    /// <summary>
-    /// Gets all the mining laser mounts being managed.
-    /// </summary>
-    /// <returns></returns>
-    public ShipMount[] GetMiningMounts()
-    {
-        return mounts.Where(m => m.GetMountType() == ItemType.MiningLaser && m.GetShipComponent() != null).ToArray();
+        return mounts.Where(m => m.GetMountType() == ItemType.Turret).First();
     }
 
     /// <summary>

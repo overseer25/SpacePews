@@ -208,7 +208,7 @@ MonoBehaviour:
   inventorySpriteAnim: []
   inventorySprite: {fileID: 21300000, guid: e689a2b9d799b8a4f8914ebc38242f6b, type: 3}
   hoverText: {fileID: 0}
-  type: 6
+  type: 5
   itemTier: 0
   name: Ion Thruster Mk I
   value: 250

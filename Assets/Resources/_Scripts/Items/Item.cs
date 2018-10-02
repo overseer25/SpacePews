@@ -13,7 +13,7 @@ public class Item : MonoBehaviour
 
     [Header("Attributes")]
     public ItemType type;
-    public ItemTier itemTier = ItemTier.Tier1;
+    public ItemTier itemTier;
     public new string name;
     public int value;
     [TextArea(10,10)]

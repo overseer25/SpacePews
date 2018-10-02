@@ -332,7 +332,7 @@ MonoBehaviour:
   inventorySpriteAnim: []
   inventorySprite: {fileID: 21300000, guid: cc73c023c6537b044b6f7609c5ae5763, type: 3}
   hoverText: {fileID: 0}
-  type: 2
+  type: 1
   itemTier: 0
   name: Mining Laser 2.0
   value: 2000

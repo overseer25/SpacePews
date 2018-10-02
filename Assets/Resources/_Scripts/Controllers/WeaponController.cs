@@ -7,35 +7,40 @@ public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
     public bool menuOpen = false;
+    private ShipMount turret;
 
     [SerializeField]
     private ShipMountController mountController;
 
+    private void Start()
+    {
+        turret = mountController.GetTurretMount();
+    }
     // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButton(0) && !menuOpen)
         {
-            foreach (var mount in mountController.GetWeaponMounts())
+            if(turret.GetShipComponent() is WeaponComponent)
             {
-                var weapon = mount.GetShipComponent() as WeaponComponent;
+                var weapon = turret.GetShipComponent() as WeaponComponent;
                 if (Time.time > weapon.GetNextShotTime())
                 {
                     weapon.Fire();
                     weapon.SetLastShot(Time.time);
                 }
             }
-            foreach (var mount in mountController.GetMiningMounts())
+            if(turret.GetShipComponent() is MiningComponent)
             {
-                var miningLaser = mount.GetShipComponent() as MiningComponent;
+                var miningLaser = turret.GetShipComponent() as MiningComponent;
                 miningLaser.Fire();
             }
         }
         if (Input.GetMouseButtonUp(0) || menuOpen)
         {
-            foreach (var mount in mountController.GetMiningMounts())
+            if(turret.GetShipComponent() is MiningComponent)
             {
-                var miningLaser = mount.GetShipComponent() as MiningComponent;
+                var miningLaser = turret.GetShipComponent() as MiningComponent;
                 miningLaser.StopFire();
             }
         }

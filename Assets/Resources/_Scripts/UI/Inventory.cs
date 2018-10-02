@@ -46,8 +46,8 @@ public class Inventory : MonoBehaviour
         itemList = new List<Item>();
         foreach (var obj in Resources.LoadAll("_Prefabs/Items"))
         {
-            GameObject itemObj = obj as GameObject;
-            itemList.Add(itemObj.GetComponent<Item>());
+            var item = (obj as GameObject);
+            itemList.Add(item.GetComponent<Item>());
         }
         audioSource = GetComponent<AudioSource>();
 
@@ -109,8 +109,8 @@ public class Inventory : MonoBehaviour
             audioSource.clip = openSound;
             audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = true;
-            foreach (var inventorySlot in inventorySlots)
-                inventorySlot.gameObject.SetActive(true);
+            //foreach (var inventorySlot in inventorySlots)
+            //    inventorySlot.gameObject.SetActive(true);
             foreach (var mount in mountSlotsUI)
                 mount.gameObject.SetActive(true);
             isOpen = true;
@@ -120,8 +120,8 @@ public class Inventory : MonoBehaviour
             audioSource.clip = closeSound;
             audioSource.Play();
             gameObject.GetComponent<Canvas>().enabled = false;
-            foreach (var inventorySlot in inventorySlots)
-                inventorySlot.gameObject.SetActive(false);
+            //foreach (var inventorySlot in inventorySlots)
+            //    inventorySlot.gameObject.SetActive(false);
             foreach (var mount in mountSlotsUI)
                 mount.gameObject.SetActive(false);
             isOpen = false;
@@ -243,10 +243,11 @@ public class Inventory : MonoBehaviour
         // If the item doesn't yet exist in the list, add it to an empty slot.
         foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.transform.GetSiblingIndex()))
         {
+            Item result;
             if (slot.isEmpty)
             {
-                var result = Instantiate(temp, slot.GetInventoryItem().transform.position, Quaternion.identity, slot.GetInventoryItem().transform) as Item;
-                slot.SetItem(result); // Add to the slot
+                result = Instantiate(item, slot.GetInventoryItem().transform.position, Quaternion.identity, slot.GetInventoryItem().transform) as Item;
+                slot.SetItem(result);
                 return;
             }
         }

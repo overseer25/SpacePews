@@ -228,7 +228,7 @@ MonoBehaviour:
   inventorySpriteAnim: []
   inventorySprite: {fileID: 21300000, guid: 761af6375b73caa4d92e9af50965ed4d, type: 3}
   hoverText: {fileID: 0}
-  type: 6
+  type: 5
   itemTier: 0
   name: Vulcan Thruster
   value: 1500
