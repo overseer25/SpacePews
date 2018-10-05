@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,9 @@ public class PlayerController : MonoBehaviour
     private float acceleration;
     private Rigidbody2D rigidBody;
     private MovementController movementController;
+    private ShipMountController mountController;
     private GameObject turret;
-    private Thruster[] thrusters; // Contains the thrusters of the ship;
+    private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private bool playingEngine = false;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
@@ -33,6 +35,11 @@ public class PlayerController : MonoBehaviour
     public AudioSource engine; // Engine sound
     public bool inertialDamp = true; // Are inertial dampeners on?
 
+    // The ship variables.
+    private SpriteRenderer shipRenderer;
+    private GameObject ship;
+    private Ship _ship;
+
     /// <summary>
     /// Use this for initialization
     /// </summary>
@@ -40,12 +47,30 @@ public class PlayerController : MonoBehaviour
     {
         health = maxHealth;
         movementController = gameObject.GetComponent<MovementController>();
+        mountController = gameObject.GetComponent<ShipMountController>();
         healthToDisplay = maxHealth / healthChunk;
-        healthUI = this.GetComponent<PlayerHealth>();
+        healthUI = GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
 
-        thrusters = GetComponentsInChildren<Thruster>();
+        // Initial thrusters.
+        thrusters = new List<Thruster>();
+        foreach (var thrusterObj in mountController.GetThrusterMounts())
+            thrusters.Add(thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true));
+
+        if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
+            Debug.LogError("Ship contains no Sprite Renderer :(");
+        else
+        {
+            ship = shipRenderer.gameObject;
+            _ship = ship.GetComponent<Ship>();
+            inventory.AddSlots(_ship.inventorySize);
+            foreach(var mount in mountController.GetStorageMounts())
+            {
+                if (mount.startingComponent != null)
+                    inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
+            }
+        }
     }
 
     /// <summary>
@@ -62,18 +87,17 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && thrusters.FirstOrDefault() != null)
         {
-            SetThrusterState(true);
+            if(!GetThrusterState())
+                SetThrusterState(true);
             movementController.MoveForward();
-            if(!engine.isPlaying)
-                engine.Play();
         }
         else
         {
-            SetThrusterState(false);
+            if(GetThrusterState())
+                SetThrusterState(false);
             movementController.Decelerate();
-            engine.Stop();
         }
         if(Input.GetKey(KeyCode.D))
         {
@@ -84,12 +108,28 @@ public class PlayerController : MonoBehaviour
             movementController.RotateLeft();
         }
 
-        if (Input.GetKeyDown("i"))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
             inventory.Toggle();
+            inventory.infoScreen.Hide();
         }
 
+    }
+
+    /// <summary>
+    /// Update the list of thrusters.
+    /// </summary>
+    public void UpdateThrusterList()
+    {
+        if (mountController == null)
+            return;
+        thrusters = new List<Thruster>();
+        foreach (var thrusterObj in mountController.GetThrusterMounts())
+        {
+            var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
+            thrusters.Add(thruster);
+        }
     }
 
     /// <summary>
@@ -98,8 +138,24 @@ public class PlayerController : MonoBehaviour
     /// <param name="state"></param>
     private void SetThrusterState(bool state)
     {
-        foreach (var thruster in thrusters)
+        if (thrusters.FirstOrDefault() == null)
+            return;
+        foreach(var thruster in thrusters)
+        {
             thruster.gameObject.SetActive(state);
+        }
+    }
+
+    /// <summary>
+    /// Get the state of the thrusters on the ship.
+    /// </summary>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    private bool GetThrusterState()
+    {
+        if (thrusters.FirstOrDefault() == null)
+            return false;
+        return thrusters.FirstOrDefault().gameObject.activeSelf;
     }
 
     private void LateUpdate()
@@ -151,25 +207,6 @@ public class PlayerController : MonoBehaviour
                 }
                 rigidBody.AddForce(direction); // Apply the force
                 break;
-            case "Mine":
-                rigidBody = gameObject.GetComponent<Rigidbody2D>();
-                direction = Vector2.zero; // Direction of the collision, with the magnitude applied being the speed of the player.
-                // If the player isn't moving, we need to move them away, as they would be able to clip into the immovable otherwise.
-                if (rigidBody.velocity == Vector2.zero)
-                {
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position) * 20;
-                }
-                // The difference here is the player has a velocity, so we will propel them away from the immovable using their velocity magnitude.
-                else
-                {
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * (rigidBody.velocity.magnitude * 100);
-                }
-                rigidBody.AddForce(direction); // Apply the force
-                break;
-            case "EnemyProjectile":
-                health -= collider.gameObject.GetComponent<Projectile>().Damage;
-                break;
-
         }       
     }
 

@@ -5,67 +5,75 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    [Header("Sound")]
-    public AudioClip hoverSound;
-    public AudioClip swapSound;
+    [Header("Item")]
+    public Item item;
 
     private Image image;
+    private int quantity;
     private bool swapping;
+
+    // For mounting slots.
+    private bool mounting;
+    private MountSlot mountSlot;
 
     // Tracks and displays the quantity of this inventory item.
     private TextMeshProUGUI count;
-    private AudioSource audioSource;
 
     // If swapping slots, send off these positions.
     private int[] positions;
     internal static bool dragging = false;
     internal bool destroying = false;
-    internal bool hidden = true;
     private bool highlighted = false;
 
-    void Start()
+    void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-
         image = GetComponent<Image>();
         count = GetComponentInChildren<TextMeshProUGUI>();
         positions = new int[2];
-        positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
+        positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
     }
 
-    public void Display()
+    /// <summary>
+    /// Set the quantity of the inventory item.
+    /// </summary>
+    public void SetQuantity(int num)
     {
-        if (hidden)
+        quantity = num;
+
+        if (count != null)
         {
-            gameObject.SetActive(false);
-        }
-        else
-        {
-            gameObject.SetActive(true);
-            image.sprite = sprite;
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            if (item != null && item.stackable && num > 0)
+                count.text = quantity.ToString();
+            else
+                count.text = "";
         }
     }
 
-    // Update is called once per frame.
-    void FixedUpdate()
+    public void SetItem(Item item, int quantity)
     {
-        if (quantity != 0)
-            count.text = quantity.ToString();
+        this.item = item;
+        this.quantity = quantity;
 
-        if (spriteAnim.Length > 0)
+        image.sprite = (item != null) ? item.inventorySprite : null;
+        image.color = (item != null) ? new Color(1.0f, 1.0f, 1.0f, 0.7f) : new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+        if (count != null)
         {
-            // Player sprite animation
-            if (Time.time > changeSprite)
-            {
-                changeSprite = Time.time + playspeed;
-                index++;
-                if (index >= spriteAnim.Length) { index = 0; } // Restart animation
-                GetComponentInChildren<SpriteRenderer>().sprite = spriteAnim[index];
-            }
+            if (item != null && item.stackable && quantity > 0)
+                count.text = quantity.ToString();
+            else
+                count.text = "";
         }
+    }
+
+    /// <summary>
+    /// Called when the gameobject is disabled.
+    /// </summary>
+    void OnDisable()
+    {
+        highlighted = false;
     }
 
     /// <summary>
@@ -73,11 +81,9 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// </summary>
     public void Highlight()
     {
-        if (!highlighted)
+        if (!highlighted && item != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            audioSource.clip = hoverSound;
-            audioSource.Play();
             highlighted = true;
         }
     }
@@ -87,7 +93,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// </summary>
     public void Dehighlight()
     {
-        if (highlighted)
+        if (highlighted && item != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
             highlighted = false;
@@ -100,9 +106,11 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+
         if (Input.GetMouseButton(0))
         {
-            positions[0] = GetComponentInParent<InventorySlot>().GetIndex();
+            if(GetComponentInParent<InteractableElement>() != null)
+                positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
             dragging = true;
             SendMessageUpwards("HideHoverTooltip");
         }
@@ -133,18 +141,13 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
         if (image == null) { return; }
         dragging = false;
 
-        if(destroying)
+        if (destroying)
         {
-            SendMessageUpwards("ClearSlot", positions[0]);
+            SendMessageUpwards("DeleteSlot", positions[0]);
             destroying = false;
         }
-        if (swapping)
+        if (swapping || mounting)
         {
-            // Play the swap sound if swapping.
-            audioSource.Stop();
-            audioSource.clip = swapSound;
-            audioSource.Play();
-
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
         }
@@ -165,6 +168,11 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
                 break;
+            case ("MountSlot"):
+                mountSlot = collider.gameObject.GetComponent<MountSlot>();
+                positions[1] = mountSlot.GetIndex();
+                mounting = true;
+                break;
             case ("DeleteZone"):
                 collider.gameObject.GetComponent<Image>();
                 destroying = true;
@@ -184,6 +192,11 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
                 swapping = true;
                 break;
+            case ("MountSlot"):
+                mountSlot = collider.gameObject.GetComponent<MountSlot>();
+                positions[1] = mountSlot.GetIndex();
+                mounting = true;
+                break;
             case ("DeleteZone"):
                 destroying = true;
                 break;
@@ -198,5 +211,7 @@ public class InventoryItem : Item, IDragHandler, IBeginDragHandler, IEndDragHand
     {
         swapping = false;
         destroying = false;
+        mounting = false;
+        mountSlot = null;
     }
 }

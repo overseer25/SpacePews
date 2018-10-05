@@ -5,8 +5,6 @@ using UnityEngine;
 public class ProjectilePool : MonoBehaviour
 {
 
-    // The instance.
-    public static ProjectilePool current;
     // The object pooled.
     public GameObject pooledObject;
     // How many of the object to pool.
@@ -20,20 +18,30 @@ public class ProjectilePool : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        current = this;
+        objectPool = new List<GameObject>(amountPooled);
     }
 
     /// <summary>
-    /// Instantiates the object pool.
+    /// Creates a pool of the object. This method exists so that the pool is created only when it is needed.
     /// </summary>
-    void Start()
+    public void CreatePool()
     {
-        objectPool = new List<GameObject>(amountPooled);
         for (int i = 0; i < amountPooled; i++)
         {
             GameObject obj = Instantiate(pooledObject) as GameObject;
             obj.SetActive(false);
             objectPool.Add(obj);
+        }
+    }
+
+    /// <summary>
+    /// Destroy the object pool when it is no longer necessary.
+    /// </summary>
+    public void DestroyPool()
+    {
+        for(int i = 0; i < objectPool.Count; i++)
+        {
+            Destroy(objectPool[i].gameObject);
         }
     }
 

@@ -92,10 +92,10 @@ TextureImporter:
       name: Explosion_projectile_0
       rect:
         serializedVersion: 2
-        x: 60
-        y: 24
-        width: 18
-        height: 20
+        x: 29
+        y: 0
+        width: 248
+        height: 680
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -103,7 +103,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2878c1b61f16a3d4a81e92599cf6f2a0
+      spriteID: d0479389ebd9e674d83bf8771d3be9d4
       vertices: []
       indices: 
       edges: []
@@ -112,10 +112,10 @@ TextureImporter:
       name: Explosion_projectile_1
       rect:
         serializedVersion: 2
-        x: 82
-        y: 18
-        width: 29
-        height: 32
+        x: 287
+        y: 0
+        width: 289
+        height: 680
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,7 +123,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e85a32d6da2dc6458db85d6b48f7cc9
+      spriteID: 4dcd947df5e4f7048938a7f06b30dc8a
       vertices: []
       indices: 
       edges: []
@@ -132,10 +132,10 @@ TextureImporter:
       name: Explosion_projectile_2
       rect:
         serializedVersion: 2
-        x: 114
-        y: 15
-        width: 29
-        height: 35
+        x: 575
+        y: 0
+        width: 352
+        height: 680
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,7 +143,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8de5a364eb407d743b97752aa69a52f4
+      spriteID: 7881674cefed8814ca611422d1ce2678
       vertices: []
       indices: 
       edges: []
@@ -152,10 +152,10 @@ TextureImporter:
       name: Explosion_projectile_3
       rect:
         serializedVersion: 2
-        x: 147
-        y: 18
-        width: 30
-        height: 31
+        x: 926
+        y: 0
+        width: 329
+        height: 680
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,7 +163,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a3a7b368831b264b9e8bf1547ee74d1
+      spriteID: 5b39b7c52fd49a04e9f909c29cce273b
       vertices: []
       indices: 
       edges: []
@@ -172,10 +172,10 @@ TextureImporter:
       name: Explosion_projectile_4
       rect:
         serializedVersion: 2
-        x: 181
-        y: 17
-        width: 31
-        height: 36
+        x: 1255
+        y: 0
+        width: 357
+        height: 680
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,7 +183,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d3cbd728efa2dd4fb828bffc55e8908
+      spriteID: 05eb2b38707a2c64bb5be4ea0347937a
       vertices: []
       indices: 
       edges: []
@@ -191,7 +191,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 00959a14cb393e144a8ad1ee559f7774
+    spriteID: 5c661250586e8104a8b0ecddba70d07b
     vertices: []
     indices: 
     edges: []

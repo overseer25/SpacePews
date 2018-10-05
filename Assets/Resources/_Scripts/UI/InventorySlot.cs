@@ -1,60 +1,72 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class InventorySlot : InteractableElement
 {
     [Header("State")]
-    public bool isEmpty = true; // All slots start out empty
-    public InventoryItem inventoryItem; // The item in the slot.
-
-    private Image slot_sprite; // The default image for the slot.
-    private int index;
+    public bool isEmpty = true; // All slots start out empty.
+    private InventoryItem inventoryItem; // The item in the slot.
+    private int quantity;
 
     // Use this for initialization
     void Awake()
     {
-        slot_sprite = GetComponent<Image>();
+        image = GetComponent<Image>();
+        audioSource = GetComponent<AudioSource>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-    }
-
-    /// <summary>
-    /// Sets the index of the slot in the inventory slot array.
-    /// </summary>
-    /// <param name="index"></param>
-    public void SetIndex(int index)
-    {
-        this.index = index;
-    }
-
-    /// <summary>
-    /// Get the index of the slot.
-    /// </summary>
-    /// <param name="index"></param>
-    public int GetIndex()
-    {
-        return index;
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
     }
 
     /// <summary>
     /// Increase the quantity of the item by 1.
     /// </summary>
-    public void IncrementQuantity()
+    public void SetQuantity(int quantity)
     {
-        inventoryItem.quantity++;
+        this.quantity = quantity;
+        inventoryItem.SetQuantity(quantity);
+    }
+
+    /// <summary>
+    /// Get the inventory item of this slot.
+    /// </summary>
+    /// <returns></returns>
+    public InventoryItem GetInventoryItem()
+    {
+        return inventoryItem;
+    }
+
+    /// <summary>
+    /// Plays hover sound.
+    /// </summary>
+    void OnMouseEnter()
+    {
+        if (!isEmpty && !InventoryItem.dragging)
+        {
+            if (enterSound != null)
+            {
+                audioSource.clip = enterSound;
+                audioSource.Play();
+            }
+        }
     }
 
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
+        // Shift clicking will clear the slot.
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
+        {
+            SendMessageUpwards("ClearSlot", index);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            return;
+        }
+
         if (!isEmpty && !InventoryItem.dragging)
         {
-            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             inventoryItem.Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
+
         }
     }
 
@@ -62,58 +74,78 @@ public class InventorySlot : InteractableElement
     void OnMouseExit()
     {
         if (!isEmpty)
-            slot_sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
 
-        if (!inventoryItem.hidden && !InventoryItem.dragging)
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
             inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
+            if (exitSound != null)
+            {
+                audioSource.clip = exitSound;
+                audioSource.Play();
+            }
         }
+    }
+
+    /// <summary>
+    /// Deletes the item gameobject on the slot.
+    /// </summary>
+    public void DeleteSlot()
+    {
+        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        inventoryItem.SetQuantity(0);
+        Destroy(inventoryItem.item.gameObject);
+        inventoryItem.gameObject.SetActive(false);
+        isEmpty = true;
+    }
+
+    /// <summary>
+    /// "Empty" the slot.
+    /// </summary>
+    public void ClearSlot()
+    {
+        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        inventoryItem.SetQuantity(0);
+        inventoryItem.SetItem(null, 0);
+        inventoryItem.gameObject.SetActive(false);
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        isEmpty = true;
     }
 
     /// <summary>
     /// Sets the item of the inventory slot.
     /// </summary>
     /// <param name="item"></param>
-    public void SetItem(Item item)
+    public virtual void SetItem(Item item, int? quantity = null)
     {
-        if (item.quantity == -1)
+        inventoryItem.gameObject.SetActive(true);
+        this.quantity = (item.stackable) ? quantity ?? 1 : 0;
+        inventoryItem.SetItem(item, this.quantity);
+        if (item != null)
         {
-            inventoryItem.hidden = true;
-            isEmpty = true;
-            inventoryItem.Display();
+            inventoryItem.item.gameObject.SetActive(false);
+            isEmpty = false;
         }
         else
         {
-            ItemToInventoryItem(item);
-            inventoryItem.hidden = false;
-            inventoryItem.Display();
-            isEmpty = false;
+            inventoryItem.gameObject.SetActive(false);
+            isEmpty = true;
         }
     }
 
     // Gets the item of the inventory slot.
     public Item GetItem()
     {
-        return inventoryItem;
+        return inventoryItem.item;
     }
 
-
     /// <summary>
-    /// Converts the provided item to an InventoryItem.
+    /// Gets the count of the item in the slot.
     /// </summary>
-    /// <param name="item"></param>
-    public void ItemToInventoryItem(Item item)
+    /// <returns></returns>
+    public int GetQuantity()
     {
-        inventoryItem.name = item.name;
-        inventoryItem.quantity = item.quantity;
-        inventoryItem.itemTier = item.itemTier;
-        inventoryItem.description = item.description;
-        inventoryItem.sprite = item.sprite;
-        inventoryItem.spriteAnim = item.spriteAnim;
-        inventoryItem.type = item.type;
-        inventoryItem.value = item.value;
-        inventoryItem.stackable = item.stackable;
-        inventoryItem.stackSize = item.stackSize;
+        return quantity;
     }
 }
