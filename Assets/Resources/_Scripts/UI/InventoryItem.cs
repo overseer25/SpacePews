@@ -66,6 +66,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             else
                 count.text = "";
         }
+        gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -173,6 +174,11 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 positions[1] = mountSlot.GetIndex();
                 mounting = true;
                 break;
+            case ("HotbarSlot"):
+                var hotbarSlot = collider.gameObject.GetComponent<HotbarSlot>();
+                positions[1] = hotbarSlot.GetIndex();
+                swapping = true;
+                break;
             case ("DeleteZone"):
                 collider.gameObject.GetComponent<Image>();
                 destroying = true;
@@ -196,6 +202,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 mountSlot = collider.gameObject.GetComponent<MountSlot>();
                 positions[1] = mountSlot.GetIndex();
                 mounting = true;
+                break;
+            case ("HotbarSlot"):
+                positions[1] = collider.gameObject.GetComponent<HotbarSlot>().GetIndex();
+                swapping = true;
                 break;
             case ("DeleteZone"):
                 destroying = true;

@@ -161,6 +161,7 @@ public class MountSlot : InteractableElement
     {
         return type == other.type && tier == other.tier && itemClass == other.itemClass;
     }
+
     /// <summary>
     /// Plays hover sound.
     /// </summary>

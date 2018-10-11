@@ -13,7 +13,6 @@ public class Inventory : MonoBehaviour
     public AudioClip swapSound;
     public AudioClip clearSlotSound;
 
-    private List<InventorySlot> inventorySlots;
     internal AudioSource audioSource;
     internal bool isOpen = false;
 
@@ -21,27 +20,27 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private ShipMountController mountController;
     [SerializeField]
-    private GameObject inventorySlot;
+    private GameObject inventoryUI;
     [SerializeField]
     private GameObject mountUI;
     [SerializeField]
-    private GameObject inventoryUI;
-    private ShipMount[] mounts;
-    private List<MountSlot> mountSlotsUI;
+    private GameObject hotbarUI;
+
+    private List<InventorySlot> inventorySlots;
+    private List<MountSlot> mountSlots;
+    private List<HotbarSlot> hotbarSlots;
 
     // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
     private List<Item> itemList;
-    private int inventorySize;
+    private int inventorySize = 0;
 
 
     // Use this for initialization
     void Start()
     {
-        inventorySlots = GetComponentsInChildren<InventorySlot>().ToList();
+        inventorySlots = new List<InventorySlot>();
 
-        var i = 0;
-        foreach (var slot in inventorySlots)
-            slot.SetIndex(i++);
+        var index = 0;
 
         itemList = new List<Item>();
         foreach (var obj in Resources.LoadAll("_Prefabs/Items"))
@@ -51,13 +50,20 @@ public class Inventory : MonoBehaviour
         }
         audioSource = GetComponent<AudioSource>();
 
-        mountSlotsUI = new List<MountSlot>();
-        mounts = mountController.GetAllMounts();
-        foreach (var mount in mounts)
+        mountSlots = new List<MountSlot>();
+        foreach (var mount in mountController.GetAllMounts())
         {
             var slot = Instantiate(Resources.Load("_Prefabs/UI/MountingSystem/MountSlot"), mount.transform.position, mount.transform.rotation, mountUI.transform) as GameObject;
-            slot.GetComponent<MountSlot>().Initialize(mount, mount.GetMountType(), mount.GetMountTier(), mount.GetMountClass(), i++);
-            mountSlotsUI.Add(slot.GetComponent<MountSlot>());
+            slot.GetComponent<MountSlot>().Initialize(mount, mount.GetMountType(), mount.GetMountTier(), mount.GetMountClass(), index++);
+            mountSlots.Add(slot.GetComponent<MountSlot>());
+        }
+
+        hotbarSlots = new List<HotbarSlot>();
+        for (int i = 1; i <= 5; i++)
+        {
+            var slot = Instantiate(Resources.Load("_Prefabs/UI/Hotbar/HotbarSlot"), hotbarUI.transform) as GameObject;
+            slot.GetComponent<HotbarSlot>().Initialize(index++, i);
+            hotbarSlots.Add(slot.GetComponent<HotbarSlot>());
         }
     }
 
@@ -67,6 +73,7 @@ public class Inventory : MonoBehaviour
     /// <param name="size"></param>
     public void AddSlots(int size)
     {
+        var inventorySlot = Resources.Load("_Prefabs/UI/Inventory/Inventory_Slot") as GameObject;
         for (int i = 0; i < size; i++)
         {
             var slot = Instantiate(inventorySlot, inventoryUI.transform);
@@ -74,8 +81,10 @@ public class Inventory : MonoBehaviour
             inventorySlots.Add(slot.GetComponent<InventorySlot>());
         }
         int j = size + inventorySize;
-        foreach (var mountSlot in mountSlotsUI)
+        foreach (var mountSlot in mountSlots)
             mountSlot.SetIndex(j++);
+        foreach(var hotbarSlot in hotbarSlots)
+            hotbarSlot.SetIndex(j++);
 
         inventorySize += size;
     }
@@ -93,7 +102,7 @@ public class Inventory : MonoBehaviour
             Destroy(slot.gameObject);
         }
         int j = inventorySize - size;
-        foreach (var mountSlot in mountSlotsUI)
+        foreach (var mountSlot in mountSlots)
             mountSlot.SetIndex(j++);
 
         inventorySize -= size;
@@ -111,7 +120,7 @@ public class Inventory : MonoBehaviour
             gameObject.GetComponent<Canvas>().enabled = true;
             //foreach (var inventorySlot in inventorySlots)
             //    inventorySlot.gameObject.SetActive(true);
-            foreach (var mount in mountSlotsUI)
+            foreach (var mount in mountSlots)
                 mount.gameObject.SetActive(true);
             isOpen = true;
         }
@@ -122,7 +131,7 @@ public class Inventory : MonoBehaviour
             gameObject.GetComponent<Canvas>().enabled = false;
             //foreach (var inventorySlot in inventorySlots)
             //    inventorySlot.gameObject.SetActive(false);
-            foreach (var mount in mountSlotsUI)
+            foreach (var mount in mountSlots)
                 mount.gameObject.SetActive(false);
             isOpen = false;
         }
@@ -136,16 +145,31 @@ public class Inventory : MonoBehaviour
     public virtual void ShowHoverTooltip(int index)
     {
         // If the provided index is greater than the number of inventory slots, then it is a mount slot.
-        if (index >= inventorySlots.Count())
+        if (index >= inventorySlots.Count() + mountSlots.Count())
         {
-            index -= inventorySlots.Count();
-            if (mountSlotsUI[index].isEmpty)
+            index -= (inventorySlots.Count() + mountSlots.Count());
+            if (hotbarSlots[index].isEmpty)
             {
                 infoScreen.Hide();
             }
             else if (!infoScreen.gameObject.activeSelf)
             {
-                var item = mountSlotsUI[index].GetItem();
+                var item = hotbarSlots[index].GetItem();
+
+                infoScreen.SetInfo(item, 0);
+                infoScreen.Show();
+            }
+        }
+        else if (index >= inventorySlots.Count())
+        {
+            index -= inventorySlots.Count();
+            if (mountSlots[index].isEmpty)
+            {
+                infoScreen.Hide();
+            }
+            else if (!infoScreen.gameObject.activeSelf)
+            {
+                var item = mountSlots[index].GetItem();
 
                 infoScreen.SetInfo(item, 0);
                 infoScreen.Show();
@@ -184,7 +208,7 @@ public class Inventory : MonoBehaviour
             inventorySlots[index].DeleteSlot();
         else
         {
-            var slot = mountSlotsUI[index - inventorySlots.Count()];
+            var slot = mountSlots[index - inventorySlots.Count()];
             var item = slot.GetItem();
             // If the item being deleted is a mounted storage component, we need to remove the slots it added to the player ship.
             if (item is StorageComponent)
@@ -209,7 +233,7 @@ public class Inventory : MonoBehaviour
         if (index < inventorySlots.Count())
             inventorySlots[index].ClearSlot();
         else
-            mountSlotsUI[index - inventorySlots.Count()].ClearSlot();
+            mountSlots[index - inventorySlots.Count()].ClearSlot();
 
         // Play the delete sound.
         audioSource.Stop();
@@ -293,10 +317,80 @@ public class Inventory : MonoBehaviour
             audioSource.Play();
 
         }
+        // If Swapping between hotbar and inventory.
+        else if (index1 < inventorySlots.Count() && index2 >= inventorySlots.Count() + mountSlots.Count())
+        {
+            var hotbarSlot = hotbarSlots[index2 - inventorySlots.Count() - mountSlots.Count()];
+            var invSlot = inventorySlots[index1];
+
+            // If both slots contain an item.
+            if (!hotbarSlot.isEmpty && !invSlot.isEmpty)
+            {
+                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
+                ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
+
+                // Is each item a component?
+                if (invComp != null && hotbarComp != null)
+                {
+                    if (invComp.GetItemType() == ItemType.Turret)
+                    {
+                        hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                        invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+                        var temp = invSlot.GetItem();
+                        invSlot.SetItem(hotbarSlot.GetItem());
+                        hotbarSlot.SetItem(temp);
+                        audioSource.Play();
+                    }
+                }
+            }
+            else if (hotbarSlot.isEmpty)
+            {
+                if (invSlot.GetItem() is WeaponComponent || invSlot.GetItem() is MiningComponent)
+                {
+                    invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+                    hotbarSlot.SetItem(invSlot.GetItem());
+                    invSlot.ClearSlot();
+                    audioSource.Play();
+                }
+            }
+        }
+        else if (index1 >= inventorySlots.Count() + mountSlots.Count() && index2 < inventorySlots.Count())
+        {
+            var hotbarSlot = hotbarSlots[index1 - inventorySlots.Count() - mountSlots.Count()];
+            var invSlot = inventorySlots[index2];
+
+            // If both slots contain an item.
+            if (!hotbarSlot.isEmpty && !invSlot.isEmpty)
+            {
+                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
+                ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
+
+                // Is each item a component?
+                if (invComp != null && hotbarComp != null)
+                {
+                    if (invComp.GetItemType() == ItemType.Turret)
+                    {
+                        hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                        invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+                        var temp = invSlot.GetItem();
+                        invSlot.SetItem(hotbarSlot.GetItem());
+                        hotbarSlot.SetItem(temp);
+                        audioSource.Play();
+                    }
+                }
+            }
+            else if (invSlot.isEmpty)
+            {
+                hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                invSlot.SetItem(hotbarSlot.GetItem());
+                hotbarSlot.ClearSlot();
+                audioSource.Play();
+            }
+        }
         // If swapping from a mounting slot.
         else if (index1 >= inventorySlots.Count() && index2 < inventorySlots.Count())
         {
-            var mountSlot = mountSlotsUI[index1 - inventorySlots.Count()];
+            var mountSlot = mountSlots[index1 - inventorySlots.Count()];
             var invSlot = inventorySlots[index2];
 
             // Swap the items of the two, if they both contain an item.
@@ -342,7 +436,7 @@ public class Inventory : MonoBehaviour
         // If swapping to a mounting slot.
         else if (index1 < inventorySlots.Count() && index2 >= inventorySlots.Count())
         {
-            var mountSlot = mountSlotsUI[index2 - inventorySlots.Count()];
+            var mountSlot = mountSlots[index2 - inventorySlots.Count()];
             var invSlot = inventorySlots[index1];
 
             // Swap the items of the two, if they both contain an item.
@@ -360,7 +454,7 @@ public class Inventory : MonoBehaviour
                         if (invComp is StorageComponent)
                         {
                             // If the mount slot gave more inventory space than the one being swapped in, remove slots.
-                            if((mountComp as StorageComponent).slotCount > (invComp as StorageComponent).slotCount)
+                            if ((mountComp as StorageComponent).slotCount > (invComp as StorageComponent).slotCount)
                                 RemoveSlots((mountComp as StorageComponent).slotCount - (invComp as StorageComponent).slotCount);
                             else
                                 AddSlots((invComp as StorageComponent).slotCount - (mountComp as StorageComponent).slotCount);
@@ -392,33 +486,33 @@ public class Inventory : MonoBehaviour
             }
         }
         // If swapping between mounting slots.
-        else
-        {
-            var slot1 = mountSlotsUI[index1 - inventorySlots.Count()];
-            var slot2 = mountSlotsUI[index2 - inventorySlots.Count()];
-            // Only swap their items if they are the same type of mount.
-            if (slot1.IsSameSlotType(slot2))
-            {
-                // Swap the items of the two, if they both contain an item.
-                if (!slot1.isEmpty && !slot2.isEmpty)
-                {
-                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-                    slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
-                    var temp = slot2.GetItem();
+        //else if (index1 >= inventorySlots.Count() && index2 >= inventorySlots.Count())
+        //{
+        //    var slot1 = mountSlotsUI[index1 - inventorySlots.Count()];
+        //    var slot2 = mountSlotsUI[index2 - inventorySlots.Count()];
+        //    // Only swap their items if they are the same type of mount.
+        //    if (slot1.IsSameSlotType(slot2))
+        //    {
+        //        // Swap the items of the two, if they both contain an item.
+        //        if (!slot1.isEmpty && !slot2.isEmpty)
+        //        {
+        //            slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+        //            slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
+        //            var temp = slot2.GetItem();
 
-                    slot2.SetItem(slot1.GetItem());
-                    slot1.SetItem(temp);
+        //            slot2.SetItem(slot1.GetItem());
+        //            slot1.SetItem(temp);
 
-                }
-                else if (slot2.isEmpty)
-                {
-                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-                    slot2.SetItem(slot1.GetItem());
-                    slot1.ClearSlot();
-                }
-                audioSource.Play();
-            }
-        }
+        //        }
+        //        else if (slot2.isEmpty)
+        //        {
+        //            slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+        //            slot2.SetItem(slot1.GetItem());
+        //            slot1.ClearSlot();
+        //        }
+        //        audioSource.Play();
+        //    }
+        //}
     }
 
 
