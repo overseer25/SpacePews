@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
@@ -12,29 +9,48 @@ public class WeaponController : MonoBehaviour
     [Header("Ship")]
     public Ship ship;
 
-    private ShipComponent turret;
-    
+    private GameObject turret;
+    private ShipComponent currentComponent;
+
     [SerializeField]
     private ShipMountController mountController;
 
     void Start()
     {
-        turret = ship.turret.GetComponent<ShipComponent>();
+        turret = ship.turret;
+    }
+
+    /// <summary>
+    /// Update the turret to use the provided component.
+    /// </summary>
+    /// <param name="component"></param>
+    public void UpdateTurret(ShipComponent component)
+    {
+        if (currentComponent != null)
+        {
+            (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().DestroyPool();
+            Destroy(currentComponent.gameObject);
+        }
+        if (component == null)
+        {
+            return;
+        }
+        var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
+        currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
+        currentComponent.gameObject.SetActive(true);
+        if (currentComponent is WeaponComponent)
+            (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().CreatePool();
     }
 
     // Update is called once per frame
     void Update()
     {
         // Change the item if necessary.
-        // TODO: Implement it so that the turret updates with the selected component.
-        var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
-        turret = hotbarSlotItem as ShipComponent;
-
-        if (Input.GetMouseButton(0) && !menuOpen && turret != null)
+        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
         {
-            if (turret is WeaponComponent)
+            if (currentComponent is WeaponComponent)
             {
-                var weapon = turret as WeaponComponent;
+                var weapon = currentComponent as WeaponComponent;
                 if (Time.time > weapon.GetNextShotTime())
                 {
                     weapon.Fire();
@@ -42,11 +58,11 @@ public class WeaponController : MonoBehaviour
                 }
             }
         }
-        if (Input.GetMouseButtonUp(0) || menuOpen || turret == null)
+        if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
         {
-            if (turret is MiningComponent)
+            if (currentComponent is MiningComponent)
             {
-                var miningLaser = turret as MiningComponent;
+                var miningLaser = currentComponent as MiningComponent;
                 miningLaser.StopFire();
             }
         }

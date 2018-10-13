@@ -20,6 +20,8 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private ShipMountController mountController;
     [SerializeField]
+    private WeaponController weaponController;
+    [SerializeField]
     private GameObject inventoryUI;
     [SerializeField]
     private GameObject mountUI;
@@ -91,6 +93,7 @@ public class Inventory : MonoBehaviour
                 selectedHotbarSlotIndex++;
                 hotbarSlots[selectedHotbarSlotIndex].Select();
             }
+            weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
         }
         // If scrolling down the hotbar.
         else if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -109,6 +112,7 @@ public class Inventory : MonoBehaviour
                 selectedHotbarSlotIndex--;
                 hotbarSlots[selectedHotbarSlotIndex].Select();
             }
+            weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
         }
     }
 
@@ -171,9 +175,7 @@ public class Inventory : MonoBehaviour
         {
             audioSource.clip = openSound;
             audioSource.Play();
-            gameObject.GetComponent<Canvas>().enabled = true;
-            //foreach (var inventorySlot in inventorySlots)
-            //    inventorySlot.gameObject.SetActive(true);
+            inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 1.0f;
             foreach (var mount in mountSlots)
                 mount.gameObject.SetActive(true);
             isOpen = true;
@@ -182,9 +184,7 @@ public class Inventory : MonoBehaviour
         {
             audioSource.clip = closeSound;
             audioSource.Play();
-            gameObject.GetComponent<Canvas>().enabled = false;
-            //foreach (var inventorySlot in inventorySlots)
-            //    inventorySlot.gameObject.SetActive(false);
+            inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 0.0f;
             foreach (var mount in mountSlots)
                 mount.gameObject.SetActive(false);
             isOpen = false;
@@ -539,34 +539,6 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-        // If swapping between mounting slots.
-        //else if (index1 >= inventorySlots.Count() && index2 >= inventorySlots.Count())
-        //{
-        //    var slot1 = mountSlotsUI[index1 - inventorySlots.Count()];
-        //    var slot2 = mountSlotsUI[index2 - inventorySlots.Count()];
-        //    // Only swap their items if they are the same type of mount.
-        //    if (slot1.IsSameSlotType(slot2))
-        //    {
-        //        // Swap the items of the two, if they both contain an item.
-        //        if (!slot1.isEmpty && !slot2.isEmpty)
-        //        {
-        //            slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-        //            slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
-        //            var temp = slot2.GetItem();
-
-        //            slot2.SetItem(slot1.GetItem());
-        //            slot1.SetItem(temp);
-
-        //        }
-        //        else if (slot2.isEmpty)
-        //        {
-        //            slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-        //            slot2.SetItem(slot1.GetItem());
-        //            slot1.ClearSlot();
-        //        }
-        //        audioSource.Play();
-        //    }
-        //}
     }
 
 
