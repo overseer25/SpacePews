@@ -15,6 +15,9 @@ public class Ship : MonoBehaviour
 
     public int inventorySize;
 
+    [Header("Turret")]
+    public GameObject turret;
+
     [Header("Sounds")]
     public AudioSource engine;
 

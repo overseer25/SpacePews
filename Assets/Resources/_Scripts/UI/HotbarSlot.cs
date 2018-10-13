@@ -11,6 +11,9 @@ public class HotbarSlot : InteractableElement
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
     private InventoryItem inventoryItem; // The item in the slot.
+    internal bool selected;
+    [Header("Starting Component")]
+    public ShipComponent startingComponent;
 
     void Awake()
     {
@@ -19,6 +22,40 @@ public class HotbarSlot : InteractableElement
         numkeyDisplay = GetComponentInChildren<TextMeshProUGUI>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
         image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        if(startingComponent != null)
+        {
+            SetItem(startingComponent);
+        }
+    }
+
+    /// <summary>
+    /// Highlights the slot to represent that it is selected.
+    /// </summary>
+    public void Select()
+    {
+        selected = true;
+        image.color = new Color(0.7f, 1.0f, 0.7f, 1.0f);
+        if(inventoryItem.gameObject.activeSelf)
+            inventoryItem.Highlight();
+    }
+
+    /// <summary>
+    /// Removes the highlight to represent the slot is no longer selected.
+    /// </summary>
+    public void Deselect()
+    {
+        selected = false;
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        if (inventoryItem.gameObject.activeSelf)
+            inventoryItem.Dehighlight();
+    }
+
+    /// <summary>
+    /// Is the hotbar slot selected?
+    /// </summary>
+    public bool IsSelected()
+    {
+        return selected;
     }
 
     /// <summary>
@@ -103,8 +140,7 @@ public class HotbarSlot : InteractableElement
         {
             if (enterSound != null)
             {
-                audioSource.clip = enterSound;
-                audioSource.Play();
+                audioSource.PlayOneShot(enterSound);
             }
         }
     }
@@ -114,8 +150,11 @@ public class HotbarSlot : InteractableElement
     {
         if (!isEmpty && !InventoryItem.dragging)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            inventoryItem.Highlight();
+            if(!selected)
+            {
+                image.color = new Color(0.7f, 1.0f, 0.7f, 1.0f);
+                inventoryItem.Highlight();
+            }
             SendMessageUpwards("ShowHoverTooltip", index);
         }
     }
@@ -128,13 +167,16 @@ public class HotbarSlot : InteractableElement
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
-            inventoryItem.Dehighlight();
-            SendMessageUpwards("HideHoverTooltip");
-            if (exitSound != null)
+            if(!selected)
             {
-                audioSource.clip = exitSound;
-                audioSource.Play();
+                inventoryItem.Dehighlight();
+                if (exitSound != null)
+                {
+                    audioSource.PlayOneShot(exitSound);
+
+                }
             }
+            SendMessageUpwards("HideHoverTooltip");
         }
     }
 

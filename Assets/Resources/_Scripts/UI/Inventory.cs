@@ -33,6 +33,7 @@ public class Inventory : MonoBehaviour
     // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
     private List<Item> itemList;
     private int inventorySize = 0;
+    private int selectedHotbarSlotIndex;
 
 
     // Use this for initialization
@@ -65,6 +66,59 @@ public class Inventory : MonoBehaviour
             slot.GetComponent<HotbarSlot>().Initialize(index++, i);
             hotbarSlots.Add(slot.GetComponent<HotbarSlot>());
         }
+        hotbarSlots[0].Select();
+    }
+
+    /// <summary>
+    /// Mainly controls updating the hotbar.
+    /// </summary>
+    void Update()
+    {
+        // If scrolling up the hotbar.
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            // Wrap to the beginning if at the end of the hotbar.
+            if (selectedHotbarSlotIndex + 1 >= hotbarSlots.Count)
+            {
+                hotbarSlots[selectedHotbarSlotIndex].Deselect();
+                selectedHotbarSlotIndex = 0;
+                hotbarSlots[selectedHotbarSlotIndex].Select();
+            }
+            // Otherwise, just move to the next hotbar slot.
+            else
+            {
+                hotbarSlots[selectedHotbarSlotIndex].Deselect();
+                selectedHotbarSlotIndex++;
+                hotbarSlots[selectedHotbarSlotIndex].Select();
+            }
+        }
+        // If scrolling down the hotbar.
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            // Wrap to the end if at the beginning of the hotbar.
+            if (selectedHotbarSlotIndex - 1 < 0)
+            {
+                hotbarSlots[selectedHotbarSlotIndex].Deselect();
+                selectedHotbarSlotIndex = hotbarSlots.Count - 1;
+                hotbarSlots[selectedHotbarSlotIndex].Select();
+            }
+            // Otherwise, just move to the previous hotbar slot.
+            else
+            {
+                hotbarSlots[selectedHotbarSlotIndex].Deselect();
+                selectedHotbarSlotIndex--;
+                hotbarSlots[selectedHotbarSlotIndex].Select();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Get the currently selected hotbar slot.
+    /// </summary>
+    /// <returns></returns>
+    public HotbarSlot GetSelectedHotbarSlot()
+    {
+        return hotbarSlots[selectedHotbarSlotIndex];
     }
 
     /// <summary>
@@ -83,7 +137,7 @@ public class Inventory : MonoBehaviour
         int j = size + inventorySize;
         foreach (var mountSlot in mountSlots)
             mountSlot.SetIndex(j++);
-        foreach(var hotbarSlot in hotbarSlots)
+        foreach (var hotbarSlot in hotbarSlots)
             hotbarSlot.SetIndex(j++);
 
         inventorySize += size;

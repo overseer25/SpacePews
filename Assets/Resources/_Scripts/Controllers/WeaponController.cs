@@ -7,43 +7,75 @@ public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
     public bool menuOpen = false;
-    private ShipMount turret;
+    [Header("Inventory")]
+    public Inventory inventory;
+    [Header("Ship")]
+    public Ship ship;
 
+    private ShipComponent turret;
+    
     [SerializeField]
     private ShipMountController mountController;
 
-    private void Start()
+    void Start()
     {
-        turret = mountController.GetTurretMount();
+        turret = ship.turret.GetComponent<ShipComponent>();
     }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && !menuOpen)
+        // Change the item if necessary.
+        // TODO: Implement it so that the turret updates with the selected component.
+        var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
+        turret = hotbarSlotItem as ShipComponent;
+
+        if (Input.GetMouseButton(0) && !menuOpen && turret != null)
         {
-            if(turret.GetShipComponent() is WeaponComponent)
+            if (turret is WeaponComponent)
             {
-                var weapon = turret.GetShipComponent() as WeaponComponent;
+                var weapon = turret as WeaponComponent;
                 if (Time.time > weapon.GetNextShotTime())
                 {
                     weapon.Fire();
                     weapon.SetLastShot(Time.time);
                 }
             }
-            if(turret.GetShipComponent() is MiningComponent)
-            {
-                var miningLaser = turret.GetShipComponent() as MiningComponent;
-                miningLaser.Fire();
-            }
         }
-        if (Input.GetMouseButtonUp(0) || menuOpen)
+        if (Input.GetMouseButtonUp(0) || menuOpen || turret == null)
         {
-            if(turret.GetShipComponent() is MiningComponent)
+            if (turret is MiningComponent)
             {
-                var miningLaser = turret.GetShipComponent() as MiningComponent;
+                var miningLaser = turret as MiningComponent;
                 miningLaser.StopFire();
             }
         }
+
+        //if (Input.GetMouseButton(0) && !menuOpen)
+        //{
+        //    if(turret.GetShipComponent() is WeaponComponent)
+        //    {
+        //        var weapon = turret.GetShipComponent() as WeaponComponent;
+        //        if (Time.time > weapon.GetNextShotTime())
+        //        {
+        //            weapon.Fire();
+        //            weapon.SetLastShot(Time.time);
+        //        }
+        //    }
+        //    if(turret.GetShipComponent() is MiningComponent)
+        //    {
+        //        var miningLaser = turret.GetShipComponent() as MiningComponent;
+        //        miningLaser.Fire();
+        //    }
+        //}
+        //if (Input.GetMouseButtonUp(0) || menuOpen)
+        //{
+        //    if(turret.GetShipComponent() is MiningComponent)
+        //    {
+        //        var miningLaser = turret.GetShipComponent() as MiningComponent;
+        //        miningLaser.StopFire();
+        //    }
+        //}
     }
 
     /// <summary>
