@@ -14,18 +14,14 @@ public class ProjectilePool : MonoBehaviour
     private List<GameObject> objectPool;
 
     /// <summary>
-    /// Setup the instance.
-    /// </summary>
-    void Awake()
-    {
-        objectPool = new List<GameObject>(amountPooled);
-    }
-
-    /// <summary>
     /// Creates a pool of the object. This method exists so that the pool is created only when it is needed.
     /// </summary>
     public void CreatePool()
     {
+        // If the object pool is already created, don't make it again.
+        if (objectPool != null)
+            return;
+        objectPool = new List<GameObject>();
         for (int i = 0; i < amountPooled; i++)
         {
             GameObject obj = Instantiate(pooledObject) as GameObject;
@@ -37,12 +33,13 @@ public class ProjectilePool : MonoBehaviour
     /// <summary>
     /// Destroy the object pool when it is no longer necessary.
     /// </summary>
-    public void DestroyPool()
+    public void DestroyPool(float time = 3)
     {
         for(int i = 0; i < objectPool.Count; i++)
         {
-            Destroy(objectPool[i].gameObject);
+            Destroy(objectPool[i].gameObject, time);
         }
+        objectPool = null;
     }
 
     /// <summary>

@@ -116,12 +116,15 @@ public class MiningComponent : ShipComponent
     /// </summary>
     public void StopFire()
     {
-        line.enabled = false;
-        if (baseAudioSource.isPlaying)
+        if(line != null)
         {
-            baseAudioSource.Stop();
+            line.enabled = false;
+            if (baseAudioSource.isPlaying)
+            {
+                baseAudioSource.Stop();
+            }
+            StopContactAudio();
         }
-        StopContactAudio();
     }
 
     /// <summary>
@@ -200,7 +203,7 @@ public class MiningComponent : ShipComponent
         float currentMineTime = objectHit.AddTimeMined(Time.deltaTime * miningRate);
         if (currentMineTime >= objectHit.mineRate)
         {
-            objectHit.SpawnLoot(transform);
+            objectHit.SpawnLoot(GetComponentInParent<MovementController>().gameObject);
         }
     }
 }

@@ -35,7 +35,7 @@ public class Item : MonoBehaviour
     private bool mined = false;
     internal Color itemColor;
 
-    private Transform playerPos;
+    private GameObject targetPlayer;
 
     private void Start()
     {
@@ -68,52 +68,38 @@ public class Item : MonoBehaviour
                 GetComponentInChildren<SpriteRenderer>().sprite = inventorySpriteAnim[index];
             }
         }
-        if (mined)
-        {
-            HoverTowardsTargetPlayer();
-        }
-        else
-        {
-            HoverTowardPlayer();
-        }
+        HoverTowardPlayer(targetPlayer);
     }
 
     /// <summary>
     /// The logic to move toward the player.
     /// </summary>
-    internal virtual void HoverTowardPlayer()
+    internal virtual void HoverTowardPlayer(GameObject player = null)
     {
-        var closestPlayer = PlayerUtils.GetClosestPlayer(gameObject);
-
-        // If the player's inventory is full, don't hover toward them.
-        if (!closestPlayer.GetComponent<PlayerController>().inventory.ContainsEmptySlot() && !closestPlayer.GetComponent<PlayerController>().inventory.ContainsItem(this))
+        if(player == null)
         {
-            return;
+            player = PlayerUtils.GetClosestPlayer(gameObject);
+
+            // If the player's inventory is full, don't hover toward them.
+            if (!player.GetComponent<PlayerController>().inventory.ContainsEmptySlot() && !player.GetComponent<PlayerController>().inventory.ContainsItem(this))
+                return;
+
+            var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer <= MAXDISTANCE)
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, followSpeed * Time.deltaTime);
         }
-
-        var distanceToPlayer = Vector2.Distance(transform.position, closestPlayer.transform.position);
-        if (distanceToPlayer <= MAXDISTANCE)
+        else
         {
-            transform.position = Vector2.MoveTowards(transform.position, closestPlayer.transform.position, followSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, followSpeed * Time.deltaTime);
         }
     }
 
-    /// <summary>
-    /// Cause the item that was just mined to fly towards the player who obtained
-    /// this resource.
-    /// </summary>
-    /// <param name="playerPos">The reference to the player and where they are.</param>
-    private void HoverTowardsTargetPlayer()
-    {
-        transform.position = Vector2.MoveTowards(transform.position, playerPos.position, followSpeed * Time.deltaTime);
-    }
-
-    public void SetWasMined(bool mined, Transform target = null)
+    public void SetWasMined(bool mined, GameObject target = null)
     {
         this.mined = mined;
         if(target != null)
         {
-            playerPos = target;
+            targetPlayer = target;
         }
     }
 

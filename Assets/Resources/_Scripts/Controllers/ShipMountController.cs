@@ -22,11 +22,6 @@ public class ShipMountController : MonoBehaviour {
         return mounts;
     }
 
-    public ShipMount GetTurretMount()
-    {
-        return mounts.Where(m => m.GetMountType() == ItemType.Turret).First();
-    }
-
     /// <summary>
     /// Gets all the utility mounts being managed.
     /// </summary>

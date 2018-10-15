@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class InventorySlot : InteractableElement
 {
-    [Header("State")]
+    [HideInInspector]
     public bool isEmpty = true; // All slots start out empty.
     private InventoryItem inventoryItem; // The item in the slot.
     private int quantity;
