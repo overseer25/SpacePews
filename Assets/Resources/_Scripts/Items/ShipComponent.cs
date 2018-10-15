@@ -34,10 +34,10 @@ public class ShipComponent : Item
     /// <summary>
     /// The logic to move toward the player.
     /// </summary>
-    internal override void HoverTowardPlayer()
+    internal override void HoverTowardPlayer(GameObject player)
     {
         if (!mounted)
-            base.HoverTowardPlayer();
+            base.HoverTowardPlayer(player);
     }
 
     /// <summary>

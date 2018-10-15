@@ -8,10 +8,16 @@ public class Inventory : MonoBehaviour
     public InfoScreen infoScreen;
 
     [Header("Sounds")]
-    public AudioClip openSound;
-    public AudioClip closeSound;
-    public AudioClip swapSound;
-    public AudioClip clearSlotSound;
+    [SerializeField]
+    private AudioClip openSound;
+    [SerializeField]
+    private AudioClip closeSound;
+    [SerializeField]
+    private AudioClip swapSound;
+    [SerializeField]
+    private AudioClip clearSlotSound;
+    [SerializeField]
+    private AudioClip hotbarSelectSound;
 
     internal AudioSource audioSource;
     internal bool isOpen = false;
@@ -77,43 +83,52 @@ public class Inventory : MonoBehaviour
     void Update()
     {
         // If scrolling up the hotbar.
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             // Wrap to the beginning if at the end of the hotbar.
             if (selectedHotbarSlotIndex + 1 >= hotbarSlots.Count)
-            {
-                hotbarSlots[selectedHotbarSlotIndex].Deselect();
-                selectedHotbarSlotIndex = 0;
-                hotbarSlots[selectedHotbarSlotIndex].Select();
-            }
+                SwitchHotbarSlot(0);
             // Otherwise, just move to the next hotbar slot.
             else
             {
-                hotbarSlots[selectedHotbarSlotIndex].Deselect();
-                selectedHotbarSlotIndex++;
-                hotbarSlots[selectedHotbarSlotIndex].Select();
+                SwitchHotbarSlot(selectedHotbarSlotIndex+1);
             }
-            weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
         }
         // If scrolling down the hotbar.
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             // Wrap to the end if at the beginning of the hotbar.
             if (selectedHotbarSlotIndex - 1 < 0)
-            {
-                hotbarSlots[selectedHotbarSlotIndex].Deselect();
-                selectedHotbarSlotIndex = hotbarSlots.Count - 1;
-                hotbarSlots[selectedHotbarSlotIndex].Select();
-            }
+                SwitchHotbarSlot(hotbarSlots.Count - 1);
             // Otherwise, just move to the previous hotbar slot.
             else
             {
-                hotbarSlots[selectedHotbarSlotIndex].Deselect();
-                selectedHotbarSlotIndex--;
-                hotbarSlots[selectedHotbarSlotIndex].Select();
+                SwitchHotbarSlot(selectedHotbarSlotIndex-1);
             }
-            weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
         }
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            SwitchHotbarSlot(0);
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+            SwitchHotbarSlot(1);
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+            SwitchHotbarSlot(2);
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+            SwitchHotbarSlot(3);
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+            SwitchHotbarSlot(4);
+    }
+
+    /// <summary>
+    /// Changes the current selected hotbar slot to the provided index.
+    /// </summary>
+    /// <param name="index"></param>
+    private void SwitchHotbarSlot(int index)
+    {
+        hotbarSlots[selectedHotbarSlotIndex].Deselect();
+        selectedHotbarSlotIndex = index;
+        hotbarSlots[selectedHotbarSlotIndex].Select();
+        weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
+        audioSource.PlayOneShot(hotbarSelectSound);
     }
 
     /// <summary>
@@ -179,6 +194,7 @@ public class Inventory : MonoBehaviour
             foreach (var mount in mountSlots)
                 mount.gameObject.SetActive(true);
             isOpen = true;
+            InventoryItem.draggable = true;
         }
         else
         {
@@ -188,6 +204,7 @@ public class Inventory : MonoBehaviour
             foreach (var mount in mountSlots)
                 mount.gameObject.SetActive(false);
             isOpen = false;
+            InventoryItem.draggable = false;
         }
     }
 
@@ -371,7 +388,7 @@ public class Inventory : MonoBehaviour
             audioSource.Play();
 
         }
-        // If Swapping between hotbar and inventory.
+        // If swapping from inventory to hotbar.
         else if (index1 < inventorySlots.Count() && index2 >= inventorySlots.Count() + mountSlots.Count())
         {
             var hotbarSlot = hotbarSlots[index2 - inventorySlots.Count() - mountSlots.Count()];
@@ -407,7 +424,10 @@ public class Inventory : MonoBehaviour
                     audioSource.Play();
                 }
             }
+            if (hotbarSlot.IsSelected())
+                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
         }
+        // If swapping from hotbar to inventory.
         else if (index1 >= inventorySlots.Count() + mountSlots.Count() && index2 < inventorySlots.Count())
         {
             var hotbarSlot = hotbarSlots[index1 - inventorySlots.Count() - mountSlots.Count()];
@@ -440,6 +460,39 @@ public class Inventory : MonoBehaviour
                 hotbarSlot.ClearSlot();
                 audioSource.Play();
             }
+            if(hotbarSlot.IsSelected())
+                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+        }
+        // If swapping from hotbar to hotbar.
+        else if (index1 >= inventorySlots.Count() + mountSlots.Count() && index2 >= inventorySlots.Count() + mountSlots.Count())
+        {
+            var hotbarSlot = hotbarSlots[index1 - inventorySlots.Count() - mountSlots.Count()];
+            var hotbarSlot2 = hotbarSlots[index2 - inventorySlots.Count() - mountSlots.Count()];
+
+            // If both slots contain an item.
+            if (!hotbarSlot.isEmpty && !hotbarSlot2.isEmpty)
+            {
+                ShipComponent invComp = hotbarSlot2.GetItem() as ShipComponent;
+                ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
+
+                hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
+                hotbarSlot2.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+                var temp = hotbarSlot2.GetItem();
+                hotbarSlot2.SetItem(hotbarSlot.GetItem());
+                hotbarSlot.SetItem(temp);
+                audioSource.Play();
+            }
+            else if (hotbarSlot2.isEmpty)
+            {
+                hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
+                hotbarSlot2.SetItem(hotbarSlot.GetItem());
+                hotbarSlot.ClearSlot();
+                audioSource.Play();
+            }
+            if (hotbarSlot.IsSelected())
+                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+            else if(hotbarSlot2.IsSelected())
+                weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponent);
         }
         // If swapping from a mounting slot.
         else if (index1 >= inventorySlots.Count() && index2 < inventorySlots.Count())

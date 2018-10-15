@@ -11,6 +11,7 @@ public class HotbarSlot : InteractableElement
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
     private InventoryItem inventoryItem; // The item in the slot.
+    private readonly Color SELECTCOLOR = new Color(0.3f, 0.7f, 1.0f);
     internal bool selected;
     [Header("Starting Component")]
     public ShipComponent startingComponent;
@@ -21,7 +22,7 @@ public class HotbarSlot : InteractableElement
         audioSource = GetComponent<AudioSource>();
         numkeyDisplay = GetComponentInChildren<TextMeshProUGUI>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
         if(startingComponent != null)
         {
             SetItem(startingComponent);
@@ -34,7 +35,7 @@ public class HotbarSlot : InteractableElement
     public void Select()
     {
         selected = true;
-        image.color = new Color(0.7f, 1.0f, 0.7f, 1.0f);
+        image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
         if(inventoryItem.gameObject.activeSelf)
             inventoryItem.Highlight();
     }
@@ -45,7 +46,7 @@ public class HotbarSlot : InteractableElement
     public void Deselect()
     {
         selected = false;
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
         if (inventoryItem.gameObject.activeSelf)
             inventoryItem.Dehighlight();
     }
@@ -127,7 +128,10 @@ public class HotbarSlot : InteractableElement
         inventoryItem.SetQuantity(0);
         inventoryItem.SetItem(null, 0);
         inventoryItem.gameObject.SetActive(false);
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        if (selected)
+            image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+        else
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
         isEmpty = true;
     }
 
@@ -152,7 +156,7 @@ public class HotbarSlot : InteractableElement
         {
             if(!selected)
             {
-                image.color = new Color(0.7f, 1.0f, 0.7f, 1.0f);
+                image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 inventoryItem.Highlight();
             }
             SendMessageUpwards("ShowHoverTooltip", index);
@@ -162,8 +166,10 @@ public class HotbarSlot : InteractableElement
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if (!isEmpty)
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        if(selected)
+            image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+        else if (!isEmpty)
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {

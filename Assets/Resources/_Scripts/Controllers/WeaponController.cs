@@ -28,7 +28,8 @@ public class WeaponController : MonoBehaviour
     {
         if (currentComponent != null)
         {
-            (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().DestroyPool();
+            if(currentComponent is WeaponComponent)
+                (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().DestroyPool();
             Destroy(currentComponent.gameObject);
         }
         if (component == null)
@@ -56,6 +57,11 @@ public class WeaponController : MonoBehaviour
                     weapon.Fire();
                     weapon.SetLastShot(Time.time);
                 }
+            }
+            else if (currentComponent is MiningComponent)
+            {
+                var miningLaser = currentComponent as MiningComponent;
+                miningLaser.Fire();
             }
         }
         if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)

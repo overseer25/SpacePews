@@ -40,9 +40,10 @@ GameObject:
   m_Component:
   - component: {fileID: 224290312271322428}
   - component: {fileID: 222800849052254726}
-  - component: {fileID: 114112275856771408}
-  - component: {fileID: 114418528735261398}
   - component: {fileID: 61723796546186552}
+  - component: {fileID: 114112275856771408}
+  - component: {fileID: 50059901481300716}
+  - component: {fileID: 114418528735261398}
   - component: {fileID: 82518977577823364}
   m_Layer: 5
   m_Name: HotbarSlot
@@ -68,6 +69,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!50 &50059901481300716
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1176014370527568}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!61 &61361616201244136
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -322,6 +343,7 @@ MonoBehaviour:
   enterSound: {fileID: 8300000, guid: c738ad39450278c44a791b7fab97de4d, type: 3}
   exitSound: {fileID: 0}
   isEmpty: 1
+  startingComponent: {fileID: 0}
 --- !u!114 &114418528735261398
 MonoBehaviour:
   m_ObjectHideFlags: 1

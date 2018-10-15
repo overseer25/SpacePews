@@ -24,6 +24,8 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     // If swapping slots, send off these positions.
     private int[] positions;
     internal static bool dragging = false;
+    // If the inventory item is not visible, it is not draggable.
+    internal static bool draggable;
     internal bool destroying = false;
     private bool highlighted = false;
 
@@ -108,7 +110,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && draggable)
         {
             if(GetComponentInParent<InteractableElement>() != null)
                 positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
@@ -122,7 +124,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && draggable)
         {
             if (image == null) { return; }
 
@@ -139,7 +141,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (image == null) { return; }
+        if (image == null || !draggable) { return; }
         dragging = false;
 
         if (destroying)
