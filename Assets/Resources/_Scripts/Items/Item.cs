@@ -106,7 +106,7 @@ public class Item : MonoBehaviour
                 if (minedFollowSpeed != 0.0f)
                 {
                     transform.position = Vector2.MoveTowards(transform.position, player.transform.position, minedFollowSpeed * Time.deltaTime);
-                    minedFollowSpeed *= 0.8f;
+                    minedFollowSpeed *= 0.9f * (1 - Time.deltaTime);
                 }
                 else
                     player = null;
