@@ -108,7 +108,7 @@ public class RammingAI : MonoBehaviour
             // when the ramming ai is within boost distance, it disregards obstacle avoidance in favor of hitting the player
             if (!canBoost)
             {
-                ObstacleAvoidance(targetVec);
+                ObstacleAvoidance(targetVec, distFromTarget);
             }
             motor.MoveForward(speed, topSpeed);
         }
@@ -155,9 +155,19 @@ public class RammingAI : MonoBehaviour
         }
     }
 
-    private void ObstacleAvoidance(Vector2 targetVec)
+    private void ObstacleAvoidance(Vector2 targetVec, float distAway)
     {
-        Physics2D.RaycastAll(ship.transform.position, targetVec);
+        LayerMask mask = LayerMask.GetMask("Obstacle");
+        //may want to change this to RaycastNonAlloc
+        RaycastHit2D hit = Physics2D.Raycast(ship.transform.position, targetVec, distAway, mask);
+        if (hit.collider != null)
+        {
+            //there is an obstacle, so place two points to either side of the ship
+            //from those two points raycast again to the target. pick which one doesn't have an
+            //obstacle in front of it. then fly to that avoidance point before recentering on the target.
+            //if both avoidance points have obstacles, then pick one at random, and recenter on target
+            //check avoidance will be called again and may find an answer this time
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
