@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour
                     inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
             }
         }
+
+        inventory.CloseInventory();
     }
 
     /// <summary>
