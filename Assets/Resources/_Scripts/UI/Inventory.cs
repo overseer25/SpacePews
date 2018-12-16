@@ -188,25 +188,42 @@ public class Inventory : MonoBehaviour
     {
         if (!isOpen)
         {
-            audioSource.clip = openSound;
-            audioSource.Play();
-            inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 1.0f;
-            foreach (var mount in mountSlots)
-                mount.gameObject.SetActive(true);
-            isOpen = true;
-            InventoryItem.draggable = true;
+            OpenInventory();
         }
         else
         {
-            audioSource.clip = closeSound;
-            audioSource.Play();
-            inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 0.0f;
-            foreach (var mount in mountSlots)
-                mount.gameObject.SetActive(false);
-            isOpen = false;
-            InventoryItem.draggable = false;
+            CloseInventory();
         }
     }
+
+    /// <summary>
+    /// Put the inventory to the open state.
+    /// </summary>
+    public virtual void OpenInventory()
+    {
+        audioSource.clip = openSound;
+        audioSource.Play();
+        inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 1.0f;
+        foreach (var mount in mountSlots)
+            mount.gameObject.SetActive(true);
+        isOpen = true;
+        InventoryItem.draggable = true;
+    }
+
+    /// <summary>
+    /// Put the inventory to the closed state.
+    /// </summary>
+    public virtual void CloseInventory()
+    {
+        audioSource.clip = closeSound;
+        audioSource.Play();
+        inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 0.0f;
+        foreach (var mount in mountSlots)
+            mount.gameObject.SetActive(false);
+        isOpen = false;
+        InventoryItem.draggable = false;
+    }
+
 
     /// <summary>
     /// Populates the tooltip with the information of the item in the inventory slot at the given index
@@ -357,35 +374,39 @@ public class Inventory : MonoBehaviour
     {
         var index1 = indices[0];
         var index2 = indices[1];
-        audioSource.clip = swapSound;
 
         // If swapping between inventory slots.
         if (index1 < inventorySlots.Count() && index2 < inventorySlots.Count())
         {
             var slot1 = inventorySlots[index1];
             var slot2 = inventorySlots[index2];
-            // Swap the items of the two, if they both contain an item.
-            if (!slot1.isEmpty && !slot2.isEmpty)
+            //if both items are empty, we do nothing and play nothing
+            if (!slot1.isEmpty || !slot2.isEmpty)
             {
-                slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-                slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
-                var tempItem = slot2.GetItem();
-                var tempQuantity = slot2.GetQuantity();
+                // Swap the items of the two, if they both contain an item.
+                if (!slot1.isEmpty && !slot2.isEmpty)
+                {
+                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+                    slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
+                    var tempItem = slot2.GetItem();
+                    var tempQuantity = slot2.GetQuantity();
 
-                slot2.SetItem(slot1.GetItem());
-                slot2.SetQuantity(slot1.GetQuantity());
-                slot1.SetItem(tempItem);
-                slot1.SetQuantity(tempQuantity);
+                    slot2.SetItem(slot1.GetItem());
+                    slot2.SetQuantity(slot1.GetQuantity());
+                    slot1.SetItem(tempItem);
+                    slot1.SetQuantity(tempQuantity);
 
+                }
+                //else if slot1 contains an item, and slot2 does not
+                else if (!slot1.isEmpty && slot2.isEmpty)
+                {
+                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+                    slot2.SetItem(slot1.GetItem());
+                    slot2.SetQuantity(slot1.GetQuantity());
+                    slot1.ClearSlot();
+                }
+                audioSource.PlayOneShot(swapSound);
             }
-            else if (slot2.isEmpty)
-            {
-                slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-                slot2.SetItem(slot1.GetItem());
-                slot2.SetQuantity(slot1.GetQuantity());
-                slot1.ClearSlot();
-            }
-            audioSource.Play();
 
         }
         // If swapping from inventory to hotbar.
