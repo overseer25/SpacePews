@@ -43,7 +43,9 @@ public class MiningComponent : ShipComponent
         line = gameObject.GetComponent<LineRenderer>();
         line.startWidth = laserWidth;
         line.endWidth = laserWidth;
-        line.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+        Shader shader = Shader.Find("Particles/Alpha Blended Premultiply");
+        if(shader != null)
+            line.material = new Material(shader);
         line.positionCount = 2;
     }
 
