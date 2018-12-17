@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("State")]
     public Inventory inventory;
+    public DeathScreen deathScreen;
 
     private float acceleration;
     private Rigidbody2D rigidBody;
@@ -89,34 +90,43 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKey(KeyCode.W) && thrusters.FirstOrDefault() != null)
+        // Only allow controls if the player is alive.
+        if(!dead)
         {
-            if(!GetThrusterState())
-                SetThrusterState(true);
-            movementController.MoveForward();
+            if (Input.GetKey(KeyCode.W) && thrusters.FirstOrDefault() != null)
+            {
+                if (!GetThrusterState())
+                    SetThrusterState(true);
+                movementController.MoveForward();
+            }
+            else
+            {
+                if (GetThrusterState())
+                    SetThrusterState(false);
+                movementController.Decelerate();
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                movementController.RotateRight();
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                movementController.RotateLeft();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
+                inventory.Toggle();
+                inventory.infoScreen.Hide();
+            }
         }
         else
         {
-            if(GetThrusterState())
+            if (GetThrusterState())
                 SetThrusterState(false);
             movementController.Decelerate();
         }
-        if(Input.GetKey(KeyCode.D))
-        {
-            movementController.RotateRight();
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movementController.RotateLeft();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
-            inventory.Toggle();
-            inventory.infoScreen.Hide();
-        }
-
     }
 
     /// <summary>
@@ -233,10 +243,12 @@ public class PlayerController : MonoBehaviour
         if(health <= 0)
         {
             this.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            mountController.HideMounted();
             dead = true;
             this.SendMessage("UpdateDead", true);
             healthUI.SetIsDead(true);
             healthUI.RedrawHealthSprites(0, 0);
+            deathScreen.Display();
         }
         return health <= 0;
     }

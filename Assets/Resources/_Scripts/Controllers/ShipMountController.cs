@@ -66,4 +66,26 @@ public class ShipMountController : MonoBehaviour {
     {
         return mounts.Where(m => m.GetMountType() == ItemType.Upgrade).ToArray();
     }
+
+    /// <summary>
+    /// Hide the mounted components.
+    /// </summary>
+    public void HideMounted()
+    {
+        foreach(var mount in mounts)
+        {
+            mount.gameObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Show the mounted components.
+    /// </summary>
+    public void ShowMounted()
+    {
+        foreach (var mount in mounts)
+        {
+            mount.gameObject.SetActive(true);
+        }
+    }
 }
