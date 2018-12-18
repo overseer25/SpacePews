@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public bool inertialDamp = true; // Are inertial dampeners on?
     public Inventory inventory;
     public DeathScreen deathScreen;
+    public PauseMenuScript pauseMenu;
     public GameObject respawnPoint;
     [Header("Effects/Sounds")]
     public GameObject deathExplosion;
@@ -265,6 +266,7 @@ public class PlayerController : MonoBehaviour
                 weaponController.UpdateDead(dead);
                 inventory.UpdateDead(dead);
                 movementController.UpdateDead(dead);
+                pauseMenu.ResumeGame();
                 if (inventory.isOpen)
                     inventory.CloseInventory();
                 this.SendMessage("UpdateDead", true);

@@ -21,6 +21,8 @@ public class Inventory : MonoBehaviour
 
     internal AudioSource audioSource;
     internal bool isOpen = false;
+    // Is the game paused?
+    internal bool isPaused = false;
 
     [Header("Other")]
     [SerializeField]
@@ -85,7 +87,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(!dead)
+        if(!dead && !isPaused)
         {
             // If scrolling up the hotbar.
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -201,13 +203,16 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public virtual void Toggle()
     {
-        if (!isOpen)
+        if(!isPaused)
         {
-            OpenInventory();
-        }
-        else
-        {
-            CloseInventory();
+            if (!isOpen)
+            {
+                OpenInventory();
+            }
+            else
+            {
+                CloseInventory();
+            }
         }
     }
 

@@ -8,8 +8,20 @@ public class PauseMenuScript : MonoBehaviour
     public GameObject confirmQuitDialogue;
     public Texture2D menuCursor;
     public Texture2D shootCursor;
-    public Menu_Enter playerMenus;
-
+    [SerializeField]
+    private Inventory inventory;
+    [SerializeField]
+    private WeaponController weaponController;
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip buttonHoverSound;
+    [SerializeField]
+    private AudioClip buttonClickSound;
+    [SerializeField]
+    private AudioClip pauseSound;
+    [SerializeField]
+    private AudioClip resumeSound;
+    private AudioSource source;
     public KeyCode pauseKey = KeyCode.Escape;
 
     public static bool IsPaused { get; protected set; }
@@ -18,6 +30,7 @@ public class PauseMenuScript : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        source = GetComponent<AudioSource>();
         ResumeGame();
     }
 
@@ -51,6 +64,7 @@ public class PauseMenuScript : MonoBehaviour
             this.transform.GetChild(i).gameObject.SetActive(false);
         }
         this.GetComponent<Image>().enabled = false;
+        
     }
 
     /// <summary>
@@ -82,18 +96,15 @@ public class PauseMenuScript : MonoBehaviour
     /// <param name="pause">If this is true, the game will be paused, if false it will resume.</param>
     public void PauseGame(bool pause)
     {
-        IsPaused = pause;
         if (pause)
         {
-            ActivatePauseMenu();
-            Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
-            playerMenus.CloseMenusForPause();
+            source.PlayOneShot(pauseSound);
+            PauseGame();
         }
         else
         {
-            DeactivatePauseMenu();
-            ChangeQuitDialogueState(false);
-            Cursor.SetCursor(shootCursor, Vector2.zero, CursorMode.Auto);
+            source.PlayOneShot(resumeSound);
+            ResumeGame();
         }
     }
 
@@ -105,7 +116,7 @@ public class PauseMenuScript : MonoBehaviour
         IsPaused = true;
         ActivatePauseMenu();
         Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
-        playerMenus.CloseMenusForPause();
+        weaponController.menuOpen = true;
     }
 
     /// <summary>
@@ -117,6 +128,7 @@ public class PauseMenuScript : MonoBehaviour
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
         Cursor.SetCursor(shootCursor, Vector2.zero, CursorMode.Auto);
+        weaponController.menuOpen = false;
     }
 
     /// <summary>
@@ -151,6 +163,22 @@ public class PauseMenuScript : MonoBehaviour
     public void OpenOptions()
     {
         //TODO: make options screen
+    }
+
+    /// <summary>
+    /// Play the hover sound. Used by the Unity Event System.
+    /// </summary>
+    public void PlayHoverSound()
+    {
+        source.PlayOneShot(buttonHoverSound);
+    }
+
+    /// <summary>
+    /// Play the click sound. Used by the Unity Event System.
+    /// </summary>
+    public void PlayClickSound()
+    {
+        source.PlayOneShot(buttonClickSound);
     }
 
 }
