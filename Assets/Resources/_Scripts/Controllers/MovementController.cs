@@ -4,13 +4,13 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
 
-    private Vector3 velocity;
     private Rigidbody2D rigidBody;
     private float desiredRotation;
     private ShipMountController mountController;
     private float acceleration;
     private float deceleration;
     private float maxSpeed;
+    private bool dead = false;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -19,7 +19,6 @@ public class MovementController : MonoBehaviour
 
     void Start()
     {
-        velocity = Vector3.zero;
         rigidBody = GetComponentInChildren<Rigidbody2D>();
         mountController = gameObject.GetComponent<ShipMountController>();
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
@@ -53,6 +52,7 @@ public class MovementController : MonoBehaviour
         rigidBody.AddForce(ship.transform.up * acceleration * 10.0f * Time.deltaTime);
         rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
     }
+
     /// <summary>
     /// Rotates the ship to the left.
     /// </summary>
@@ -92,5 +92,27 @@ public class MovementController : MonoBehaviour
             _ship.engine.Stop();
         if (rigidBody.velocity.magnitude > 0)
             rigidBody.velocity *= (1 - deceleration);
+    }
+
+    /// <summary>
+    /// Stop the movement completely.
+    /// </summary>
+    public void Stop()
+    {
+        rigidBody.velocity = Vector2.zero;
+    }
+
+    /// <summary>
+    /// Update the death state of the player.
+    /// </summary>
+    /// <param name="isDead"></param>
+    public void UpdateDead(bool isDead)
+    {
+        if(!dead && isDead && _ship.engine.isPlaying)
+        {
+            _ship.engine.Stop();
+        }
+        dead = isDead;
+        desiredRotation = 0;
     }
 }

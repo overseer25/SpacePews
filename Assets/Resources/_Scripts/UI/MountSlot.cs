@@ -36,11 +36,6 @@ public class MountSlot : InteractableElement
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     /// <summary>
     /// Reset position of slot when enabled.
     /// </summary>

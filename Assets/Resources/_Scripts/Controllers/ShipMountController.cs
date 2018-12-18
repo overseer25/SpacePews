@@ -74,7 +74,20 @@ public class ShipMountController : MonoBehaviour {
     {
         foreach(var mount in mounts)
         {
-            mount.gameObject.SetActive(false);
+            var component = mount.GetShipComponent();
+            if (component != null)
+            {
+                if (mount.GetMountType() == ItemType.Thruster)
+                {
+                    var particleSystem = mount.GetComponentInChildren<ParticleSystem>();
+                    mount.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                    if (particleSystem != null)
+                        particleSystem.Stop();
+
+                }
+
+                component.GetComponent<SpriteRenderer>().enabled = false;
+            }
         }
     }
 
@@ -85,7 +98,20 @@ public class ShipMountController : MonoBehaviour {
     {
         foreach (var mount in mounts)
         {
-            mount.gameObject.SetActive(true);
+            var component = mount.GetShipComponent();
+            if (component != null)
+            {
+                if (mount.GetMountType() == ItemType.Thruster)
+                {
+                    var particleSystem = mount.GetComponentInChildren<ParticleSystem>();
+                    mount.GetComponentInChildren<SpriteRenderer>().enabled = true;
+                    if (particleSystem != null)
+                        particleSystem.Play();
+
+                }
+
+                component.GetComponent<SpriteRenderer>().enabled = true;
+            }
         }
     }
 }

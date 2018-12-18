@@ -42,6 +42,7 @@ public class Inventory : MonoBehaviour
     private List<Item> itemList;
     private int inventorySize = 0;
     private int selectedHotbarSlotIndex;
+    private bool dead = false;
 
 
     // Use this for initialization
@@ -75,6 +76,8 @@ public class Inventory : MonoBehaviour
             hotbarSlots.Add(slot.GetComponent<HotbarSlot>());
         }
         hotbarSlots[0].Select();
+
+        CloseInventory();
     }
 
     /// <summary>
@@ -82,40 +85,43 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // If scrolling up the hotbar.
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        if(!dead)
         {
-            // Wrap to the beginning if at the end of the hotbar.
-            if (selectedHotbarSlotIndex + 1 >= hotbarSlots.Count)
+            // If scrolling up the hotbar.
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                // Wrap to the beginning if at the end of the hotbar.
+                if (selectedHotbarSlotIndex + 1 >= hotbarSlots.Count)
+                    SwitchHotbarSlot(0);
+                // Otherwise, just move to the next hotbar slot.
+                else
+                {
+                    SwitchHotbarSlot(selectedHotbarSlotIndex + 1);
+                }
+            }
+            // If scrolling down the hotbar.
+            else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                // Wrap to the end if at the beginning of the hotbar.
+                if (selectedHotbarSlotIndex - 1 < 0)
+                    SwitchHotbarSlot(hotbarSlots.Count - 1);
+                // Otherwise, just move to the previous hotbar slot.
+                else
+                {
+                    SwitchHotbarSlot(selectedHotbarSlotIndex - 1);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
                 SwitchHotbarSlot(0);
-            // Otherwise, just move to the next hotbar slot.
-            else
-            {
-                SwitchHotbarSlot(selectedHotbarSlotIndex+1);
-            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+                SwitchHotbarSlot(1);
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+                SwitchHotbarSlot(2);
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+                SwitchHotbarSlot(3);
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+                SwitchHotbarSlot(4);
         }
-        // If scrolling down the hotbar.
-        else if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            // Wrap to the end if at the beginning of the hotbar.
-            if (selectedHotbarSlotIndex - 1 < 0)
-                SwitchHotbarSlot(hotbarSlots.Count - 1);
-            // Otherwise, just move to the previous hotbar slot.
-            else
-            {
-                SwitchHotbarSlot(selectedHotbarSlotIndex-1);
-            }
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-            SwitchHotbarSlot(0);
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            SwitchHotbarSlot(1);
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            SwitchHotbarSlot(2);
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            SwitchHotbarSlot(3);
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-            SwitchHotbarSlot(4);
     }
 
     /// <summary>
@@ -138,6 +144,15 @@ public class Inventory : MonoBehaviour
     public HotbarSlot GetSelectedHotbarSlot()
     {
         return hotbarSlots[selectedHotbarSlotIndex];
+    }
+
+    /// <summary>
+    /// Update the status of the player's death.
+    /// </summary>
+    /// <param name="isDead"></param>
+    public void UpdateDead(bool isDead)
+    {
+        dead = isDead;
     }
 
     /// <summary>

@@ -107,6 +107,20 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     /// <summary>
+    /// Resets the player to full health.
+    /// </summary>
+    public void ResetHealth()
+    {
+        for (int i = 0; i < heartsActive.Count; i++)
+        {
+            heartsActive[i] = true;
+            lastActiveIndex = heartsActive.Count - 1;
+            heartUI.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+            heartUI.transform.GetChild(i).GetComponent<Image>().enabled = true;
+        }
+    }
+
+    /// <summary>
     /// When the player is dead, hide all drawn hearts, and show that none are active.
     /// </summary>
     public void DrawNoHealth()

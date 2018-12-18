@@ -9,32 +9,42 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    // Constants
+    private const float RESPAWN_WAIT_TIME = 2.0f;
+    private const float RESPAWN_ANIMATION_TIME = 0.5f;
+
     [Header("State")]
+    [SerializeField]
+    private int healthChunk = 20;
+    public int maxHealth = 200; // Max health the player can currently have.
+    public int currency = 5; // Amount of currency the player currently has.
+    public bool inertialDamp = true; // Are inertial dampeners on?
     public Inventory inventory;
     public DeathScreen deathScreen;
+    public GameObject respawnPoint;
+    [Header("Effects/Sounds")]
+    public GameObject deathExplosion;
+    public AudioClip deathSound;
+    public GameObject respawnEffect;
+    public AudioClip respawnSound;
 
     private float acceleration;
     private Rigidbody2D rigidBody;
     private MovementController movementController;
     private ShipMountController mountController;
+    private WeaponController weaponController;
     private GameObject turret;
     private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
-    private bool playingEngine = false;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
-    [SerializeField]
-    private int healthChunk = 20;
+    private AudioSource source;
+
     private int prevHealth;
     private float healthToDisplay;
     private PlayerHealth healthUI;
     private bool dead = false;
 
     private int health; // The amount of health the player currently has.
-    public int maxHealth = 200; // Max health the player can currently have.
-    public int currency = 5; // Amount of currency the player currently has.
-
-    public AudioSource engine; // Engine sound
-    public bool inertialDamp = true; // Are inertial dampeners on?
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -49,10 +59,12 @@ public class PlayerController : MonoBehaviour
         health = maxHealth;
         movementController = gameObject.GetComponent<MovementController>();
         mountController = gameObject.GetComponent<ShipMountController>();
+        weaponController = gameObject.GetComponent<WeaponController>();
         healthToDisplay = maxHealth / healthChunk;
         healthUI = GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
+        source = GetComponent<AudioSource>();
 
         // Initial thrusters.
         thrusters = new List<Thruster>();
@@ -73,7 +85,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        inventory.CloseInventory();
     }
 
     /// <summary>
@@ -125,7 +136,7 @@ public class PlayerController : MonoBehaviour
         {
             if (GetThrusterState())
                 SetThrusterState(false);
-            movementController.Decelerate();
+            movementController.Stop();
         }
     }
 
@@ -242,14 +253,58 @@ public class PlayerController : MonoBehaviour
     {
         if(health <= 0)
         {
-            this.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            mountController.HideMounted();
-            dead = true;
-            this.SendMessage("UpdateDead", true);
-            healthUI.SetIsDead(true);
-            healthUI.RedrawHealthSprites(0, 0);
-            deathScreen.Display();
+            if(!dead)
+            {
+                dead = true;
+                this.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                mountController.HideMounted();
+                weaponController.UpdateDead(dead);
+                inventory.UpdateDead(dead);
+                movementController.UpdateDead(dead);
+                if (inventory.isOpen)
+                    inventory.CloseInventory();
+                this.SendMessage("UpdateDead", true);
+                healthUI.SetIsDead(true);
+                healthUI.RedrawHealthSprites(0, 0);
+                deathScreen.Display();
+                source.PlayOneShot(deathSound);
+                Instantiate(deathExplosion, transform.position, Quaternion.identity);
+
+                StartCoroutine(Respawn());
+            }
         }
         return health <= 0;
+    }
+
+    /// <summary>
+    /// Respawn the player.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Respawn()
+    {
+        // Wait before beginning the respawn animation.
+        yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
+
+        Instantiate(respawnEffect, respawnPoint.transform.position, respawnPoint.transform.rotation);
+        source.PlayOneShot(respawnSound);
+        transform.position = respawnPoint.transform.position;
+        ship.transform.rotation = respawnPoint.transform.rotation;
+        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
+        deathScreen.Hide();
+
+        // Wait before returning control to the player.
+        yield return new WaitForSeconds(RESPAWN_ANIMATION_TIME);
+
+        dead = false;
+        health = maxHealth;
+        this.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        mountController.ShowMounted();
+        weaponController.UpdateDead(dead);
+        inventory.UpdateDead(dead);
+        movementController.UpdateDead(dead);
+        this.SendMessage("UpdateDead", false);
+        healthUI.SetIsDead(false);
+        healthUI.ResetHealth();
+
     }
 }

@@ -14,8 +14,8 @@ public class ThrusterComponent : ShipComponent
 
     private void Start()
     {
-        var particleSystem = GetComponentInChildren<ParticleSystem>();
-        var thruster = GetComponentInChildren<Thruster>();
+        var particleSystem = GetComponentInChildren<ParticleSystem>(true);
+        var thruster = GetComponentInChildren<Thruster>(true);
 
         if(particleSystem == null)
             Debug.LogError("No particle system attached to: " + gameObject);
@@ -37,6 +37,6 @@ public class ThrusterComponent : ShipComponent
     {
         mounted = val;
         if(mounted)
-            GetComponentInChildren<ParticleSystem>().gameObject.SetActive(true);
+            GetComponentInChildren<ParticleSystem>(true).gameObject.SetActive(true);
     }
 }
