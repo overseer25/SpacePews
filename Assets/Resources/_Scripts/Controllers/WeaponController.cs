@@ -26,78 +26,84 @@ public class WeaponController : MonoBehaviour
     /// <param name="component"></param>
     public void UpdateTurret(ShipComponent component)
     {
-        if (currentComponent != null)
+        if(!dead)
         {
-            if(currentComponent is WeaponComponent)
-                (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().DestroyPool();
-            Destroy(currentComponent.gameObject);
+            if (currentComponent != null)
+            {
+                if (currentComponent is WeaponComponent)
+                    (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().DestroyPool();
+                Destroy(currentComponent.gameObject);
+            }
+            if (component == null)
+            {
+                return;
+            }
+            var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
+            currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
+            currentComponent.gameObject.SetActive(true);
+            if (currentComponent is WeaponComponent)
+                (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().CreatePool();
         }
-        if (component == null)
-        {
-            return;
-        }
-        var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
-        currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
-        currentComponent.gameObject.SetActive(true);
-        if (currentComponent is WeaponComponent)
-            (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().CreatePool();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Change the item if necessary.
-        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+        if(!dead)
         {
-            if (currentComponent is WeaponComponent)
+            // Change the item if necessary.
+            if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
             {
-                var weapon = currentComponent as WeaponComponent;
-                if (Time.time > weapon.GetNextShotTime())
+                if (currentComponent is WeaponComponent)
                 {
-                    weapon.Fire();
-                    weapon.SetLastShot(Time.time);
+                    var weapon = currentComponent as WeaponComponent;
+                    if (Time.time > weapon.GetNextShotTime())
+                    {
+                        weapon.Fire();
+                        weapon.SetLastShot(Time.time);
+                    }
+                }
+                else if (currentComponent is MiningComponent)
+                {
+                    var miningLaser = currentComponent as MiningComponent;
+                    miningLaser.Fire();
                 }
             }
-            else if (currentComponent is MiningComponent)
+            if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
             {
-                var miningLaser = currentComponent as MiningComponent;
-                miningLaser.Fire();
+                if (currentComponent is MiningComponent)
+                {
+                    var miningLaser = currentComponent as MiningComponent;
+                    miningLaser.StopFire();
+                }
             }
-        }
-        if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
-        {
-            if (currentComponent is MiningComponent)
-            {
-                var miningLaser = currentComponent as MiningComponent;
-                miningLaser.StopFire();
-            }
-        }
 
-        //if (Input.GetMouseButton(0) && !menuOpen)
-        //{
-        //    if(turret.GetShipComponent() is WeaponComponent)
-        //    {
-        //        var weapon = turret.GetShipComponent() as WeaponComponent;
-        //        if (Time.time > weapon.GetNextShotTime())
-        //        {
-        //            weapon.Fire();
-        //            weapon.SetLastShot(Time.time);
-        //        }
-        //    }
-        //    if(turret.GetShipComponent() is MiningComponent)
-        //    {
-        //        var miningLaser = turret.GetShipComponent() as MiningComponent;
-        //        miningLaser.Fire();
-        //    }
-        //}
-        //if (Input.GetMouseButtonUp(0) || menuOpen)
-        //{
-        //    if(turret.GetShipComponent() is MiningComponent)
-        //    {
-        //        var miningLaser = turret.GetShipComponent() as MiningComponent;
-        //        miningLaser.StopFire();
-        //    }
-        //}
+            //if (Input.GetMouseButton(0) && !menuOpen)
+            //{
+            //    if(turret.GetShipComponent() is WeaponComponent)
+            //    {
+            //        var weapon = turret.GetShipComponent() as WeaponComponent;
+            //        if (Time.time > weapon.GetNextShotTime())
+            //        {
+            //            weapon.Fire();
+            //            weapon.SetLastShot(Time.time);
+            //        }
+            //    }
+            //    if(turret.GetShipComponent() is MiningComponent)
+            //    {
+            //        var miningLaser = turret.GetShipComponent() as MiningComponent;
+            //        miningLaser.Fire();
+            //    }
+            //}
+            //if (Input.GetMouseButtonUp(0) || menuOpen)
+            //{
+            //    if(turret.GetShipComponent() is MiningComponent)
+            //    {
+            //        var miningLaser = turret.GetShipComponent() as MiningComponent;
+            //        miningLaser.StopFire();
+            //    }
+            //}
+        }
     }
 
     /// <summary>
@@ -106,6 +112,17 @@ public class WeaponController : MonoBehaviour
     /// <param name="isDead"></param>
     public void UpdateDead(bool isDead)
     {
-        dead = isDead;
+        if(!dead && isDead)
+        {
+            dead = isDead;
+            turret.gameObject.SetActive(false);
+            menuOpen = false;
+        }
+        else if(dead && !isDead)
+        {
+            dead = isDead;
+            turret.gameObject.SetActive(true);
+        }
+        
     }
 }

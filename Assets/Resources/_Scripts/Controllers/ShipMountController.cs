@@ -66,4 +66,52 @@ public class ShipMountController : MonoBehaviour {
     {
         return mounts.Where(m => m.GetMountType() == ItemType.Upgrade).ToArray();
     }
+
+    /// <summary>
+    /// Hide the mounted components.
+    /// </summary>
+    public void HideMounted()
+    {
+        foreach(var mount in mounts)
+        {
+            var component = mount.GetShipComponent();
+            if (component != null)
+            {
+                if (mount.GetMountType() == ItemType.Thruster)
+                {
+                    var particleSystem = mount.GetComponentInChildren<ParticleSystem>();
+                    mount.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                    if (particleSystem != null)
+                        particleSystem.Stop();
+
+                }
+
+                component.GetComponent<SpriteRenderer>().enabled = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Show the mounted components.
+    /// </summary>
+    public void ShowMounted()
+    {
+        foreach (var mount in mounts)
+        {
+            var component = mount.GetShipComponent();
+            if (component != null)
+            {
+                if (mount.GetMountType() == ItemType.Thruster)
+                {
+                    var particleSystem = mount.GetComponentInChildren<ParticleSystem>();
+                    mount.GetComponentInChildren<SpriteRenderer>().enabled = true;
+                    if (particleSystem != null)
+                        particleSystem.Play();
+
+                }
+
+                component.GetComponent<SpriteRenderer>().enabled = true;
+            }
+        }
+    }
 }
