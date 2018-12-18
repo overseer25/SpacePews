@@ -34,8 +34,8 @@ TagManager:
   - Item
   - InventoryItem
   - ShipComponent
-  - 
-  - 
+  - Enemy
+  - Obstacle
   - 
   - 
   - 

@@ -23,7 +23,7 @@ public class MovementController : MonoBehaviour
         rigidBody = GetComponentInChildren<Rigidbody2D>();
         mountController = gameObject.GetComponent<ShipMountController>();
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
-            Debug.LogError("Ship contains no Sprite Renderer :(");
+            Debug.LogError("Ship contains no Sprite Renderer D:");
         else
         {
             ship = shipRenderer.gameObject;

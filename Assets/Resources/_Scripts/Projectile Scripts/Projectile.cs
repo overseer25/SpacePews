@@ -127,6 +127,10 @@ public class Projectile : MonoBehaviour
         {
             case "Player":
             case "Enemy":
+                collision.GetComponentInChildren<Ship>().health -= damage;
+                collided = true;
+                gameObject.SetActive(false);
+                break;
             case "Asteroid":
             case "Mineable":
             case "Mine":
