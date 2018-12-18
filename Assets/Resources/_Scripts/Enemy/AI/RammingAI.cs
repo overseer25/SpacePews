@@ -6,6 +6,7 @@ using UnityEngine;
 public class RammingAI : MonoBehaviour
 {
     public GameObject target = null;
+    public GameObject[] patrolPoints;
 
     public float range = 75f;
 
@@ -18,7 +19,9 @@ public class RammingAI : MonoBehaviour
     private float stunnedTimer;
     private bool stunned;
     private bool avoiding;
+    private bool patrolling;
     private int stunnedDir;
+    private int patrolIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -36,18 +39,27 @@ public class RammingAI : MonoBehaviour
         {
             Debug.LogError("Ship does not exist on this enemy.");
         }
+        if(patrolPoints.Length == 0)
+        {
+            Debug.Log("This ramming ship has no patrol points set.");
+        }
         avoidancePoint = ship.transform.position;
         rand = new System.Random();
         stunned = false;
+        patrolling = true;
         stunnedTimer = 0;
+        patrolIndex = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(ship.health <= 0)
+        {
+            Destroy(this.transform.parent.gameObject);
+        }
         if (stunned)
         {
-            Debug.Log("I am stunned");
             StunnedMotion();
             stunnedTimer += Time.deltaTime;
             if (stunnedTimer >= ship.recoveryTime)
@@ -59,19 +71,31 @@ public class RammingAI : MonoBehaviour
         else
         {
             checkTimer += Time.deltaTime;
-            if (target == null && checkTimer > checkTime)
+            if ((target == null || patrolling) && checkTimer > checkTime)
             {
                 checkTimer = 0;
-                CheckForTarget();
+                CheckForPlayerTarget();
             }
+            if(target == null && patrolling)
+            {
+                if (patrolPoints.Length > 0)
+                {
+                    target = patrolPoints[patrolIndex];                    
+                }
+            }
+
             if (target == null)
             {
                 motor.Decelerate(ship.thrustDecaleration);
                 return;
             }
-            else if (Vector2.Distance(ship.transform.position, target.transform.position) > range * 2)
+            else if (!patrolling && Vector2.Distance(ship.transform.position, target.transform.position) > range * 2)
             {
                 SetTarget(null);
+            }
+            else if (patrolling)
+            {
+                GoToPatrolPoint();
             }
             else
             {
@@ -85,12 +109,31 @@ public class RammingAI : MonoBehaviour
     /// </summary>
     private void ExecuteAttack()
     {
-        Vector2 targetVec = ship.transform.position - target.transform.position;
+        Vector2 targetVec = target.transform.position - ship.transform.position;
         float targetAngle = Vector2.SignedAngle(ship.transform.up, targetVec);
-        if (Math.Abs(targetAngle) < 170)
+        float distFromTarget = Vector2.Distance(ship.transform.position, target.transform.position);
+        bool canBoost = WithinBoostDistance(distFromTarget, range * 0.4f);
+        float speed = canBoost ? ship.thrustAcceleration * ship.boostModifier : ship.thrustAcceleration;
+        float topSpeed = canBoost ? ship.topSpeed * ship.boostModifier : ship.topSpeed;
+
+        // when the ramming ai is within boost distance, it disregards obstacle avoidance in favor of hitting the player
+        if (!avoiding && !canBoost && Math.Abs(targetAngle) <= 10)
+        {
+            ObstacleAvoidance(targetVec, distFromTarget);
+        }
+        CheckIfDoneAvoiding();
+        if (avoiding)
+        {
+            targetVec = avoidancePoint - (Vector2)ship.transform.position;
+            targetAngle = Vector2.SignedAngle(ship.transform.up, targetVec);
+            speed = ship.thrustAcceleration;
+            topSpeed = ship.topSpeed;
+        }
+        // aiming the enemy ship attack
+        if (Math.Abs(targetAngle) > 10)
         {
             motor.Decelerate(ship.thrustDecaleration);
-            if (targetAngle > 0)
+            if (targetAngle < 0)
             {
                 motor.RotateRight();
             }
@@ -99,20 +142,71 @@ public class RammingAI : MonoBehaviour
                 motor.RotateLeft();
             }
         }
+        // moving the enemy ship towards its target
         else
         {
-            float distFromTarget = Vector2.Distance(this.transform.position, target.transform.position);
-            bool canBoost = WithinBoostDistance(distFromTarget, range * 0.4f);
-            float speed = canBoost ? ship.thrustAcceleration * ship.boostModifier : ship.thrustAcceleration;
-            float topSpeed = canBoost ? ship.topSpeed * ship.boostModifier : ship.topSpeed;
-            // when the ramming ai is within boost distance, it disregards obstacle avoidance in favor of hitting the player
-            if (!canBoost)
-            {
-                ObstacleAvoidance(targetVec, distFromTarget);
-            }
             motor.MoveForward(speed, topSpeed);
         }
-        //transform.rotation = Quaternion.FromToRotation(Vector3.up, target.transform.position - transform.position);
+    }
+
+    /// <summary>
+    /// Have the AI go to a set patrol point
+    /// </summary>
+    private void GoToPatrolPoint()
+    {
+        Vector2 targetVec = target.transform.position - ship.transform.position;
+        float targetAngle = Vector2.SignedAngle(ship.transform.up, targetVec);
+        float distFromTarget = Vector2.Distance(ship.transform.position, target.transform.position);
+        float speed = ship.thrustAcceleration;
+        float topSpeed = ship.topSpeed;
+
+        // when the ramming ai is within boost distance, it disregards obstacle avoidance in favor of hitting the player
+        if (!avoiding && Math.Abs(targetAngle) <= 10)
+        {
+            ObstacleAvoidance(targetVec, distFromTarget);
+        }
+        CheckIfDoneAvoiding();
+        if (avoiding)
+        {
+            targetVec = avoidancePoint - (Vector2)ship.transform.position;
+            targetAngle = Vector2.SignedAngle(ship.transform.up, targetVec);
+            speed = ship.thrustAcceleration;
+            topSpeed = ship.topSpeed;
+        }
+        // aiming the enemy ship move
+        if (Math.Abs(targetAngle) > 10)
+        {
+            motor.Decelerate(ship.thrustDecaleration);
+            if (targetAngle < 0)
+            {
+                motor.RotateRight();
+            }
+            else
+            {
+                motor.RotateLeft();
+            }
+        }
+        // moving the enemy ship towards its target
+        else
+        {
+            motor.MoveForward(speed, topSpeed);
+        }
+        if(Vector2.Distance(ship.transform.position, patrolPoints[patrolIndex].transform.position) < 2)
+        {
+            patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
+            target = patrolPoints[patrolIndex];
+        }
+    }
+
+    /// <summary>
+    /// If enemy ship is close enough to avoidance point, stop avoiding.
+    /// </summary>
+    private void CheckIfDoneAvoiding()
+    {
+        if(Vector2.Distance(ship.transform.position, avoidancePoint) <= 1)
+        {
+            avoiding = false;
+        }
     }
 
     private bool WithinBoostDistance(float distAway, float cutoffDist)
@@ -124,17 +218,17 @@ public class RammingAI : MonoBehaviour
     /// Check in the range of this enemy ship and see if there is a target
     /// that could be attacked.
     /// </summary>
-    private void CheckForTarget()
+    private void CheckForPlayerTarget()
     {
-        //Debug.DrawLine(ship.transform.position, ship.transform.position + ship.transform.up * range, Color.red, 4f);
         LayerMask mask = LayerMask.GetMask("Player");
         Collider2D[] cols = Physics2D.OverlapCircleAll(ship.transform.position, range, mask);
         if (cols.Length == 0)
         {
-            return;
+            patrolling = true;
         }
         else
         {
+            patrolling = false;
             target = cols[0].gameObject;
         }
     }
@@ -162,35 +256,76 @@ public class RammingAI : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(ship.transform.position, targetVec, distAway, mask);
         if (hit.collider != null)
         {
+            avoiding = true;
+            Vector2 leftPoint = new Vector2(ship.transform.position.x, ship.transform.position.y) + ((Vector2)ship.transform.right * -2);
+            Vector2 rightPoint = new Vector2(ship.transform.position.x, ship.transform.position.y) + ((Vector2)ship.transform.right * 2);
+            Vector2 leftTargetVec = leftPoint - (Vector2)target.transform.position;
+            Vector2 rightTargetVec = rightPoint - (Vector2)target.transform.position;
+            RaycastHit2D leftHit = Physics2D.Raycast(leftPoint, leftTargetVec, distAway, mask);
+            RaycastHit2D rightHit = Physics2D.Raycast(rightPoint, rightTargetVec, distAway, mask);
+            /*while(leftHit.collider != null && rightHit.collider != null)
+            {
+                leftPoint += ((Vector2)ship.transform.right * -1);
+                rightPoint += ((Vector2)ship.transform.right * 1);
+                leftTargetVec = leftPoint - (Vector2)target.transform.position;
+                rightTargetVec = rightPoint - (Vector2)target.transform.position;
+                leftHit = Physics2D.Raycast(leftPoint, leftTargetVec, distAway, mask);
+                rightHit = Physics2D.Raycast(rightPoint, rightTargetVec, distAway, mask);
+            }*/
+            //if this is true, we should avoid left
+            if (leftHit.collider == null)
+            {
+                avoidancePoint = leftPoint;
+            }
+            else
+            {
+                // if we get here that means left was blocked, so we are going to try to avoid right
+                avoidancePoint = rightPoint;
+            }
+
             //there is an obstacle, so place two points to either side of the ship
             //from those two points raycast again to the target. pick which one doesn't have an
             //obstacle in front of it. then fly to that avoidance point before recentering on the target.
             //if both avoidance points have obstacles, then pick one at random, and recenter on target
             //check avoidance will be called again and may find an answer this time
         }
+        else
+        {
+            avoiding = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log(collider.gameObject.tag);
         switch (collider.gameObject.tag)
         {
             case "Ship":
             case "Player":
-                stunnedDir = rand.Next(10) > 5 ? 1 : -1;
-                stunned = true;
-                Vector2 driftDir = new Vector2(ship.transform.right.x + rand.Next(-2,2), ship.transform.right.y + rand.Next(-2, 2)) * stunnedDir;
-                motor.ShipImpact(10, stunnedDir, driftDir);
-                ship.health -= 1;
+                if(motor.GetCurrentVelocity().magnitude > ship.topSpeed)
+                {
+                    stunnedDir = rand.Next(10) > 5 ? 1 : -1;
+                    stunned = true;
+                    Vector2 driftDir = new Vector2(ship.transform.right.x + rand.Next(-2, 2), ship.transform.right.y + rand.Next(-2, 2)) * stunnedDir;
+                    motor.ShipImpact(10, stunnedDir, driftDir);
+                    ship.health -= 1;
+                }                
                 break;
             case "Mineable":
             case "Immovable":
             case "Asteroid":
-                stunnedDir = rand.Next(10) > 5 ? 1 : -1;
-                stunned = true;
-                Vector2 driftDir2 = new Vector2(ship.transform.right.x + rand.Next(-2, 2), ship.transform.right.y + rand.Next(-2, 2)) * stunnedDir;
-                motor.ShipImpact(30, stunnedDir, driftDir2);
-                ship.health -= 3;
+                if (motor.GetCurrentVelocity().magnitude > ship.topSpeed)
+                {
+                    stunnedDir = rand.Next(10) > 5 ? 1 : -1;
+                    stunned = true;
+                    Vector2 driftDir2 = new Vector2(ship.transform.right.x + rand.Next(-2, 2), ship.transform.right.y + rand.Next(-2, 2)) * stunnedDir;
+                    motor.ShipImpact(30, stunnedDir, driftDir2);
+                    ship.health -= 3;
+                }
+                else
+                {
+                    Vector2 impactVec = (ship.transform.position - collider.transform.position).normalized;
+                    motor.SetCurrentVelocity(impactVec);
+                }
                 break;
             default:
                 break;

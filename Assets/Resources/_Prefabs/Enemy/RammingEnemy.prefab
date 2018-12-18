@@ -683,8 +683,11 @@ MonoBehaviour:
   engine: {fileID: 4490677331903523020}
   thrustAcceleration: 15
   thrustDecaleration: 1.25
+  emergencyStopSpeed: 2
   boostModifier: 2
   topSpeed: 13
+  recoveryTime: 1.5
+  crashSpinModifier: 5
 --- !u!1 &4490677332417200125
 GameObject:
   m_ObjectHideFlags: 0
@@ -5574,4 +5577,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   range: 20

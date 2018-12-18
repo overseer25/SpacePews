@@ -136,4 +136,18 @@ public class EnemyMotor : MonoBehaviour
             velocity -= velocity * decelerationAmount * Time.deltaTime;
         }
     }
+
+    /// <summary>
+    /// Return the enemy ship's current velocity.
+    /// </summary>
+    /// <returns>A Vector2 representing the ship's current heading and magnitude</returns>
+    public Vector2 GetCurrentVelocity()
+    {
+        return velocity;
+    }
+
+    public void SetCurrentVelocity(Vector2 vec)
+    {
+        velocity = vec;
+    }
 }
