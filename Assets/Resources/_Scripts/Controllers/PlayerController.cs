@@ -230,6 +230,10 @@ public class PlayerController : MonoBehaviour
                 }
                 rigidBody.AddForce(direction); // Apply the force
                 break;
+
+            case "Enemy":
+                health -= 20;
+                break;
         }       
     }
 
