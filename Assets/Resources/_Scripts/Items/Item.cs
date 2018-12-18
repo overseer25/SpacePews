@@ -29,16 +29,22 @@ public class Item : MonoBehaviour
     internal float playspeed = 0.5f;
     internal float changeSprite = 0.0f;
     internal int index = 0;
-
-    private int followSpeed = 50;
-    private const float MAXDISTANCE = 5.0f;
-    private bool mined = false;
     internal Color itemColor;
 
+    private const int FOLLOWSPEED = 50;
+    private const int FOLLOWANGLEMAX = 10;
+    private int followSpeed = FOLLOWSPEED;
+    private const float MAXDISTANCE = 5.0f;
+    private bool mined = false;
+    private float minedFollowSpeed = FOLLOWSPEED; // Speed at which a mined item follows the player.
+    private float minedFollowAngle; // Angle of descrepancy so that the items don't come out in a straight line.
+    private Vector2 startingPos;
     private GameObject targetPlayer;
+    private static System.Random random;
 
     private void Start()
     {
+        random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
     }
 
@@ -90,7 +96,23 @@ public class Item : MonoBehaviour
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, followSpeed * Time.deltaTime);
+            var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+            // If the player's inventory is full, don't hover toward them.
+            if ((!player.GetComponent<PlayerController>().inventory.ContainsEmptySlot() && !player.GetComponent<PlayerController>().inventory.ContainsItem(this))
+                    || distanceToPlayer > MAXDISTANCE)
+            {
+                // If the player mining cannot collect the items, make it fair game to any nearby player.
+                if (minedFollowSpeed != 0.0f)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, minedFollowSpeed * Time.deltaTime);
+                    minedFollowSpeed *= 0.9f * (1 - Time.deltaTime);
+                }
+                else
+                    player = null;
+            }
+            else if(distanceToPlayer <= MAXDISTANCE)
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, followSpeed * Time.deltaTime);
         }
     }
 
@@ -148,5 +170,49 @@ public class Item : MonoBehaviour
             default:
                 return;
         }
+    }
+
+    /// <summary>
+    /// Copy the display values and attributes of one item to this one.
+    /// </summary>
+    public void Copy(Item other)
+    {
+        if (other.inventorySpriteAnim != null && other.inventorySpriteAnim.Length > 0)
+            inventorySpriteAnim = other.inventorySpriteAnim;
+        else
+        {
+            inventorySprite = other.inventorySprite;
+            GetComponent<SpriteRenderer>().sprite = inventorySprite;
+        }
+        type = other.type;
+        itemTier = other.itemTier;
+        name = other.name;
+        value = other.value;
+        description = other.description;
+        stackable = other.stackable;
+        stackSize = other.stackSize;
+        playspeed = other.playspeed;
+        changeSprite = other.changeSprite;
+        index = other.index;
+        itemColor = other.itemColor;
+        pickupSound = other.pickupSound;
+        mined = other.mined;
+        targetPlayer = other.targetPlayer;
+    }
+
+    /// <summary>
+    /// Initialize the item's position.
+    /// </summary>
+    public void Initialize(GameObject target, Item other = null)
+    {
+        // Copy the details of the incoming object, if one was provided.
+        if (other != null)
+            Copy(other);
+
+        minedFollowSpeed = FOLLOWSPEED;
+        minedFollowAngle = random.Next(-FOLLOWANGLEMAX, FOLLOWANGLEMAX);
+        transform.position = target.transform.position;
+        startingPos = transform.position;
+        gameObject.SetActive(true);
     }
 }
