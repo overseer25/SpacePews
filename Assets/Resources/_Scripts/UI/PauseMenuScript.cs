@@ -127,7 +127,7 @@ public class PauseMenuScript : MonoBehaviour
         IsPaused = false;
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
-        Cursor.SetCursor(shootCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
         weaponController.menuOpen = false;
     }
 

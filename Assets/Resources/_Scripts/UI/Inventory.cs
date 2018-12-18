@@ -155,6 +155,7 @@ public class Inventory : MonoBehaviour
     public void UpdateDead(bool isDead)
     {
         dead = isDead;
+        HideHoverTooltip();
     }
 
     /// <summary>
@@ -194,6 +195,8 @@ public class Inventory : MonoBehaviour
         int j = inventorySize - size;
         foreach (var mountSlot in mountSlots)
             mountSlot.SetIndex(j++);
+        foreach (var hotbarSlot in hotbarSlots)
+            hotbarSlot.SetIndex(j++);
 
         inventorySize -= size;
     }
@@ -252,49 +255,52 @@ public class Inventory : MonoBehaviour
     /// <param name="index"></param>
     public virtual void ShowHoverTooltip(int index)
     {
-        // If the provided index is greater than the number of inventory slots, then it is a mount slot.
-        if (index >= inventorySlots.Count() + mountSlots.Count())
+        if(isOpen)
         {
-            index -= (inventorySlots.Count() + mountSlots.Count());
-            if (hotbarSlots[index].isEmpty)
+            // If the provided index is greater than the number of inventory slots, then it is a mount slot.
+            if (index >= inventorySlots.Count() + mountSlots.Count())
             {
-                infoScreen.Hide();
-            }
-            else if (!infoScreen.gameObject.activeSelf)
-            {
-                var item = hotbarSlots[index].GetItem();
+                index -= (inventorySlots.Count() + mountSlots.Count());
+                if (hotbarSlots[index].isEmpty)
+                {
+                    infoScreen.Hide();
+                }
+                else if (!infoScreen.gameObject.activeSelf)
+                {
+                    var item = hotbarSlots[index].GetItem();
 
-                infoScreen.SetInfo(item, 0);
-                infoScreen.Show();
+                    infoScreen.SetInfo(item, 0);
+                    infoScreen.Show();
+                }
             }
-        }
-        else if (index >= inventorySlots.Count())
-        {
-            index -= inventorySlots.Count();
-            if (mountSlots[index].isEmpty)
+            else if (index >= inventorySlots.Count())
             {
-                infoScreen.Hide();
-            }
-            else if (!infoScreen.gameObject.activeSelf)
-            {
-                var item = mountSlots[index].GetItem();
+                index -= inventorySlots.Count();
+                if (mountSlots[index].isEmpty)
+                {
+                    infoScreen.Hide();
+                }
+                else if (!infoScreen.gameObject.activeSelf)
+                {
+                    var item = mountSlots[index].GetItem();
 
-                infoScreen.SetInfo(item, 0);
-                infoScreen.Show();
+                    infoScreen.SetInfo(item, 0);
+                    infoScreen.Show();
+                }
             }
-        }
-        else
-        {
-            if (inventorySlots[index].isEmpty)
+            else
             {
-                infoScreen.Hide();
-            }
-            else if (!infoScreen.gameObject.activeSelf)
-            {
-                var item = inventorySlots[index].GetItem();
+                if (inventorySlots[index].isEmpty)
+                {
+                    infoScreen.Hide();
+                }
+                else if (!infoScreen.gameObject.activeSelf)
+                {
+                    var item = inventorySlots[index].GetItem();
 
-                infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
-                infoScreen.Show();
+                    infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
+                    infoScreen.Show();
+                }
             }
         }
     }

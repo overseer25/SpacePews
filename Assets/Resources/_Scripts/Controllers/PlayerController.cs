@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     // Constants
-    private const float RESPAWN_WAIT_TIME = 2.0f;
+    private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
 
     [Header("State")]
