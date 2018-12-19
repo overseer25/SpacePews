@@ -25,7 +25,7 @@ public class PauseMenuScript : MonoBehaviour
     public KeyCode pauseKey = KeyCode.Escape;
 
     public static bool IsPaused { get; protected set; }
-
+    private bool dead = false;
 
     // Use this for initialization
     private void Start()
@@ -36,22 +36,34 @@ public class PauseMenuScript : MonoBehaviour
 
     private void LateUpdate()
     {
-        bool pause = Input.GetKeyDown(pauseKey);
-        //player has hit pause key
-        if (pause)
+        if(!dead)
         {
-            //player has hit quit but has not quit yet and has the dialogue open
-            if (confirmQuitDialogue.activeInHierarchy)
+            bool pause = Input.GetKeyDown(pauseKey);
+            //player has hit pause key
+            if (pause)
             {
-                ChangeQuitDialogueState(false);
-                ActivatePauseMenu();
-            }
-            else
-            {
-                PauseGame(!IsPaused);
-            }
+                //player has hit quit but has not quit yet and has the dialogue open
+                if (confirmQuitDialogue.activeInHierarchy)
+                {
+                    ChangeQuitDialogueState(false);
+                    ActivatePauseMenu();
+                }
+                else
+                {
+                    PauseGame(!IsPaused);
+                }
 
+            }
         }
+    }
+
+    /// <summary>
+    /// Update to the death state of the player.
+    /// </summary>
+    /// <param name="isDead"></param>
+    public void UpdateDead(bool isDead)
+    {
+        dead = isDead;
     }
 
     /// <summary>

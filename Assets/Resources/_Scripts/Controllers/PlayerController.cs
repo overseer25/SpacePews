@@ -266,6 +266,7 @@ public class PlayerController : MonoBehaviour
                 weaponController.UpdateDead(dead);
                 inventory.UpdateDead(dead);
                 movementController.UpdateDead(dead);
+                pauseMenu.UpdateDead(dead);
                 pauseMenu.ResumeGame();
                 if (inventory.isOpen)
                     inventory.CloseInventory();
@@ -308,6 +309,7 @@ public class PlayerController : MonoBehaviour
         weaponController.UpdateDead(dead);
         inventory.UpdateDead(dead);
         movementController.UpdateDead(dead);
+        pauseMenu.UpdateDead(dead);
         this.SendMessage("UpdateDead", false);
         healthUI.SetIsDead(false);
         healthUI.ResetHealth();
