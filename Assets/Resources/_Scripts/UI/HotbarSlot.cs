@@ -6,7 +6,7 @@ public class HotbarSlot : InteractableElement
 {
     [HideInInspector]
     public bool isEmpty = true; // All slots start out empty.
-
+    internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
     // The num key associated with this hotbar slot.
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
@@ -23,7 +23,7 @@ public class HotbarSlot : InteractableElement
         numkeyDisplay = GetComponentInChildren<TextMeshProUGUI>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
         image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
-        if(startingComponent != null)
+        if (startingComponent != null)
         {
             SetItem(startingComponent);
         }
@@ -36,7 +36,7 @@ public class HotbarSlot : InteractableElement
     {
         selected = true;
         image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
-        if(inventoryItem.gameObject.activeSelf)
+        if (inventoryItem.gameObject.activeSelf)
             inventoryItem.Highlight();
     }
 
@@ -140,7 +140,8 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     void OnMouseEnter()
     {
-        if (!isEmpty && !InventoryItem.dragging)
+
+        if (canHighlight && !isEmpty && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -152,37 +153,45 @@ public class HotbarSlot : InteractableElement
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
-        if (!isEmpty && !InventoryItem.dragging)
+        if (canHighlight && !isEmpty && !InventoryItem.dragging)
         {
-            if(!selected)
+            if (!selected)
             {
                 image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 inventoryItem.Highlight();
             }
             SendMessageUpwards("ShowHoverTooltip", index);
         }
+        else if(!selected)
+        {
+            Deselect();
+        }
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if(selected)
+
+        if (selected)
             image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
         else if (!isEmpty)
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
 
-        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        if (canHighlight)
         {
-            if(!selected)
+            if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
             {
-                inventoryItem.Dehighlight();
-                if (exitSound != null)
+                if (!selected)
                 {
-                    audioSource.PlayOneShot(exitSound);
+                    inventoryItem.Dehighlight();
+                    if (exitSound != null)
+                    {
+                        audioSource.PlayOneShot(exitSound);
 
+                    }
                 }
+                SendMessageUpwards("HideHoverTooltip");
             }
-            SendMessageUpwards("HideHoverTooltip");
         }
     }
 

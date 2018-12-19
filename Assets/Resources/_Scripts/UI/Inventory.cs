@@ -231,6 +231,7 @@ public class Inventory : MonoBehaviour
             mount.gameObject.SetActive(true);
         isOpen = true;
         InventoryItem.draggable = true;
+        AllowHotbarHoverEffect();
     }
 
     /// <summary>
@@ -245,6 +246,7 @@ public class Inventory : MonoBehaviour
             mount.gameObject.SetActive(false);
         isOpen = false;
         InventoryItem.draggable = false;
+        ForbidHotbarHoverEffect();
     }
 
 
@@ -689,5 +691,27 @@ public class Inventory : MonoBehaviour
             }
         }
         return false; // Find element in item list equivalent to the parameter.
+    }
+
+    /// <summary>
+    /// Allow hotbar slots to highlight when the user hovers their mouse over them.
+    /// </summary>
+    public void AllowHotbarHoverEffect()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.canHighlight = true;
+        }
+    }
+
+    /// <summary>
+    /// Do not allow hotbar slots to highlight when the user hovers their mouse over them.
+    /// </summary>
+    public void ForbidHotbarHoverEffect()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.canHighlight = false;
+        }
     }
 }

@@ -44,8 +44,4 @@ public class Hotbar : MonoBehaviour {
         }
     }
 
-    void SetCursor(Texture2D cursor)
-    {
-    }
-
 }
