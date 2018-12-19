@@ -11,8 +11,14 @@ public class HotbarSlot : InteractableElement
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
     private InventoryItem inventoryItem; // The item in the slot.
-    private readonly Color SELECTCOLOR = new Color(0.3f, 0.7f, 1.0f);
-    internal bool selected;
+
+    // Colors
+    private readonly Color SELECTCOLOR = new Color(0.2f, 0.7f, 1.0f);
+    private readonly Color SELECTCOLOR_HIGHLIGHT = new Color(0.6f, 0.8f, 1.0f);
+    private readonly Color DEFAULTCOLOR = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+    private readonly Color DEFAULTCOLOR_HIGHLIGHT = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    internal bool current; // Is this hotbar slot the selected one?
     [Header("Starting Component")]
     public ShipComponent startingComponent;
 
@@ -22,7 +28,7 @@ public class HotbarSlot : InteractableElement
         audioSource = GetComponent<AudioSource>();
         numkeyDisplay = GetComponentInChildren<TextMeshProUGUI>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+        image.color = DEFAULTCOLOR;
         if (startingComponent != null)
         {
             SetItem(startingComponent);
@@ -34,8 +40,8 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     public void Select()
     {
-        selected = true;
-        image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+        current = true;
+        image.color = SELECTCOLOR;
         if (inventoryItem.gameObject.activeSelf)
             inventoryItem.Highlight();
     }
@@ -45,8 +51,8 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     public void Deselect()
     {
-        selected = false;
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+        current = false;
+        image.color = DEFAULTCOLOR;
         if (inventoryItem.gameObject.activeSelf)
             inventoryItem.Dehighlight();
     }
@@ -56,7 +62,7 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     public bool IsSelected()
     {
-        return selected;
+        return current;
     }
 
     /// <summary>
@@ -128,10 +134,10 @@ public class HotbarSlot : InteractableElement
         inventoryItem.SetQuantity(0);
         inventoryItem.SetItem(null, 0);
         inventoryItem.gameObject.SetActive(false);
-        if (selected)
-            image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+        if (current)
+            image.color = SELECTCOLOR;
         else
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+            image.color = DEFAULTCOLOR;
         isEmpty = true;
     }
 
@@ -153,18 +159,28 @@ public class HotbarSlot : InteractableElement
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
-        if (canHighlight && !isEmpty && !InventoryItem.dragging)
+        // If the slot can be highlighted.
+        if (canHighlight)
         {
-            if (!selected)
+            if (!isEmpty && !InventoryItem.dragging)
             {
-                image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                if (!current)
+                    image.color = DEFAULTCOLOR_HIGHLIGHT;
+                else
+                    image.color = SELECTCOLOR_HIGHLIGHT;
                 inventoryItem.Highlight();
+                SendMessageUpwards("ShowHoverTooltip", index);
             }
-            SendMessageUpwards("ShowHoverTooltip", index);
         }
-        else if(!selected)
+        else if (current)
         {
+            image.color = SELECTCOLOR;
+        }
+        else if (!current)
+        {
+            image.color = SELECTCOLOR;
             Deselect();
+            inventoryItem.Dehighlight();
         }
     }
 
@@ -172,23 +188,20 @@ public class HotbarSlot : InteractableElement
     void OnMouseExit()
     {
 
-        if (selected)
-            image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+        if (current)
+            image.color = SELECTCOLOR;
         else if (!isEmpty)
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+            image.color = DEFAULTCOLOR;
 
         if (canHighlight)
         {
             if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
             {
-                if (!selected)
+                if (!current)
                 {
                     inventoryItem.Dehighlight();
                     if (exitSound != null)
-                    {
                         audioSource.PlayOneShot(exitSound);
-
-                    }
                 }
                 SendMessageUpwards("HideHoverTooltip");
             }

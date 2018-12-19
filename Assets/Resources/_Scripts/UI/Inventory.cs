@@ -35,6 +35,8 @@ public class Inventory : MonoBehaviour
     private GameObject mountUI;
     [SerializeField]
     private GameObject hotbarUI;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI selectedTextDisplay; // Displays the name of the currently selected hotbar item.
 
     private List<InventorySlot> inventorySlots;
     private List<MountSlot> mountSlots;
@@ -124,6 +126,7 @@ public class Inventory : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Alpha5))
                 SwitchHotbarSlot(4);
         }
+        UpdateSelectedItemDisplay(GetSelectedHotbarSlot().GetItem());
     }
 
     /// <summary>
@@ -135,8 +138,22 @@ public class Inventory : MonoBehaviour
         hotbarSlots[selectedHotbarSlotIndex].Deselect();
         selectedHotbarSlotIndex = index;
         hotbarSlots[selectedHotbarSlotIndex].Select();
-        weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
+        var item = hotbarSlots[selectedHotbarSlotIndex].GetItem();
+        weaponController.UpdateTurret(item as ShipComponent);
         audioSource.PlayOneShot(hotbarSelectSound);
+        UpdateSelectedItemDisplay(item);
+    }
+
+    /// <summary>
+    /// Update the text display for the selected item's name.
+    /// </summary>
+    /// <param name="item"></param>
+    private void UpdateSelectedItemDisplay(Item item)
+    {
+        if (item != null)
+            selectedTextDisplay.text = hotbarSlots[selectedHotbarSlotIndex].GetItem().name;
+        else
+            selectedTextDisplay.text = "";
     }
 
     /// <summary>
