@@ -3,6 +3,7 @@
 public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
+    internal bool isPaused = false;
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
@@ -49,7 +50,7 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!dead)
+        if(!dead && !isPaused)
         {
             // Change the item if necessary.
             if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
@@ -77,32 +78,6 @@ public class WeaponController : MonoBehaviour
                     miningLaser.StopFire();
                 }
             }
-
-            //if (Input.GetMouseButton(0) && !menuOpen)
-            //{
-            //    if(turret.GetShipComponent() is WeaponComponent)
-            //    {
-            //        var weapon = turret.GetShipComponent() as WeaponComponent;
-            //        if (Time.time > weapon.GetNextShotTime())
-            //        {
-            //            weapon.Fire();
-            //            weapon.SetLastShot(Time.time);
-            //        }
-            //    }
-            //    if(turret.GetShipComponent() is MiningComponent)
-            //    {
-            //        var miningLaser = turret.GetShipComponent() as MiningComponent;
-            //        miningLaser.Fire();
-            //    }
-            //}
-            //if (Input.GetMouseButtonUp(0) || menuOpen)
-            //{
-            //    if(turret.GetShipComponent() is MiningComponent)
-            //    {
-            //        var miningLaser = turret.GetShipComponent() as MiningComponent;
-            //        miningLaser.StopFire();
-            //    }
-            //}
         }
     }
 
