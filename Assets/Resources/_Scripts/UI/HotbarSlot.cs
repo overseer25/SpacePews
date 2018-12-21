@@ -6,13 +6,19 @@ public class HotbarSlot : InteractableElement
 {
     [HideInInspector]
     public bool isEmpty = true; // All slots start out empty.
-
+    internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
     // The num key associated with this hotbar slot.
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
     private InventoryItem inventoryItem; // The item in the slot.
-    private readonly Color SELECTCOLOR = new Color(0.3f, 0.7f, 1.0f);
-    internal bool selected;
+
+    // Colors
+    private readonly Color SELECTCOLOR = new Color(0.2f, 0.7f, 1.0f);
+    private readonly Color SELECTCOLOR_HIGHLIGHT = new Color(0.6f, 0.8f, 1.0f);
+    private readonly Color DEFAULTCOLOR = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+    private readonly Color DEFAULTCOLOR_HIGHLIGHT = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    internal bool current; // Is this hotbar slot the selected one?
     [Header("Starting Component")]
     public ShipComponent startingComponent;
 
@@ -22,8 +28,8 @@ public class HotbarSlot : InteractableElement
         audioSource = GetComponent<AudioSource>();
         numkeyDisplay = GetComponentInChildren<TextMeshProUGUI>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
-        if(startingComponent != null)
+        image.color = DEFAULTCOLOR;
+        if (startingComponent != null)
         {
             SetItem(startingComponent);
         }
@@ -34,9 +40,9 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     public void Select()
     {
-        selected = true;
-        image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
-        if(inventoryItem.gameObject.activeSelf)
+        current = true;
+        image.color = SELECTCOLOR;
+        if (inventoryItem.gameObject.activeSelf)
             inventoryItem.Highlight();
     }
 
@@ -45,8 +51,8 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     public void Deselect()
     {
-        selected = false;
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+        current = false;
+        image.color = DEFAULTCOLOR;
         if (inventoryItem.gameObject.activeSelf)
             inventoryItem.Dehighlight();
     }
@@ -56,7 +62,7 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     public bool IsSelected()
     {
-        return selected;
+        return current;
     }
 
     /// <summary>
@@ -128,10 +134,10 @@ public class HotbarSlot : InteractableElement
         inventoryItem.SetQuantity(0);
         inventoryItem.SetItem(null, 0);
         inventoryItem.gameObject.SetActive(false);
-        if (selected)
-            image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+        if (current)
+            image.color = SELECTCOLOR;
         else
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+            image.color = DEFAULTCOLOR;
         isEmpty = true;
     }
 
@@ -140,7 +146,8 @@ public class HotbarSlot : InteractableElement
     /// </summary>
     void OnMouseEnter()
     {
-        if (!isEmpty && !InventoryItem.dragging)
+
+        if (canHighlight && !isEmpty && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -152,37 +159,52 @@ public class HotbarSlot : InteractableElement
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
-        if (!isEmpty && !InventoryItem.dragging)
+        // If the slot can be highlighted.
+        if (canHighlight)
         {
-            if(!selected)
+            if (!isEmpty && !InventoryItem.dragging)
             {
-                image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                if (!current)
+                    image.color = DEFAULTCOLOR_HIGHLIGHT;
+                else
+                    image.color = SELECTCOLOR_HIGHLIGHT;
                 inventoryItem.Highlight();
+                SendMessageUpwards("ShowHoverTooltip", index);
             }
-            SendMessageUpwards("ShowHoverTooltip", index);
+        }
+        else if (current)
+        {
+            image.color = SELECTCOLOR;
+        }
+        else if (!current)
+        {
+            image.color = SELECTCOLOR;
+            Deselect();
+            inventoryItem.Dehighlight();
         }
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if(selected)
-            image.color = new Color(SELECTCOLOR.r, SELECTCOLOR.g, SELECTCOLOR.b, 1.0f);
+
+        if (current)
+            image.color = SELECTCOLOR;
         else if (!isEmpty)
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+            image.color = DEFAULTCOLOR;
 
-        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        if (canHighlight)
         {
-            if(!selected)
+            if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
             {
-                inventoryItem.Dehighlight();
-                if (exitSound != null)
+                if (!current)
                 {
-                    audioSource.PlayOneShot(exitSound);
-
+                    inventoryItem.Dehighlight();
+                    if (exitSound != null)
+                        audioSource.PlayOneShot(exitSound);
                 }
+                SendMessageUpwards("HideHoverTooltip");
             }
-            SendMessageUpwards("HideHoverTooltip");
         }
     }
 

@@ -21,6 +21,8 @@ public class Inventory : MonoBehaviour
 
     internal AudioSource audioSource;
     internal bool isOpen = false;
+    // Is the game paused?
+    internal bool isPaused = false;
 
     [Header("Other")]
     [SerializeField]
@@ -33,6 +35,8 @@ public class Inventory : MonoBehaviour
     private GameObject mountUI;
     [SerializeField]
     private GameObject hotbarUI;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI selectedTextDisplay; // Displays the name of the currently selected hotbar item.
 
     private List<InventorySlot> inventorySlots;
     private List<MountSlot> mountSlots;
@@ -85,7 +89,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(!dead)
+        if(!dead && !isPaused)
         {
             // If scrolling up the hotbar.
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -122,6 +126,7 @@ public class Inventory : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Alpha5))
                 SwitchHotbarSlot(4);
         }
+        UpdateSelectedItemDisplay(GetSelectedHotbarSlot().GetItem());
     }
 
     /// <summary>
@@ -133,8 +138,22 @@ public class Inventory : MonoBehaviour
         hotbarSlots[selectedHotbarSlotIndex].Deselect();
         selectedHotbarSlotIndex = index;
         hotbarSlots[selectedHotbarSlotIndex].Select();
-        weaponController.UpdateTurret(hotbarSlots[selectedHotbarSlotIndex].GetItem() as ShipComponent);
+        var item = hotbarSlots[selectedHotbarSlotIndex].GetItem();
+        weaponController.UpdateTurret(item as ShipComponent);
         audioSource.PlayOneShot(hotbarSelectSound);
+        UpdateSelectedItemDisplay(item);
+    }
+
+    /// <summary>
+    /// Update the text display for the selected item's name.
+    /// </summary>
+    /// <param name="item"></param>
+    private void UpdateSelectedItemDisplay(Item item)
+    {
+        if (item != null)
+            selectedTextDisplay.text = hotbarSlots[selectedHotbarSlotIndex].GetItem().name;
+        else
+            selectedTextDisplay.text = "";
     }
 
     /// <summary>
@@ -153,6 +172,7 @@ public class Inventory : MonoBehaviour
     public void UpdateDead(bool isDead)
     {
         dead = isDead;
+        HideHoverTooltip();
     }
 
     /// <summary>
@@ -192,6 +212,8 @@ public class Inventory : MonoBehaviour
         int j = inventorySize - size;
         foreach (var mountSlot in mountSlots)
             mountSlot.SetIndex(j++);
+        foreach (var hotbarSlot in hotbarSlots)
+            hotbarSlot.SetIndex(j++);
 
         inventorySize -= size;
     }
@@ -201,13 +223,16 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public virtual void Toggle()
     {
-        if (!isOpen)
+        if(!isPaused)
         {
-            OpenInventory();
-        }
-        else
-        {
-            CloseInventory();
+            if (!isOpen)
+            {
+                OpenInventory();
+            }
+            else
+            {
+                CloseInventory();
+            }
         }
     }
 
@@ -223,6 +248,7 @@ public class Inventory : MonoBehaviour
             mount.gameObject.SetActive(true);
         isOpen = true;
         InventoryItem.draggable = true;
+        AllowHotbarHoverEffect();
     }
 
     /// <summary>
@@ -237,6 +263,7 @@ public class Inventory : MonoBehaviour
             mount.gameObject.SetActive(false);
         isOpen = false;
         InventoryItem.draggable = false;
+        ForbidHotbarHoverEffect();
     }
 
 
@@ -247,49 +274,52 @@ public class Inventory : MonoBehaviour
     /// <param name="index"></param>
     public virtual void ShowHoverTooltip(int index)
     {
-        // If the provided index is greater than the number of inventory slots, then it is a mount slot.
-        if (index >= inventorySlots.Count() + mountSlots.Count())
+        if(isOpen)
         {
-            index -= (inventorySlots.Count() + mountSlots.Count());
-            if (hotbarSlots[index].isEmpty)
+            // If the provided index is greater than the number of inventory slots, then it is a mount slot.
+            if (index >= inventorySlots.Count() + mountSlots.Count())
             {
-                infoScreen.Hide();
-            }
-            else if (!infoScreen.gameObject.activeSelf)
-            {
-                var item = hotbarSlots[index].GetItem();
+                index -= (inventorySlots.Count() + mountSlots.Count());
+                if (hotbarSlots[index].isEmpty)
+                {
+                    infoScreen.Hide();
+                }
+                else if (!infoScreen.gameObject.activeSelf)
+                {
+                    var item = hotbarSlots[index].GetItem();
 
-                infoScreen.SetInfo(item, 0);
-                infoScreen.Show();
+                    infoScreen.SetInfo(item, 0);
+                    infoScreen.Show();
+                }
             }
-        }
-        else if (index >= inventorySlots.Count())
-        {
-            index -= inventorySlots.Count();
-            if (mountSlots[index].isEmpty)
+            else if (index >= inventorySlots.Count())
             {
-                infoScreen.Hide();
-            }
-            else if (!infoScreen.gameObject.activeSelf)
-            {
-                var item = mountSlots[index].GetItem();
+                index -= inventorySlots.Count();
+                if (mountSlots[index].isEmpty)
+                {
+                    infoScreen.Hide();
+                }
+                else if (!infoScreen.gameObject.activeSelf)
+                {
+                    var item = mountSlots[index].GetItem();
 
-                infoScreen.SetInfo(item, 0);
-                infoScreen.Show();
+                    infoScreen.SetInfo(item, 0);
+                    infoScreen.Show();
+                }
             }
-        }
-        else
-        {
-            if (inventorySlots[index].isEmpty)
+            else
             {
-                infoScreen.Hide();
-            }
-            else if (!infoScreen.gameObject.activeSelf)
-            {
-                var item = inventorySlots[index].GetItem();
+                if (inventorySlots[index].isEmpty)
+                {
+                    infoScreen.Hide();
+                }
+                else if (!infoScreen.gameObject.activeSelf)
+                {
+                    var item = inventorySlots[index].GetItem();
 
-                infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
-                infoScreen.Show();
+                    infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
+                    infoScreen.Show();
+                }
             }
         }
     }
@@ -678,5 +708,27 @@ public class Inventory : MonoBehaviour
             }
         }
         return false; // Find element in item list equivalent to the parameter.
+    }
+
+    /// <summary>
+    /// Allow hotbar slots to highlight when the user hovers their mouse over them.
+    /// </summary>
+    public void AllowHotbarHoverEffect()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.canHighlight = true;
+        }
+    }
+
+    /// <summary>
+    /// Do not allow hotbar slots to highlight when the user hovers their mouse over them.
+    /// </summary>
+    public void ForbidHotbarHoverEffect()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.canHighlight = false;
+        }
     }
 }

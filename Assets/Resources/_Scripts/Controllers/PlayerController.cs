@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     // Constants
-    private const float RESPAWN_WAIT_TIME = 2.0f;
+    private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
 
     [Header("State")]
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public bool inertialDamp = true; // Are inertial dampeners on?
     public Inventory inventory;
     public DeathScreen deathScreen;
+    public PauseMenuScript pauseMenu;
     public GameObject respawnPoint;
     [Header("Effects/Sounds")]
     public GameObject deathExplosion;
@@ -265,6 +266,8 @@ public class PlayerController : MonoBehaviour
                 weaponController.UpdateDead(dead);
                 inventory.UpdateDead(dead);
                 movementController.UpdateDead(dead);
+                pauseMenu.UpdateDead(dead);
+                pauseMenu.ResumeGame();
                 if (inventory.isOpen)
                     inventory.CloseInventory();
                 this.SendMessage("UpdateDead", true);
@@ -306,6 +309,7 @@ public class PlayerController : MonoBehaviour
         weaponController.UpdateDead(dead);
         inventory.UpdateDead(dead);
         movementController.UpdateDead(dead);
+        pauseMenu.UpdateDead(dead);
         this.SendMessage("UpdateDead", false);
         healthUI.SetIsDead(false);
         healthUI.ResetHealth();
