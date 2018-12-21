@@ -1862,10 +1862,10 @@ MonoBehaviour:
   deathScreen: {fileID: 869}
   pauseMenu: {fileID: 908}
   respawnPoint: {fileID: 0}
-  deathExplosion: {fileID: 2260596981083897225, guid: 32f52ac3d7949d94fb4d32e9b7870494,
+  deathExplosion: {fileID: 2260596981083897227, guid: 32f52ac3d7949d94fb4d32e9b7870494,
     type: 3}
   deathSound: {fileID: 8300000, guid: ec9806295d165e74d90e1b6571fef086, type: 3}
-  respawnEffect: {fileID: 2507454449156312794, guid: e811f9b8fdd3c1b47af37e5d606e2b3e,
+  respawnEffect: {fileID: 2507454449156312789, guid: e811f9b8fdd3c1b47af37e5d606e2b3e,
     type: 3}
   respawnSound: {fileID: 8300000, guid: 4b29ca289332c4749879e330ba324afa, type: 3}
 --- !u!114 &907
@@ -4334,7 +4334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -231.15506, y: -172.45804}
+  m_AnchoredPosition: {x: -231.15503, y: -172.45801}
   m_SizeDelta: {x: -474.3809, y: -355.05493}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &104
@@ -4517,9 +4517,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Cancel
-
-'
+  m_Text: No
 --- !u!1 &106
 GameObject:
   m_ObjectHideFlags: 0
@@ -5989,7 +5987,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &739
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6006,7 +6004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -28.100002, y: -0.19999981}
+  m_AnchoredPosition: {x: -16.100002, y: -0.19999981}
   m_SizeDelta: {x: 55.13948, y: -7.186001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &535

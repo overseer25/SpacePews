@@ -4717,14 +4717,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 739, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -16.100002
-      objectReference: {fileID: 0}
-    - target: {fileID: 892, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_Text
-      value: No
-      objectReference: {fileID: 0}
     - target: {fileID: 873, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_havePropertiesChanged
       value: 1
@@ -4737,18 +4729,6 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 63069341}
-    - target: {fileID: 118, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 720, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -231.15503
-      objectReference: {fileID: 0}
-    - target: {fileID: 720, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -172.45801
-      objectReference: {fileID: 0}
     - target: {fileID: 718, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0

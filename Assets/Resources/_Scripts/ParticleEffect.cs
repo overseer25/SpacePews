@@ -14,7 +14,8 @@ public class ParticleEffect : MonoBehaviour {
     private void OnEnable()
     {
         var explosionSound = GetComponent<AudioSource>();
-        explosionSound.PlayOneShot(sound);
+        if(explosionSound != null && sound != null)
+            explosionSound.PlayOneShot(sound);
         index = 0;
     }
 
