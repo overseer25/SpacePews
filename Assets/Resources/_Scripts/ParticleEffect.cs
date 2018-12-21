@@ -54,4 +54,13 @@ public class ParticleEffect : MonoBehaviour {
         transform.position = target.transform.position;
         transform.rotation = target.transform.rotation;
     }
+
+    /// <summary>
+    /// Set the position and rotation of the effect, based on the given position and rotation.
+    /// </summary>
+    public void SetTransform(Vector2 position, Quaternion rotation)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+    }
 }

@@ -72,7 +72,7 @@ MonoBehaviour:
   contactMineable: {fileID: 8300000, guid: 65a4032e4eba5dd4687a0392b59003d7, type: 3}
   contactAudioSource: {fileID: 82283854465768554}
   baseAudioSource: {fileID: 82129080506192176}
-  laserContactSprite: {fileID: 1658563534823934, guid: 50f6842a466960141b1b646917392599,
+  laserContactSprite: {fileID: 114031275780741820, guid: 50f6842a466960141b1b646917392599,
     type: 3}
 --- !u!61 &61520005974784146
 BoxCollider2D:

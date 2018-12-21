@@ -26,7 +26,7 @@ public class MiningComponent : ShipComponent
     private AudioSource baseAudioSource;
     [Header("Other")]
     [SerializeField]
-    private GameObject laserContactSprite;
+    private ParticleEffect laserContactSprite;
 
     private float contactSpriteFrequency = 0.2f; // The frequency at which the contact sprite animation is allowed to play.
     private float timePassed = 0.0f; // Used in conjunction with contactSpriteFrequency to delay sprite spawning.
@@ -80,7 +80,7 @@ public class MiningComponent : ShipComponent
                     if (Time.time > timePassed)
                     {
                         timePassed = Time.time + contactSpriteFrequency;
-                        Instantiate(laserContactSprite, hit.point, lineSpawner.transform.rotation);
+                        ShowContactSprite(transform.position, transform.rotation);
                     }
                     PlayContactAudio();
                     break;
@@ -90,7 +90,7 @@ public class MiningComponent : ShipComponent
                     if (Time.time > timePassed)
                     {
                         timePassed = Time.time + contactSpriteFrequency;
-                        Instantiate(laserContactSprite, hit.point, lineSpawner.transform.rotation);
+                        ShowContactSprite(hit.point, lineSpawner.transform.rotation);
                     }
                     PlayContactAudio();
 
@@ -111,6 +111,17 @@ public class MiningComponent : ShipComponent
             StopContactAudio();
             UpdateLinePosition(lineSpawner.transform.up * laserLength);
         }
+    }
+
+    /// <summary>
+    /// Show the contact sprite effect.
+    /// </summary>
+    private void ShowContactSprite(Vector2 pos, Quaternion rot)
+    {
+        ParticleEffect exp = ParticlePool.current.GetPooledObject();
+        exp.Copy(laserContactSprite);
+        exp.SetTransform(pos, rot);
+        exp.gameObject.SetActive(true);
     }
 
     /// <summary>
