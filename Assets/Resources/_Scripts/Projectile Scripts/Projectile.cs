@@ -21,8 +21,6 @@ public class Projectile : MonoBehaviour
     /// </summary>
     [Header("Sound")]
     [SerializeField]
-    private AudioClip collisionSound;
-    [SerializeField]
     private AudioClip fireSound;
 
     /// <summary>
@@ -30,10 +28,9 @@ public class Projectile : MonoBehaviour
     /// </summary>
     [Header("Other")]
     [SerializeField]
+    private ParticleEffect destroyEffect;
+    [SerializeField]
     private int lifetime;
-
-    // Explosion sprite.
-    public GameObject explosion;
 
     private Rigidbody2D rigidBody;
     private bool collided = false; // Check to see if a collision sound should be played on deactivation.
@@ -84,8 +81,11 @@ public class Projectile : MonoBehaviour
     {
         if (collided)
         {
-            Explosion exp = Instantiate(explosion, transform.position, Quaternion.identity).GetComponent<Explosion>();
-            exp.Initialize(collisionSound);
+
+            ParticleEffect exp = ParticlePool.current.GetPooledObject();
+            exp.Copy(destroyEffect);
+            exp.gameObject.SetActive(true);
+            exp.SetTransform(gameObject);
 
             // Current damage is set on collisions with entities that can take damage.
             var popUptext = PopUpTextPool.current.GetPooledObject();
