@@ -17,10 +17,6 @@ public class ParticleManager : MonoBehaviour
         var exp = ParticlePool.current.GetPooledObject();
         exp.Copy(particle);
         exp.SetTransform(position);
-        if (audioSource == null)
-            Debug.LogError(particle + " does not contain an audio source.");
-        else if(particle.GetSound() != null)
-            particle.GetComponent<AudioSource>().PlayOneShot(particle.GetSound());
         exp.gameObject.SetActive(true);
     }
 }

@@ -1,22 +1,24 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleEffect : MonoBehaviour {
+public class ParticleEffect : MonoBehaviour
+{
 
     public Sprite[] particleSprites;
     public float playspeed = 0.1f;
     private float changeSprite = 0.0f;
     private int index = 0;
+    private bool expired;
     [SerializeField]
     private AudioClip sound;
 
     private void OnEnable()
     {
-        var explosionSound = GetComponent<AudioSource>();
-        if(explosionSound != null && sound != null)
-            explosionSound.PlayOneShot(sound);
+        var audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && sound != null)
+            audioSource.PlayOneShot(sound);
         index = 0;
+        expired = false;
     }
 
     /// <summary>
@@ -28,20 +30,44 @@ public class ParticleEffect : MonoBehaviour {
         return sound;
     }
 
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update()
     {
-	    if(Time.time > changeSprite)
+        if (!expired)
         {
-            if (index >= particleSprites.Length) { gameObject.SetActive(false); }
-            else
+            if (Time.time > changeSprite)
             {
-                changeSprite = Time.time + playspeed;
-                GetComponentInChildren<SpriteRenderer>().sprite = particleSprites[index];
-                index++;
-            }     
+                if (index >= particleSprites.Length)
+                {
+                    if(sound != null)
+                        StartCoroutine(WaitToDisable());
+                    else
+                        gameObject.SetActive(false);
+                }
+                else
+                {
+                    changeSprite = Time.time + playspeed;
+                    GetComponentInChildren<SpriteRenderer>().sprite = particleSprites[index];
+                    index++;
+                }
+            }
         }
-	}
+    }
+
+    /// <summary>
+    /// Wait to disable the Particle Effect until the sound finishes playing.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator WaitToDisable()
+    {
+        expired = true;
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        yield return new WaitForSeconds(sound.length);
+
+        gameObject.SetActive(false);
+        GetComponent<SpriteRenderer>().enabled = true;
+    }
 
     /// <summary>
     /// Copy the values of another ParticleEffect.
