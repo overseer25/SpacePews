@@ -52,7 +52,6 @@ public class PauseMenuScript : MonoBehaviour
                 {
                     PauseGame(!IsPaused);
                 }
-
             }
         }
     }
@@ -76,7 +75,6 @@ public class PauseMenuScript : MonoBehaviour
             this.transform.GetChild(i).gameObject.SetActive(false);
         }
         this.GetComponent<Image>().enabled = false;
-        
     }
 
     /// <summary>
@@ -89,7 +87,6 @@ public class PauseMenuScript : MonoBehaviour
             this.transform.GetChild(i).gameObject.SetActive(true);
         }
         this.GetComponent<Image>().enabled = true;
-        inventory.HideHotbar();
     }
 
     /// <summary>
@@ -130,6 +127,8 @@ public class PauseMenuScript : MonoBehaviour
         ActivatePauseMenu();
         Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
         weaponController.isPaused = true;
+        weaponController.menuOpen = true;
+        inventory.UpdatePaused(true);
     }
 
     /// <summary>
@@ -142,6 +141,8 @@ public class PauseMenuScript : MonoBehaviour
         DeactivatePauseMenu();
         Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
         weaponController.isPaused = false;
+        weaponController.menuOpen = false;
+        inventory.UpdatePaused(false);
     }
 
     /// <summary>

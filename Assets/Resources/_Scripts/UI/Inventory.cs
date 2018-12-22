@@ -167,6 +167,27 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Update the status of the player's pause menu is open.
+    /// </summary>
+    /// <param name="paused"></param>
+    public void UpdatePaused(bool paused)
+    {
+        isPaused = paused;
+        if(isPaused)
+        {
+            HideHoverTooltip();
+            HideHotbar();
+            CloseInventory(false);
+            selectedTextDisplay.enabled = false;
+        }
+        else if(!dead)
+        {
+            ShowHotbar();
+            selectedTextDisplay.enabled = true;
+        }
+    }
+
+    /// <summary>
     /// Update the status of the player's death.
     /// </summary>
     /// <param name="isDead"></param>
@@ -184,8 +205,7 @@ public class Inventory : MonoBehaviour
         {
             ShowHotbar();
             selectedTextDisplay.enabled = true;
-        }
-        
+        }  
     }
 
     /// <summary>
