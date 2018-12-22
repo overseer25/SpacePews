@@ -268,8 +268,6 @@ public class PlayerController : MonoBehaviour
                 movementController.UpdateDead(dead);
                 pauseMenu.UpdateDead(dead);
                 pauseMenu.ResumeGame();
-                if (inventory.isOpen)
-                    inventory.CloseInventory();
                 this.SendMessage("UpdateDead", true);
                 healthUI.SetIsDead(true);
                 healthUI.RedrawHealthSprites(0, 0);

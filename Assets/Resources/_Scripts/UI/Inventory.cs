@@ -172,7 +172,19 @@ public class Inventory : MonoBehaviour
     public void UpdateDead(bool isDead)
     {
         dead = isDead;
-        HideHoverTooltip();
+        if(dead)
+        {
+            CloseInventory(false);
+            HideHoverTooltip();
+            HideHotbar();
+            selectedTextDisplay.enabled = false;
+        }
+        else
+        {
+            ShowHotbar();
+            selectedTextDisplay.enabled = true;
+        }
+        
     }
 
     /// <summary>
@@ -239,10 +251,10 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Put the inventory to the open state.
     /// </summary>
-    public virtual void OpenInventory()
+    public virtual void OpenInventory(bool playSound = true)
     {
-        audioSource.clip = openSound;
-        audioSource.Play();
+        if(playSound)
+            audioSource.PlayOneShot(openSound);
         inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 1.0f;
         foreach (var mount in mountSlots)
             mount.gameObject.SetActive(true);
@@ -255,10 +267,10 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Put the inventory to the closed state.
     /// </summary>
-    public virtual void CloseInventory()
+    public virtual void CloseInventory(bool playSound = true)
     {
-        audioSource.clip = closeSound;
-        audioSource.Play();
+        if(playSound)
+            audioSource.PlayOneShot(closeSound);
         inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 0.0f;
         foreach (var mount in mountSlots)
             mount.gameObject.SetActive(false);
@@ -332,6 +344,28 @@ public class Inventory : MonoBehaviour
     public void HideHoverTooltip()
     {
         infoScreen.Hide();
+    }
+
+    /// <summary>
+    /// Show the hotbar.
+    /// </summary>
+    public void ShowHotbar()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Hide the hotbar.
+    /// </summary>
+    public void HideHotbar()
+    {
+        foreach(var slot in hotbarSlots)
+        {
+            slot.gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
