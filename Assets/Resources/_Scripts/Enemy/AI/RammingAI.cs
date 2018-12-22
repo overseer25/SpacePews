@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RammingAI : MonoBehaviour
 {
     public GameObject target = null;
     public GameObject[] patrolPoints;
-
+    public ParticleEffect explosion;
+    public AudioClip explosionSound;
     public float range = 75f;
 
     private Vector2 avoidancePoint;
@@ -25,7 +24,7 @@ public class RammingAI : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
         checkTimer = 0;
         checkTime = 1f;
         avoiding = false;
@@ -39,7 +38,7 @@ public class RammingAI : MonoBehaviour
         {
             Debug.LogError("Ship does not exist on this enemy.");
         }
-        if(patrolPoints.Length == 0)
+        if (patrolPoints.Length == 0)
         {
             Debug.Log("This ramming ship has no patrol points set.");
         }
@@ -54,10 +53,6 @@ public class RammingAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ship.health <= 0)
-        {
-            Destroy(this.transform.parent.gameObject);
-        }
         if (stunned)
         {
             StunnedMotion();
@@ -76,11 +71,11 @@ public class RammingAI : MonoBehaviour
                 checkTimer = 0;
                 CheckForPlayerTarget();
             }
-            if(target == null && patrolling)
+            if (target == null && patrolling)
             {
                 if (patrolPoints.Length > 0)
                 {
-                    target = patrolPoints[patrolIndex];                    
+                    target = patrolPoints[patrolIndex];
                 }
             }
 
@@ -191,7 +186,7 @@ public class RammingAI : MonoBehaviour
         {
             motor.MoveForward(speed, topSpeed);
         }
-        if(Vector2.Distance(ship.transform.position, patrolPoints[patrolIndex].transform.position) < 2)
+        if (Vector2.Distance(ship.transform.position, patrolPoints[patrolIndex].transform.position) < 2)
         {
             patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
             target = patrolPoints[patrolIndex];
@@ -203,7 +198,7 @@ public class RammingAI : MonoBehaviour
     /// </summary>
     private void CheckIfDoneAvoiding()
     {
-        if(Vector2.Distance(ship.transform.position, avoidancePoint) <= 1)
+        if (Vector2.Distance(ship.transform.position, avoidancePoint) <= 1)
         {
             avoiding = false;
         }
@@ -301,14 +296,14 @@ public class RammingAI : MonoBehaviour
         {
             case "Ship":
             case "Player":
-                if(motor.GetCurrentVelocity().magnitude > ship.topSpeed)
+                if (motor.GetCurrentVelocity().magnitude > ship.topSpeed)
                 {
                     stunnedDir = rand.Next(10) > 5 ? 1 : -1;
                     stunned = true;
                     Vector2 driftDir = new Vector2(ship.transform.right.x + rand.Next(-2, 2), ship.transform.right.y + rand.Next(-2, 2)) * stunnedDir;
                     motor.ShipImpact(10, stunnedDir, driftDir);
                     ship.health -= 1;
-                }                
+                }
                 break;
             case "Mineable":
             case "Immovable":
@@ -329,6 +324,11 @@ public class RammingAI : MonoBehaviour
                 break;
             default:
                 break;
+        }
+        if (ship.health <= 0)
+        {
+            ParticleManager.PlayParticle(explosion, gameObject);
+            GetComponent<AudioSource>().PlayOneShot(explosionSound);
         }
     }
 

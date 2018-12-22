@@ -9,6 +9,7 @@ public class Ship : MonoBehaviour
     public string shipName;
 
     [Header("Stats")]
+    public int maxHealth;
     public int health;
 
     public float rotationSpeed;

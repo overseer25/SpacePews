@@ -7,8 +7,7 @@ public class WeaponController : MonoBehaviour
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
-    [Header("Ship")]
-    public Ship ship;
+    private Ship ship;
 
     private GameObject turret;
     private ShipComponent currentComponent;
@@ -18,6 +17,7 @@ public class WeaponController : MonoBehaviour
 
     void Start()
     {
+        ship = GetComponentInChildren<Ship>();
         turret = ship.turret;
     }
 
