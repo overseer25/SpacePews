@@ -175,6 +175,13 @@ public class MountSlot : InteractableElement
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
+
+        // Shift right-clicking will swap slots.
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
+        {
+            SendMessageUpwards("QuickSwapWithInventorySlot", index);
+        }
+
         // Shift clicking will clear the slot.
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {

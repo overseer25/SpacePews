@@ -53,8 +53,20 @@ public class InventorySlot : InteractableElement
     // Highlight the image when hovering over it
     void OnMouseOver()
     {
+        // Shift right-clicking will swap slots.
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
+        {
+            if(inventoryItem.item != null)
+            {
+                if (inventoryItem.item is WeaponComponent || inventoryItem.item is MiningComponent)
+                    SendMessageUpwards("QuickSwapWithHotbarSlot", index);
+                else if (inventoryItem.item.type != ItemType.Item)
+                    SendMessageUpwards("QuickSwapWithMountSlot", index);
+            }
+        }
+
         // Shift clicking will clear the slot.
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
+        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
             SendMessageUpwards("ClearSlot", index);
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);

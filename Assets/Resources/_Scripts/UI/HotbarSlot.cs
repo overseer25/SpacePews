@@ -162,6 +162,12 @@ public class HotbarSlot : InteractableElement
         // If the slot can be highlighted.
         if (canHighlight)
         {
+            // Shift right-clicking will swap slots.
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
+            {
+                SendMessageUpwards("QuickSwapWithInventorySlot", index);
+            }
+
             if (!isEmpty && !InventoryItem.dragging)
             {
                 if (!current)

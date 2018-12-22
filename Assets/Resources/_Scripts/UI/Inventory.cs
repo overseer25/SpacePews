@@ -89,7 +89,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(!dead && !isPaused)
+        if (!dead && !isPaused)
         {
             // If scrolling up the hotbar.
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -223,7 +223,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public virtual void Toggle()
     {
-        if(!isPaused)
+        if (!isPaused)
         {
             if (!isOpen)
             {
@@ -274,7 +274,7 @@ public class Inventory : MonoBehaviour
     /// <param name="index"></param>
     public virtual void ShowHoverTooltip(int index)
     {
-        if(isOpen)
+        if (isOpen)
         {
             // If the provided index is greater than the number of inventory slots, then it is a mount slot.
             if (index >= inventorySlots.Count() + mountSlots.Count())
@@ -526,7 +526,7 @@ public class Inventory : MonoBehaviour
                 hotbarSlot.ClearSlot();
                 audioSource.Play();
             }
-            if(hotbarSlot.IsSelected())
+            if (hotbarSlot.IsSelected())
                 weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
         }
         // If swapping from hotbar to hotbar.
@@ -557,7 +557,7 @@ public class Inventory : MonoBehaviour
             }
             if (hotbarSlot.IsSelected())
                 weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
-            else if(hotbarSlot2.IsSelected())
+            else if (hotbarSlot2.IsSelected())
                 weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponent);
         }
         // If swapping from a mounting slot.
@@ -658,9 +658,67 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+        HideHoverTooltip();
     }
 
+    /// <summary>
+    /// Swap provided index with an empty hotbar slot, or the currently selected one if
+    /// no hotbar slots are empty.
+    /// </summary>
+    public void QuickSwapWithHotbarSlot(int index)
+    {
+        var slot = GetEmptyHotbarSlot();
+        if (slot == null)
+        {
+            slot = GetSelectedHotbarSlot();
+        }
 
+        SwapSlots(new int[] { index, slot.GetIndex() });
+    }
+
+    /// <summary>
+    /// Swap provided index with an empty mount slot of it's type, or the first non-empty one if none exists.
+    /// </summary>
+    /// <param name="index"></param>
+    public void QuickSwapWithMountSlot(int index)
+    {
+        var item = inventorySlots[index].GetItem();
+        var slotIndex = 0;
+        slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.type);
+
+        if(slotIndex >= 0)
+            SwapSlots(new int[] { index, slotIndex });
+    }
+
+    /// <summary>
+    /// Swap provided index with an empty inventory slot.
+    /// </summary>
+    /// <param name="index"></param>
+    public void QuickSwapWithInventorySlot(int index)
+    {
+        var slot = GetEmptySlot();
+        if(slot != null)
+        {
+            SwapSlots(new int[] { index, slot.GetIndex() });
+        }
+    }
+
+    /// <summary>
+    /// Get the index of an empty mount slot of the provided type, or the first non-empty one.
+    /// </summary>
+    /// <param name="type"></param>
+    public int GetIndexOfEmptyOrFirstMountSlotOfType(ItemType type)
+    {
+        foreach (var mountSlot in mountSlots.Where(e => e.GetMount().GetMountType() == type))
+        {
+            if (mountSlot.GetItem() == null)
+                return mountSlot.GetIndex();
+        }
+        var first = mountSlots.Where(e => e.GetMount().GetMountType() == type).OrderBy(e => e.GetIndex()).FirstOrDefault();
+        if (first != null)
+            return first.GetIndex();
+        return -1;
+    }
 
     /// <summary>
     /// Checks the list of Inventory Slots to see if an empty one exists.
@@ -684,6 +742,20 @@ public class Inventory : MonoBehaviour
     public InventorySlot GetEmptySlot()
     {
         foreach (InventorySlot slot in inventorySlots.OrderBy(s => s.transform.GetSiblingIndex()))
+        {
+            if (slot.isEmpty) { return slot; } // Empty slot found
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Get an empty hotbar slot if it exists. Otherwise returns null.
+    /// </summary>
+    /// <returns></returns>
+    public HotbarSlot GetEmptyHotbarSlot()
+    {
+        foreach (HotbarSlot slot in hotbarSlots.OrderBy(e => e.index))
         {
             if (slot.isEmpty) { return slot; } // Empty slot found
         }
