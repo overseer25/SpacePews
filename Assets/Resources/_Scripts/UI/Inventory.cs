@@ -52,6 +52,7 @@ public class Inventory : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+
         inventorySlots = new List<InventorySlot>();
 
         var index = 0;
@@ -355,6 +356,7 @@ public class Inventory : MonoBehaviour
         {
             slot.gameObject.SetActive(true);
         }
+        selectedTextDisplay.enabled = true;
     }
 
     /// <summary>
@@ -366,6 +368,7 @@ public class Inventory : MonoBehaviour
         {
             slot.gameObject.SetActive(false);
         }
+        selectedTextDisplay.enabled = false;
     }
 
     /// <summary>

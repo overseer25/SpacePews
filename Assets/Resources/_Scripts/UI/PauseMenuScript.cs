@@ -89,6 +89,7 @@ public class PauseMenuScript : MonoBehaviour
             this.transform.GetChild(i).gameObject.SetActive(true);
         }
         this.GetComponent<Image>().enabled = true;
+        inventory.HideHotbar();
     }
 
     /// <summary>
