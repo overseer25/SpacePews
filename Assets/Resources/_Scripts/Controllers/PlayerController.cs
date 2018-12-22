@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case "Enemy":
-                health -= 20;
+                health -= 5;
                 break;
         }       
     }
