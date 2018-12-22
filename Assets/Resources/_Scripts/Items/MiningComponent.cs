@@ -80,7 +80,7 @@ public class MiningComponent : ShipComponent
                     if (Time.time > timePassed)
                     {
                         timePassed = Time.time + contactSpriteFrequency;
-                        ShowContactSprite(transform.position, transform.rotation);
+                        ShowContactSprite(hit.point, lineSpawner.transform.rotation);
                     }
                     PlayContactAudio();
                     break;
