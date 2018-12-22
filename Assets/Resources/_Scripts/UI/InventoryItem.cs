@@ -155,7 +155,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             swapping = false;
         }
 
-        transform.localPosition = Vector3.zero;
+        transform.position = GetComponentInParent<InteractableElement>().gameObject.transform.position;
 
     }
 
