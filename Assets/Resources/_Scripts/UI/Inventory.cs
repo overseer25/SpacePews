@@ -450,7 +450,6 @@ public class Inventory : MonoBehaviour
                     slot2.SetQuantity(slot1.GetQuantity());
                     slot1.ClearSlot();
                 }
-                audioSource.PlayOneShot(swapSound);
             }
 
         }
@@ -476,7 +475,6 @@ public class Inventory : MonoBehaviour
                         var temp = invSlot.GetItem();
                         invSlot.SetItem(hotbarSlot.GetItem());
                         hotbarSlot.SetItem(temp);
-                        audioSource.Play();
                     }
                 }
             }
@@ -487,7 +485,6 @@ public class Inventory : MonoBehaviour
                     invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
                     hotbarSlot.SetItem(invSlot.GetItem());
                     invSlot.ClearSlot();
-                    audioSource.Play();
                 }
             }
             if (hotbarSlot.IsSelected())
@@ -515,7 +512,6 @@ public class Inventory : MonoBehaviour
                         var temp = invSlot.GetItem();
                         invSlot.SetItem(hotbarSlot.GetItem());
                         hotbarSlot.SetItem(temp);
-                        audioSource.Play();
                     }
                 }
             }
@@ -524,7 +520,6 @@ public class Inventory : MonoBehaviour
                 hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
                 invSlot.SetItem(hotbarSlot.GetItem());
                 hotbarSlot.ClearSlot();
-                audioSource.Play();
             }
             if (hotbarSlot.IsSelected())
                 weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
@@ -546,14 +541,12 @@ public class Inventory : MonoBehaviour
                 var temp = hotbarSlot2.GetItem();
                 hotbarSlot2.SetItem(hotbarSlot.GetItem());
                 hotbarSlot.SetItem(temp);
-                audioSource.Play();
             }
             else if (hotbarSlot2.isEmpty)
             {
                 hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
                 hotbarSlot2.SetItem(hotbarSlot.GetItem());
                 hotbarSlot.ClearSlot();
-                audioSource.Play();
             }
             if (hotbarSlot.IsSelected())
                 weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
@@ -590,7 +583,6 @@ public class Inventory : MonoBehaviour
                         invSlot.SetItem(mountSlot.GetItem());
 
                         mountSlot.SetItem(temp);
-                        audioSource.Play();
                     }
                 }
             }
@@ -603,7 +595,6 @@ public class Inventory : MonoBehaviour
                     RemoveSlots((mountSlot.GetItem() as StorageComponent).slotCount);
                 }
                 mountSlot.ClearSlot();
-                audioSource.Play();
             }
         }
         // If swapping to a mounting slot.
@@ -639,7 +630,6 @@ public class Inventory : MonoBehaviour
 
                         invSlot.SetItem(mountSlot.GetItem());
                         mountSlot.SetItem(temp);
-                        audioSource.Play();
                     }
                 }
             }
@@ -654,10 +644,14 @@ public class Inventory : MonoBehaviour
                         AddSlots((invSlot.GetItem() as StorageComponent).slotCount);
                     }
                     invSlot.ClearSlot();
-                    audioSource.Play();
                 }
             }
         }
+        else
+        {
+            return;
+        }
+        audioSource.PlayOneShot(swapSound);
         HideHoverTooltip();
     }
 
