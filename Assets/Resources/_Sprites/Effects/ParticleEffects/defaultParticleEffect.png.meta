@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: 31e8501220472664caadf5bb7287a676
+guid: ed6c1f3cd763e484195d59fda55256cf
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Explosion_projectile_0
-    21300002: Explosion_projectile_1
-    21300004: Explosion_projectile_2
-    21300006: Explosion_projectile_3
-    21300008: Explosion_projectile_4
+    21300000: defaultParticleEffect_0
+    21300002: defaultParticleEffect_1
+    21300004: defaultParticleEffect_2
+    21300006: defaultParticleEffect_3
+    21300008: defaultParticleEffect_4
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -89,13 +89,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Explosion_projectile_0
+      name: defaultParticleEffect_0
       rect:
         serializedVersion: 2
-        x: 29
-        y: 0
-        width: 248
-        height: 680
+        x: 67
+        y: 100
+        width: 95
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -103,19 +103,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0479389ebd9e674d83bf8771d3be9d4
+      spriteID: 730b56b36894ee44ab88ed49c2b11341
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Explosion_projectile_1
+      name: defaultParticleEffect_1
       rect:
         serializedVersion: 2
-        x: 287
-        y: 0
-        width: 289
-        height: 680
+        x: 275
+        y: 46
+        width: 201
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,19 +123,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4dcd947df5e4f7048938a7f06b30dc8a
+      spriteID: 09b4aad27b2214344bd352e0188e0540
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Explosion_projectile_2
+      name: defaultParticleEffect_2
       rect:
         serializedVersion: 2
-        x: 575
-        y: 0
-        width: 352
-        height: 680
+        x: 485
+        y: 15
+        width: 256
+        height: 261
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,19 +143,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7881674cefed8814ca611422d1ce2678
+      spriteID: 9437a30d00406a445a731514e5964a1e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Explosion_projectile_3
+      name: defaultParticleEffect_3
       rect:
         serializedVersion: 2
-        x: 926
-        y: 0
-        width: 329
-        height: 680
+        x: 763
+        y: 54
+        width: 184
+        height: 190
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,19 +163,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b39b7c52fd49a04e9f909c29cce273b
+      spriteID: 73dfe62a95bedc4469f53227ff403bb2
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Explosion_projectile_4
+      name: defaultParticleEffect_4
       rect:
         serializedVersion: 2
-        x: 1255
-        y: 0
-        width: 357
-        height: 680
+        x: 1055
+        y: 102
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,7 +183,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05eb2b38707a2c64bb5be4ea0347937a
+      spriteID: 3e71810953d86ce46bd093618f0017e5
       vertices: []
       indices: 
       edges: []
@@ -191,7 +191,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5c661250586e8104a8b0ecddba70d07b
+    spriteID: 1b0a04d96930c7c448ac6ba84ed8ce63
     vertices: []
     indices: 
     edges: []

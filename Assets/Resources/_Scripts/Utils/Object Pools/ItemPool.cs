@@ -40,7 +40,7 @@ public class ItemPool : MonoBehaviour
     /// <summary>
     /// Gets an unused object in the object pool, if it exists.
     /// </summary>
-    /// <returns> Unused GameObject in object pool, or the oldest active one. </returns>
+    /// <returns> Unused GameObject in object pool, or the oldest active one (LRU). </returns>
     public Item GetPooledObject()
     {
         // Attempt to find an unused object in the pool.

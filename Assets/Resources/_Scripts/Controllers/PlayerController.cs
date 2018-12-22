@@ -24,9 +24,9 @@ public class PlayerController : MonoBehaviour
     public PauseMenuScript pauseMenu;
     public GameObject respawnPoint;
     [Header("Effects/Sounds")]
-    public GameObject deathExplosion;
+    public ParticleEffect deathExplosion;
     public AudioClip deathSound;
-    public GameObject respawnEffect;
+    public ParticleEffect respawnEffect;
     public AudioClip respawnSound;
 
     private float acceleration;
@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case "Enemy":
-                health -= 20;
+                health -= 5;
                 break;
         }       
     }
@@ -275,7 +275,12 @@ public class PlayerController : MonoBehaviour
                 healthUI.RedrawHealthSprites(0, 0);
                 deathScreen.Display();
                 source.PlayOneShot(deathSound);
-                Instantiate(deathExplosion, transform.position, Quaternion.identity);
+
+                //spawn explosion effect.
+                var exp = ParticlePool.current.GetPooledObject();
+                exp.Copy(deathExplosion);
+                exp.SetTransform(gameObject);
+                exp.gameObject.SetActive(true);
 
                 StartCoroutine(Respawn());
             }
@@ -292,7 +297,12 @@ public class PlayerController : MonoBehaviour
         // Wait before beginning the respawn animation.
         yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
 
-        Instantiate(respawnEffect, respawnPoint.transform.position, respawnPoint.transform.rotation);
+        // Spawn respawn effect.
+        var exp = ParticlePool.current.GetPooledObject();
+        exp.Copy(respawnEffect);
+        exp.SetTransform(respawnPoint);
+        exp.gameObject.SetActive(true);
+
         source.PlayOneShot(respawnSound);
         transform.position = respawnPoint.transform.position;
         ship.transform.rotation = respawnPoint.transform.rotation;
