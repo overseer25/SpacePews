@@ -19,6 +19,15 @@ public class ParticleEffect : MonoBehaviour {
         index = 0;
     }
 
+    /// <summary>
+    /// Get the sound associated with this particle effect.
+    /// </summary>
+    /// <returns></returns>
+    public AudioClip GetSound()
+    {
+        return sound;
+    }
+
 	// Update is called once per frame
 	void Update ()
     {

@@ -274,7 +274,6 @@ public class PlayerController : MonoBehaviour
                 healthUI.SetIsDead(true);
                 healthUI.RedrawHealthSprites(0, 0);
                 deathScreen.Display();
-                source.PlayOneShot(deathSound);
 
                 //spawn explosion effect.
                 ParticleManager.PlayParticle(deathExplosion, gameObject);
@@ -297,7 +296,6 @@ public class PlayerController : MonoBehaviour
         // Spawn respawn effect.
         ParticleManager.PlayParticle(respawnEffect, respawnPoint);
 
-        source.PlayOneShot(respawnSound);
         transform.position = respawnPoint.transform.position;
         ship.transform.rotation = respawnPoint.transform.rotation;
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);

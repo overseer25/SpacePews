@@ -247,6 +247,7 @@ public class Inventory : MonoBehaviour
         foreach (var mount in mountSlots)
             mount.gameObject.SetActive(true);
         isOpen = true;
+        selectedTextDisplay.enabled = false;
         InventoryItem.draggable = true;
         AllowHotbarHoverEffect();
     }
@@ -262,6 +263,7 @@ public class Inventory : MonoBehaviour
         foreach (var mount in mountSlots)
             mount.gameObject.SetActive(false);
         isOpen = false;
+        selectedTextDisplay.enabled = true;
         InventoryItem.draggable = false;
         ForbidHotbarHoverEffect();
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class RammingAI : MonoBehaviour
@@ -328,10 +329,9 @@ public class RammingAI : MonoBehaviour
         if (ship.health <= 0)
         {
             ParticleManager.PlayParticle(explosion, gameObject);
-            GetComponent<AudioSource>().PlayOneShot(explosionSound);
+            transform.parent.gameObject.SetActive(false);
         }
     }
-
 
     /// <summary>
     /// Manually set which target the this enemy should go for.
