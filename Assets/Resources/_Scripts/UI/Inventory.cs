@@ -52,6 +52,7 @@ public class Inventory : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+
         inventorySlots = new List<InventorySlot>();
 
         var index = 0;
@@ -166,13 +167,45 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Update the status of the player's pause menu is open.
+    /// </summary>
+    /// <param name="paused"></param>
+    public void UpdatePaused(bool paused)
+    {
+        isPaused = paused;
+        if (isPaused)
+        {
+            HideHoverTooltip();
+            HideHotbar();
+            CloseInventory(false);
+            selectedTextDisplay.enabled = false;
+        }
+        else if (!dead)
+        {
+            ShowHotbar();
+            selectedTextDisplay.enabled = true;
+        }
+    }
+
+    /// <summary>
     /// Update the status of the player's death.
     /// </summary>
     /// <param name="isDead"></param>
     public void UpdateDead(bool isDead)
     {
         dead = isDead;
-        HideHoverTooltip();
+        if (dead)
+        {
+            CloseInventory(false);
+            HideHoverTooltip();
+            HideHotbar();
+            selectedTextDisplay.enabled = false;
+        }
+        else
+        {
+            ShowHotbar();
+            selectedTextDisplay.enabled = true;
+        }
     }
 
     /// <summary>
@@ -239,14 +272,15 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Put the inventory to the open state.
     /// </summary>
-    public virtual void OpenInventory()
+    public virtual void OpenInventory(bool playSound = true)
     {
-        audioSource.clip = openSound;
-        audioSource.Play();
+        if (playSound)
+            audioSource.PlayOneShot(openSound);
         inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 1.0f;
         foreach (var mount in mountSlots)
             mount.gameObject.SetActive(true);
         isOpen = true;
+        selectedTextDisplay.enabled = false;
         InventoryItem.draggable = true;
         AllowHotbarHoverEffect();
     }
@@ -254,14 +288,15 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Put the inventory to the closed state.
     /// </summary>
-    public virtual void CloseInventory()
+    public virtual void CloseInventory(bool playSound = true)
     {
-        audioSource.clip = closeSound;
-        audioSource.Play();
+        if (playSound)
+            audioSource.PlayOneShot(closeSound);
         inventoryUI.GetComponentInParent<CanvasGroup>().alpha = 0.0f;
         foreach (var mount in mountSlots)
             mount.gameObject.SetActive(false);
         isOpen = false;
+        selectedTextDisplay.enabled = true;
         InventoryItem.draggable = false;
         ForbidHotbarHoverEffect();
     }
@@ -330,6 +365,30 @@ public class Inventory : MonoBehaviour
     public void HideHoverTooltip()
     {
         infoScreen.Hide();
+    }
+
+    /// <summary>
+    /// Show the hotbar.
+    /// </summary>
+    public void ShowHotbar()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.gameObject.SetActive(true);
+        }
+        selectedTextDisplay.enabled = true;
+    }
+
+    /// <summary>
+    /// Hide the hotbar.
+    /// </summary>
+    public void HideHotbar()
+    {
+        foreach (var slot in hotbarSlots)
+        {
+            slot.gameObject.SetActive(false);
+        }
+        selectedTextDisplay.enabled = false;
     }
 
     /// <summary>
@@ -425,234 +484,215 @@ public class Inventory : MonoBehaviour
         {
             var slot1 = inventorySlots[index1];
             var slot2 = inventorySlots[index2];
-            //if both items are empty, we do nothing and play nothing
-            if (!slot1.isEmpty || !slot2.isEmpty)
-            {
-                // Swap the items of the two, if they both contain an item.
-                if (!slot1.isEmpty && !slot2.isEmpty)
-                {
-                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-                    slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
-                    var tempItem = slot2.GetItem();
-                    var tempQuantity = slot2.GetQuantity();
-
-                    slot2.SetItem(slot1.GetItem());
-                    slot2.SetQuantity(slot1.GetQuantity());
-                    slot1.SetItem(tempItem);
-                    slot1.SetQuantity(tempQuantity);
-
-                }
-                //else if slot1 contains an item, and slot2 does not
-                else if (!slot1.isEmpty && slot2.isEmpty)
-                {
-                    slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
-                    slot2.SetItem(slot1.GetItem());
-                    slot2.SetQuantity(slot1.GetQuantity());
-                    slot1.ClearSlot();
-                }
-            }
-
+            SwapInventorySlots(slot1, slot2);
         }
         // If swapping from inventory to hotbar.
         else if (index1 < inventorySlots.Count() && index2 >= inventorySlots.Count() + mountSlots.Count())
         {
             var hotbarSlot = hotbarSlots[index2 - inventorySlots.Count() - mountSlots.Count()];
             var invSlot = inventorySlots[index1];
-
-            // If both slots contain an item.
-            if (!hotbarSlot.isEmpty && !invSlot.isEmpty)
-            {
-                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
-                ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
-
-                // Is each item a component?
-                if (invComp != null && hotbarComp != null)
-                {
-                    if (invComp.GetItemType() == ItemType.Turret)
-                    {
-                        hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
-                        invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
-                        var temp = invSlot.GetItem();
-                        invSlot.SetItem(hotbarSlot.GetItem());
-                        hotbarSlot.SetItem(temp);
-                    }
-                }
-            }
-            else if (hotbarSlot.isEmpty)
-            {
-                if (invSlot.GetItem() is WeaponComponent || invSlot.GetItem() is MiningComponent)
-                {
-                    invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
-                    hotbarSlot.SetItem(invSlot.GetItem());
-                    invSlot.ClearSlot();
-                }
-            }
-            if (hotbarSlot.IsSelected())
-                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+            SwapInventoryToHotbar(invSlot, hotbarSlot);
         }
         // If swapping from hotbar to inventory.
         else if (index1 >= inventorySlots.Count() + mountSlots.Count() && index2 < inventorySlots.Count())
         {
             var hotbarSlot = hotbarSlots[index1 - inventorySlots.Count() - mountSlots.Count()];
             var invSlot = inventorySlots[index2];
-
-            // If both slots contain an item.
-            if (!hotbarSlot.isEmpty && !invSlot.isEmpty)
-            {
-                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
-                ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
-
-                // Is each item a component?
-                if (invComp != null && hotbarComp != null)
-                {
-                    if (invComp.GetItemType() == ItemType.Turret)
-                    {
-                        hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
-                        invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
-                        var temp = invSlot.GetItem();
-                        invSlot.SetItem(hotbarSlot.GetItem());
-                        hotbarSlot.SetItem(temp);
-                    }
-                }
-            }
-            else if (invSlot.isEmpty)
-            {
-                hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
-                invSlot.SetItem(hotbarSlot.GetItem());
-                hotbarSlot.ClearSlot();
-            }
-            if (hotbarSlot.IsSelected())
-                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+            SwapInventoryToHotbar(invSlot, hotbarSlot);
         }
         // If swapping from hotbar to hotbar.
         else if (index1 >= inventorySlots.Count() + mountSlots.Count() && index2 >= inventorySlots.Count() + mountSlots.Count())
         {
             var hotbarSlot = hotbarSlots[index1 - inventorySlots.Count() - mountSlots.Count()];
             var hotbarSlot2 = hotbarSlots[index2 - inventorySlots.Count() - mountSlots.Count()];
-
-            // If both slots contain an item.
-            if (!hotbarSlot.isEmpty && !hotbarSlot2.isEmpty)
-            {
-                ShipComponent invComp = hotbarSlot2.GetItem() as ShipComponent;
-                ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
-
-                hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
-                hotbarSlot2.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
-                var temp = hotbarSlot2.GetItem();
-                hotbarSlot2.SetItem(hotbarSlot.GetItem());
-                hotbarSlot.SetItem(temp);
-            }
-            else if (hotbarSlot2.isEmpty)
-            {
-                hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
-                hotbarSlot2.SetItem(hotbarSlot.GetItem());
-                hotbarSlot.ClearSlot();
-            }
-            if (hotbarSlot.IsSelected())
-                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
-            else if (hotbarSlot2.IsSelected())
-                weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponent);
+            SwapHotbarSlots(hotbarSlot, hotbarSlot2);
         }
-        // If swapping from a mounting slot.
+        // If swapping from a mounting slot to inventory slot.
         else if (index1 >= inventorySlots.Count() && index2 < inventorySlots.Count())
         {
             var mountSlot = mountSlots[index1 - inventorySlots.Count()];
             var invSlot = inventorySlots[index2];
-
-            // Swap the items of the two, if they both contain an item.
-            if (!mountSlot.isEmpty && !invSlot.isEmpty)
-            {
-                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
-                ShipComponent mountComp = mountSlot.GetItem() as ShipComponent;
-
-                if (invComp != null && mountComp != null)
-                {
-                    // Only swap if the components are the same type/tier/class.
-                    if (invComp.IsSameComponentType(mountComp))
-                    {
-                        // Update size of inventory, if the component is a storage component.
-                        if (invComp is StorageComponent)
-                        {
-                            RemoveSlots((mountComp as StorageComponent).slotCount);
-                            AddSlots((invComp as StorageComponent).slotCount);
-                        }
-                        mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
-                        invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
-                        var temp = invSlot.GetItem();
-
-                        invSlot.SetItem(mountSlot.GetItem());
-
-                        mountSlot.SetItem(temp);
-                    }
-                }
-            }
-            else if (invSlot.isEmpty)
-            {
-                mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
-                invSlot.SetItem(mountSlot.GetItem());
-                if (mountSlot.GetItem() is StorageComponent)
-                {
-                    RemoveSlots((mountSlot.GetItem() as StorageComponent).slotCount);
-                }
-                mountSlot.ClearSlot();
-            }
+            SwapInventoryToMountSlot(invSlot, mountSlot);
         }
-        // If swapping to a mounting slot.
+        // If swapping from an inventory slot to a mounting slot.
         else if (index1 < inventorySlots.Count() && index2 >= inventorySlots.Count())
         {
             var mountSlot = mountSlots[index2 - inventorySlots.Count()];
             var invSlot = inventorySlots[index1];
-
-            // Swap the items of the two, if they both contain an item.
-            if (!mountSlot.isEmpty && !invSlot.isEmpty)
-            {
-                ShipComponent invComp = invSlot.GetItem() as ShipComponent;
-                ShipComponent mountComp = mountSlot.GetItem() as ShipComponent;
-
-                if (invComp != null && mountComp != null)
-                {
-                    // Only swap if the types of the mount and the inventory slot are the same.
-                    if (invComp.IsSameComponentType(mountComp))
-                    {
-                        // Update size of inventory, if the component is a storage component.
-                        if (invComp is StorageComponent)
-                        {
-                            // If the mount slot gave more inventory space than the one being swapped in, remove slots.
-                            if ((mountComp as StorageComponent).slotCount > (invComp as StorageComponent).slotCount)
-                                RemoveSlots((mountComp as StorageComponent).slotCount - (invComp as StorageComponent).slotCount);
-                            else
-                                AddSlots((invComp as StorageComponent).slotCount - (mountComp as StorageComponent).slotCount);
-                        }
-
-                        mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
-                        invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
-                        var temp = invSlot.GetItem();
-
-                        invSlot.SetItem(mountSlot.GetItem());
-                        mountSlot.SetItem(temp);
-                    }
-                }
-            }
-            else if (mountSlot.isEmpty)
-            {
-                if (mountSlot.GetMount().IsComponentCompatible(invSlot.GetItem() as ShipComponent))
-                {
-                    invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
-                    mountSlot.SetItem(invSlot.GetItem());
-                    if (invSlot.GetItem() is StorageComponent)
-                    {
-                        AddSlots((invSlot.GetItem() as StorageComponent).slotCount);
-                    }
-                    invSlot.ClearSlot();
-                }
-            }
+            SwapInventoryToMountSlot(invSlot, mountSlot);
         }
         else
-        {
             return;
-        }
         audioSource.PlayOneShot(swapSound);
         HideHoverTooltip();
+    }
+
+    /// <summary>
+    /// Helper method used to swap the contents of two inventory slots.
+    /// </summary>
+    /// <param name="e1"></param>
+    /// <param name="e2"></param>
+    private void SwapInventorySlots(InventorySlot slot1, InventorySlot slot2)
+    {
+        // Slot1 should never be empty.
+        if (slot1.isEmpty)
+            return;
+
+        // If they both contain an item.
+        if (!slot1.isEmpty && !slot2.isEmpty)
+        {
+            slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+            slot2.GetItem().gameObject.transform.parent = slot1.GetInventoryItem().transform;
+            var tempItem = slot2.GetItem();
+            var tempQuantity = slot2.GetQuantity();
+
+            slot2.SetItem(slot1.GetItem());
+            slot2.SetQuantity(slot1.GetQuantity());
+            slot1.SetItem(tempItem);
+            slot1.SetQuantity(tempQuantity);
+        }
+        // If slot2 is empty.
+        else if (slot2.isEmpty)
+        {
+            slot1.GetItem().gameObject.transform.parent = slot2.GetInventoryItem().transform;
+            slot2.SetItem(slot1.GetItem());
+            slot2.SetQuantity(slot1.GetQuantity());
+            slot1.ClearSlot();
+        }
+    }
+
+    private void SwapInventoryToHotbar(InventorySlot invSlot, HotbarSlot hotbarSlot)
+    {
+        // If both slots contain an item.
+        if (!hotbarSlot.isEmpty && !invSlot.isEmpty)
+        {
+            ShipComponent invComp = invSlot.GetItem() as ShipComponent;
+            ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
+
+            // Is each item a component?
+            if (invComp != null && hotbarComp != null)
+            {
+                if (invComp.GetItemType() == ItemType.Turret)
+                {
+                    hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                    invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+                    var temp = invSlot.GetItem();
+                    invSlot.SetItem(hotbarSlot.GetItem());
+                    hotbarSlot.SetItem(temp);
+                }
+            }
+        }
+        // If inventory slot is empty.
+        else if (invSlot.isEmpty)
+        {
+            hotbarSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+            invSlot.SetItem(hotbarSlot.GetItem());
+            hotbarSlot.ClearSlot();
+        }
+        // If hotbar slot is empty.
+        else if (hotbarSlot.isEmpty)
+        {
+            if (invSlot.GetItem() is WeaponComponent || invSlot.GetItem() is MiningComponent)
+            {
+                invSlot.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+                hotbarSlot.SetItem(invSlot.GetItem());
+                invSlot.ClearSlot();
+            }
+        }
+        if (hotbarSlot.IsSelected())
+            weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+    }
+
+    /// <summary>
+    /// Swap contents between two hotbar slots.
+    /// </summary>
+    /// <param name="slot1"></param>
+    /// <param name="slot2"></param>
+    private void SwapHotbarSlots(HotbarSlot hotbarSlot, HotbarSlot hotbarSlot2)
+    {
+        // If both slots contain an item.
+        if (!hotbarSlot.isEmpty && !hotbarSlot2.isEmpty)
+        {
+            ShipComponent invComp = hotbarSlot2.GetItem() as ShipComponent;
+            ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
+
+            hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
+            hotbarSlot2.GetItem().gameObject.transform.parent = hotbarSlot.GetInventoryItem().transform;
+            var temp = hotbarSlot2.GetItem();
+            hotbarSlot2.SetItem(hotbarSlot.GetItem());
+            hotbarSlot.SetItem(temp);
+        }
+        else if (hotbarSlot2.isEmpty)
+        {
+            hotbarSlot.GetItem().gameObject.transform.parent = hotbarSlot2.GetInventoryItem().transform;
+            hotbarSlot2.SetItem(hotbarSlot.GetItem());
+            hotbarSlot.ClearSlot();
+        }
+        if (hotbarSlot.IsSelected())
+            weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+        else if (hotbarSlot2.IsSelected())
+            weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponent);
+    }
+
+    /// <summary>
+    /// Swap from an inventory slot to a mount slot.
+    /// </summary>
+    /// <param name="invSlot"></param>
+    /// <param name="mountSlot"></param>
+    private void SwapInventoryToMountSlot(InventorySlot invSlot, MountSlot mountSlot)
+    {
+        // If they both contain an item.
+        if (!mountSlot.isEmpty && !invSlot.isEmpty)
+        {
+            ShipComponent invComp = invSlot.GetItem() as ShipComponent;
+            ShipComponent mountComp = mountSlot.GetItem() as ShipComponent;
+
+            if (invComp != null && mountComp != null)
+            {
+                // Only swap if the components are the same type/tier/class.
+                if (invComp.IsSameComponentType(mountComp))
+                {
+                    // Update size of inventory, if the component is a storage component.
+                    if (invComp is StorageComponent)
+                    {
+                        RemoveSlots((mountComp as StorageComponent).slotCount);
+                        AddSlots((invComp as StorageComponent).slotCount);
+                    }
+                    mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+                    invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
+                    var temp = invSlot.GetItem();
+
+                    invSlot.SetItem(mountSlot.GetItem());
+
+                    mountSlot.SetItem(temp);
+                }
+            }
+        }
+        // If inventory slot is empty.
+        else if (invSlot.isEmpty)
+        {
+            mountSlot.GetItem().gameObject.transform.parent = invSlot.GetInventoryItem().transform;
+            invSlot.SetItem(mountSlot.GetItem());
+            if (mountSlot.GetItem() is StorageComponent)
+            {
+                RemoveSlots((mountSlot.GetItem() as StorageComponent).slotCount);
+            }
+            mountSlot.ClearSlot();
+        }
+        // If mount slot is empty.
+        else if (mountSlot.isEmpty)
+        {
+            if (mountSlot.GetMount().IsComponentCompatible(invSlot.GetItem() as ShipComponent))
+            {
+                invSlot.GetItem().gameObject.transform.parent = mountSlot.GetInventoryItem().transform;
+                mountSlot.SetItem(invSlot.GetItem());
+                if (invSlot.GetItem() is StorageComponent)
+                {
+                    AddSlots((invSlot.GetItem() as StorageComponent).slotCount);
+                }
+                invSlot.ClearSlot();
+            }
+        }
     }
 
     /// <summary>
@@ -680,7 +720,7 @@ public class Inventory : MonoBehaviour
         var slotIndex = 0;
         slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.type);
 
-        if(slotIndex >= 0)
+        if (slotIndex >= 0)
             SwapSlots(new int[] { index, slotIndex });
     }
 
@@ -691,7 +731,7 @@ public class Inventory : MonoBehaviour
     public void QuickSwapWithInventorySlot(int index)
     {
         var slot = GetEmptySlot();
-        if(slot != null)
+        if (slot != null)
         {
             SwapSlots(new int[] { index, slot.GetIndex() });
         }

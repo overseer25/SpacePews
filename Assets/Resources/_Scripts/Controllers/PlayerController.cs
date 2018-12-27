@@ -268,19 +268,13 @@ public class PlayerController : MonoBehaviour
                 movementController.UpdateDead(dead);
                 pauseMenu.UpdateDead(dead);
                 pauseMenu.ResumeGame();
-                if (inventory.isOpen)
-                    inventory.CloseInventory();
                 this.SendMessage("UpdateDead", true);
                 healthUI.SetIsDead(true);
                 healthUI.RedrawHealthSprites(0, 0);
                 deathScreen.Display();
-                source.PlayOneShot(deathSound);
 
                 //spawn explosion effect.
-                var exp = ParticlePool.current.GetPooledObject();
-                exp.Copy(deathExplosion);
-                exp.SetTransform(gameObject);
-                exp.gameObject.SetActive(true);
+                ParticleManager.PlayParticle(deathExplosion, gameObject);
 
                 StartCoroutine(Respawn());
             }
@@ -298,12 +292,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
 
         // Spawn respawn effect.
-        var exp = ParticlePool.current.GetPooledObject();
-        exp.Copy(respawnEffect);
-        exp.SetTransform(respawnPoint);
-        exp.gameObject.SetActive(true);
+        ParticleManager.PlayParticle(respawnEffect, respawnPoint);
 
-        source.PlayOneShot(respawnSound);
         transform.position = respawnPoint.transform.position;
         ship.transform.rotation = respawnPoint.transform.rotation;
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);

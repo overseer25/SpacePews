@@ -81,11 +81,8 @@ public class Projectile : MonoBehaviour
     {
         if (collided)
         {
-
-            ParticleEffect exp = ParticlePool.current.GetPooledObject();
-            exp.Copy(destroyEffect);
-            exp.gameObject.SetActive(true);
-            exp.SetTransform(gameObject);
+            // Play collision particle effect.
+            ParticleManager.PlayParticle(destroyEffect, gameObject);
 
             // Current damage is set on collisions with entities that can take damage.
             var popUptext = PopUpTextPool.current.GetPooledObject();

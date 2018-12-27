@@ -141,8 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5772291fa23934ea0cddc3fd4ca0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionSound: {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
   fireSound: {fileID: 8300000, guid: 14be63b2bfeff474ca311449410bedd3, type: 3}
-  destroyEffect: {fileID: 114682673870406078, guid: 40fbc23882585774398db148d87c2bc1,
+  destroyEffect: {fileID: 5526244137351992907, guid: 5fb9e818565dc5146b7ceae2288a6490,
     type: 3}
   lifetime: 3
