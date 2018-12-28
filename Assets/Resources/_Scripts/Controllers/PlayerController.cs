@@ -191,6 +191,7 @@ public class PlayerController : MonoBehaviour
     public void UpdateThrusterList()
     {
         float acc = 0;
+        float dec = 0;
         float maxSpeed = 0;
         float rotSpeed = 0;
         if (mountController == null)
@@ -202,18 +203,21 @@ public class PlayerController : MonoBehaviour
             thrusters.Add(thruster);
             var comp = ((ThrusterComponent)thrusterObj.GetShipComponent());
             acc += comp.acceleration;
+            dec += comp.deceleration;
             maxSpeed += comp.maxSpeed;
             rotSpeed += comp.rotationSpeed;
         }
         movementController.UpdateAcceleration(acc);
         movementController.UpdateMaxSpeed(maxSpeed);
         movementController.UpdateRotationSpeed(rotSpeed);
+        movementController.UpdateDeceleration(dec);
 
         // Set the engine audio to the audio for the first thruster encountered in the list.
         if (thrusters.Count > 0)
         {
             engineAudio = (mountController.GetThrusterMounts().First().GetShipComponent() as ThrusterComponent).engine;
             engine.clip = engineAudio;
+            engine.volume = 0.0f;
         }
 
         SetThrusterState(false);
@@ -240,7 +244,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!engine.isPlaying)
             engine.Play();
-        engine.volume = (engine.volume < 1) ? engine.volume + 0.1f : 1.0f;
+        engine.volume = (engine.volume < 1) ? engine.volume + movementController.GetAcceleration() : 1.0f;
     }
 
     /// <summary>
@@ -248,7 +252,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StopEngineSound()
     {
-        engine.volume = (engine.volume > 0) ? engine.volume - 0.1f : 0.0f;
+        engine.volume = (engine.volume > 0) ? engine.volume - movementController.GetDeceleration() : 0.0f;
         if (engine.volume <= 0.0f)
             engine.Stop();
     }

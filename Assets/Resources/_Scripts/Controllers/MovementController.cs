@@ -78,10 +78,6 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void Decelerate()
     {
-        foreach (var thruster in mountController.GetThrusterMounts())
-        {
-            deceleration = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).deceleration);
-        }
         if (rigidBody.velocity.magnitude > 0)
             rigidBody.velocity *= (1 - deceleration);
     }
@@ -119,6 +115,24 @@ public class MovementController : MonoBehaviour
     public float GetAcceleration()
     {
         return acceleration;
+    }
+
+    /// <summary>
+    /// Update the deceleration of the player ship.
+    /// </summary>
+    /// <param name="deceleration"></param>
+    public void UpdateDeceleration(float deceleration)
+    {
+        this.deceleration = deceleration;
+    }
+
+    /// <summary>
+    /// Get the deceleration of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetDeceleration()
+    {
+        return deceleration;
     }
 
     /// <summary>
