@@ -134,10 +134,8 @@ MonoBehaviour:
   shipName: Ramming Ship
   maxHealth: 10
   health: 10
-  rotationSpeed: 100
   inventorySize: 0
   turret: {fileID: 0}
-  engine: {fileID: 495}
   thrustAcceleration: 20
   thrustDecaleration: 0.05
   emergencyStopSpeed: 2.3
@@ -5526,6 +5524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5cabbb6422d28a4dab885f2934c5fdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 100
 --- !u!114 &958
 MonoBehaviour:
   m_ObjectHideFlags: 0

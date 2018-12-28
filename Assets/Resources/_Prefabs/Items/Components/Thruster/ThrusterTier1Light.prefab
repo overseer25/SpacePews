@@ -4913,6 +4913,8 @@ MonoBehaviour:
   acceleration: 10
   deceleration: 0.05
   maxSpeed: 15
+  rotationSpeed: 100
+  engine: {fileID: 8300000, guid: 0572afc8812ce034fa66dd9ae668c298, type: 3}
 --- !u!61 &61544760815054904
 BoxCollider2D:
   m_ObjectHideFlags: 0

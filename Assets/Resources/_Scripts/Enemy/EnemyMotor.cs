@@ -9,6 +9,8 @@ public class EnemyMotor : MonoBehaviour
     private float desiredRotation;
     private float acceleration;
     private float maxSpeed;
+    [SerializeField]
+    private float rotationSpeed;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -50,10 +52,7 @@ public class EnemyMotor : MonoBehaviour
     {
         acceleration = accelerationAmount;
         maxSpeed = newMaxSpeed;
-        if (!_ship.engine.isPlaying)
-        {
-            _ship.engine.Play();
-        }
+
         velocity += (Vector2)ship.transform.up * acceleration * 10.0f * Time.deltaTime;
     }
 
@@ -97,9 +96,9 @@ public class EnemyMotor : MonoBehaviour
     {
         if (ship == null) { return; }
 
-        desiredRotation += _ship.rotationSpeed * Time.deltaTime * rotationSpeedModifier;
+        desiredRotation += rotationSpeed * Time.deltaTime * rotationSpeedModifier;
         var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, _ship.rotationSpeed * Time.deltaTime);
+        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
         if (adjustVelocity)
         {
             velocity = ship.transform.up * velocity.magnitude;
@@ -113,9 +112,9 @@ public class EnemyMotor : MonoBehaviour
     {
         if (ship == null) { return; }
 
-        desiredRotation -= _ship.rotationSpeed * Time.deltaTime * rotationSpeedModifier;
+        desiredRotation -= rotationSpeed * Time.deltaTime * rotationSpeedModifier;
         var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, _ship.rotationSpeed * Time.deltaTime);
+        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
         if (adjustVelocity)
         {
             velocity = ship.transform.up * velocity.magnitude;
@@ -127,10 +126,7 @@ public class EnemyMotor : MonoBehaviour
     /// </summary>
     public void Decelerate(float decelerationAmount)
     {
-        if (_ship.engine.isPlaying)
-        {
-            _ship.engine.Stop();
-        }
+
         if (velocity.magnitude > 0)
         {
             velocity -= velocity * decelerationAmount * Time.deltaTime;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Converts inputs given by the player into actions and movements of the player character.
@@ -36,7 +35,8 @@ public class PlayerController : MonoBehaviour
     private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
-    private AudioSource source;
+    private AudioSource engine;
+    private AudioClip engineAudio;
 
     private int prevHealth;
     private float healthToDisplay;
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         healthUI = GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
-        source = GetComponent<AudioSource>();
+        engine = GetComponent<AudioSource>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
 
         // Initial thrusters.
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
             ship = shipRenderer.gameObject;
             _ship = ship.GetComponent<Ship>();
             inventory.AddSlots(_ship.inventorySize);
-            foreach(var mount in mountController.GetStorageMounts())
+            foreach (var mount in mountController.GetStorageMounts())
             {
                 if (mount.startingComponent != null)
                     inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
@@ -105,22 +105,21 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if(movingForward)
+        if (movingForward)
         {
-            if (!GetThrusterState())
-                SetThrusterState(true);
             movementController.MoveForward();
+            PlayEngineSound();
         }
         else
         {
-            if (GetThrusterState())
-                SetThrusterState(false);
             movementController.Decelerate();
+            if(engine.isPlaying)
+                StopEngineSound();
         }
 
         if (rotatingRight)
             movementController.RotateRight();
-        else if(rotatingLeft)
+        else if (rotatingLeft)
             movementController.RotateLeft();
         Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + rigidBody.velocity, Color.green);
         Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + ((Vector2)ship.transform.up * 5.0f), Color.white);
@@ -133,22 +132,27 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Only allow controls if the player is alive.
-        if(!dead)
+        if (!dead)
         {
-            if (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null)
+            if ((!Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.W)) || (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null))
             {
                 movingForward = true;
+                if (!GetThrusterState())
+                    SetThrusterState(true);
             }
             else if (Input.GetKeyUp(KeyCode.W))
             {
                 movingForward = false;
+                if (GetThrusterState())
+                    SetThrusterState(false);
             }
+
             if (Input.GetKey(KeyCode.D))
             {
                 rotatingRight = true;
                 rotatingLeft = false;
             }
-            else if(Input.GetKeyUp(KeyCode.D))
+            else if (Input.GetKeyUp(KeyCode.D))
             {
                 rotatingRight = false;
             }
@@ -161,6 +165,10 @@ public class PlayerController : MonoBehaviour
             {
                 rotatingLeft = false;
             }
+
+            // Suicide button.
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                health = 0;
 
             if (Input.GetKeyDown(KeyCode.Tab))
             {
@@ -184,6 +192,7 @@ public class PlayerController : MonoBehaviour
     {
         float acc = 0;
         float maxSpeed = 0;
+        float rotSpeed = 0;
         if (mountController == null)
             return;
         thrusters = new List<Thruster>();
@@ -191,11 +200,23 @@ public class PlayerController : MonoBehaviour
         {
             var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
             thrusters.Add(thruster);
-            acc += ((ThrusterComponent)thrusterObj.GetShipComponent()).acceleration;
-            maxSpeed += ((ThrusterComponent)thrusterObj.GetShipComponent()).maxSpeed;
+            var comp = ((ThrusterComponent)thrusterObj.GetShipComponent());
+            acc += comp.acceleration;
+            maxSpeed += comp.maxSpeed;
+            rotSpeed += comp.rotationSpeed;
         }
         movementController.UpdateAcceleration(acc);
         movementController.UpdateMaxSpeed(maxSpeed);
+        movementController.UpdateRotationSpeed(rotSpeed);
+
+        // Set the engine audio to the audio for the first thruster encountered in the list.
+        if (thrusters.Count > 0)
+        {
+            engineAudio = (mountController.GetThrusterMounts().First().GetShipComponent() as ThrusterComponent).engine;
+            engine.clip = engineAudio;
+        }
+
+        SetThrusterState(false);
     }
 
     /// <summary>
@@ -206,10 +227,30 @@ public class PlayerController : MonoBehaviour
     {
         if (thrusters.FirstOrDefault() == null)
             return;
-        foreach(var thruster in thrusters)
+        foreach (var thruster in thrusters)
         {
             thruster.gameObject.SetActive(state);
         }
+    }
+
+    /// <summary>
+    /// Fade in the engine sound.
+    /// </summary>
+    private void PlayEngineSound()
+    {
+        if (!engine.isPlaying)
+            engine.Play();
+        engine.volume = (engine.volume < 1) ? engine.volume + 0.1f : 1.0f;
+    }
+
+    /// <summary>
+    /// Fade out the engine sound, and stop it once it reaches 0.
+    /// </summary>
+    private void StopEngineSound()
+    {
+        engine.volume = (engine.volume > 0) ? engine.volume - 0.1f : 0.0f;
+        if (engine.volume <= 0.0f)
+            engine.Stop();
     }
 
     /// <summary>
@@ -253,19 +294,9 @@ public class PlayerController : MonoBehaviour
                 // The difference here is the player has a velocity, so we will propel them away from the immovable using their velocity magnitude.
                 else
                 {
-                    // Different damage values depending on speed of collision.
-                    if (rigidBody.velocity.magnitude >= 3 && rigidBody.velocity.magnitude < 5)
+                    if (rigidBody.velocity.magnitude > 10)
                     {
-                        health--;
-                    }
-                    else if (rigidBody.velocity.magnitude >= 5 && rigidBody.velocity.magnitude < 10)
-                    {
-
-                        health -= 2;
-                    }
-                    else if (rigidBody.velocity.magnitude >= 10)
-                    {
-                        health -= 3;
+                        health -= (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
                     }
                     direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * 10f;
                 }
@@ -276,7 +307,7 @@ public class PlayerController : MonoBehaviour
             case "Enemy":
                 health -= 5;
                 break;
-        }       
+        }
     }
 
     /// <summary>
@@ -297,9 +328,9 @@ public class PlayerController : MonoBehaviour
     /// <returns>Returns true if health is less than or equal to 0</returns>
     public bool CheckIfDead()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
-            if(!dead)
+            if (!dead)
             {
                 dead = true;
                 this.GetComponentInChildren<SpriteRenderer>().enabled = false;
@@ -313,10 +344,13 @@ public class PlayerController : MonoBehaviour
                 healthUI.SetIsDead(true);
                 healthUI.RedrawHealthSprites(0, 0);
                 deathScreen.Display();
+                engine.Stop();
 
                 movingForward = false;
                 rotatingLeft = false;
                 rotatingRight = false;
+                if (GetThrusterState())
+                    SetThrusterState(false);
 
                 //spawn explosion effect.
                 ParticleManager.PlayParticle(deathExplosion, gameObject);
