@@ -44,6 +44,9 @@ public class PlayerController : MonoBehaviour
     private float healthToDisplay;
     private PlayerHealth healthUI;
     private bool dead = false;
+    private bool rotatingLeft;
+    private bool rotatingRight;
+    private bool movingForward;
 
     private int health; // The amount of health the player currently has.
 
@@ -66,11 +69,13 @@ public class PlayerController : MonoBehaviour
         healthUI.SetupHealthSprite((int)healthToDisplay);
         prevHealth = health;
         source = GetComponent<AudioSource>();
+        rigidBody = gameObject.GetComponent<Rigidbody2D>();
 
         // Initial thrusters.
         thrusters = new List<Thruster>();
         foreach (var thrusterObj in mountController.GetThrusterMounts())
             thrusters.Add(thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true));
+        UpdateThrusterList();
 
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
             Debug.LogError("Ship contains no Sprite Renderer :(");
@@ -98,6 +103,25 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Movement stuff.
+    /// </summary>
+    private void FixedUpdate()
+    {
+        if(movingForward)
+            movementController.MoveForward();
+        else
+            movementController.Decelerate();
+
+        if (rotatingRight)
+            movementController.RotateRight();
+        else if(rotatingLeft)
+            movementController.RotateLeft();
+        Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + rigidBody.velocity, Color.green);
+        Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + ((Vector2)ship.transform.up * 5.0f), Color.white);
+
+    }
+
+    /// <summary>
     /// Deals with inputs.
     /// </summary>
     void Update()
@@ -105,25 +129,35 @@ public class PlayerController : MonoBehaviour
         // Only allow controls if the player is alive.
         if(!dead)
         {
-            if (Input.GetKey(KeyCode.W) && thrusters.FirstOrDefault() != null)
+            if (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null)
             {
                 if (!GetThrusterState())
                     SetThrusterState(true);
-                movementController.MoveForward();
+                movingForward = true;
             }
-            else
+            else if (Input.GetKeyUp(KeyCode.W))
             {
                 if (GetThrusterState())
                     SetThrusterState(false);
-                movementController.Decelerate();
+                movingForward = false;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                movementController.RotateRight();
+                rotatingRight = true;
+                rotatingLeft = false;
+            }
+            else if(Input.GetKeyUp(KeyCode.D))
+            {
+                rotatingRight = false;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                movementController.RotateLeft();
+                rotatingRight = false;
+                rotatingLeft = true;
+            }
+            else if (Input.GetKeyUp(KeyCode.A))
+            {
+                rotatingLeft = false;
             }
 
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -146,6 +180,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void UpdateThrusterList()
     {
+        float acc = 0;
+        float maxSpeed = 0;
         if (mountController == null)
             return;
         thrusters = new List<Thruster>();
@@ -153,7 +189,11 @@ public class PlayerController : MonoBehaviour
         {
             var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
             thrusters.Add(thruster);
+            acc += ((ThrusterComponent)thrusterObj.GetShipComponent()).acceleration;
+            maxSpeed += ((ThrusterComponent)thrusterObj.GetShipComponent()).maxSpeed;
         }
+        movementController.UpdateAcceleration(acc);
+        movementController.UpdateMaxSpeed(maxSpeed);
     }
 
     /// <summary>
@@ -195,15 +235,13 @@ public class PlayerController : MonoBehaviour
     /// Deals with all collisions with the player character
     /// </summary>
     /// <param name="collider"></param>
-    void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
-
         switch (collider.gameObject.tag)
         {
             case "Immovable":
             case "Asteroid":
             case "Mineable":
-                Rigidbody2D rigidBody = gameObject.GetComponent<Rigidbody2D>();
                 Vector2 direction = Vector2.zero; // Direction of the collision, with the magnitude applied being the speed of the player.
                 // If the player isn't moving, we need to move them away, as they would be able to clip into the immovable otherwise.
                 if (rigidBody.velocity == Vector2.zero)
@@ -227,9 +265,9 @@ public class PlayerController : MonoBehaviour
                     {
                         health -= 3;
                     }
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * (rigidBody.velocity.magnitude * 100);
+                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * (rigidBody.velocity.magnitude * 50f);
                 }
-                rigidBody.AddForce(direction); // Apply the force
+                movementController.MoveDirection(direction);
                 break;
 
             case "Enemy":
@@ -272,6 +310,10 @@ public class PlayerController : MonoBehaviour
                 healthUI.SetIsDead(true);
                 healthUI.RedrawHealthSprites(0, 0);
                 deathScreen.Display();
+
+                movingForward = false;
+                rotatingLeft = false;
+                rotatingRight = false;
 
                 //spawn explosion effect.
                 ParticleManager.PlayParticle(deathExplosion, gameObject);

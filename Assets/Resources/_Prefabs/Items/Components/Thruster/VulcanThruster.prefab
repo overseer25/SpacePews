@@ -4809,7 +4809,7 @@ MonoBehaviour:
   componentClass: 0
   health: 2000
   visible: 1
-  acceleration: 100
+  acceleration: 10
   deceleration: 0.08
   maxSpeed: 20
 --- !u!61 &61041811479338702
