@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private int healthChunk = 20;
     public int maxHealth = 200; // Max health the player can currently have.
-    public int currency = 5; // Amount of currency the player currently has.
-    public bool inertialDamp = true; // Are inertial dampeners on?
     public Inventory inventory;
     public DeathScreen deathScreen;
     public PauseMenuScript pauseMenu;
@@ -108,9 +106,17 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if(movingForward)
+        {
+            if (!GetThrusterState())
+                SetThrusterState(true);
             movementController.MoveForward();
+        }
         else
+        {
+            if (GetThrusterState())
+                SetThrusterState(false);
             movementController.Decelerate();
+        }
 
         if (rotatingRight)
             movementController.RotateRight();
@@ -131,14 +137,10 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null)
             {
-                if (!GetThrusterState())
-                    SetThrusterState(true);
                 movingForward = true;
             }
             else if (Input.GetKeyUp(KeyCode.W))
             {
-                if (GetThrusterState())
-                    SetThrusterState(false);
                 movingForward = false;
             }
             if (Input.GetKey(KeyCode.D))
@@ -235,7 +237,7 @@ public class PlayerController : MonoBehaviour
     /// Deals with all collisions with the player character
     /// </summary>
     /// <param name="collider"></param>
-    void OnTriggerStay2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         switch (collider.gameObject.tag)
         {
@@ -265,8 +267,9 @@ public class PlayerController : MonoBehaviour
                     {
                         health -= 3;
                     }
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * (rigidBody.velocity.magnitude * 50f);
+                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * 10f;
                 }
+                movementController.Stop();
                 movementController.MoveDirection(direction);
                 break;
 

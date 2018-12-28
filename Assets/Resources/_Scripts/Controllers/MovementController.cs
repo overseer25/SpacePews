@@ -116,12 +116,30 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
+    /// Get the acceleration of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetAcceleration()
+    {
+        return acceleration;
+    }
+
+    /// <summary>
     /// Update the max speed of the player ship.
     /// </summary>
     /// <param name="maxSpeed"></param>
     public void UpdateMaxSpeed(float maxSpeed)
     {
         this.maxSpeed = maxSpeed;
+    }
+
+    /// <summary>
+    /// Get the max speed of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
     }
 
     /// <summary>
