@@ -12,14 +12,9 @@ public class Ship : MonoBehaviour
     public int maxHealth;
     public int health;
 
-    public float rotationSpeed;
-
     public int inventorySize;
 
     [Header("Turret")]
     public GameObject turret;
-
-    [Header("Sounds")]
-    public AudioSource engine;
 
 }

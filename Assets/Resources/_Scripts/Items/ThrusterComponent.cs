@@ -2,9 +2,14 @@
 
 public class ThrusterComponent : ShipComponent
 {
+    [Header("Stats")]
     public float acceleration;
     public float deceleration;
     public float maxSpeed;
+    public float rotationSpeed;
+
+    [Header("Sounds")]
+    public AudioClip engine;
 
     void Awake()
     {

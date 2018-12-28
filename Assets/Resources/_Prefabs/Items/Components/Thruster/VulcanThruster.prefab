@@ -4809,9 +4809,11 @@ MonoBehaviour:
   componentClass: 0
   health: 2000
   visible: 1
-  acceleration: 100
+  acceleration: 10
   deceleration: 0.08
   maxSpeed: 20
+  rotationSpeed: 100
+  engine: {fileID: 8300000, guid: 92c1b8a0f3b95a740ae547590a75c1e9, type: 3}
 --- !u!61 &61041811479338702
 BoxCollider2D:
   m_ObjectHideFlags: 0

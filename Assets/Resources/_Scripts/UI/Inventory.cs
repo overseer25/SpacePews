@@ -26,6 +26,8 @@ public class Inventory : MonoBehaviour
 
     [Header("Other")]
     [SerializeField]
+    private PlayerController playerController;
+    [SerializeField]
     private ShipMountController mountController;
     [SerializeField]
     private WeaponController weaponController;
@@ -561,6 +563,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Helper method used to swap the contents of an inventory slot to a hotbar slot, or vice versa.
+    /// </summary>
+    /// <param name="invSlot"></param>
+    /// <param name="hotbarSlot"></param>
     private void SwapInventoryToHotbar(InventorySlot invSlot, HotbarSlot hotbarSlot)
     {
         // If both slots contain an item.
@@ -604,7 +611,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Swap contents between two hotbar slots.
+    /// Helper method used to swap the contents fo two hotbar slots.
     /// </summary>
     /// <param name="slot1"></param>
     /// <param name="slot2"></param>
@@ -635,7 +642,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Swap from an inventory slot to a mount slot.
+    /// Helper method used to swap the contents of an inventory slot to a mount slot, or vice versa.
     /// </summary>
     /// <param name="invSlot"></param>
     /// <param name="mountSlot"></param>
@@ -677,7 +684,10 @@ public class Inventory : MonoBehaviour
             {
                 RemoveSlots((mountSlot.GetItem() as StorageComponent).slotCount);
             }
+            else if (mountSlot.GetItem() is ThrusterComponent)
+                playerController.UpdateThrusterList();
             mountSlot.ClearSlot();
+            
         }
         // If mount slot is empty.
         else if (mountSlot.isEmpty)
@@ -690,6 +700,8 @@ public class Inventory : MonoBehaviour
                 {
                     AddSlots((invSlot.GetItem() as StorageComponent).slotCount);
                 }
+                else if (invSlot.GetItem() is ThrusterComponent)
+                    playerController.UpdateThrusterList();
                 invSlot.ClearSlot();
             }
         }
@@ -819,7 +831,7 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Allow hotbar slots to highlight when the user hovers their mouse over them.
     /// </summary>
-    public void AllowHotbarHoverEffect()
+    private void AllowHotbarHoverEffect()
     {
         foreach (var slot in hotbarSlots)
         {
@@ -830,7 +842,7 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Do not allow hotbar slots to highlight when the user hovers their mouse over them.
     /// </summary>
-    public void ForbidHotbarHoverEffect()
+    private void ForbidHotbarHoverEffect()
     {
         foreach (var slot in hotbarSlots)
         {

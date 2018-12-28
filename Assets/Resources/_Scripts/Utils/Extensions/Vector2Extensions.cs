@@ -11,15 +11,11 @@ public static class Vector2Extensions
     /// <param name="v"></param>
     /// <param name="degrees"></param>
     /// <returns></returns>
-    public static Vector2 Rotate(this Vector2 v, float degrees)
+    public static Vector2 Rotate(this Vector2 v, float angle)
     {
-        float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
-        float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
-
-        float tx = v.x;
-        float ty = v.y;
-        v.x = (cos * tx) - (sin * ty);
-        v.y = (sin * tx) + (cos * ty);
-        return v;
+        float radian = angle * Mathf.Deg2Rad;
+        float _x = v.x * Mathf.Cos(radian) - v.y * Mathf.Sin(radian);
+        float _y = v.x * Mathf.Sin(radian) + v.y * Mathf.Cos(radian);
+        return new Vector2(_x, _y);
     }
 }

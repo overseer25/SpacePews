@@ -10,6 +10,7 @@ public class MovementController : MonoBehaviour
     private float acceleration;
     private float deceleration;
     private float maxSpeed;
+    private float rotationSpeed;
     private bool dead = false;
 
     // The ship variables.
@@ -42,15 +43,8 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
-        foreach(var thruster in mountController.GetThrusterMounts())
-        {
-            acceleration = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).acceleration);
-            maxSpeed = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).maxSpeed);
-        }
-        if (!_ship.engine.isPlaying)
-            _ship.engine.Play();
-        rigidBody.AddForce(ship.transform.up * acceleration * 10.0f * Time.deltaTime);
-        rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
+        rigidBody.AddForce(ship.transform.up * acceleration * Time.deltaTime, ForceMode2D.Impulse);
+        rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
     }
 
     /// <summary>
@@ -59,11 +53,11 @@ public class MovementController : MonoBehaviour
     public void RotateLeft()
     {
         if (ship == null) { return; }
-
-        desiredRotation += _ship.rotationSpeed * Time.deltaTime;
+        var currentRotation = ship.transform.rotation.eulerAngles.z;
+        desiredRotation += rotationSpeed * Time.deltaTime;
         var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, _ship.rotationSpeed * Time.deltaTime);
-        rigidBody.velocity = ship.transform.up * rigidBody.velocity.magnitude;
+        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
+        rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
     }
 
     /// <summary>
@@ -72,11 +66,11 @@ public class MovementController : MonoBehaviour
     public void RotateRight()
     {
         if (ship == null) { return; }
-
-        desiredRotation -= _ship.rotationSpeed * Time.deltaTime;
+        var currentRotation = ship.transform.rotation.eulerAngles.z;
+        desiredRotation -= rotationSpeed * Time.deltaTime;
         var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, _ship.rotationSpeed * Time.deltaTime);
-        rigidBody.velocity = ship.transform.up * rigidBody.velocity.magnitude;
+        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
+        rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
     }
 
     /// <summary>
@@ -84,14 +78,17 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void Decelerate()
     {
-        foreach (var thruster in mountController.GetThrusterMounts())
-        {
-            deceleration = mountController.GetThrusterMounts().Sum(t => (t.GetShipComponent() as ThrusterComponent).deceleration);
-        }
-        if (_ship.engine.isPlaying)
-            _ship.engine.Stop();
         if (rigidBody.velocity.magnitude > 0)
             rigidBody.velocity *= (1 - deceleration);
+    }
+
+    /// <summary>
+    /// Add force in the provided direction.
+    /// </summary>
+    /// <param name="direction"></param>
+    public void MoveDirection(Vector2 direction)
+    {
+        rigidBody.AddForce(direction);
     }
 
     /// <summary>
@@ -103,15 +100,83 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
+    /// Update the acceleration of the player ship.
+    /// </summary>
+    /// <param name="acceleration"></param>
+    public void UpdateAcceleration(float acceleration)
+    {
+        this.acceleration = acceleration;
+    }
+
+    /// <summary>
+    /// Get the acceleration of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetAcceleration()
+    {
+        return acceleration;
+    }
+
+    /// <summary>
+    /// Update the deceleration of the player ship.
+    /// </summary>
+    /// <param name="deceleration"></param>
+    public void UpdateDeceleration(float deceleration)
+    {
+        this.deceleration = deceleration;
+    }
+
+    /// <summary>
+    /// Get the deceleration of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetDeceleration()
+    {
+        return deceleration;
+    }
+
+    /// <summary>
+    /// Update the max speed of the player ship.
+    /// </summary>
+    /// <param name="maxSpeed"></param>
+    public void UpdateMaxSpeed(float maxSpeed)
+    {
+        this.maxSpeed = maxSpeed;
+    }
+
+    /// <summary>
+    /// Get the max speed of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
+    /// <summary>
+    /// Update the rotation speed of the player ship.
+    /// </summary>
+    /// <param name="rotSpeed"></param>
+    public void UpdateRotationSpeed(float rotSpeed)
+    {
+        rotationSpeed = rotSpeed;
+    }
+
+    /// <summary>
+    /// Get the rotation speed of the movement controller.
+    /// </summary>
+    /// <returns></returns>
+    public float GetRotationSpeed()
+    {
+        return rotationSpeed;
+    }
+
+    /// <summary>
     /// Update the death state of the player.
     /// </summary>
     /// <param name="isDead"></param>
     public void UpdateDead(bool isDead)
     {
-        if(!dead && isDead && _ship.engine.isPlaying)
-        {
-            _ship.engine.Stop();
-        }
         dead = isDead;
         desiredRotation = 0;
     }
