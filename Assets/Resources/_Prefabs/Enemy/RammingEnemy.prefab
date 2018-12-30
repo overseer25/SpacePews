@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipName: Ramming Ship
-  maxHealth: 10
-  health: 10
+  maxHealth: 50
+  health: 50
   inventorySize: 0
   turret: {fileID: 0}
   thrustAcceleration: 20

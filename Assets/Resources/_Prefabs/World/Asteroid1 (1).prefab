@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4059963120263470}
   - component: {fileID: 23960110613160010}
   - component: {fileID: 102246157452559768}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DepletedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4641437674963788}
   - component: {fileID: 212060580156347400}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 5.1, y: 5.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -182,8 +182,8 @@ GameObject:
   - component: {fileID: 114063354297711562}
   - component: {fileID: 114821750166505402}
   - component: {fileID: 114463774277680912}
-  - component: {fileID: 60862819283981346}
-  m_Layer: 0
+  - component: {fileID: 7180203781437936025}
+  m_Layer: 13
   m_Name: Asteroid1 (1)
   m_TagString: Mineable
   m_Icon: {fileID: 0}
@@ -199,13 +199,13 @@ Transform:
   m_GameObject: {fileID: 1996911198228170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -21.76, y: 15.44, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 4641437674963788}
   - {fileID: 4059963120263470}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -65.36}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114063354297711562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   - 0.85
   - 0.09
   - 0.06
---- !u!60 &60862819283981346
+--- !u!60 &7180203781437936025
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,21 +280,20 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.39391708, y: 2.3922052}
-      - {x: -0.5101757, y: 2.360301}
-      - {x: -1.0256348, y: 2.0041132}
-      - {x: -1.8376732, y: 2.0223799}
-      - {x: -2.3717823, y: 0.94957256}
-      - {x: -2.3456917, y: 0.15558052}
-      - {x: -2.1772938, y: 0.0049066544}
-      - {x: -2.2081013, y: -0.6527271}
-      - {x: -2.5440388, y: -1.0554476}
-      - {x: -2.5179272, y: -1.5115633}
-      - {x: -1.6518631, y: -2.2035027}
-      - {x: -0.10294342, y: -2.336296}
-      - {x: 0.7614193, y: -2.2100954}
-      - {x: 2.1801357, y: -1.2496538}
-      - {x: 2.4902973, y: -0.14046383}
-      - {x: 2.524952, y: 0.49197292}
-      - {x: 1.6483707, y: 1.6941671}
-      - {x: 1.0592518, y: 2.0407076}
+    - - {x: -1.68507, y: -0.9477682}
+      - {x: -1.6607132, y: -1.5698857}
+      - {x: -1.3784809, y: -1.9867697}
+      - {x: -0.7386303, y: -2.3588743}
+      - {x: 0.059877396, y: -2.4845614}
+      - {x: 0.6884985, y: -2.2318344}
+      - {x: 1.230711, y: -1.7858782}
+      - {x: 1.5515699, y: -1.2229586}
+      - {x: 1.8682461, y: -0.7750931}
+      - {x: 2.1985416, y: 0.6922746}
+      - {x: 1.9926987, y: 1.3414264}
+      - {x: 1.2567635, y: 2.4337468}
+      - {x: -0.045603752, y: 2.4104104}
+      - {x: -0.56333923, y: 2.4847617}
+      - {x: -1.6845818, y: 1.3605447}
+      - {x: -2.1787128, y: 0.69481707}
+      - {x: -2.1601105, y: -0.050373554}
