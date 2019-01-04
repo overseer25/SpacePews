@@ -79,7 +79,15 @@ public class RammingAI : MonoBehaviour
                     target = patrolPoints[patrolIndex];
                 }
             }
-
+            //need to check to see if the player is dead
+            if(target != null && target.transform.parent.GetComponentInChildren<PlayerController>())
+            {
+                if (target.transform.parent.GetComponentInChildren<PlayerController>().CheckIfDead())
+                {
+                    target = null;
+                    patrolling = true;
+                }
+            }
             if (target == null)
             {
                 motor.Decelerate(ship.thrustDecaleration);

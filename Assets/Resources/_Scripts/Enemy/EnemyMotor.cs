@@ -126,10 +126,13 @@ public class EnemyMotor : MonoBehaviour
     /// </summary>
     public void Decelerate(float decelerationAmount)
     {
-
         if (velocity.magnitude > 0)
         {
             velocity -= velocity * decelerationAmount * Time.deltaTime;
+            if(velocity.magnitude < 1)
+            {
+                velocity = Vector2.zero;
+            }
         }
     }
 
