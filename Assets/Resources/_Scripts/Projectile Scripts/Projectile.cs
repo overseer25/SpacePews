@@ -31,11 +31,41 @@ public class Projectile : MonoBehaviour
     private ParticleEffect destroyEffect;
     [SerializeField]
     private int lifetime;
+    [SerializeField]
+    private int homingDistance;
+    [SerializeField]
+    private float rotationSpeed;
 
     private Rigidbody2D rigidBody;
     private bool collided = false; // Check to see if a collision sound should be played on deactivation.
     private static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds.
     private bool isCritical = false; // Is this shot a critical hit?
+
+    private void Update()
+    {
+        if(homingDistance > 0)
+        {
+            var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            GameObject closestEnemy = null;
+            var distance = Mathf.Infinity;
+            foreach(var enemy in enemies)
+            {
+                Vector2 distVector = enemy.transform.position - transform.position;
+                if(distVector.magnitude <= homingDistance && distVector.magnitude < distance)
+                {
+                    distance = distVector.magnitude;
+                    closestEnemy = enemy;
+                }
+            }
+            if(closestEnemy != null)
+            {
+                var pos = closestEnemy.transform.position;
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(Vector3.up, pos - transform.position), rotationSpeed * Time.deltaTime);
+
+                rigidBody.velocity = transform.up * rigidBody.velocity.magnitude;
+            }
+        }
+    }
 
     void Start()
     {

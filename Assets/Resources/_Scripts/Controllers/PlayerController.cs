@@ -45,8 +45,8 @@ public class PlayerController : MonoBehaviour
     private bool rotatingLeft;
     private bool rotatingRight;
     private bool movingForward;
-
-    private int health; // The amount of health the player currently has.
+    private int credits; // The amount of money the player has.
+    private int health; // The amount of health the player has.
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -89,6 +89,33 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+    }
+
+    /// <summary>
+    /// Add credits to the player's account.
+    /// </summary>
+    /// <param name="amount"></param>
+    internal void AddCredits(int amount)
+    {
+        credits += amount;
+    }
+
+    /// <summary>
+    /// Remove credits from the player's account.
+    /// </summary>
+    /// <param name="amount"></param>
+    internal void removeCredits(int amount)
+    {
+        credits -= amount;
+    }
+
+    /// <summary>
+    /// Get the amount of money the player has.
+    /// </summary>
+    /// <returns></returns>
+    public int GetCredits()
+    {
+        return credits;
     }
 
     /// <summary>

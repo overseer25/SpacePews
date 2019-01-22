@@ -15,6 +15,8 @@ public class ParticleManager : MonoBehaviour
     {
         var audioSource = particle.GetComponent<AudioSource>();
         var exp = ParticlePool.current.GetPooledObject();
+        if (exp == null)
+            return;
         exp.Copy(particle);
         exp.SetTransform(position);
         exp.gameObject.SetActive(true);
