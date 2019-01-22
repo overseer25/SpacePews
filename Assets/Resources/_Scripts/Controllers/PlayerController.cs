@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,9 +9,12 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    private PhotonView PV;
+
     // Constants
     private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
+    private const int INVENTORY_SIZE = 10;
 
     [Header("State")]
     [SerializeField]
@@ -37,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
     private AudioSource engine;
     private AudioClip engineAudio;
+    private Camera myCamera;
 
     private int prevHealth;
     private float healthToDisplay;
@@ -48,16 +53,13 @@ public class PlayerController : MonoBehaviour
     private int credits; // The amount of money the player has.
     private int health; // The amount of health the player has.
 
-    // The ship variables.
-    private SpriteRenderer shipRenderer;
-    private GameObject ship;
-    private Ship _ship;
-
     /// <summary>
     /// Use this for initialization
     /// </summary>
     void Start()
     {
+        PV = GetComponent<PhotonView>();
+
         health = maxHealth;
         movementController = gameObject.GetComponent<MovementController>();
         mountController = gameObject.GetComponent<ShipMountController>();
@@ -68,26 +70,27 @@ public class PlayerController : MonoBehaviour
         prevHealth = health;
         engine = GetComponent<AudioSource>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
-
+        myCamera = transform.parent.GetComponentInChildren<Camera>();
+        var audioListener = transform.GetComponent<AudioListener>();
+        if(!PV.IsMine)
+        {
+            if(myCamera != null)
+                Destroy(myCamera.gameObject);
+            if (audioListener != null)
+                Destroy(audioListener);
+        }
         // Initial thrusters.
         thrusters = new List<Thruster>();
         foreach (var thrusterObj in mountController.GetThrusterMounts())
             thrusters.Add(thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true));
         UpdateThrusterList();
-
-        if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
-            Debug.LogError("Ship contains no Sprite Renderer :(");
-        else
+        inventory.AddSlots(INVENTORY_SIZE);
+        foreach (var mount in mountController.GetStorageMounts())
         {
-            ship = shipRenderer.gameObject;
-            _ship = ship.GetComponent<Ship>();
-            inventory.AddSlots(_ship.inventorySize);
-            foreach (var mount in mountController.GetStorageMounts())
-            {
-                if (mount.startingComponent != null)
-                    inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
-            }
+            if (mount.startingComponent != null)
+                inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
         }
+
 
     }
 
@@ -132,24 +135,25 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (movingForward)
+        if (PV == null || PV.IsMine)
         {
-            movementController.MoveForward();
-            PlayEngineSound();
-        }
-        else
-        {
-            movementController.Decelerate();
-            if(engine.isPlaying)
-                StopEngineSound();
-        }
+            if (movingForward)
+            {
+                movementController.MoveForward();
+                PlayEngineSound();
+            }
+            else
+            {
+                movementController.Decelerate();
+                if (engine.isPlaying)
+                    StopEngineSound();
+            }
 
-        if (rotatingRight)
-            movementController.RotateRight();
-        else if (rotatingLeft)
-            movementController.RotateLeft();
-        Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + rigidBody.velocity, Color.green);
-        Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + ((Vector2)ship.transform.up * 5.0f), Color.white);
+            if (rotatingRight)
+                movementController.RotateRight();
+            else if (rotatingLeft)
+                movementController.RotateLeft();
+        }
 
     }
 
@@ -159,56 +163,59 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Only allow controls if the player is alive.
-        if (!dead)
+        if (PV == null || PV.IsMine)
         {
-            if ((!Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.W)) || (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null))
+            if (!dead)
             {
-                movingForward = true;
-                if (!GetThrusterState())
-                    SetThrusterState(true);
+                if ((!Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.W)) || (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null))
+                {
+                    movingForward = true;
+                    if (!GetThrusterState())
+                        SetThrusterState(true);
+                }
+                else if (Input.GetKeyUp(KeyCode.W))
+                {
+                    movingForward = false;
+                    if (GetThrusterState())
+                        SetThrusterState(false);
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    rotatingRight = true;
+                    rotatingLeft = false;
+                }
+                else if (Input.GetKeyUp(KeyCode.D))
+                {
+                    rotatingRight = false;
+                }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    rotatingRight = false;
+                    rotatingLeft = true;
+                }
+                else if (Input.GetKeyUp(KeyCode.A))
+                {
+                    rotatingLeft = false;
+                }
+
+                // Suicide button.
+                if (Input.GetKeyDown(KeyCode.Backspace))
+                    health = 0;
+
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
+                    inventory.Toggle();
+                    inventory.infoScreen.Hide();
+                }
             }
-            else if (Input.GetKeyUp(KeyCode.W))
+            else
             {
-                movingForward = false;
                 if (GetThrusterState())
                     SetThrusterState(false);
+                movementController.Stop();
             }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                rotatingRight = true;
-                rotatingLeft = false;
-            }
-            else if (Input.GetKeyUp(KeyCode.D))
-            {
-                rotatingRight = false;
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                rotatingRight = false;
-                rotatingLeft = true;
-            }
-            else if (Input.GetKeyUp(KeyCode.A))
-            {
-                rotatingLeft = false;
-            }
-
-            // Suicide button.
-            if (Input.GetKeyDown(KeyCode.Backspace))
-                health = 0;
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
-                inventory.Toggle();
-                inventory.infoScreen.Hide();
-            }
-        }
-        else
-        {
-            if (GetThrusterState())
-                SetThrusterState(false);
-            movementController.Stop();
         }
     }
 
@@ -405,8 +412,9 @@ public class PlayerController : MonoBehaviour
         ParticleManager.PlayParticle(respawnEffect, respawnPoint);
 
         transform.position = respawnPoint.transform.position;
-        ship.transform.rotation = respawnPoint.transform.rotation;
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
+        transform.rotation = respawnPoint.transform.rotation;
+        if(myCamera != null)
+            myCamera.transform.position = new Vector3(transform.position.x, transform.position.y, myCamera.transform.position.z);
         deathScreen.Hide();
 
         // Wait before returning control to the player.

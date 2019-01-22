@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using Photon.Pun;
+using System.Linq;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-
+    private PhotonView PV;
     private Rigidbody2D rigidBody;
     private float desiredRotation;
     private ShipMountController mountController;
@@ -14,28 +15,32 @@ public class MovementController : MonoBehaviour
     private bool dead = false;
 
     // The ship variables.
-    private SpriteRenderer shipRenderer;
-    private GameObject ship;
-    private Ship _ship;
+    private Camera myCamera;
 
     void Start()
     {
+        PV = GetComponent<PhotonView>();
+        myCamera = transform.parent.GetComponentInChildren<Camera>();
+        var audioListener = transform.GetComponent<AudioListener>();
+        if (!PV.IsMine)
+        {
+            if (myCamera != null)
+                Destroy(myCamera.gameObject);
+            if (audioListener != null)
+                Destroy(audioListener);
+        }
         rigidBody = GetComponentInChildren<Rigidbody2D>();
         mountController = gameObject.GetComponent<ShipMountController>();
-        if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
-            Debug.LogError("Ship contains no Sprite Renderer D:");
-        else
-        {
-            ship = shipRenderer.gameObject;
-            _ship = ship.GetComponent<Ship>();
-        }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
-                                        new Vector3(ship.transform.position.x, ship.transform.position.y, Camera.main.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
+        if (PV == null || PV.IsMine)
+        {
+            myCamera.transform.position = Vector3.Slerp(myCamera.transform.position,
+                                                    new Vector3(transform.position.x, transform.position.y, myCamera.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
+        }
     }
 
     /// <summary>
@@ -43,7 +48,7 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
-        rigidBody.AddForce(ship.transform.up * acceleration * Time.deltaTime, ForceMode2D.Impulse);
+        rigidBody.AddForce(transform.up * acceleration * Time.deltaTime, ForceMode2D.Impulse);
         rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
     }
 
@@ -52,11 +57,10 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void RotateLeft()
     {
-        if (ship == null) { return; }
-        var currentRotation = ship.transform.rotation.eulerAngles.z;
+        var currentRotation = transform.rotation.eulerAngles.z;
         desiredRotation += rotationSpeed * Time.deltaTime;
-        var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
+        var rotationQuaternion = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, desiredRotation);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
         rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
     }
 
@@ -65,11 +69,10 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void RotateRight()
     {
-        if (ship == null) { return; }
-        var currentRotation = ship.transform.rotation.eulerAngles.z;
+        var currentRotation = transform.rotation.eulerAngles.z;
         desiredRotation -= rotationSpeed * Time.deltaTime;
-        var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
+        var rotationQuaternion = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, desiredRotation);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
         rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
     }
 
@@ -78,8 +81,11 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void Decelerate()
     {
-        if (rigidBody.velocity.magnitude > 0)
-            rigidBody.velocity *= (1 - deceleration);
+        if(rigidBody != null)
+        {
+            if (rigidBody.velocity.magnitude > 0)
+                rigidBody.velocity *= (1 - deceleration);
+        }
     }
 
     /// <summary>
