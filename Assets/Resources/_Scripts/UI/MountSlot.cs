@@ -128,6 +128,32 @@ public class MountSlot : SlotBase
     }
 
     /// <summary>
+    /// Highlight the slot.
+    /// </summary>
+    public override void Highlight()
+    {
+        if (image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (inventoryItem != null)
+                inventoryItem.Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Dehighlight the slot.
+    /// </summary>
+    public override void Dehighlight()
+    {
+        if (image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            if (inventoryItem != null)
+                inventoryItem.Dehighlight();
+        }
+    }
+
+    /// <summary>
     /// Plays hover sound.
     /// </summary>
     void OnMouseEnter()
@@ -156,14 +182,13 @@ public class MountSlot : SlotBase
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
             SendMessageUpwards("ClearSlot", index);
-            image.color = new Color(color.r, color.g, color.b, 0.7f);
+            Dehighlight();
             return;
         }
 
         if (!IsEmpty() && !InventoryItem.dragging)
         {
-            image.color = new Color(color.r, color.g, color.b, 1.0f);
-            inventoryItem.Highlight();
+            Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
 
         }
@@ -172,12 +197,10 @@ public class MountSlot : SlotBase
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if (!IsEmpty())
-            image.color = new Color(color.r, color.g, color.b, 0.7f);
+        Dehighlight();
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
-            inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)
             {

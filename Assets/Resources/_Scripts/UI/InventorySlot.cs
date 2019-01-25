@@ -10,7 +10,7 @@ public class InventorySlot : SlotBase
         image = GetComponent<Image>();
         audioSource = GetComponent<AudioSource>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        Dehighlight();
     }
 
     /// <summary>
@@ -28,7 +28,35 @@ public class InventorySlot : SlotBase
         }
     }
 
-    // Highlight the image when hovering over it
+    /// <summary>
+    /// Highlight the slot.
+    /// </summary>
+    public override void Highlight()
+    {
+        if(image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if(inventoryItem != null)
+                inventoryItem.Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Dehighlight the slot.
+    /// </summary>
+    public override void Dehighlight()
+    {
+        if(image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            if (inventoryItem != null)
+                inventoryItem.Dehighlight();
+        }
+    }
+
+    /// <summary>
+    /// Highlight the image when hovering over it
+    /// </summary>
     void OnMouseOver()
     {
         // Shift right-clicking will swap slots.
@@ -47,28 +75,28 @@ public class InventorySlot : SlotBase
         else if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
             SendMessageUpwards("ClearSlot", index);
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            Dehighlight();
             return;
         }
 
         if (!IsEmpty() && !InventoryItem.dragging)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            inventoryItem.Highlight();
+            Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
-
+        }
+        else if(IsEmpty())
+        {
+            Dehighlight();
+            SendMessageUpwards("HideHoverTooltip", index);
         }
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if (!IsEmpty())
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-
+        Dehighlight();
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
-            inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)
             {
@@ -84,7 +112,7 @@ public class InventorySlot : SlotBase
     public override void ClearSlot()
     {
         inventoryItem.Clear();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        Dehighlight();
     }
 
     /// <summary>

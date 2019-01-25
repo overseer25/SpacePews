@@ -550,7 +550,7 @@ public class Inventory : MonoBehaviour
             Destroy(tempItem);
         }
         // If slot2 is empty.
-        else if (slot2.IsEmpty())
+        else if (slot2.IsEmpty() && !slot1.IsEmpty())
         {
             slot2.SetItem(slot1.GetItem(), slot1.GetQuantity());
             slot1.ClearSlot();
@@ -564,36 +564,38 @@ public class Inventory : MonoBehaviour
     /// <param name="hotbarSlot"></param>
     private void SwapInventoryToHotbar(InventorySlot invSlot, HotbarSlot hotbarSlot)
     {
+
         // If both slots contain an item.
         if (!hotbarSlot.IsEmpty() && !invSlot.IsEmpty())
         {
-            ShipComponent invComp = invSlot.GetItem() as ShipComponent;
-            ShipComponent hotbarComp = hotbarSlot.GetItem() as ShipComponent;
+            var invComp = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName())));
+            var hotbarComp = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot.GetItem().GetItemName())));
 
             // Is each item a component?
             if (invComp != null && hotbarComp != null)
             {
                 if (invComp.GetItemType() == ItemType.Turret)
                 {
-                    var temp = Instantiate(invSlot.GetItem());
-                    invSlot.SetItem(hotbarSlot.GetItem());
-                    hotbarSlot.SetItem(temp);
-                    Destroy(temp);
+                    invSlot.SetItem(hotbarComp);
+                    hotbarSlot.SetItem(invComp);
                 }
             }
         }
         // If inventory slot is empty.
-        else if (invSlot.IsEmpty())
+        else if (invSlot.IsEmpty() && !hotbarSlot.IsEmpty())
         {
-            invSlot.SetItem(hotbarSlot.GetItem());
+            var hotbarComp = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot.GetItem().GetItemName())));
+            invSlot.SetItem(hotbarComp);
             hotbarSlot.ClearSlot();
         }
         // If hotbar slot is empty.
-        else if (hotbarSlot.IsEmpty())
+        else if (hotbarSlot.IsEmpty() && !invSlot.IsEmpty())
         {
-            if (invSlot.GetItem() is WeaponComponent || invSlot.GetItem() is MiningComponent)
+            var invComp = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName())));
+
+            if (invComp.GetItemType() == ItemType.Turret)
             {
-                hotbarSlot.SetItem(invSlot.GetItem());
+                hotbarSlot.SetItem(invComp);
                 invSlot.ClearSlot();
             }
         }
@@ -608,18 +610,18 @@ public class Inventory : MonoBehaviour
     /// <param name="slot2"></param>
     private void SwapHotbarSlots(HotbarSlot hotbarSlot, HotbarSlot hotbarSlot2)
     {
+        var hotbarItem1 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot.GetItem().GetItemName())));
+        var hotbarItem2 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot2.GetItem().GetItemName())));
 
         // If both slots contain an item.
         if (!hotbarSlot.IsEmpty() && !hotbarSlot2.IsEmpty())
         {
-            var temp = Instantiate(hotbarSlot2.GetItem());
-            hotbarSlot2.SetItem(hotbarSlot.GetItem());
-            hotbarSlot.SetItem(temp);
-            Destroy(temp);
+            hotbarSlot2.SetItem(hotbarItem1);
+            hotbarSlot.SetItem(hotbarItem2);
         }
-        else if (hotbarSlot2.IsEmpty())
+        else if (hotbarSlot2.IsEmpty() && !hotbarSlot.IsEmpty())
         {
-            hotbarSlot2.SetItem(hotbarSlot.GetItem());
+            hotbarSlot2.SetItem(hotbarItem1);
             hotbarSlot.ClearSlot();
         }
         if (hotbarSlot.IsSelected())
@@ -635,11 +637,12 @@ public class Inventory : MonoBehaviour
     /// <param name="mountSlot"></param>
     private void SwapInventoryToMountSlot(InventorySlot invSlot, MountSlot mountSlot)
     {
+
         // If they both contain an item.
         if (!mountSlot.IsEmpty() && !invSlot.IsEmpty())
         {
-            ShipComponent invComp = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponent;
-            ShipComponent mountComp = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
+            var invComp = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponent;
+            var mountComp = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
 
             if (invComp != null && mountComp != null)
             {
@@ -658,12 +661,14 @@ public class Inventory : MonoBehaviour
             }
         }
         // If inventory slot is empty.
-        else if (invSlot.IsEmpty())
+        else if (invSlot.IsEmpty() && !mountSlot.IsEmpty())
         {
-            invSlot.SetItem(mountSlot.GetItem());
+            var mountComp = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
+
+            invSlot.SetItem(mountComp);
             if (mountSlot.GetMountType() == ItemType.Storage)
             {
-                RemoveSlots((mountSlot.GetItem() as StorageComponent).slotCount);
+                RemoveSlots((mountComp as StorageComponent).slotCount);
                 mountSlot.ClearSlot();
             }
             else if (mountSlot.GetMountType() == ItemType.Thruster)
@@ -673,16 +678,18 @@ public class Inventory : MonoBehaviour
             }
         }
         // If mount slot is empty.
-        else if (mountSlot.IsEmpty())
+        else if (mountSlot.IsEmpty() && !invSlot.IsEmpty())
         {
-            if (mountSlot.GetMount().IsComponentCompatible(invSlot.GetItem() as ShipComponent))
+            var invComp = invSlot.GetItem();
+
+            if (mountSlot.GetMount().IsComponentCompatible(invComp as ShipComponent))
             {
-                mountSlot.SetItem(invSlot.GetItem());
-                if (invSlot.GetItem() is StorageComponent)
+                mountSlot.SetItem(invComp);
+                if (invComp is StorageComponent)
                 {
-                    AddSlots((invSlot.GetItem() as StorageComponent).slotCount);
+                    AddSlots((invComp as StorageComponent).slotCount);
                 }
-                else if (invSlot.GetItem() is ThrusterComponent)
+                else if (invComp is ThrusterComponent)
                     playerController.UpdateThrusterList();
                 invSlot.ClearSlot();
             }

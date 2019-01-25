@@ -41,7 +41,7 @@ public class HotbarSlot : SlotBase
         current = true;
         image.color = SELECTCOLOR;
         if (inventoryItem.GetItem() != null)
-            inventoryItem.Highlight();
+            inventoryItem.Dehighlight();
     }
 
     /// <summary>
@@ -80,6 +80,40 @@ public class HotbarSlot : SlotBase
     }
 
     /// <summary>
+    /// Highlight the slot.
+    /// </summary>
+    public override void Highlight()
+    {
+        if (image != null)
+        {
+            if(current)
+                image.color = SELECTCOLOR_HIGHLIGHT;
+            else
+                image.color = DEFAULTCOLOR_HIGHLIGHT;
+
+            if (inventoryItem.GetItem() != null)
+                inventoryItem.Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Dehighlight the slot.
+    /// </summary>
+    public override void Dehighlight()
+    {
+        if (image != null)
+        {
+            if (current)
+                image.color = SELECTCOLOR;
+            else
+                image.color = DEFAULTCOLOR;
+
+            if (inventoryItem.GetItem() != null)
+                inventoryItem.Dehighlight();
+        }
+    }
+
+    /// <summary>
     /// Sets the turret component
     /// </summary>
     /// <param name="component"></param>
@@ -98,10 +132,7 @@ public class HotbarSlot : SlotBase
     public override void ClearSlot()
     {
         inventoryItem.Clear();
-        if (current)
-            image.color = SELECTCOLOR;
-        else
-            image.color = DEFAULTCOLOR;
+        Dehighlight();
     }
 
     /// <summary>
@@ -133,34 +164,23 @@ public class HotbarSlot : SlotBase
 
             if (!IsEmpty() && !InventoryItem.dragging)
             {
-                if (!current)
-                    image.color = DEFAULTCOLOR_HIGHLIGHT;
-                else
-                    image.color = SELECTCOLOR_HIGHLIGHT;
-                inventoryItem.Highlight();
+                Highlight();
                 SendMessageUpwards("ShowHoverTooltip", index);
             }
+            else if (IsEmpty())
+            {
+                Dehighlight();
+                SendMessageUpwards("HideHoverTooltip");
+            }
         }
-        else if (current)
-        {
-            image.color = SELECTCOLOR;
-        }
-        else if (!current)
-        {
-            image.color = SELECTCOLOR;
-            Deselect();
-            inventoryItem.Dehighlight();
-        }
+        else
+            Dehighlight();
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-
-        if (current)
-            image.color = SELECTCOLOR;
-        else if (!IsEmpty())
-            image.color = DEFAULTCOLOR;
+        Dehighlight();
 
         if (canHighlight)
         {

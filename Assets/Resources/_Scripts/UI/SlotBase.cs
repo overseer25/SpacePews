@@ -68,4 +68,14 @@ public abstract class SlotBase : MonoBehaviour
     /// Clear the slot of its item.
     /// </summary>
     public abstract void ClearSlot();
+
+    /// <summary>
+    /// Highlight the slot and its item.
+    /// </summary>
+    public abstract void Highlight();
+
+    /// <summary>
+    /// Dehighlight the slot and its item.
+    /// </summary>
+    public abstract void Dehighlight();
 }
