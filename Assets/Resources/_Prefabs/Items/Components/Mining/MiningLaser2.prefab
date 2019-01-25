@@ -133,7 +133,8 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   type: 1
   itemTier: 0
-  name: Mining Laser 2.0
+  itemName: Green Mining Laser
+  quantity: 1
   value: 2000
   description: Low grade mining laser
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}

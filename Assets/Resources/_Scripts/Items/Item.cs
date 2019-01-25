@@ -12,12 +12,20 @@ public class Item : MonoBehaviour
     public GameObject hoverText;
 
     [Header("Attributes")]
-    public ItemType type;
-    public ItemTier itemTier;
-    public new string name;
-    public int value;
+    [SerializeField]
+    internal ItemType type;
+    [SerializeField]
+    internal ItemTier itemTier;
+    [SerializeField]
+    internal string itemName;
+    [SerializeField]
+    internal int quantity = 1;
+    [SerializeField]
+    internal int value;
+
+    [SerializeField]
     [TextArea(10,10)]
-    public string description;
+    internal string description;
 
     [Header("Other")]
     [SerializeField]
@@ -56,7 +64,7 @@ public class Item : MonoBehaviour
         // if there is an available pop up text, display it.
         if(collected != null)
         {
-            collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), name, itemTier, pickupSound);
+            collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), itemName, itemTier, pickupSound);
         }
     }
 
@@ -126,6 +134,51 @@ public class Item : MonoBehaviour
     }
 
     /// <summary>
+    /// get the quantity of the item.
+    /// </summary>
+    /// <returns></returns>
+    public int GetQuantity()
+    {
+        return quantity;
+    }
+
+    /// <summary>
+    /// Get the item type.
+    /// </summary>
+    /// <returns></returns>
+    public ItemType GetItemType()
+    {
+        return type;
+    }
+
+    /// <summary>
+    /// Get the name of the item.
+    /// </summary>
+    /// <returns></returns>
+    public string GetItemName()
+    {
+        return itemName;
+    }
+
+    /// <summary>
+    /// Is the item stackable?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsStackable()
+    {
+        return stackable;
+    }
+
+    /// <summary>
+    /// Get the max stack size of the item.
+    /// </summary>
+    /// <returns></returns>
+    public int GetStackSize()
+    {
+        return stackSize;
+    }
+
+    /// <summary>
     /// Activate the hover text.
     /// </summary>
     void OnMouseOver()
@@ -186,7 +239,7 @@ public class Item : MonoBehaviour
         }
         type = other.type;
         itemTier = other.itemTier;
-        name = other.name;
+        itemName = other.itemName;
         value = other.value;
         description = other.description;
         stackable = other.stackable;

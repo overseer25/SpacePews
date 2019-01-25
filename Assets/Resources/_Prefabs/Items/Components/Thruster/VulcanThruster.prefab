@@ -4799,7 +4799,8 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   type: 5
   itemTier: 0
-  name: Vulcan Thruster
+  itemName: Vulcan Thruster
+  quantity: 1
   value: 1500
   description: Lightweight racing thruster using pallodium energy, making it both
     powerful and efficient for its weight.

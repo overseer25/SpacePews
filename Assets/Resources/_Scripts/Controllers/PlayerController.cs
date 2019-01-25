@@ -108,7 +108,8 @@ public class PlayerController : MonoBehaviour
         if (movingForward)
         {
             movementController.MoveForward();
-            PlayEngineSound();
+            if(thrusters.Count > 0)
+                PlayEngineSound();
         }
         else
         {
@@ -199,13 +200,17 @@ public class PlayerController : MonoBehaviour
         thrusters = new List<Thruster>();
         foreach (var thrusterObj in mountController.GetThrusterMounts())
         {
-            var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
-            thrusters.Add(thruster);
-            var comp = ((ThrusterComponent)thrusterObj.GetShipComponent());
-            acc += comp.acceleration;
-            dec += comp.deceleration;
-            maxSpeed += comp.maxSpeed;
-            rotSpeed += comp.rotationSpeed;
+            if(!thrusterObj.IsEmpty())
+            {
+                var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
+                thrusters.Add(thruster);
+                var comp = ((ThrusterComponent)thrusterObj.GetShipComponent());
+                acc += comp.acceleration;
+                dec += comp.deceleration;
+                maxSpeed += comp.maxSpeed;
+                rotSpeed += comp.rotationSpeed;
+            }
+
         }
         movementController.UpdateAcceleration(acc);
         movementController.UpdateMaxSpeed(maxSpeed);
@@ -219,7 +224,7 @@ public class PlayerController : MonoBehaviour
             engine.clip = engineAudio;
             engine.volume = 0.0f;
         }
-
+        engine.Stop();
         SetThrusterState(false);
     }
 

@@ -4818,7 +4818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4240332106757672
 Transform:
   m_ObjectHideFlags: 0
@@ -4900,7 +4900,8 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   type: 5
   itemTier: 0
-  name: Ion Thruster Mk I
+  itemName: Ion Thruster
+  quantity: 1
   value: 250
   description: Standard issue civilian thruster. It gets the job done, but don't expect
     to break any records.

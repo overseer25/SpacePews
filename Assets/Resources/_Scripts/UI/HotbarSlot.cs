@@ -2,15 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HotbarSlot : InteractableElement
+public class HotbarSlot : SlotBase
 {
-    [HideInInspector]
-    public bool isEmpty = true; // All slots start out empty.
+
     internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
     // The num key associated with this hotbar slot.
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
-    private InventoryItem inventoryItem; // The item in the slot.
 
     // Colors
     private readonly Color SELECTCOLOR = new Color(0.2f, 0.7f, 1.0f);
@@ -42,7 +40,7 @@ public class HotbarSlot : InteractableElement
     {
         current = true;
         image.color = SELECTCOLOR;
-        if (inventoryItem.gameObject.activeSelf)
+        if (inventoryItem.GetItem() != null)
             inventoryItem.Highlight();
     }
 
@@ -53,7 +51,7 @@ public class HotbarSlot : InteractableElement
     {
         current = false;
         image.color = DEFAULTCOLOR;
-        if (inventoryItem.gameObject.activeSelf)
+        if (inventoryItem.GetItem() != null)
             inventoryItem.Dehighlight();
     }
 
@@ -85,60 +83,25 @@ public class HotbarSlot : InteractableElement
     /// Sets the turret component
     /// </summary>
     /// <param name="component"></param>
-    public void SetItem(Item component)
+    public override void SetItem(Item component)
     {
         // If it is not a weapon or mining component, do not set the component.
         if (!(component is WeaponComponent) && !(component is MiningComponent))
             return;
 
         inventoryItem.SetItem(component, 0);
-        isEmpty = false;
-    }
-
-    /// <summary>
-    /// Get the ship component of the hotbar slot.
-    /// </summary>
-    /// <returns></returns>
-    public Item GetItem()
-    {
-        return inventoryItem.item;
-    }
-
-    /// <summary>
-    /// Get the inventory item of this mount slot.
-    /// </summary>
-    /// <returns></returns>
-    public InventoryItem GetInventoryItem()
-    {
-        return inventoryItem;
-    }
-
-    /// <summary>
-    /// Deletes the item gameobject on the slot.
-    /// </summary>
-    public void DeleteSlot()
-    {
-        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        inventoryItem.SetQuantity(0);
-        Destroy(inventoryItem.item.gameObject);
-        inventoryItem.gameObject.SetActive(false);
-        isEmpty = true;
     }
 
     /// <summary>
     /// "Empty" the slot.
     /// </summary>
-    public void ClearSlot()
+    public override void ClearSlot()
     {
-        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        inventoryItem.SetQuantity(0);
-        inventoryItem.SetItem(null, 0);
-        inventoryItem.gameObject.SetActive(false);
+        inventoryItem.Clear();
         if (current)
             image.color = SELECTCOLOR;
         else
             image.color = DEFAULTCOLOR;
-        isEmpty = true;
     }
 
     /// <summary>
@@ -147,7 +110,7 @@ public class HotbarSlot : InteractableElement
     void OnMouseEnter()
     {
 
-        if (canHighlight && !isEmpty && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -168,7 +131,7 @@ public class HotbarSlot : InteractableElement
                 SendMessageUpwards("QuickSwapWithInventorySlot", index);
             }
 
-            if (!isEmpty && !InventoryItem.dragging)
+            if (!IsEmpty() && !InventoryItem.dragging)
             {
                 if (!current)
                     image.color = DEFAULTCOLOR_HIGHLIGHT;
@@ -196,7 +159,7 @@ public class HotbarSlot : InteractableElement
 
         if (current)
             image.color = SELECTCOLOR;
-        else if (!isEmpty)
+        else if (!IsEmpty())
             image.color = DEFAULTCOLOR;
 
         if (canHighlight)
