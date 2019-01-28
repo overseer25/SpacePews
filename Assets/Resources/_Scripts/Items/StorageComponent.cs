@@ -3,9 +3,9 @@
     // The number of slots the storage component adds to the inventory.
     public int slotCount;
 
-    void Awake()
+    protected override void Awake()
     {
-        itemColor = ItemColors.colors[(int)itemTier];
+        base.Awake();
         itemType = ItemType.Storage;
     }
 }

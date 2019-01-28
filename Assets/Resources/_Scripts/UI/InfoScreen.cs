@@ -56,7 +56,7 @@ public class InfoScreen : MonoBehaviour
         if (item is WeaponComponent)
         {
             var weapComp = item as WeaponComponent;
-            text1.text = item.name;
+            text1.text = item.itemName;
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>";
             text3.text = "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)";
@@ -67,7 +67,7 @@ public class InfoScreen : MonoBehaviour
         else if(item is ThrusterComponent)
         {
             var thrusterComp = item as ThrusterComponent;
-            text1.text = item.name;
+            text1.text = item.itemName;
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + thrusterComp.GetComponentClass() + " " + thrusterComp.GetItemType() + "</style>";
             text3.text = "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>";
@@ -77,7 +77,7 @@ public class InfoScreen : MonoBehaviour
         else if(item is StorageComponent)
         {
             var storageComp = item as StorageComponent;
-            text1.text = item.name;
+            text1.text = item.itemName;
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>";
             text3.text = "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>";
@@ -86,7 +86,7 @@ public class InfoScreen : MonoBehaviour
         else if(item is MiningComponent)
         {
             var miningComp = item as MiningComponent;
-            text1.text = item.name;
+            text1.text = item.itemName;
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>";
             text3.text = "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>";
@@ -96,7 +96,7 @@ public class InfoScreen : MonoBehaviour
         // Generic item.
         else
         {
-            text1.text = item.name;
+            text1.text = item.itemName;
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + item.type + "</style>";
             text3.text = "<style=\"Description\">" + item.description + "</style>";

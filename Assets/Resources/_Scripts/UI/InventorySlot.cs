@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class InventorySlot : InteractableElement
+public class InventorySlot : SlotBase
 {
-    [HideInInspector]
-    public bool isEmpty = true; // All slots start out empty.
-    private InventoryItem inventoryItem; // The item in the slot.
-    private int quantity;
 
     // Use this for initialization
     void Awake()
@@ -14,25 +10,7 @@ public class InventorySlot : InteractableElement
         image = GetComponent<Image>();
         audioSource = GetComponent<AudioSource>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-    }
-
-    /// <summary>
-    /// Increase the quantity of the item by 1.
-    /// </summary>
-    public void SetQuantity(int quantity)
-    {
-        this.quantity = quantity;
-        inventoryItem.SetQuantity(quantity);
-    }
-
-    /// <summary>
-    /// Get the inventory item of this slot.
-    /// </summary>
-    /// <returns></returns>
-    public InventoryItem GetInventoryItem()
-    {
-        return inventoryItem;
+        Dehighlight();
     }
 
     /// <summary>
@@ -40,7 +18,7 @@ public class InventorySlot : InteractableElement
     /// </summary>
     void OnMouseEnter()
     {
-        if (!isEmpty && !InventoryItem.dragging)
+        if (!IsEmpty() && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -50,17 +28,45 @@ public class InventorySlot : InteractableElement
         }
     }
 
-    // Highlight the image when hovering over it
+    /// <summary>
+    /// Highlight the slot.
+    /// </summary>
+    public override void Highlight()
+    {
+        if(image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if(inventoryItem.GetItem() != null)
+                inventoryItem.Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Dehighlight the slot.
+    /// </summary>
+    public override void Dehighlight()
+    {
+        if(image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            if (inventoryItem.GetItem() != null)
+                inventoryItem.Dehighlight();
+        }
+    }
+
+    /// <summary>
+    /// Highlight the image when hovering over it
+    /// </summary>
     void OnMouseOver()
     {
         // Shift right-clicking will swap slots.
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
         {
-            if(inventoryItem.item != null)
+            if(inventoryItem.GetItem() != null)
             {
-                if (inventoryItem.item is WeaponComponent || inventoryItem.item is MiningComponent)
+                if (inventoryItem.GetItemType() == ItemType.Turret)
                     SendMessageUpwards("QuickSwapWithHotbarSlot", index);
-                else if (inventoryItem.item.type != ItemType.Item)
+                else if (inventoryItem.GetItemType() != ItemType.Item)
                     SendMessageUpwards("QuickSwapWithMountSlot", index);
             }
         }
@@ -68,29 +74,32 @@ public class InventorySlot : InteractableElement
         // Shift clicking will clear the slot.
         else if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
-            SendMessageUpwards("ClearSlot", index);
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-            return;
+            if(inventoryItem.GetItem() != null)
+            {
+                SendMessageUpwards("ClearSlot", index);
+                Dehighlight();
+                return;
+            }
         }
 
-        if (!isEmpty && !InventoryItem.dragging)
+        if (!IsEmpty() && !InventoryItem.dragging)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            inventoryItem.Highlight();
+            Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
-
+        }
+        else if(IsEmpty())
+        {
+            Dehighlight();
+            SendMessageUpwards("HideHoverTooltip", index);
         }
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if (!isEmpty)
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-
+        Dehighlight();
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
-            inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)
             {
@@ -101,55 +110,35 @@ public class InventorySlot : InteractableElement
     }
 
     /// <summary>
-    /// Deletes the item gameobject on the slot.
-    /// </summary>
-    public void DeleteSlot()
-    {
-        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        inventoryItem.SetQuantity(0);
-        Destroy(inventoryItem.item.gameObject);
-        inventoryItem.gameObject.SetActive(false);
-        isEmpty = true;
-    }
-
-    /// <summary>
     /// "Empty" the slot.
     /// </summary>
-    public void ClearSlot()
+    public override void ClearSlot()
     {
-        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        inventoryItem.SetQuantity(0);
-        inventoryItem.SetItem(null, 0);
-        inventoryItem.gameObject.SetActive(false);
-        image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-        isEmpty = true;
+        inventoryItem.Clear();
+        Dehighlight();
     }
 
     /// <summary>
     /// Sets the item of the inventory slot.
     /// </summary>
     /// <param name="item"></param>
-    public virtual void SetItem(Item item, int? quantity = null)
+    public override void SetItem(Item item)
     {
-        inventoryItem.gameObject.SetActive(true);
-        this.quantity = (item.stackable) ? quantity ?? 1 : 0;
-        inventoryItem.SetItem(item, this.quantity);
-        if (item != null)
-        {
-            inventoryItem.item.gameObject.SetActive(false);
-            isEmpty = false;
-        }
-        else
-        {
-            inventoryItem.gameObject.SetActive(false);
-            isEmpty = true;
-        }
+        SetItem(item, 0);
     }
 
-    // Gets the item of the inventory slot.
-    public Item GetItem()
+    /// <summary>
+    /// Sets the item of the inventory slot, with a quantity supplied.
+    /// </summary>
+    /// <param name="item"></param>
+    public void SetItem(Item item, int quantity)
     {
-        return inventoryItem.item;
+        if (item == null)
+            return;
+        else
+        {
+            inventoryItem.SetItem(item, quantity);
+        }
     }
 
     /// <summary>
@@ -158,6 +147,6 @@ public class InventorySlot : InteractableElement
     /// <returns></returns>
     public int GetQuantity()
     {
-        return quantity;
+        return inventoryItem.GetQuantity();
     }
 }

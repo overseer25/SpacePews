@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    [Header("Item")]
-    public Item item;
-
-    private Image image;
+    // Item data
     private int quantity;
     private bool swapping;
+    private Item item;
+    private int animFrameIndex;
 
+    private Image image;
     // For mounting slots.
     private bool mounting;
     private MountSlot mountSlot;
@@ -34,41 +34,135 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         image = GetComponent<Image>();
         count = GetComponentInChildren<TextMeshProUGUI>();
         positions = new int[2];
-        positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
+        positions[0] = GetComponentInParent<SlotBase>().GetIndex();
     }
 
-    /// <summary>
-    /// Set the quantity of the inventory item.
-    /// </summary>
-    public void SetQuantity(int num)
+    private void Update()
     {
-        quantity = num;
-
-        if (count != null)
+        if(item != null && item.inventorySprites.Length > 0)
         {
-            if (item != null && item.stackable && num > 0)
-                count.text = quantity.ToString();
-            else
-                count.text = "";
+            // Player sprite animation
+            if (Time.time > item.changeSprite)
+            {
+                item.changeSprite = Time.time + item.playspeed;
+                animFrameIndex++;
+                if (animFrameIndex >= item.inventorySprites.Length) { animFrameIndex = 0; } // Restart animation
+                image.sprite = item.inventorySprites[animFrameIndex];
+            }
         }
     }
 
-    public void SetItem(Item item, int quantity)
+    /// <summary>
+    /// Set the item.
+    /// </summary>
+    /// <param name="incomingItem"></param>
+    /// <param name="quantity"></param>
+    public void SetItem(Item incomingItem, int quantity)
     {
-        this.item = item;
         this.quantity = quantity;
 
-        image.sprite = (item != null) ? item.inventorySprite : null;
+        // If the current item for this inventory item is not empty, destroy the old item first.
+        if (item != null)
+        {
+            Destroy(item.gameObject);
+            item = Instantiate(incomingItem, transform.position, Quaternion.identity, transform) as Item;
+        }
+        else if (incomingItem != null)
+            item = Instantiate(incomingItem, transform.position, Quaternion.identity, transform) as Item;
+        else
+            Clear();
+
+        // Hide the item so that it isn't displayed in the game world.
+        item.GetSpriteRenderer().enabled = false;
+
+        image.sprite = (item != null) ? item.inventorySprites[0] : null;
         image.color = (item != null) ? new Color(1.0f, 1.0f, 1.0f, 0.7f) : new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
         if (count != null)
         {
-            if (item != null && item.stackable && quantity > 0)
+            if (item != null && item.stackable)
                 count.text = quantity.ToString();
             else
                 count.text = "";
         }
         gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Get the item.
+    /// </summary>
+    /// <returns></returns>
+    public Item GetItem()
+    {
+        return item;
+    }
+
+    /// <summary>
+    /// Set the quantity of the item represented by this inventory item. Typically called when the item represented
+    /// already exists in the inventory, is stackable, and the player picked up more of this item or removed some.
+    /// </summary>
+    /// <param name="quantity"></param>
+    public void SetQuantity(int quantity)
+    {
+        if (!IsStackable())
+            return;
+        
+        this.quantity = quantity;
+        count.text = this.quantity + "";
+    }
+
+    /// <summary>
+    /// Add to the current quantity of this inventory item.
+    /// </summary>
+    /// <param name="quantity"></param>
+    public void AddQuantity(int quantity)
+    {
+        SetQuantity(this.quantity + quantity);
+    }
+
+    /// <summary>
+    /// Subtract from the current quantity of this inventory item.
+    /// </summary>
+    /// <param name="quantity"></param>
+    public void SubtractQuantity(int quantity)
+    {
+        SetQuantity(this.quantity - quantity);
+    }
+
+    /// <summary>
+    /// Get the quantity of the item represented by this inventory item.
+    /// </summary>
+    /// <returns></returns>
+    public int GetQuantity()
+    {
+        return quantity;
+    }
+
+    /// <summary>
+    /// Get the item type of the item represented by this inventory item.
+    /// </summary>
+    /// <returns></returns>
+    public ItemType GetItemType()
+    {
+        return item.GetItemType();
+    }
+
+    /// <summary>
+    /// Get whether the item represented by this inventory item is stackable.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsStackable()
+    {
+        return item.stackable;
+    }
+
+    /// <summary>
+    /// Get the maximum stack size of the item. If the item is not stackable, the method will return 0.
+    /// </summary>
+    /// <returns></returns>
+    public int GetStackSize()
+    {
+        return item.stackSize;
     }
 
     /// <summary>
@@ -84,7 +178,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void Highlight()
     {
-        if (!highlighted && item != null)
+        if (!highlighted && image != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             highlighted = true;
@@ -96,11 +190,22 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void Dehighlight()
     {
-        if (highlighted && item != null)
+        if (highlighted && image != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
             highlighted = false;
         }
+    }
+
+    /// <summary>
+    /// Clear the inventory item.
+    /// </summary>
+    public void Clear()
+    {
+        image.sprite = null;
+        quantity = 0;
+        Destroy(item.gameObject);
+        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -110,10 +215,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
 
-        if (Input.GetMouseButton(0) && draggable)
+        if (Input.GetMouseButton(0) && draggable && item != null)
         {
-            if(GetComponentInParent<InteractableElement>() != null)
-                positions[0] = GetComponentInParent<InteractableElement>().GetIndex();
+            if(GetComponentInParent<SlotBase>() != null)
+                positions[0] = GetComponentInParent<SlotBase>().GetIndex();
             dragging = true;
             SendMessageUpwards("HideHoverTooltip");
         }
@@ -124,7 +229,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && draggable)
+        if (Input.GetMouseButton(0) && draggable && item != null)
         {
             if (image == null) { return; }
 
@@ -141,7 +246,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (image == null || !draggable) { return; }
+        if (image == null || !draggable || item == null) { return; }
         dragging = false;
 
         if (destroying)
@@ -155,7 +260,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             swapping = false;
         }
 
-        transform.position = GetComponentInParent<InteractableElement>().gameObject.transform.position;
+        transform.position = GetComponentInParent<SlotBase>().gameObject.transform.position;
 
     }
 

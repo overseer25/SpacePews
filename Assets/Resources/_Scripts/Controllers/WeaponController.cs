@@ -32,7 +32,9 @@ public class WeaponController : MonoBehaviour
             if (currentComponent != null)
             {
                 if (currentComponent is WeaponComponent)
-                    (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().DestroyPool();
+                    (currentComponent as WeaponComponent).SetMounted(false);
+                else if (currentComponent is MiningComponent)
+                    (currentComponent as MiningComponent).SetMounted(false);
                 Destroy(currentComponent.gameObject);
             }
             if (component == null)
@@ -40,10 +42,15 @@ public class WeaponController : MonoBehaviour
                 return;
             }
             var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
-            currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
-            currentComponent.gameObject.SetActive(true);
-            if (currentComponent is WeaponComponent)
-                (currentComponent as WeaponComponent).GetComponent<ProjectilePool>().CreatePool();
+            if(hotbarSlotItem != null)
+            {
+                currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
+                currentComponent.gameObject.SetActive(true);
+                if (currentComponent is WeaponComponent)
+                    (currentComponent as WeaponComponent).SetMounted(true);
+                else if (currentComponent is MiningComponent)
+                    (currentComponent as MiningComponent).SetMounted(true);
+            }
         }
     }
 

@@ -64,6 +64,7 @@ public class ShipMount : MonoBehaviour {
         else
             component.SetMounted(false);
         Destroy(component.gameObject);
+        isEmpty = true;
     }
 
     /// <summary>
@@ -76,7 +77,7 @@ public class ShipMount : MonoBehaviour {
         // If the starting component is not compatible with the ship mount.
         if (component != null && !IsComponentCompatible(component))
         {
-            Debug.LogError("Starting Component: " + component.name + " is not compatible with mount: " + this.name);
+            Debug.LogError("Component: " + component.itemName + " is not compatible with mount: " + this.name);
             return;
         }
 
@@ -100,6 +101,7 @@ public class ShipMount : MonoBehaviour {
         }
         else
             this.component.SetMounted(true);
+        isEmpty = false;
     }
 
     /// <summary>

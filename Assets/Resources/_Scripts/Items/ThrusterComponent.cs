@@ -11,14 +11,10 @@ public class ThrusterComponent : ShipComponent
     [Header("Sounds")]
     public AudioClip engine;
 
-    void Awake()
+    protected override void Awake()
     {
-        itemColor = ItemColors.colors[(int)itemTier];
+        base.Awake();
         itemType = ItemType.Thruster;
-    }
-
-    private void Start()
-    {
         var particleSystem = GetComponentInChildren<ParticleSystem>(true);
         var thruster = GetComponentInChildren<Thruster>(true);
 
@@ -40,7 +36,7 @@ public class ThrusterComponent : ShipComponent
     /// <param name="val"></param>
     public override void SetMounted(bool val)
     {
-        mounted = val;
+        base.SetMounted(val);
         if(mounted)
             GetComponentInChildren<ParticleSystem>(true).gameObject.SetActive(true);
     }

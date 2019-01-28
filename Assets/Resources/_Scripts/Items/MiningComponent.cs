@@ -35,9 +35,9 @@ public class MiningComponent : ShipComponent
     private bool playingContactAudio;
     private bool playingContactAudioMineable;
 
-    void Awake()
+    protected override void Awake()
     {
-        itemColor = ItemColors.colors[(int)itemTier];
+        base.Awake();
         itemType = ItemType.Turret;
         baseAudioSource.clip = miningLaserBase;
         line = gameObject.GetComponent<LineRenderer>();

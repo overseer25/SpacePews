@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MountSlot : InteractableElement
+public class MountSlot : SlotBase
 {
     [Header("Other")]
     public TextMeshProUGUI header;
@@ -19,12 +19,8 @@ public class MountSlot : InteractableElement
 
     // The mount associated with this slot.
     private ShipMount mount;
-    private InventoryItem inventoryItem;
     private LineRenderer line;
     private Color color;
-
-    [HideInInspector]
-    public bool isEmpty;
 
     void Awake()
     {
@@ -82,34 +78,25 @@ public class MountSlot : InteractableElement
     }
 
     /// <summary>
-    /// Get the inventory item of this mount slot.
+    /// Get the type of mount.
     /// </summary>
     /// <returns></returns>
-    public InventoryItem GetInventoryItem()
+    public ItemType GetMountType()
     {
-        return inventoryItem;
+        return type;
     }
 
-    /// <summary>
-    /// Gets the item of the mount slot.
-    /// </summary>
-    /// <returns></returns>
-    public Item GetItem()
-    {
-        return inventoryItem.item;
-    }
 
     /// <summary>
     /// Sets the item of the mount slot.
     /// </summary>
     /// <param name="item"></param>
-    public void SetItem(Item item)
+    public override void SetItem(Item item)
     {
         var component = item as ShipComponent;
-        inventoryItem.SetItem(component, 0);
-        inventoryItem.gameObject.SetActive(true);
         component.mounted = true;
-        component.gameObject.SetActive(false);
+        inventoryItem.SetItem(component, 0);
+        component = inventoryItem.GetItem() as ShipComponent;
         if (component is WeaponComponent)
             mount.SetComponent(component as WeaponComponent);
         else if (component is StorageComponent)
@@ -118,33 +105,15 @@ public class MountSlot : InteractableElement
             mount.SetComponent(component as ThrusterComponent);
         else if (component is MiningComponent)
             mount.SetComponent(component as MiningComponent);
-        isEmpty = false;
-    }
-
-    /// <summary>
-    /// Deletes the item gameobject on the slot.
-    /// </summary>
-    public void DeleteMountedItem()
-    {
-        mount.ClearMount();
-        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        inventoryItem.SetQuantity(0);
-        inventoryItem.SetItem(null, 0);
-        inventoryItem.gameObject.SetActive(false);
-        isEmpty = true;
     }
 
     /// <summary>
     /// "Empty" the slot.
     /// </summary>
-    public void ClearSlot()
+    public override void ClearSlot()
     {
         mount.ClearMount();
-        inventoryItem.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        inventoryItem.SetQuantity(0);
-        inventoryItem.SetItem(null, 0);
-        inventoryItem.gameObject.SetActive(false);
-        isEmpty = true;
+        inventoryItem.Clear();
     }
 
     /// <summary>
@@ -158,11 +127,37 @@ public class MountSlot : InteractableElement
     }
 
     /// <summary>
+    /// Highlight the slot.
+    /// </summary>
+    public override void Highlight()
+    {
+        if (image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (inventoryItem != null)
+                inventoryItem.Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Dehighlight the slot.
+    /// </summary>
+    public override void Dehighlight()
+    {
+        if (image != null)
+        {
+            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            if (inventoryItem != null)
+                inventoryItem.Dehighlight();
+        }
+    }
+
+    /// <summary>
     /// Plays hover sound.
     /// </summary>
     void OnMouseEnter()
     {
-        if (!isEmpty && !InventoryItem.dragging)
+        if (!IsEmpty() && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -185,29 +180,33 @@ public class MountSlot : InteractableElement
         // Shift clicking will clear the slot.
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
-            SendMessageUpwards("ClearSlot", index);
-            image.color = new Color(color.r, color.g, color.b, 0.7f);
-            return;
+            if(inventoryItem.GetItem() != null)
+            {
+                SendMessageUpwards("ClearSlot", index);
+                Dehighlight();
+                return;
+            }
         }
 
-        if (!isEmpty && !InventoryItem.dragging)
+        if (!IsEmpty() && !InventoryItem.dragging)
         {
-            image.color = new Color(color.r, color.g, color.b, 1.0f);
-            inventoryItem.Highlight();
+            Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
-
+        }
+        else if (IsEmpty())
+        {
+            Dehighlight();
+            SendMessageUpwards("HideHoverTooltip", index);
         }
     }
 
     // Remove highlight on image when no longer hovering
     void OnMouseExit()
     {
-        if (!isEmpty)
-            image.color = new Color(color.r, color.g, color.b, 0.7f);
+        Dehighlight();
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
         {
-            inventoryItem.Dehighlight();
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)
             {
@@ -241,7 +240,7 @@ public class MountSlot : InteractableElement
 
         if (mount.startingComponent != null)
         {
-            SetItem(Instantiate(mount.startingComponent, inventoryItem.transform.position, inventoryItem.transform.rotation, inventoryItem.transform) as ShipComponent);
+            SetItem(mount.startingComponent);
         }
         this.index = index;
     }
