@@ -32,13 +32,13 @@ public class WeaponComponent : ShipComponent
     // What time the last shot was fired.
     private float lastShot = 0.0f;
 
-    void Awake()
+    protected override void Awake()
     {
-        itemColor = ItemColors.colors[(int)itemTier];
+        base.Awake();
+        itemType = ItemType.Turret;
         audioSource = GetComponent<AudioSource>();
         random = new System.Random();
         random.Next();
-        itemType = ItemType.Turret;
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class WeaponComponent : ShipComponent
     /// <param name="val"></param>
     public override void SetMounted(bool val)
     {
-        mounted = val;
+        base.SetMounted(val);
         // If the weapon component is being mounted, create the projectile pool.
-        if(val == true)
+        if(val)
         {
             GetComponent<ProjectilePool>().CreatePool();
         }

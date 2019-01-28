@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c4d345a184331498d4c94c93f5efd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySpriteAnim: []
-  inventorySprite: {fileID: 21300000, guid: 1e8533e7b9ed57f478b448e1c2ad965b, type: 3}
+  inventorySprites:
+  - {fileID: 21300000, guid: 1e8533e7b9ed57f478b448e1c2ad965b, type: 3}
   hoverText: {fileID: 0}
   type: 1
   itemTier: 0

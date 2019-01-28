@@ -97,7 +97,6 @@ public class MountSlot : SlotBase
         component.mounted = true;
         inventoryItem.SetItem(component, 0);
         component = inventoryItem.GetItem() as ShipComponent;
-        component.gameObject.SetActive(false);
         if (component is WeaponComponent)
             mount.SetComponent(component as WeaponComponent);
         else if (component is StorageComponent)
@@ -181,16 +180,23 @@ public class MountSlot : SlotBase
         // Shift clicking will clear the slot.
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
-            SendMessageUpwards("ClearSlot", index);
-            Dehighlight();
-            return;
+            if(inventoryItem.GetItem() != null)
+            {
+                SendMessageUpwards("ClearSlot", index);
+                Dehighlight();
+                return;
+            }
         }
 
         if (!IsEmpty() && !InventoryItem.dragging)
         {
             Highlight();
             SendMessageUpwards("ShowHoverTooltip", index);
-
+        }
+        else if (IsEmpty())
+        {
+            Dehighlight();
+            SendMessageUpwards("HideHoverTooltip", index);
         }
     }
 

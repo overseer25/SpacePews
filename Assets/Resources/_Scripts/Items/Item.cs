@@ -7,8 +7,7 @@ using UnityEngine.EventSystems;
 public class Item : MonoBehaviour
 {
     [Header("Display")]
-    public Sprite[] inventorySpriteAnim; // For animation
-    public Sprite inventorySprite; // For no animation
+    public Sprite[] inventorySprites; // If more than one sprite, this will animate using the playspeed variable.
     public GameObject hoverText;
 
     [Header("Attributes")]
@@ -48,9 +47,10 @@ public class Item : MonoBehaviour
     private float minedFollowAngle; // Angle of descrepancy so that the items don't come out in a straight line.
     private Vector2 startingPos;
     private GameObject targetPlayer;
+    private SpriteRenderer spriteRenderer;
     private static System.Random random;
 
-    private void Start()
+    protected virtual void Awake()
     {
         random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
@@ -71,18 +71,22 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inventorySpriteAnim.Length > 0)
+        // If the item is hidden, it should not hover toward the player or animate.
+        if(GetSpriteRenderer() != null && spriteRenderer.enabled)
         {
-            // Player sprite animation
-            if (Time.time > changeSprite)
+            if (inventorySprites.Length > 0)
             {
-                changeSprite = Time.time + playspeed;
-                index++;
-                if (index >= inventorySpriteAnim.Length) { index = 0; } // Restart animation
-                GetComponentInChildren<SpriteRenderer>().sprite = inventorySpriteAnim[index];
+                // Player sprite animation
+                if (Time.time > changeSprite)
+                {
+                    changeSprite = Time.time + playspeed;
+                    index++;
+                    if (index >= inventorySprites.Length) { index = 0; } // Restart animation
+                    spriteRenderer.sprite = inventorySprites[index];
+                }
             }
+            HoverTowardPlayer(targetPlayer);
         }
-        HoverTowardPlayer(targetPlayer);
     }
 
     /// <summary>
@@ -131,6 +135,17 @@ public class Item : MonoBehaviour
         {
             targetPlayer = target;
         }
+    }
+
+    /// <summary>
+    /// Get the sprite renderer of the item.
+    /// </summary>
+    /// <returns></returns>
+    public SpriteRenderer GetSpriteRenderer()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        return spriteRenderer;
     }
 
     /// <summary>
@@ -230,13 +245,9 @@ public class Item : MonoBehaviour
     /// </summary>
     public void Copy(Item other)
     {
-        if (other.inventorySpriteAnim != null && other.inventorySpriteAnim.Length > 0)
-            inventorySpriteAnim = other.inventorySpriteAnim;
-        else
-        {
-            inventorySprite = other.inventorySprite;
-            GetComponent<SpriteRenderer>().sprite = inventorySprite;
-        }
+
+        inventorySprites = other.inventorySprites;
+        GetComponent<SpriteRenderer>().sprite = inventorySprites[0];
         type = other.type;
         itemTier = other.itemTier;
         itemName = other.itemName;

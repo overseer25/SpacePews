@@ -11,6 +11,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private int quantity;
     private bool swapping;
     private Item item;
+    private int animFrameIndex;
 
     private Image image;
     // For mounting slots.
@@ -36,6 +37,21 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         positions[0] = GetComponentInParent<SlotBase>().GetIndex();
     }
 
+    private void Update()
+    {
+        if(item != null && item.inventorySprites.Length > 0)
+        {
+            // Player sprite animation
+            if (Time.time > item.changeSprite)
+            {
+                item.changeSprite = Time.time + item.playspeed;
+                animFrameIndex++;
+                if (animFrameIndex >= item.inventorySprites.Length) { animFrameIndex = 0; } // Restart animation
+                image.sprite = item.inventorySprites[animFrameIndex];
+            }
+        }
+    }
+
     /// <summary>
     /// Set the item.
     /// </summary>
@@ -56,8 +72,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         else
             Clear();
 
-        item.gameObject.SetActive(true);
-        image.sprite = (item != null) ? item.inventorySprite : null;
+        // Hide the item so that it isn't displayed in the game world.
+        item.GetSpriteRenderer().enabled = false;
+
+        image.sprite = (item != null) ? item.inventorySprites[0] : null;
         image.color = (item != null) ? new Color(1.0f, 1.0f, 1.0f, 0.7f) : new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
         if (count != null)
@@ -197,7 +215,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
 
-        if (Input.GetMouseButton(0) && draggable)
+        if (Input.GetMouseButton(0) && draggable && item != null)
         {
             if(GetComponentInParent<SlotBase>() != null)
                 positions[0] = GetComponentInParent<SlotBase>().GetIndex();
@@ -211,7 +229,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && draggable)
+        if (Input.GetMouseButton(0) && draggable && item != null)
         {
             if (image == null) { return; }
 
@@ -228,7 +246,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (image == null || !draggable) { return; }
+        if (image == null || !draggable || item == null) { return; }
         dragging = false;
 
         if (destroying)

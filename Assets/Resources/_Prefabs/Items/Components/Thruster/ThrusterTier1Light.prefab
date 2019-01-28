@@ -4818,7 +4818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4240332106757672
 Transform:
   m_ObjectHideFlags: 0
@@ -4842,7 +4842,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912550097887076}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4895,8 +4895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9416d42a9ee6614b9018a403545431b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySpriteAnim: []
-  inventorySprite: {fileID: 21300000, guid: e689a2b9d799b8a4f8914ebc38242f6b, type: 3}
+  inventorySprites:
+  - {fileID: 21300000, guid: e689a2b9d799b8a4f8914ebc38242f6b, type: 3}
   hoverText: {fileID: 0}
   type: 5
   itemTier: 0

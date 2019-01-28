@@ -36,7 +36,7 @@ public class InventorySlot : SlotBase
         if(image != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            if(inventoryItem != null)
+            if(inventoryItem.GetItem() != null)
                 inventoryItem.Highlight();
         }
     }
@@ -49,7 +49,7 @@ public class InventorySlot : SlotBase
         if(image != null)
         {
             image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
-            if (inventoryItem != null)
+            if (inventoryItem.GetItem() != null)
                 inventoryItem.Dehighlight();
         }
     }
@@ -62,7 +62,7 @@ public class InventorySlot : SlotBase
         // Shift right-clicking will swap slots.
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
         {
-            if(inventoryItem != null)
+            if(inventoryItem.GetItem() != null)
             {
                 if (inventoryItem.GetItemType() == ItemType.Turret)
                     SendMessageUpwards("QuickSwapWithHotbarSlot", index);
@@ -74,9 +74,12 @@ public class InventorySlot : SlotBase
         // Shift clicking will clear the slot.
         else if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
-            SendMessageUpwards("ClearSlot", index);
-            Dehighlight();
-            return;
+            if(inventoryItem.GetItem() != null)
+            {
+                SendMessageUpwards("ClearSlot", index);
+                Dehighlight();
+                return;
+            }
         }
 
         if (!IsEmpty() && !InventoryItem.dragging)

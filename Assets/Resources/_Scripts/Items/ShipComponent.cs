@@ -29,6 +29,8 @@ public class ShipComponent : Item
     public virtual void SetMounted(bool val)
     {
         mounted = val;
+        if (mounted && visible)
+            GetSpriteRenderer().enabled = true;
     }
 
     /// <summary>
@@ -47,15 +49,6 @@ public class ShipComponent : Item
     public bool IsVisible()
     {
         return visible;
-    }
-
-    /// <summary>
-    /// Gets the type of this component.
-    /// </summary>
-    /// <returns></returns>
-    public ItemType GetItemType()
-    {
-        return itemType;
     }
 
     /// <summary>

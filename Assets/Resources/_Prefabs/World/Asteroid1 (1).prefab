@@ -249,12 +249,10 @@ MonoBehaviour:
   explosion: {fileID: 1808627111132406, guid: 512859f07d4d3bd4fb333b398da510dd, type: 3}
   lootPossible:
   - {fileID: 1942279051846368, guid: 499f5c455bec73b4ba6f4fc1daeb8291, type: 3}
-  - {fileID: 1849846899141644, guid: 4173df838abbb1345b4ff5307b9ccb45, type: 3}
   - {fileID: 1572262975895466, guid: 81dbb57f685d7fc46bd1dab3690a1ee0, type: 3}
   spawnChance:
   - 0.85
-  - 0.09
-  - 0.06
+  - 0.15
 --- !u!60 &7180203781437936025
 PolygonCollider2D:
   m_ObjectHideFlags: 0
