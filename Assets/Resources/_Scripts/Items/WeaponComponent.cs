@@ -48,16 +48,6 @@ public class WeaponComponent : ShipComponent
     public override void SetMounted(bool val)
     {
         base.SetMounted(val);
-        // If the weapon component is being mounted, create the projectile pool.
-        if(val)
-        {
-            GetComponent<ProjectilePool>().CreatePool();
-        }
-        // Else, destroy the projectile pool.
-        else
-        {
-            GetComponent<ProjectilePool>().DestroyPool();
-        }
     }
 
     /// <summary>
@@ -132,20 +122,21 @@ public class WeaponComponent : ShipComponent
     /// <param name="time"> The current time that has passed. If the</param>
     public void Fire()
     {
-        var projectile = GetComponent<ProjectilePool>().GetPooledObject();
+        var projectile = ProjectilePool.current.GetPooledObject();
         if (projectile == null)
             return;
 
         var damage = ComputeDamage();
-        projectile.GetComponent<Projectile>().Initialize(damage, shotSpeed, (damage > maxDamage) ? true : false);
-        projectile.transform.position = shotSpawn.transform.position;
+        projectile.Copy(this.projectile);
+        projectile.Initialize(damage, shotSpeed, (damage > maxDamage) ? true : false);
+        projectile.gameObject.transform.position = shotSpawn.transform.position;
         Quaternion rotation = shotSpawn.transform.transform.rotation;
         var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
         rotation *= Quaternion.Euler(0, 0, angle);
-        projectile.transform.rotation = rotation;
+        projectile.gameObject.transform.rotation = rotation;
         audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
         audioSource.Play();
-        projectile.SetActive(true);
+        projectile.gameObject.SetActive(true);
     }
 
 }
