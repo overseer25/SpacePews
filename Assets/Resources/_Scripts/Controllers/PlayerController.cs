@@ -371,6 +371,15 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Gives the result if the player is dead or not.
+    /// </summary>
+    /// <returns>True if player is dead, false otherwise.</returns>
+    public bool IsDead()
+    {
+        return dead;
+    }
+
+    /// <summary>
     /// Respawn the player.
     /// </summary>
     /// <returns></returns>
