@@ -20,6 +20,7 @@ public class RammingAI : MonoBehaviour
     private bool stunned;
     private bool avoiding;
     private bool patrolling;
+    private bool shouldSlowDown;
     private int stunnedDir;
     private int patrolIndex;
 
@@ -47,6 +48,7 @@ public class RammingAI : MonoBehaviour
         rand = new System.Random();
         stunned = false;
         patrolling = true;
+        shouldSlowDown = false;
         stunnedTimer = 0;
         patrolIndex = 0;
     }
@@ -72,6 +74,7 @@ public class RammingAI : MonoBehaviour
                 checkTimer = 0;
                 CheckForPlayerTarget();
             }
+            UpdateIfTargetIsDead();
             if (target == null && patrolling)
             {
                 if (patrolPoints.Length > 0)
@@ -97,6 +100,18 @@ public class RammingAI : MonoBehaviour
             {
                 ExecuteAttack();
             }
+        }
+    }
+
+    /// <summary>
+    /// This function checks if the target is dead, and if so sets the ramming ship to a null target and sets it to patrol.
+    /// </summary>
+    private void UpdateIfTargetIsDead()
+    {
+        if (target != null && target.transform.parent != null && target.transform.parent.gameObject.GetComponentInChildren<PlayerController>() != null && target.transform.parent.gameObject.GetComponentInChildren<PlayerController>().IsDead())
+        {
+            patrolling = true;
+            target = null;
         }
     }
 
@@ -252,6 +267,8 @@ public class RammingAI : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(ship.transform.position, targetVec, distAway, mask);
         if (hit.collider != null)
         {
+            float distanceToObstacle = Vector2.Distance(hit.point, ship.transform.position);
+            shouldSlowDown = distanceToObstacle < 5f;
             avoiding = true;
             Vector2 leftPoint = new Vector2(ship.transform.position.x, ship.transform.position.y) + ((Vector2)ship.transform.right * -2);
             Vector2 rightPoint = new Vector2(ship.transform.position.x, ship.transform.position.y) + ((Vector2)ship.transform.right * 2);
@@ -259,15 +276,6 @@ public class RammingAI : MonoBehaviour
             Vector2 rightTargetVec = rightPoint - (Vector2)target.transform.position;
             RaycastHit2D leftHit = Physics2D.Raycast(leftPoint, leftTargetVec, distAway, mask);
             RaycastHit2D rightHit = Physics2D.Raycast(rightPoint, rightTargetVec, distAway, mask);
-            /*while(leftHit.collider != null && rightHit.collider != null)
-            {
-                leftPoint += ((Vector2)ship.transform.right * -1);
-                rightPoint += ((Vector2)ship.transform.right * 1);
-                leftTargetVec = leftPoint - (Vector2)target.transform.position;
-                rightTargetVec = rightPoint - (Vector2)target.transform.position;
-                leftHit = Physics2D.Raycast(leftPoint, leftTargetVec, distAway, mask);
-                rightHit = Physics2D.Raycast(rightPoint, rightTargetVec, distAway, mask);
-            }*/
             //if this is true, we should avoid left
             if (leftHit.collider == null)
             {
