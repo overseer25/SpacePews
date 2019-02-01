@@ -26,13 +26,51 @@ public class ProjectileEditor : Editor
 
         // ----- STATS Section ----- //
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
+
         EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
+        EditorGUILayout.LabelField("    Max Damage", GUILayout.MaxWidth(268f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("maxDamage"), GUIContent.none, GUILayout.MaxWidth(100f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
+        EditorGUILayout.LabelField("    Min Damage", GUILayout.MaxWidth(268f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("minDamage"), GUIContent.none, GUILayout.MaxWidth(100f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
+        EditorGUILayout.LabelField("    Speed", GUILayout.MaxWidth(268f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("speed"), GUIContent.none, GUILayout.MaxWidth(100f));
+        EditorGUILayout.LabelField("m/s", GUILayout.MaxWidth(268f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
+        EditorGUILayout.LabelField("    Critical Chance", GUILayout.MaxWidth(268f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("critChance"), GUIContent.none, GUILayout.MaxWidth(100f));
+        EditorGUILayout.LabelField("%", GUILayout.MaxWidth(268f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
+        EditorGUILayout.LabelField("    Critical Multiplier", GUILayout.MaxWidth(268f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("critMultiplier"), GUIContent.none, GUILayout.MaxWidth(100f));
+        EditorGUILayout.LabelField("x", GUILayout.MaxWidth(268f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
         EditorGUILayout.LabelField("    Lifetime", GUILayout.MaxWidth(268f));
-        lifetime = EditorGUILayout.TextField(projectile.lifetime.ToString(), GUILayout.MaxWidth(100f));
-        if (int.TryParse(lifetime, out result))
-        {
-            projectile.lifetime = result;
-        }
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("lifetime"), GUIContent.none, GUILayout.MaxWidth(100f));
+        EditorGUILayout.LabelField("seconds", GUILayout.MaxWidth(268f));
+        serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
         // ----- EFFECTS Section ----- //
@@ -50,6 +88,7 @@ public class ProjectileEditor : Editor
             serializedObject.Update();
             EditorGUILayout.LabelField("        - Homing Distance", GUILayout.MaxWidth(268f));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("homingDistance"), GUIContent.none, GUILayout.MaxWidth(100f));
+            EditorGUILayout.LabelField("m", GUILayout.MaxWidth(268f));
             serializedObject.ApplyModifiedProperties();
             EditorGUILayout.EndHorizontal();
 
@@ -57,6 +96,7 @@ public class ProjectileEditor : Editor
             serializedObject.Update();
             EditorGUILayout.LabelField("        - Homing Rotation Speed", GUILayout.MaxWidth(268f));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("homingTurnSpeed"), GUIContent.none, GUILayout.MaxWidth(100f));
+            EditorGUILayout.LabelField("rad/s", GUILayout.MaxWidth(268f));
             serializedObject.ApplyModifiedProperties();
             EditorGUILayout.EndHorizontal();
         }

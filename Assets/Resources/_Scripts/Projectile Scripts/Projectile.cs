@@ -6,11 +6,44 @@ using UnityEngine;
 [SerializeField]
 public class Projectile : MonoBehaviour
 {
-    [HideInInspector]
+    /// <summary>
+    /// The minimum damage the projectile can do.
+    /// </summary>
+    public int minDamage;
+
+    /// <summary>
+    /// The maximum damage the projectile can do.
+    /// </summary>
+    public int maxDamage;
+
+    /// <summary>
+    /// The speed of the projectile.
+    /// </summary>
+    public float speed;
+
+    /// <summary>
+    /// What chance does it have to be a critical?
+    /// </summary>
+    public float critChance;
+
+    /// <summary>
+    /// The critical multiplier.
+    /// </summary>
+    public float critMultiplier;
+
+    /// <summary>
+    /// Does the projectile home in on enemies?
+    /// </summary>
     public bool homing;
-    [HideInInspector]
+
+    /// <summary>
+    /// At what distance does it begin to home in?
+    /// </summary>
     public float homingDistance;
-    [HideInInspector]
+
+    /// <summary>
+    /// How quickly does it snap to the target?
+    /// </summary>
     public float homingTurnSpeed;
 
     /// <summary>
@@ -61,12 +94,12 @@ public class Projectile : MonoBehaviour
     internal static System.Random random; // Static so all projectiles pull from same randomness and don't end up generating the same number with similar seeds.
     internal bool isCritical = false; // Is this shot a critical hit?
 
+    
     private int damage;
-    private float speed;
     private float changeSprite;
     private int index;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         random = new System.Random();
         random.Next();
@@ -134,9 +167,9 @@ public class Projectile : MonoBehaviour
             var projectile = ProjectilePool.current.GetPooledObject();
             projectile.Copy(data.projectile);
             projectile.damage = random.Next(1, this.damage);
-            projectile.speed = data.speed;
+            projectile.speed = data.projectile.speed;
             projectile.transform.rotation = transform.rotation * Quaternion.Euler(0, 0, data.angle);
-            projectile.transform.position = transform.position + projectile.transform.up;
+            projectile.transform.position = transform.position + (projectile.transform.up);
             projectile.gameObject.SetActive(true);
         }
         if(destroyOnSplit)
@@ -146,13 +179,28 @@ public class Projectile : MonoBehaviour
     }
 
     /// <summary>
-    /// Give the projectile data from the weapon it is being fired from.
+    /// Returns a random damage value based on the damage parameters of the projectile.
+    /// Chance for a critical attack.
     /// </summary>
-    public void Initialize(int damage, float speed, bool isCritical)
+    /// <returns></returns>
+    private int ComputeDamage()
     {
-        this.damage = damage;
-        this.speed = speed;
-        this.isCritical = isCritical;
+        var damage = random.Next(minDamage, maxDamage + 1);
+        float critChanceVal = critChance / 100;
+        var result = random.NextDouble();
+        // If adding the multiplier to the current damage is larger than max damage and is a critical hit.
+        if ((damage * critMultiplier > maxDamage) && result <= critChanceVal)
+        {
+            isCritical = true;
+            damage = (int)Math.Ceiling(damage * critMultiplier);
+        }
+        else
+        {
+            isCritical = false;
+            damage = random.Next(minDamage, maxDamage + 1);
+        }
+
+        return damage;
     }
 
     /// <summary>
@@ -161,6 +209,11 @@ public class Projectile : MonoBehaviour
     /// <param name="other"></param>
     public void Copy(Projectile other)
     {
+        minDamage = other.minDamage;
+        maxDamage = other.maxDamage;
+        speed = other.speed;
+        critChance = other.critChance;
+        critMultiplier = other.critMultiplier;
         homing = other.homing;
         homingDistance = other.homingDistance;
         homingTurnSpeed = other.homingTurnSpeed;
@@ -190,11 +243,13 @@ public class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void OnEnable()
     {
+        damage = ComputeDamage();
         waitForSplit = false;
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.velocity = transform.up * speed;
         // Start the clock to disabling again.
         StartCoroutine(RemoveAfterSeconds(lifetime));
+        spriteRenderer.sprite = sprites[0];
     }
 
     /// <summary>
