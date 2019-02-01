@@ -7,17 +7,7 @@ public class WeaponComponent : ShipComponent
 {
     [Header("Weapon Stats")]
     [SerializeField]
-    private int minDamage;
-    [SerializeField]
-    private int maxDamage;
-    [SerializeField]
-    private float critChance;
-    [SerializeField]
-    private float critMultiplier;
-    [SerializeField]
     private float fireRate;
-    [SerializeField]
-    private float shotSpeed;
     [SerializeField]
     private float shotSpread;
     [SerializeField]
@@ -48,38 +38,6 @@ public class WeaponComponent : ShipComponent
     public override void SetMounted(bool val)
     {
         base.SetMounted(val);
-        // If the weapon component is being mounted, create the projectile pool.
-        if(val)
-        {
-            GetComponent<ProjectilePool>().CreatePool();
-        }
-        // Else, destroy the projectile pool.
-        else
-        {
-            GetComponent<ProjectilePool>().DestroyPool();
-        }
-    }
-
-    /// <summary>
-    /// Returns a random damage value based on the damage parameters of the projectile.
-    /// Chance for a critical attack.
-    /// </summary>
-    /// <returns></returns>
-    private int ComputeDamage()
-    {
-        var damage = random.Next(minDamage, maxDamage + 1);
-
-        // If adding the multiplier to the current damage is larger than max damage and is a critical hit.
-        if ((damage * critMultiplier > maxDamage) && random.NextDouble() <= critChance)
-        {
-            damage = (int)(damage * critMultiplier);
-        }
-        else
-        {
-            damage = random.Next(minDamage, maxDamage+1);
-        }
-
-        return damage;
     }
 
     /// <summary>
@@ -105,7 +63,7 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     public string GetDamageString()
     {
-        return minDamage + "-" + maxDamage;
+        return projectile.minDamage + "-" + projectile.maxDamage;
     }
 
     /// <summary>
@@ -114,7 +72,7 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     public string GetCriticalChanceString()
     {
-        return MathUtils.ConvertToPercent(critChance); ;
+        return MathUtils.ConvertToPercent(projectile.critChance); ;
     }
 
     /// <summary>
@@ -123,7 +81,7 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     public string GetCriticalMultiplierString()
     {
-        return critMultiplier + "x";
+        return projectile.critMultiplier + "x";
     }
 
     /// <summary>
@@ -132,20 +90,19 @@ public class WeaponComponent : ShipComponent
     /// <param name="time"> The current time that has passed. If the</param>
     public void Fire()
     {
-        var projectile = GetComponent<ProjectilePool>().GetPooledObject();
+        var projectile = ProjectilePool.current.GetPooledObject();
         if (projectile == null)
             return;
 
-        var damage = ComputeDamage();
-        projectile.GetComponent<Projectile>().Initialize(damage, shotSpeed, (damage > maxDamage) ? true : false);
-        projectile.transform.position = shotSpawn.transform.position;
+        projectile.Copy(this.projectile);
+        projectile.gameObject.transform.position = shotSpawn.transform.position;
         Quaternion rotation = shotSpawn.transform.transform.rotation;
         var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
         rotation *= Quaternion.Euler(0, 0, angle);
-        projectile.transform.rotation = rotation;
+        projectile.gameObject.transform.rotation = rotation;
         audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
         audioSource.Play();
-        projectile.SetActive(true);
+        projectile.gameObject.SetActive(true);
     }
 
 }
