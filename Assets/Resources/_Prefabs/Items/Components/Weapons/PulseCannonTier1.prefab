@@ -50,7 +50,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: ea4610b5636361a46960bf2e2b0e5cd3, type: 3}
   hoverText: {fileID: 0}
-  itemType: 0
+  itemType: 1
   itemTier: 0
   itemName: Pulse Cannon
   quantity: 1

@@ -36,6 +36,13 @@ public class StorageComponentEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("    Item Type", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("itemType"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("    Visible", GUILayout.MaxWidth(10f));
         serializedObject.Update();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("visible"), true, GUILayout.MaxWidth(500f));
