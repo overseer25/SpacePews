@@ -4,29 +4,16 @@ using UnityEngine;
 
 public class MiningComponent : ShipComponent
 {
-    [Header("Mining Attributes")]
-    [SerializeField]
-    private float miningRate;
-    [SerializeField]
-    private float laserWidth;
-    [SerializeField]
-    private float laserLength;
-    [SerializeField]
-    private GameObject lineSpawner;
-    [Header("Sound")]
-    [SerializeField]
-    private AudioClip miningLaserBase;
-    [SerializeField]
-    private AudioClip contactBase;
-    [SerializeField]
-    private AudioClip contactMineable;
-    [SerializeField]
-    private AudioSource contactAudioSource;
-    [SerializeField]
-    private AudioSource baseAudioSource;
-    [Header("Other")]
-    [SerializeField]
-    private ParticleEffect laserContactSprite;
+    public float miningRate;
+    public float laserWidth;
+    public float laserLength;
+    public GameObject lineSpawner;
+    public AudioClip miningLaserBase;
+    public AudioClip contactBase;
+    public AudioClip contactMineable;
+    public AudioSource contactAudioSource;
+    public AudioSource baseAudioSource;
+    public ParticleEffect laserContactSprite;
 
     private float contactSpriteFrequency = 0.2f; // The frequency at which the contact sprite animation is allowed to play.
     private float timePassed = 0.0f; // Used in conjunction with contactSpriteFrequency to delay sprite spawning.

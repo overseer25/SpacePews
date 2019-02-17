@@ -93,10 +93,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c37061b8d4eb6459b99671e0ec608b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySprites:
+  sprites:
   - {fileID: 21300000, guid: aa66d871f7813554ea2611e335715da1, type: 3}
   hoverText: {fileID: 0}
-  type: 0
+  itemType: 0
   itemTier: 3
   itemName: Gold Ore
   quantity: 1
@@ -105,6 +105,10 @@ MonoBehaviour:
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 1
   stackSize: 999
+  playspeed: 0.5
+  changeSprite: 0
+  index: 0
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &58706788288754164
 CircleCollider2D:
   m_ObjectHideFlags: 0

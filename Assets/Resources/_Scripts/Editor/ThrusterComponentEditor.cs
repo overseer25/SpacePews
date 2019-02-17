@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WeaponComponent))]
-public class WeaponComponentEditor : Editor
+[CustomEditor(typeof(ThrusterComponent))]
+public class ThrusterComponentEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        var weaponComponent = target as WeaponComponent;
+        var thrusterComponent = target as ThrusterComponent;
         EditorGUILayout.Space();
 
         // ----- PROPERTIES SECTION ----- //
@@ -49,27 +49,34 @@ public class WeaponComponentEditor : Editor
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
-        // ----- WEAPON STATS SECTION ----- //
-        EditorGUILayout.LabelField("Weapon Stats", EditorStyles.boldLabel);
+        // ----- THRUSTER STATS SECTION ----- //
+        EditorGUILayout.LabelField("Thruster Stats", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Max Speed", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("projectile"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("maxSpeed"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("    Firerate", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Acceleration", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("firerate"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("acceleration"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("    Shot Spread", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Deceleration", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("shotSpread"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("deceleration"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("    Rotation Speed", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("rotationSpeed"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
@@ -82,7 +89,7 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("sprites"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-        if (weaponComponent.sprites.Length > 1)
+        if (thrusterComponent.sprites.Length > 1)
         {
             EditorGUILayout.BeginHorizontal();
             serializedObject.Update();
@@ -95,18 +102,9 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimation"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("engine"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-        if (weaponComponent.fireAnimation.Length > 0)
-        {
-            EditorGUILayout.BeginHorizontal();
-            serializedObject.Update();
-            EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimPlayspeed"), true, GUILayout.MaxWidth(500f));
-            serializedObject.ApplyModifiedProperties();
-            EditorGUILayout.EndHorizontal();
-        }
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
@@ -121,5 +119,6 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("hoverText"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
+
     }
 }

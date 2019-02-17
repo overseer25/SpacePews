@@ -25,8 +25,6 @@ public class MountSlot : SlotBase
     void Awake()
     {
         line = GetComponent<LineRenderer>();
-        line.startWidth = 0.1f;
-        line.endWidth = 0.1f;
         image = GetComponent<Image>();
         inventoryItem = GetComponentInChildren<InventoryItem>();
         audioSource = GetComponent<AudioSource>();

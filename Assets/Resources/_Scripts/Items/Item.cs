@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour
 {
-    [Header("Display")]
-    public Sprite[] inventorySprites; // If more than one sprite, this will animate using the playspeed variable.
+    public Sprite[] sprites; // If more than one sprite, this will animate using the playspeed variable.
     public GameObject hoverText;
 
     public ItemType itemType;
@@ -18,7 +17,6 @@ public class Item : MonoBehaviour
     [TextArea(1, 5)]
     public string description;
 
-    [Header("Other")]
     public AudioClip pickupSound;
     public bool stackable;
     public int stackSize;
@@ -63,17 +61,17 @@ public class Item : MonoBehaviour
     void Update()
     {
         // If the item is hidden, it should not hover toward the player or animate.
-        if(GetSpriteRenderer() != null && spriteRenderer.enabled)
+        if(GetSpriteRenderer() != null && GetSpriteRenderer().enabled)
         {
-            if (inventorySprites.Length > 0)
+            if (sprites.Length > 1)
             {
                 // Player sprite animation
                 if (Time.time > changeSprite)
                 {
                     changeSprite = Time.time + playspeed;
                     index++;
-                    if (index >= inventorySprites.Length) { index = 0; } // Restart animation
-                    spriteRenderer.sprite = inventorySprites[index];
+                    if (index >= sprites.Length) { index = 0; } // Restart animation
+                    spriteRenderer.sprite = sprites[index];
                 }
             }
             HoverTowardPlayer(targetPlayer);
@@ -237,8 +235,8 @@ public class Item : MonoBehaviour
     public void Copy(Item other)
     {
 
-        inventorySprites = other.inventorySprites;
-        GetComponent<SpriteRenderer>().sprite = inventorySprites[0];
+        sprites = other.sprites;
+        GetComponent<SpriteRenderer>().sprite = sprites[0];
         itemType = other.itemType;
         itemTier = other.itemTier;
         itemName = other.itemName;

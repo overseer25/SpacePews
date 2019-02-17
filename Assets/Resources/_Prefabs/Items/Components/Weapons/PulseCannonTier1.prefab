@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a657d5195e88c54c85bddf1c5cff83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySprites:
+  sprites:
   - {fileID: 21300000, guid: ea4610b5636361a46960bf2e2b0e5cd3, type: 3}
   hoverText: {fileID: 0}
   itemType: 0
@@ -69,8 +69,15 @@ MonoBehaviour:
   mounted: 0
   firerate: 1
   shotSpread: 0
+  fireAnimPlayspeed: 0.05
   projectile: {fileID: 114757108629871906, guid: 8120b250c6f494a40982052c7203a705,
     type: 3}
+  fireAnimation:
+  - {fileID: 21300000, guid: 3b884bdfa2360a44287be105729ec119, type: 3}
+  - {fileID: 21300002, guid: 3b884bdfa2360a44287be105729ec119, type: 3}
+  - {fileID: 21300004, guid: 3b884bdfa2360a44287be105729ec119, type: 3}
+  - {fileID: 21300006, guid: 3b884bdfa2360a44287be105729ec119, type: 3}
+  - {fileID: 21300008, guid: 3b884bdfa2360a44287be105729ec119, type: 3}
 --- !u!61 &61207145865684788
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WeaponComponent))]
-public class WeaponComponentEditor : Editor
+[CustomEditor(typeof(MiningComponent))]
+public class MiningComponentEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        var weaponComponent = target as WeaponComponent;
+        var miningComponent = target as MiningComponent;
         EditorGUILayout.Space();
 
         // ----- PROPERTIES SECTION ----- //
@@ -43,33 +43,33 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("    Mining Rate", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("miningRate"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("    Description", GUILayout.MaxWidth(10f));
         serializedObject.Update();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("description"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
-        // ----- WEAPON STATS SECTION ----- //
-        EditorGUILayout.LabelField("Weapon Stats", EditorStyles.boldLabel);
+        // ----- LASER STATS SECTION ----- //
+        EditorGUILayout.LabelField("Laser Stats", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Laser Width", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("projectile"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("laserWidth"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("    Firerate", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Laser Length", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("firerate"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("    Shot Spread", GUILayout.MaxWidth(10f));
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("shotSpread"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("laserLength"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
@@ -79,34 +79,44 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("sprites"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("miningLaserBase"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-        if (weaponComponent.sprites.Length > 1)
-        {
-            EditorGUILayout.BeginHorizontal();
-            serializedObject.Update();
-            EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("playspeed"), true, GUILayout.MaxWidth(500f));
-            serializedObject.ApplyModifiedProperties();
-            EditorGUILayout.EndHorizontal();
-        }
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimation"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("contactBase"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-        if (weaponComponent.fireAnimation.Length > 0)
-        {
-            EditorGUILayout.BeginHorizontal();
-            serializedObject.Update();
-            EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimPlayspeed"), true, GUILayout.MaxWidth(500f));
-            serializedObject.ApplyModifiedProperties();
-            EditorGUILayout.EndHorizontal();
-        }
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("contactMineable"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("contactAudioSource"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("baseAudioSource"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("laserContactSprite"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));

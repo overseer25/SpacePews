@@ -8,7 +8,9 @@ public class WeaponComponent : ShipComponent
 {
     public float firerate;
     public float shotSpread;
+    public float fireAnimPlayspeed;
     public Projectile projectile;
+    public Sprite[] fireAnimation;
     private List<GameObject> shotSpawns;
 
     private static System.Random random;
@@ -91,6 +93,21 @@ public class WeaponComponent : ShipComponent
     }
 
     /// <summary>
+    /// Play the weapons fire animation, if it exists.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PlayFireAnimation()
+    {
+        foreach(var frame in fireAnimation)
+        {
+            GetSpriteRenderer().sprite = frame;
+            yield return new WaitForSeconds(fireAnimPlayspeed);
+        }
+        GetSpriteRenderer().sprite = sprites[index];
+        yield break;
+    }
+
+    /// <summary>
     /// Fire the projectile.
     /// </summary>
     /// <param name="time"> The current time that has passed. If the</param>
@@ -112,6 +129,8 @@ public class WeaponComponent : ShipComponent
             audioSource.Play();
             projectile.gameObject.SetActive(true);
         }
+        if(fireAnimation.Length > 0)
+            StartCoroutine(PlayFireAnimation());
     }
 
 }

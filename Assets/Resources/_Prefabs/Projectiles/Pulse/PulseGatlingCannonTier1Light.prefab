@@ -146,9 +146,9 @@ MonoBehaviour:
   speed: 50
   critChance: 5
   critMultiplier: 2
-  homing: 1
-  homingDistance: 10
-  homingTurnSpeed: 5
+  homing: 0
+  homingDistance: 0
+  homingTurnSpeed: 0
   splitting: 0
   splitProjectiles:
   - projectile: {fileID: 114757108629871906, guid: 8120b250c6f494a40982052c7203a705,

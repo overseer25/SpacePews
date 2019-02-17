@@ -94,10 +94,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 890bb86343a675840a82ce9b397a5bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySprites:
+  sprites:
   - {fileID: 21300000, guid: 529a814533ab3bd40b9f48404d6d0e54, type: 3}
   hoverText: {fileID: 0}
-  type: 3
+  itemType: 0
   itemTier: 0
   itemName: Storage
   quantity: 1
@@ -106,9 +106,13 @@ MonoBehaviour:
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0
+  playspeed: 0.5
+  changeSprite: 0
+  index: 0
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
   componentClass: 0
-  health: 1000
   visible: 0
+  mounted: 0
   slotCount: 5
 --- !u!61 &61364792199858530
 BoxCollider2D:
