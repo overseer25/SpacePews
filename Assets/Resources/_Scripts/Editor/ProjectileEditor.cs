@@ -8,21 +8,11 @@ using UnityEngine;
 [CustomEditor(typeof(Projectile))]
 public class ProjectileEditor : Editor
 {
-    private string damage = "";
-    private string speed = "";
-    private string lifetime = "";
-    private ParticleEffect destroyEffect;
-    private AudioClip fireSound;
-    private string playSpeed = "";
-    private bool homingToggle = false;
-    private string homingDistance = "";
-    private string homingRotationSpeed = "";
 
     public override void OnInspectorGUI()
     {
-        int result = 0;
-        float resultf = 0.0f;
         var projectile = target as Projectile;
+        EditorGUILayout.Space();
 
         // ----- STATS Section ----- //
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -168,12 +158,10 @@ public class ProjectileEditor : Editor
         if (projectile.sprites.Length > 1)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("    Play Speed", GUILayout.MaxWidth(285f));
-            playSpeed = EditorGUILayout.TextField(projectile.playspeed.ToString(), GUILayout.MaxWidth(100f));
-            if (float.TryParse(playSpeed, out resultf))
-            {
-                projectile.playspeed = resultf;
-            }
+            serializedObject.Update();
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("playspeed"), true, GUILayout.MaxWidth(500f));
+            serializedObject.ApplyModifiedProperties();
             EditorGUILayout.EndHorizontal();
         }
     }

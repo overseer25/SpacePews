@@ -10,33 +10,24 @@ public class Item : MonoBehaviour
     public Sprite[] inventorySprites; // If more than one sprite, this will animate using the playspeed variable.
     public GameObject hoverText;
 
-    [Header("Attributes")]
-    [SerializeField]
-    internal ItemType type;
-    [SerializeField]
-    internal ItemTier itemTier;
-    [SerializeField]
-    internal string itemName;
-    [SerializeField]
-    internal int quantity = 1;
-    [SerializeField]
-    internal int value;
-
-    [SerializeField]
-    [TextArea(10,10)]
-    internal string description;
+    public ItemType itemType;
+    public ItemTier itemTier;
+    public string itemName;
+    public int quantity = 1;
+    public int value;
+    [TextArea(1, 5)]
+    public string description;
 
     [Header("Other")]
-    [SerializeField]
-    private AudioClip pickupSound;
+    public AudioClip pickupSound;
     public bool stackable;
     public int stackSize;
 
     // For playing a sprite animation, if it exists.
-    internal float playspeed = 0.5f;
-    internal float changeSprite = 0.0f;
-    internal int index = 0;
-    internal Color itemColor;
+    public float playspeed = 0.5f;
+    public float changeSprite = 0.0f;
+    public int index = 0;
+    public Color itemColor;
 
     private const int FOLLOWSPEED = 50;
     private const int FOLLOWANGLEMAX = 10;
@@ -163,7 +154,7 @@ public class Item : MonoBehaviour
     /// <returns></returns>
     public ItemType GetItemType()
     {
-        return type;
+        return itemType;
     }
 
     /// <summary>
@@ -248,7 +239,7 @@ public class Item : MonoBehaviour
 
         inventorySprites = other.inventorySprites;
         GetComponent<SpriteRenderer>().sprite = inventorySprites[0];
-        type = other.type;
+        itemType = other.itemType;
         itemTier = other.itemTier;
         itemName = other.itemName;
         value = other.value;

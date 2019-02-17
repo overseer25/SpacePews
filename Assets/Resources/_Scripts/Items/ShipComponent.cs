@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class ShipComponent : Item
 {
-    [Header("Component")]
-    [SerializeField]
-    private ItemClass componentClass;
-    [SerializeField]
-    private int health;
+    public ItemClass componentClass;
     // Whether or not the component is visible on the ship.
-    [SerializeField]
-    private bool visible = true;
+    public bool visible = true;
 
     // Is this item mounted to the ship?
-    internal bool mounted = false;
+    public bool mounted = false;
 
-    // The type of component.
-    internal ItemType itemType;
-
-    // The amount of health the component currently has.
-    internal int currentHealth;
+    protected override void Awake()
+    {
+        base.Awake();
+        stackable = false;
+        stackSize = 0;
+    }
 
     /// <summary>
     /// Set the mounted status of the component.
@@ -67,15 +63,6 @@ public class ShipComponent : Item
     public ItemTier GetComponentTier()
     {
         return itemTier;
-    }
-
-    /// <summary>
-    /// Gets the current health of this component.
-    /// </summary>
-    /// <returns></returns>
-    public int GetRemainingHealth()
-    {
-        return currentHealth;
     }
 
     /// <summary>

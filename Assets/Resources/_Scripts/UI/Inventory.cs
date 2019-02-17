@@ -569,7 +569,7 @@ public class Inventory : MonoBehaviour
         {
             var invComp = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName())));
 
-            if (invComp.GetItemType() == ItemType.Turret)
+            if (invSlot.GetItem().GetItemType() == ItemType.Turret)
             {
                 hotbarSlot.SetItem(invComp);
                 invSlot.ClearSlot();

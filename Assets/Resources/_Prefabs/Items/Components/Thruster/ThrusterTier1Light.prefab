@@ -4898,7 +4898,6 @@ MonoBehaviour:
   inventorySprites:
   - {fileID: 21300000, guid: e689a2b9d799b8a4f8914ebc38242f6b, type: 3}
   hoverText: {fileID: 0}
-  type: 5
   itemTier: 0
   itemName: Ion Thruster
   quantity: 1
@@ -4908,9 +4907,14 @@ MonoBehaviour:
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0
+  playspeed: 0.5
+  changeSprite: 0
+  index: 0
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
   componentClass: 0
-  health: 1000
   visible: 1
+  mounted: 0
+  itemType: 5
   acceleration: 10
   deceleration: 0.05
   maxSpeed: 15
