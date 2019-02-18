@@ -67,7 +67,7 @@ MonoBehaviour:
   componentClass: 0
   visible: 1
   mounted: 0
-  firerate: 1
+  firerate: 0.5
   shotSpread: 0
   fireAnimPlayspeed: 0.05
   projectile: {fileID: 114757108629871906, guid: 8120b250c6f494a40982052c7203a705,

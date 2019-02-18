@@ -80,7 +80,7 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     public string GetCriticalChanceString()
     {
-        return MathUtils.ConvertToPercent(projectile.critChance); ;
+        return (projectile.critChance) + "%";
     }
 
     /// <summary>
