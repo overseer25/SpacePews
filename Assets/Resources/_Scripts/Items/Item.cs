@@ -29,7 +29,6 @@ public class Item : MonoBehaviour
 
     private const int FOLLOWSPEED = 50;
     private const int FOLLOWANGLEMAX = 10;
-    private int followSpeed = FOLLOWSPEED;
     private const float MAXDISTANCE = 5.0f;
     private bool mined = false;
     private float minedFollowSpeed = FOLLOWSPEED; // Speed at which a mined item follows the player.
@@ -93,7 +92,7 @@ public class Item : MonoBehaviour
 
             var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
             if (distanceToPlayer <= MAXDISTANCE)
-                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, followSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, FOLLOWSPEED * Time.deltaTime);
         }
         else
         {
@@ -113,7 +112,7 @@ public class Item : MonoBehaviour
                     player = null;
             }
             else if(distanceToPlayer <= MAXDISTANCE)
-                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, followSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, FOLLOWSPEED * Time.deltaTime);
         }
     }
 
