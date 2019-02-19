@@ -1,17 +1,20 @@
 fileFormatVersion: 2
-guid: 712d85e894ace7341a3c3202b14e0aaf
+guid: 45a440c91ea86e24f877e7843efc4644
 TextureImporter:
   fileIDToRecycleName:
-    21300000: IonThruster_anim_0
-    21300002: IonThruster_anim_1
-    21300004: IonThruster_anim_2
-    21300006: IonThruster_anim_3
-    21300008: IonThruster_anim_4
-    21300010: IonThruster_anim_5
-    21300012: IonThruster_anim_6
-    21300014: IonThruster_anim_7
-    21300016: IonThruster_anim_8
-    21300018: IonThruster_anim_9
+    21300000: VulcanThruster_Anim_Sheet_0
+    21300002: VulcanThruster_Anim_Sheet_1
+    21300004: VulcanThruster_Anim_Sheet_2
+    21300006: VulcanThruster_Anim_Sheet_3
+    21300008: VulcanThruster_Anim_Sheet_4
+    21300010: VulcanThruster_Anim_Sheet_5
+    21300012: VulcanThruster_Anim_Sheet_6
+    21300014: VulcanThruster_Anim_Sheet_7
+    21300016: VulcanThruster_Anim_Sheet_8
+    21300018: VulcanThruster_Anim_Sheet_9
+    21300020: VulcanThruster_Anim_Sheet_10
+    21300022: VulcanThruster_Anim_Sheet_11
+    21300024: VulcanThruster_Anim_Sheet_12
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -94,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IonThruster_anim_0
+      name: VulcanThruster_Anim_Sheet_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 32
+        x: 2
+        y: 100
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -108,19 +111,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a13dfb4047fc78f4e97fa5dcc94e0863
+      spriteID: 56cbee180bd67a443b5be13fd9aa99bb
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_1
+      name: VulcanThruster_Anim_Sheet_1
       rect:
         serializedVersion: 2
-        x: 35
-        y: 32
+        x: 34
+        y: 100
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,19 +131,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6e449f52ed98ee04cb716789d67a8575
+      spriteID: b6ad2c8d8187bc040827e465a71fd01a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_2
+      name: VulcanThruster_Anim_Sheet_2
       rect:
         serializedVersion: 2
         x: 66
-        y: 32
+        y: 100
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -148,19 +151,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d2f830073ce62241bb05bc9e2416f40
+      spriteID: af220abc237fd3f4ab16418f8a1b32c7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_3
+      name: VulcanThruster_Anim_Sheet_3
       rect:
         serializedVersion: 2
-        x: 97
-        y: 32
+        x: 98
+        y: 100
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,19 +171,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4035f0cd06fe42842ab1a91d5aebd640
+      spriteID: 88363cdddc4e6994e85b0b93b812a0af
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_4
+      name: VulcanThruster_Anim_Sheet_4
       rect:
         serializedVersion: 2
-        x: 128
-        y: 32
+        x: 2
+        y: 68
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -188,19 +191,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 716753b395fe6af41991234f67aed1c2
+      spriteID: d6532c6fbff22ba43b5048d812990055
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_5
+      name: VulcanThruster_Anim_Sheet_5
       rect:
         serializedVersion: 2
-        x: 4
-        y: 3
+        x: 34
+        y: 68
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,39 +211,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e00c680a15c7f98428fa99ec247e04df
+      spriteID: ccfd6ca608511d043a674f0d72333708
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_6
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 3
-        width: 28
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 15df460eb030d63459f94727a728361b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: IonThruster_anim_7
+      name: VulcanThruster_Anim_Sheet_6
       rect:
         serializedVersion: 2
         x: 66
-        y: 3
+        y: 68
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -248,19 +231,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b9a17c2193ce6944b38b965df123e88
+      spriteID: 837b90345facde64c9af36a86d78be44
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_8
+      name: VulcanThruster_Anim_Sheet_7
       rect:
         serializedVersion: 2
-        x: 97
-        y: 3
+        x: 98
+        y: 68
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,19 +251,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05e4be749a0d0b145bc73965da9b0ef1
+      spriteID: 94e493bdf1dc1e848914740438231379
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IonThruster_anim_9
+      name: VulcanThruster_Anim_Sheet_8
       rect:
         serializedVersion: 2
-        x: 128
-        y: 3
+        x: 2
+        y: 36
         width: 28
-        height: 26
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,7 +271,87 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96af71dbaa9033042923150400804b5c
+      spriteID: d62864b2107513b48a72be569ff1c385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VulcanThruster_Anim_Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 36
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8613bbf4fb6362f40b3bcc2b09974df3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VulcanThruster_Anim_Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 36
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ad960342abae8d49aba2daa5c620e99
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VulcanThruster_Anim_Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 36
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 007124fa6ab921d439f9532b665393f6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VulcanThruster_Anim_Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 4
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a3ecb780d8db6c489f0eb824c7b00f2
       vertices: []
       indices: 
       edges: []
@@ -296,7 +359,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5cfe40b5b9ef68743b9d9bc5999d376c
+    spriteID: 1a436367e92a17249ad0666c136faf5f
     vertices: []
     indices: 
     edges: []

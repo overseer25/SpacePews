@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 6e0197ceb8ff172468935d296df6d5b4
+guid: 025a7ff67bebc48449f265b4cad9cad7
 TextureImporter:
   fileIDToRecycleName:
-    21300000: thruster_base_afterburner_0
-    21300002: thruster_base_afterburner_1
-    21300004: thruster_base_afterburner_2
-    21300006: thruster_base_afterburner_3
-    21300008: thruster_base_afterburner_4
-    21300010: thruster_base_afterburner_5
-    21300012: thruster_base_afterburner_6
+    21300000: IonThruster_Anim_0
+    21300002: IonThruster_Anim_1
+    21300004: IonThruster_Anim_2
+    21300006: IonThruster_Anim_3
+    21300008: IonThruster_Anim_4
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -78,154 +76,114 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: thruster_base_afterburner_0
+      name: IonThruster_Anim_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 61
-        height: 68
+        x: 13
+        y: 85
+        width: 36
+        height: 34
       alignment: 9
-      pivot: {x: 0.5, y: 0.5766758}
+      pivot: {x: 0.50288266, y: 0.5793585}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3eb83c7766bed424e837fd52c2f71b79
+      spriteID: 2343ded87402f624da00cb36c3cea249
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_1
+      name: IonThruster_Anim_1
       rect:
         serializedVersion: 2
-        x: 61
-        y: 0
-        width: 64
-        height: 68
+        x: 74
+        y: 85
+        width: 36
+        height: 35
       alignment: 9
-      pivot: {x: 0.49418092, y: 0.5821526}
+      pivot: {x: 0.50576526, y: 0.5622659}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8c166b90f0cabb46a80baf1a3bcc5c8
+      spriteID: a70e35e9ac5bfd440854d155e162d001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_2
+      name: IonThruster_Anim_2
       rect:
         serializedVersion: 2
-        x: 125
-        y: 0
-        width: 53
-        height: 68
+        x: 135
+        y: 84
+        width: 36
+        height: 35
       alignment: 9
-      pivot: {x: 0.5, y: 0.57119894}
+      pivot: {x: 0.5, y: 0.5919163}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d07f5094b8dd5d4b962581f33da7dd5
+      spriteID: a4109294718b6a9438cc65a593a7ae3a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_3
+      name: IonThruster_Anim_3
       rect:
         serializedVersion: 2
-        x: 178
-        y: 0
-        width: 71
-        height: 68
+        x: 196
+        y: 82
+        width: 36
+        height: 37
       alignment: 9
-      pivot: {x: 0.50524557, y: 0.5766758}
+      pivot: {x: 0.5115306, y: 0.6065812}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b3dacd013bb94845825a19c1983c55f
+      spriteID: b4222a12f31812e4eb0ec80e2be56677
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_4
+      name: IonThruster_Anim_4
       rect:
         serializedVersion: 2
-        x: 249
-        y: 0
-        width: 49
-        height: 68
+        x: 13
+        y: 15
+        width: 36
+        height: 34
       alignment: 9
-      pivot: {x: 0.49239925, y: 0.5821526}
+      pivot: {x: 0.50288266, y: 0.8235387}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a0cdd6435e4bce47b437c47b5c4cfc3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thruster_base_afterburner_5
-      rect:
-        serializedVersion: 2
-        x: 298
-        y: 0
-        width: 68
-        height: 68
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5766758}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cc02d730b28f5b349a4443703ab7e496
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thruster_base_afterburner_6
-      rect:
-        serializedVersion: 2
-        x: 366
-        y: 0
-        width: 57
-        height: 68
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5821526}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6748ba6f78cac15439bc34385bb2528a
+      spriteID: bf0148752a815b947958a3ad9f40279b
       vertices: []
       indices: 
       edges: []
@@ -233,7 +191,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6c95bff33e1bf994b89f2a15b2ff4d86
+    spriteID: 44f71e1813245bc41844cf4e8c5063bd
     vertices: []
     indices: 
     edges: []
