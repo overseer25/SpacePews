@@ -498,8 +498,6 @@ public class Inventory : MonoBehaviour
         }
         else
             return;
-        audioSource.PlayOneShot(swapSound);
-        HideHoverTooltip();
     }
 
     /// <summary>
@@ -529,6 +527,11 @@ public class Inventory : MonoBehaviour
             slot2.SetItem(slot1.GetItem(), slot1.GetQuantity());
             slot1.ClearSlot();
         }
+        else
+            return;
+
+        audioSource.PlayOneShot(swapSound);
+        HideHoverTooltip();
     }
 
     /// <summary>
@@ -538,7 +541,6 @@ public class Inventory : MonoBehaviour
     /// <param name="hotbarSlot"></param>
     private void SwapInventoryToHotbar(InventorySlot invSlot, HotbarSlot hotbarSlot)
     {
-
         // If both slots contain an item.
         if (!hotbarSlot.IsEmpty() && !invSlot.IsEmpty())
         {
@@ -569,13 +571,18 @@ public class Inventory : MonoBehaviour
         {
             var invComp = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName())));
 
-            if (invComp.GetItemType() == ItemType.Turret)
+            if (invSlot.GetItem().GetItemType() == ItemType.Turret)
             {
                 hotbarSlot.SetItem(invComp);
                 invSlot.ClearSlot();
                 weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
             }
         }
+        else
+            return;
+
+        audioSource.PlayOneShot(swapSound);
+        HideHoverTooltip();
     }
 
     /// <summary>
@@ -585,24 +592,32 @@ public class Inventory : MonoBehaviour
     /// <param name="slot2"></param>
     private void SwapHotbarSlots(HotbarSlot hotbarSlot, HotbarSlot hotbarSlot2)
     {
-        var hotbarItem1 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot.GetItem().GetItemName())));
-        var hotbarItem2 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot2.GetItem().GetItemName())));
-
         // If both slots contain an item.
         if (!hotbarSlot.IsEmpty() && !hotbarSlot2.IsEmpty())
         {
+            var hotbarItem1 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot.GetItem().GetItemName())));
+            var hotbarItem2 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot2.GetItem().GetItemName())));
+
             hotbarSlot2.SetItem(hotbarItem1);
             hotbarSlot.SetItem(hotbarItem2);
         }
         else if (hotbarSlot2.IsEmpty() && !hotbarSlot.IsEmpty())
         {
+            var hotbarItem1 = itemList.Find(x => (x.GetItemName().Equals(hotbarSlot.GetItem().GetItemName())));
+
             hotbarSlot2.SetItem(hotbarItem1);
             hotbarSlot.ClearSlot();
         }
+        else
+            return;
+
         if (hotbarSlot.IsSelected())
             weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
         else if (hotbarSlot2.IsSelected())
             weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponent);
+
+        audioSource.PlayOneShot(swapSound);
+        HideHoverTooltip();
     }
 
     /// <summary>
@@ -667,10 +682,15 @@ public class Inventory : MonoBehaviour
                 {
                     playerController.UpdateThrusterList();
                 }
-                
+
                 invSlot.ClearSlot();
             }
         }
+        else
+            return;
+
+        audioSource.PlayOneShot(swapSound);
+        HideHoverTooltip();
     }
 
     /// <summary>

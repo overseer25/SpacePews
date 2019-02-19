@@ -21,6 +21,7 @@ TagManager:
   - DeleteZone
   - MountSlot
   - HotbarSlot
+  - shotspawn
   layers:
   - Default
   - TransparentFX

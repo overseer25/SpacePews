@@ -39,15 +39,15 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     private void Update()
     {
-        if(item != null && item.inventorySprites.Length > 0)
+        if(item != null && item.sprites.Length > 0)
         {
             // Player sprite animation
             if (Time.time > item.changeSprite)
             {
                 item.changeSprite = Time.time + item.playspeed;
                 animFrameIndex++;
-                if (animFrameIndex >= item.inventorySprites.Length) { animFrameIndex = 0; } // Restart animation
-                image.sprite = item.inventorySprites[animFrameIndex];
+                if (animFrameIndex >= item.sprites.Length) { animFrameIndex = 0; } // Restart animation
+                image.sprite = item.sprites[animFrameIndex];
             }
         }
     }
@@ -73,9 +73,9 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             Clear();
 
         // Hide the item so that it isn't displayed in the game world.
-        item.GetSpriteRenderer().enabled = false;
+        item.gameObject.SetActive(false);
 
-        image.sprite = (item != null) ? item.inventorySprites[0] : null;
+        image.sprite = (item != null) ? item.sprites[0] : null;
         image.color = (item != null) ? new Color(1.0f, 1.0f, 1.0f, 0.7f) : new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
         if (count != null)

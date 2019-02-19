@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1323127365396978
+--- !u!1 &224
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4691695597659640}
-  - component: {fileID: 114289986303831286}
-  - component: {fileID: 61520005974784146}
-  - component: {fileID: 120151047872799550}
-  - component: {fileID: 82283854465768554}
-  - component: {fileID: 82129080506192176}
+  - component: {fileID: 387}
+  - component: {fileID: 1013}
+  - component: {fileID: 474}
+  - component: {fileID: 548}
+  - component: {fileID: 522}
+  - component: {fileID: 517}
   m_Layer: 11
   m_Name: MiningLaser
   m_TagString: Untagged
@@ -21,38 +21,38 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4691695597659640
+--- !u!4 &387
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323127365396978}
+  m_GameObject: {fileID: 224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5645827, y: 0.3179102, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
-  - {fileID: 4549046584058910}
-  - {fileID: 4956270641032490}
+  - {fileID: 378}
+  - {fileID: 403}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114289986303831286
+--- !u!114 &1013
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323127365396978}
+  m_GameObject: {fileID: 224}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93c4d345a184331498d4c94c93f5efd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySprites:
+  sprites:
   - {fileID: 21300000, guid: 8b3b6a945e58d0a489a21f223a7074aa, type: 3}
   hoverText: {fileID: 0}
-  type: 1
+  itemType: 1
   itemTier: 0
   itemName: Blue Mining Laser
   quantity: 1
@@ -61,34 +61,38 @@ MonoBehaviour:
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0
+  playspeed: 0.5
+  changeSprite: 0
+  index: 0
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
   componentClass: 0
-  health: 500
   visible: 1
+  mounted: 0
   miningRate: 5
   laserWidth: 0.1
   laserLength: 5
-  lineSpawner: {fileID: 1834045191426528}
+  lineSpawner: {fileID: 307}
   miningLaserBase: {fileID: 8300000, guid: acde0f2a8131c75469f92447efd4cf6a, type: 3}
   contactBase: {fileID: 8300000, guid: 6a085eb6b77585444b89d22d9a4dde2a, type: 3}
   contactMineable: {fileID: 8300000, guid: 65a4032e4eba5dd4687a0392b59003d7, type: 3}
-  contactAudioSource: {fileID: 82283854465768554}
-  baseAudioSource: {fileID: 82129080506192176}
+  contactAudioSource: {fileID: 522}
+  baseAudioSource: {fileID: 517}
   laserContactSprite: {fileID: 114031275780741820, guid: 50f6842a466960141b1b646917392599,
     type: 3}
---- !u!61 &61520005974784146
+--- !u!61 &474
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323127365396978}
+  m_GameObject: {fileID: 224}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.06921117}
+  m_Offset: {x: 0, y: 0.13416366}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -99,15 +103,15 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.05957807, y: 0.2382214}
+  m_Size: {x: 0.05957807, y: 0.1966944}
   m_EdgeRadius: 0
---- !u!120 &120151047872799550
+--- !u!120 &548
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323127365396978}
+  m_GameObject: {fileID: 224}
   m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -118,7 +122,7 @@ LineRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 40b580db6f1bf3e46b013be3b891dc18, type: 2}
+  - {fileID: 2100000, guid: 23378bc6e9c211e4885c815295a05566, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -194,13 +198,13 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!82 &82283854465768554
+--- !u!82 &522
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323127365396978}
+  m_GameObject: {fileID: 224}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -290,13 +294,13 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &82129080506192176
+--- !u!82 &517
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323127365396978}
+  m_GameObject: {fileID: 224}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -386,7 +390,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &1636857290747094
+--- !u!1 &273
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -394,8 +398,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4956270641032490}
-  - component: {fileID: 212630698388465042}
+  - component: {fileID: 403}
+  - component: {fileID: 588}
   m_Layer: 11
   m_Name: sprite
   m_TagString: Untagged
@@ -403,27 +407,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4956270641032490
+--- !u!4 &403
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636857290747094}
+  m_GameObject: {fileID: 273}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.069, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4691695597659640}
+  m_Father: {fileID: 387}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &212630698388465042
+--- !u!212 &588
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636857290747094}
+  m_GameObject: {fileID: 273}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -465,7 +469,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1834045191426528
+--- !u!1 &307
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -473,7 +477,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4549046584058910}
+  - component: {fileID: 378}
   m_Layer: 11
   m_Name: shotspawn
   m_TagString: Untagged
@@ -481,17 +485,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4549046584058910
+--- !u!4 &378
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1834045191426528}
+  m_GameObject: {fileID: 307}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.0885, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4691695597659640}
+  m_Father: {fileID: 387}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

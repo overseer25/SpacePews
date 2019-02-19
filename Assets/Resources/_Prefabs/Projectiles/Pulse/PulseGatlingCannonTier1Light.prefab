@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDamage: 1
   maxDamage: 3
-  speed: 20
+  speed: 50
   critChance: 5
   critMultiplier: 2
   homing: 0

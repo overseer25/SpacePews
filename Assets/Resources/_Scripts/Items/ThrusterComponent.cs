@@ -2,22 +2,23 @@
 
 public class ThrusterComponent : ShipComponent
 {
-    [Header("Stats")]
     public float acceleration;
     public float deceleration;
     public float maxSpeed;
     public float rotationSpeed;
 
-    [Header("Sounds")]
     public AudioClip engine;
+
+    public Thruster thruster;
+    public new ParticleSystem particleSystem;
 
     protected override void Awake()
     {
         base.Awake();
         itemType = ItemType.Thruster;
-        var particleSystem = GetComponentInChildren<ParticleSystem>(true);
-        var thruster = GetComponentInChildren<Thruster>(true);
-
+        particleSystem = GetComponentInChildren<ParticleSystem>(true);
+        thruster = GetComponentInChildren<Thruster>(true);
+        mounted = false;
         if(particleSystem == null)
             Debug.LogError("No particle system attached to: " + gameObject);
         if (thruster == null)
@@ -38,6 +39,6 @@ public class ThrusterComponent : ShipComponent
     {
         base.SetMounted(val);
         if(mounted)
-            GetComponentInChildren<ParticleSystem>(true).gameObject.SetActive(true);
+            particleSystem.gameObject.SetActive(true);
     }
 }

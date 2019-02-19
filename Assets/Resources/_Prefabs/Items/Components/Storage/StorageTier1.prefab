@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1216105881272698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.8847278, y: 16.790878, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.2, y: 6.4}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -94,21 +94,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 890bb86343a675840a82ce9b397a5bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySprites:
+  sprites:
   - {fileID: 21300000, guid: 529a814533ab3bd40b9f48404d6d0e54, type: 3}
   hoverText: {fileID: 0}
-  type: 3
+  itemType: 3
   itemTier: 0
-  itemName: Storage
+  itemName: Storage Upgrade Mk. I
   quantity: 1
   value: 750
   description: Adds 5 storage slots to the ships inventory.
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0
+  playspeed: 0.5
+  changeSprite: 0
+  index: 0
+  itemColor: {r: 0, g: 0, b: 0, a: 0}
   componentClass: 0
-  health: 1000
   visible: 0
+  mounted: 1
   slotCount: 5
 --- !u!61 &61364792199858530
 BoxCollider2D:
@@ -123,18 +127,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.015684366, y: -0.014032483}
+  m_Offset: {x: -0.0053387284, y: -0.0037054867}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.66, y: 1.22}
-    newSize: {x: 3.2, y: 6.4}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1154735, y: 0.7737086}
+  m_Size: {x: 0.18974274, y: 0.17093661}
   m_EdgeRadius: 0
 --- !u!82 &82149323309803650
 AudioSource:

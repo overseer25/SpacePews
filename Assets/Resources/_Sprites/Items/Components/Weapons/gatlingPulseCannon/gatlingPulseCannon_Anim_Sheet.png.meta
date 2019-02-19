@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 6e0197ceb8ff172468935d296df6d5b4
+guid: 9a73d06621a81444caf7583dd50975a7
 TextureImporter:
   fileIDToRecycleName:
-    21300000: thruster_base_afterburner_0
-    21300002: thruster_base_afterburner_1
-    21300004: thruster_base_afterburner_2
-    21300006: thruster_base_afterburner_3
-    21300008: thruster_base_afterburner_4
-    21300010: thruster_base_afterburner_5
-    21300012: thruster_base_afterburner_6
+    21300000: gatlingPulseCannon_Anim_Sheet_0
+    21300002: gatlingPulseCannon_Anim_Sheet_1
+    21300004: gatlingPulseCannon_Anim_Sheet_2
+    21300006: gatlingPulseCannon_Anim_Sheet_3
+    21300008: gatlingPulseCannon_Anim_Sheet_4
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -78,154 +76,114 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: thruster_base_afterburner_0
+      name: gatlingPulseCannon_Anim_Sheet_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 61
-        height: 68
+        x: 39
+        y: 33
+        width: 17
+        height: 31
       alignment: 9
-      pivot: {x: 0.5, y: 0.5766758}
+      pivot: {x: 0.49432445, y: 0.27523595}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3eb83c7766bed424e837fd52c2f71b79
+      spriteID: 4fee1216aeff015488d655faf627b00e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_1
+      name: gatlingPulseCannon_Anim_Sheet_1
       rect:
         serializedVersion: 2
-        x: 61
-        y: 0
-        width: 64
-        height: 68
+        x: 71
+        y: 33
+        width: 17
+        height: 31
       alignment: 9
-      pivot: {x: 0.49418092, y: 0.5821526}
+      pivot: {x: 0.49432445, y: 0.27523595}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8c166b90f0cabb46a80baf1a3bcc5c8
+      spriteID: 24c5639d8b71bde4fb4ddcad4e212a3e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_2
+      name: gatlingPulseCannon_Anim_Sheet_2
       rect:
         serializedVersion: 2
-        x: 125
-        y: 0
-        width: 53
-        height: 68
+        x: 7
+        y: 1
+        width: 17
+        height: 31
       alignment: 9
-      pivot: {x: 0.5, y: 0.57119894}
+      pivot: {x: 0.49432445, y: 0.27523595}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d07f5094b8dd5d4b962581f33da7dd5
+      spriteID: 1fc48f507481c24469571356cc4da4f2
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_3
+      name: gatlingPulseCannon_Anim_Sheet_3
       rect:
         serializedVersion: 2
-        x: 178
-        y: 0
-        width: 71
-        height: 68
+        x: 7
+        y: 33
+        width: 17
+        height: 31
       alignment: 9
-      pivot: {x: 0.50524557, y: 0.5766758}
+      pivot: {x: 0.49432445, y: 0.27523595}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b3dacd013bb94845825a19c1983c55f
+      spriteID: b50ec01d727652b4a8c97d990ddd702c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: thruster_base_afterburner_4
+      name: gatlingPulseCannon_Anim_Sheet_4
       rect:
         serializedVersion: 2
-        x: 249
-        y: 0
-        width: 49
-        height: 68
+        x: 103
+        y: 33
+        width: 17
+        height: 31
       alignment: 9
-      pivot: {x: 0.49239925, y: 0.5821526}
+      pivot: {x: 0.49432445, y: 0.27523595}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a0cdd6435e4bce47b437c47b5c4cfc3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thruster_base_afterburner_5
-      rect:
-        serializedVersion: 2
-        x: 298
-        y: 0
-        width: 68
-        height: 68
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5766758}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cc02d730b28f5b349a4443703ab7e496
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: thruster_base_afterburner_6
-      rect:
-        serializedVersion: 2
-        x: 366
-        y: 0
-        width: 57
-        height: 68
-      alignment: 9
-      pivot: {x: 0.5, y: 0.5821526}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6748ba6f78cac15439bc34385bb2528a
+      spriteID: 42bc484e0be9cc8499329ff9d0b8c758
       vertices: []
       indices: 
       edges: []
@@ -233,7 +191,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 6c95bff33e1bf994b89f2a15b2ff4d86
+    spriteID: a73feda936182bc43b58d4ecc4568194
     vertices: []
     indices: 
     edges: []

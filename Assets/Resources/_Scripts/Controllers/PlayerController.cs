@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
     private MovementController movementController;
     private ShipMountController mountController;
     private WeaponController weaponController;
-    private GameObject turret;
     private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.

@@ -113,7 +113,7 @@ public class ShipMount : MonoBehaviour {
     {
         if (component == null)
             return false;
-        return mountType == component.GetItemType() && mountTier == component.GetComponentTier() && mountClass == component.GetComponentClass();
+        return mountType == component.GetItemType() && mountTier == component.GetComponentTier();
     }
 
     /// <summary>
@@ -170,16 +170,6 @@ public class ShipMount : MonoBehaviour {
     public ShipComponent GetShipComponent()
     {
         return component;
-    }
-
-    /// <summary>
-    /// Check for if the current component on this mount is
-    /// destroyed.
-    /// </summary>
-    /// <returns></returns>
-    public bool IsComponentDestroyed()
-    {
-        return component.GetRemainingHealth() <= 0;
     }
 
     /// <summary>

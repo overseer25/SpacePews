@@ -2,25 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class WeaponComponent : ShipComponent
 {
-    [Header("Weapon Stats")]
-    [SerializeField]
-    private float fireRate;
-    [SerializeField]
-    private float shotSpread;
-    [SerializeField]
-    private Projectile projectile;
-    // If the component is a weapon, this is the gameobject where the projectile will spawn from.
-    [SerializeField]
-    private GameObject shotSpawn;
+    public float firerate;
+    public float shotSpread;
+    public float fireAnimPlayspeed;
+    public Projectile projectile;
+    public Sprite[] fireAnimation;
+    private List<GameObject> shotSpawns;
 
     private static System.Random random;
     private AudioSource audioSource;
 
     // What time the last shot was fired.
     private float lastShot = 0.0f;
+    private bool playingFireAnimation;
 
     protected override void Awake()
     {
@@ -29,6 +27,17 @@ public class WeaponComponent : ShipComponent
         audioSource = GetComponent<AudioSource>();
         random = new System.Random();
         random.Next();
+
+        // Hide the sprites used in the editor for the shotspawns.
+        shotSpawns = new List<GameObject>();
+        foreach(Transform child in GetComponentsInChildren<Transform>())
+        {
+            if(child.tag == "shotspawn")
+            {
+                shotSpawns.Add(child.gameObject);
+                child.GetComponent<SpriteRenderer>().enabled = false;
+            }
+        }
     }
 
     /// <summary>
@@ -46,7 +55,7 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     public float GetNextShotTime()
     {
-        return fireRate + lastShot;
+        return firerate + lastShot;
     }
 
     /// <summary>
@@ -72,7 +81,7 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     public string GetCriticalChanceString()
     {
-        return MathUtils.ConvertToPercent(projectile.critChance); ;
+        return (projectile.critChance) + "%";
     }
 
     /// <summary>
@@ -85,24 +94,47 @@ public class WeaponComponent : ShipComponent
     }
 
     /// <summary>
+    /// Play the weapons fire animation, if it exists.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PlayFireAnimation()
+    {
+        playingFireAnimation = true;
+        foreach(var frame in fireAnimation)
+        {
+            GetSpriteRenderer().sprite = frame;
+            yield return new WaitForSeconds(fireAnimPlayspeed);
+        }
+        GetSpriteRenderer().sprite = sprites[index];
+
+        playingFireAnimation = false;
+        yield break;
+    }
+
+    /// <summary>
     /// Fire the projectile.
     /// </summary>
     /// <param name="time"> The current time that has passed. If the</param>
     public void Fire()
     {
-        var projectile = ProjectilePool.current.GetPooledObject();
-        if (projectile == null)
-            return;
+        foreach(var shotSpawn in shotSpawns)
+        {
+            var projectile = ProjectilePool.current.GetPooledObject();
+            if (projectile == null)
+                continue;
 
-        projectile.Copy(this.projectile);
-        projectile.gameObject.transform.position = shotSpawn.transform.position;
-        Quaternion rotation = shotSpawn.transform.transform.rotation;
-        var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
-        rotation *= Quaternion.Euler(0, 0, angle);
-        projectile.gameObject.transform.rotation = rotation;
-        audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
-        audioSource.Play();
-        projectile.gameObject.SetActive(true);
+            projectile.Copy(this.projectile);
+            projectile.gameObject.transform.position = shotSpawn.transform.position;
+            Quaternion rotation = shotSpawn.transform.transform.rotation;
+            var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
+            rotation *= Quaternion.Euler(0, 0, angle);
+            projectile.gameObject.transform.rotation = rotation;
+            audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
+            audioSource.Play();
+            projectile.gameObject.SetActive(true);
+        }
+        if(fireAnimation.Length > 0 && !playingFireAnimation)
+            StartCoroutine(PlayFireAnimation());
     }
 
 }

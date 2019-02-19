@@ -6,6 +6,7 @@
     protected override void Awake()
     {
         base.Awake();
+        mounted = false;
         itemType = ItemType.Storage;
     }
 }
