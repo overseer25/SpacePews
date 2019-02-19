@@ -4727,7 +4727,7 @@ Transform:
   m_GameObject: {fileID: 1073579474638200}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -13.27, y: -4.08, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 4287665328485688}
   - {fileID: 864986605}
@@ -4825,7 +4825,7 @@ MonoBehaviour:
   itemColor: {r: 0, g: 0, b: 0, a: 0}
   componentClass: 0
   visible: 1
-  mounted: 0
+  mounted: 1
   acceleration: 10
   deceleration: 0.08
   maxSpeed: 20

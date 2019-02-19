@@ -41,7 +41,7 @@ public class HotbarSlot : SlotBase
         current = true;
         image.color = SELECTCOLOR;
         if (inventoryItem.GetItem() != null)
-            inventoryItem.Dehighlight();
+            inventoryItem.Highlight();
     }
 
     /// <summary>

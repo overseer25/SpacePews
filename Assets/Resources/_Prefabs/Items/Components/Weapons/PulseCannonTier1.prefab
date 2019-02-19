@@ -291,11 +291,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: shotspawn
       objectReference: {fileID: 0}
-    - target: {fileID: 5348905257845514928, guid: 938628e9d0c1b45478924a16813bb742,
-        type: 3}
-      propertyPath: m_TagString
-      value: shotspawn
-      objectReference: {fileID: 0}
     - target: {fileID: 5346026360990980074, guid: 938628e9d0c1b45478924a16813bb742,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -81,6 +81,7 @@ public class InfoScreen : MonoBehaviour
             text1.color = ItemColors.colors[(int)item.itemTier];
             text2.text = "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>";
             text3.text = "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>";
+            text4.text = "";
             text5.text = "<style=\"Description\">" + storageComp.description + "</style>";
         }
         else if(item is MiningComponent)

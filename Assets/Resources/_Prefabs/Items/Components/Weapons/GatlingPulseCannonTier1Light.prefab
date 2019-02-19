@@ -48,7 +48,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.012711279, y: 0.060681388}
+  m_Offset: {x: 0.0005110651, y: 0.060681388}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -59,7 +59,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.112896815, y: 0.21823582}
+  m_Size: {x: 0.11113384, y: 0.26253897}
   m_EdgeRadius: 0
 --- !u!114 &114464189067452994
 MonoBehaviour:
@@ -94,10 +94,14 @@ MonoBehaviour:
   mounted: 0
   firerate: 0.1
   shotSpread: 8
-  fireAnimPlayspeed: 0
+  fireAnimPlayspeed: 0.05
   projectile: {fileID: 114122166460085274, guid: 654889b205a763c4e89008781d43fabf,
     type: 3}
-  fireAnimation: []
+  fireAnimation:
+  - {fileID: 21300000, guid: 9a73d06621a81444caf7583dd50975a7, type: 3}
+  - {fileID: 21300002, guid: 9a73d06621a81444caf7583dd50975a7, type: 3}
+  - {fileID: 21300004, guid: 9a73d06621a81444caf7583dd50975a7, type: 3}
+  - {fileID: 21300006, guid: 9a73d06621a81444caf7583dd50975a7, type: 3}
 --- !u!82 &82163975959380344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -285,11 +289,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: shotspawn
       objectReference: {fileID: 0}
-    - target: {fileID: 5348905257845514928, guid: 938628e9d0c1b45478924a16813bb742,
-        type: 3}
-      propertyPath: m_TagString
-      value: shotspawn
-      objectReference: {fileID: 0}
     - target: {fileID: 5346026360990980074, guid: 938628e9d0c1b45478924a16813bb742,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -298,7 +297,7 @@ PrefabInstance:
     - target: {fileID: 5346026360990980074, guid: 938628e9d0c1b45478924a16813bb742,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1766
+      value: 0.2735
       objectReference: {fileID: 0}
     - target: {fileID: 5346026360990980074, guid: 938628e9d0c1b45478924a16813bb742,
         type: 3}

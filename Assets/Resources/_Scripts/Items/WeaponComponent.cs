@@ -18,6 +18,7 @@ public class WeaponComponent : ShipComponent
 
     // What time the last shot was fired.
     private float lastShot = 0.0f;
+    private bool playingFireAnimation;
 
     protected override void Awake()
     {
@@ -98,12 +99,15 @@ public class WeaponComponent : ShipComponent
     /// <returns></returns>
     private IEnumerator PlayFireAnimation()
     {
+        playingFireAnimation = true;
         foreach(var frame in fireAnimation)
         {
             GetSpriteRenderer().sprite = frame;
             yield return new WaitForSeconds(fireAnimPlayspeed);
         }
         GetSpriteRenderer().sprite = sprites[index];
+
+        playingFireAnimation = false;
         yield break;
     }
 
@@ -129,7 +133,7 @@ public class WeaponComponent : ShipComponent
             audioSource.Play();
             projectile.gameObject.SetActive(true);
         }
-        if(fireAnimation.Length > 0)
+        if(fireAnimation.Length > 0 && !playingFireAnimation)
             StartCoroutine(PlayFireAnimation());
     }
 
