@@ -93,8 +93,9 @@ public class ThrusterComponentEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("sprites"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("sprites"), new GUIContent("Sprites", "First sprite is the default sprite" +
+                                                                                                ", and should always be set. Any subsequent sprites " +
+                                                                                                "added can be animated."), true, GUILayout.MaxWidth(500f)); serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
         if (thrusterComponent.sprites.Length > 1)
         {

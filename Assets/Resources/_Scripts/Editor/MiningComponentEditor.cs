@@ -86,6 +86,23 @@ public class MiningComponentEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("sprites"), new GUIContent("Sprites", "First sprite is the default sprite" +
+                                                                                                ", and should always be set. Any subsequent sprites " +
+                                                                                                "added can be animated."), true, GUILayout.MaxWidth(500f)); serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+        if (miningComponent.sprites.Length > 1)
+        {
+            EditorGUILayout.BeginHorizontal();
+            serializedObject.Update();
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("playspeed"), true, GUILayout.MaxWidth(500f));
+            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        serializedObject.Update();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("miningLaserBase"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
