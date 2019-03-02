@@ -155,7 +155,7 @@ public class MountSlot : SlotBase
     /// </summary>
     void OnMouseEnter()
     {
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -186,15 +186,18 @@ public class MountSlot : SlotBase
             }
         }
 
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if(canHighlight)
         {
-            Highlight();
-            SendMessageUpwards("ShowHoverTooltip", index);
-        }
-        else if (IsEmpty())
-        {
-            Dehighlight();
-            SendMessageUpwards("HideHoverTooltip", index);
+            if (!IsEmpty() && !InventoryItem.dragging)
+            {
+                Highlight();
+                SendMessageUpwards("ShowHoverTooltip", index);
+            }
+            else if (IsEmpty())
+            {
+                Dehighlight();
+                SendMessageUpwards("HideHoverTooltip", index);
+            }
         }
     }
 

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class HotbarSlot : SlotBase
 {
 
-    internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
     // The num key associated with this hotbar slot.
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;

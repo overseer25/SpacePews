@@ -18,7 +18,7 @@ public class InventorySlot : SlotBase
     /// </summary>
     void OnMouseEnter()
     {
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging)
         {
             if (enterSound != null)
             {
@@ -82,15 +82,18 @@ public class InventorySlot : SlotBase
             }
         }
 
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if(canHighlight)
         {
-            Highlight();
-            SendMessageUpwards("ShowHoverTooltip", index);
-        }
-        else if(IsEmpty())
-        {
-            Dehighlight();
-            SendMessageUpwards("HideHoverTooltip", index);
+            if (!IsEmpty() && !InventoryItem.dragging)
+            {
+                Highlight();
+                SendMessageUpwards("ShowHoverTooltip", index);
+            }
+            else if (IsEmpty())
+            {
+                Dehighlight();
+                SendMessageUpwards("HideHoverTooltip", index);
+            }
         }
     }
 
@@ -139,6 +142,16 @@ public class InventorySlot : SlotBase
         {
             inventoryItem.SetItem(item, quantity);
         }
+    }
+
+    /// <summary>
+    /// Set the quantity of the item in this slot.
+    /// </summary>
+    /// <param name="quantity"></param>
+    public void SetQuantity(int quantity)
+    {
+        if(inventoryItem.IsStackable())
+            inventoryItem.SetQuantity(quantity);
     }
 
     /// <summary>

@@ -13,6 +13,7 @@ public abstract class SlotBase : MonoBehaviour
     internal int index;
     internal InventoryItem inventoryItem;
     internal AudioSource audioSource;
+    internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
 
     /// <summary>
     /// Sets the index of the slot.
@@ -32,7 +33,7 @@ public abstract class SlotBase : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the inventory item of this mount slot.
+    /// Get the inventory item of this slot.
     /// </summary>
     /// <returns></returns>
     public InventoryItem GetInventoryItem()
@@ -41,7 +42,7 @@ public abstract class SlotBase : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets the item of the mount slot.
+    /// Gets the item of the slot.
     /// </summary>
     /// <returns></returns>
     public Item GetItem()
@@ -50,12 +51,29 @@ public abstract class SlotBase : MonoBehaviour
     }
 
     /// <summary>
-    /// Is the inventory slot empty?
+    /// Is the slot empty?
     /// </summary>
     /// <returns></returns>
     public bool IsEmpty()
     {
         return inventoryItem.GetItem() == null;
+    }
+
+    /// <summary>
+    /// Check to see if this slot has the same item as another slot.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool ContainsSameItem(SlotBase other)
+    {
+        var thisItem = inventoryItem.GetItem();
+        var otherItem = other.inventoryItem.GetItem();
+
+        if (thisItem == null && otherItem == null) return true;
+        else if (thisItem == null) return false;
+        else if (otherItem == null) return false;
+
+        return thisItem.itemName == otherItem.itemName;
     }
 
     /// <summary>

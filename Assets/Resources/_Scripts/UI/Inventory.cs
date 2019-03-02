@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
     [Header("Tool Tip")]
     public InfoScreen infoScreen;
+
+    [Header("Item Transfer Confirm Window")]
+    public GameObject itemTransferPanel;
+    public Button itemTransferConfirmButton;
+    public InputField itemTransferNumber;
+    private int[] indicesToTransfer;
 
     [Header("Sounds")]
     [SerializeField]
@@ -18,6 +26,9 @@ public class Inventory : MonoBehaviour
     private AudioClip clearSlotSound;
     [SerializeField]
     private AudioClip hotbarSelectSound;
+
+    private const int INVENTORY_SIZE = 20;
+    private const int HOTBAR_COUNT = 5;
 
     internal AudioSource audioSource;
     internal bool isOpen = false;
@@ -46,26 +57,24 @@ public class Inventory : MonoBehaviour
 
     // All possible items in the game. This reference is required in order to maintain inventory sprites when objects are destroyed.
     private List<Item> itemList;
-    private int inventorySize = 0;
     private int selectedHotbarSlotIndex;
     private bool dead = false;
-
 
     // Use this for initialization
     void Awake()
     {
-
-        inventorySlots = new List<InventorySlot>();
-
-        var index = 0;
-
         itemList = new List<Item>();
+        var index = 0;
         foreach (var obj in Resources.LoadAll("_Prefabs/Items"))
         {
             var item = (obj as GameObject);
             itemList.Add(item.GetComponent<Item>());
         }
         audioSource = GetComponent<AudioSource>();
+
+        inventorySlots = GetComponentsInChildren<InventorySlot>().ToList();
+        foreach (var slot in inventorySlots)
+            slot.SetIndex(index++);
 
         mountSlots = new List<MountSlot>();
         foreach (var mount in mountController.GetAllMounts())
@@ -76,7 +85,7 @@ public class Inventory : MonoBehaviour
         }
 
         hotbarSlots = new List<HotbarSlot>();
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i <= HOTBAR_COUNT; i++)
         {
             var slot = Instantiate(Resources.Load("_Prefabs/UI/Hotbar/HotbarSlot"), hotbarUI.transform) as GameObject;
             slot.GetComponent<HotbarSlot>().Initialize(index++, i);
@@ -92,7 +101,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (!dead && !isPaused)
+        if (!dead && !isPaused && !itemTransferPanel.activeInHierarchy)
         {
             // If scrolling up the hotbar.
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -214,44 +223,42 @@ public class Inventory : MonoBehaviour
     /// Adds slots to the inventory.
     /// </summary>
     /// <param name="size"></param>
-    public void AddSlots(int size)
-    {
-        var inventorySlot = Resources.Load("_Prefabs/UI/Inventory/Inventory_Slot") as GameObject;
-        for (int i = 0; i < size; i++)
-        {
-            var slot = Instantiate(inventorySlot, inventoryUI.transform);
-            slot.GetComponent<InventorySlot>().SetIndex(i + inventorySize);
-            inventorySlots.Add(slot.GetComponent<InventorySlot>());
-        }
-        int j = size + inventorySize;
-        foreach (var mountSlot in mountSlots)
-            mountSlot.SetIndex(j++);
-        foreach (var hotbarSlot in hotbarSlots)
-            hotbarSlot.SetIndex(j++);
-
-        inventorySize += size;
-    }
+    //public void AddSlots(int size)
+    //{
+    //    var inventorySlot = Resources.Load("_Prefabs/UI/Inventory/Inventory_Slot") as GameObject;
+    //    for (int i = 0; i < size; i++)
+    //    {
+    //        var slot = Instantiate(inventorySlot, inventoryUI.transform);
+    //        slot.GetComponent<InventorySlot>().SetIndex(i);
+    //        inventorySlots.Add(slot.GetComponent<InventorySlot>());
+    //    }
+    //    int j = inventorySlots.Count;
+    //    foreach (var mountSlot in mountSlots)
+    //        mountSlot.SetIndex(j++);
+    //    foreach (var hotbarSlot in hotbarSlots)
+    //        hotbarSlot.SetIndex(j++);
+    //}
 
     /// <summary>
     /// Remove Slots from the inventory.
     /// </summary>
     /// <param name="size"></param>
-    public void RemoveSlots(int size)
-    {
-        for (int i = inventorySize - 1; i > inventorySize - 1 - size; i--)
-        {
-            var slot = inventorySlots[i];
-            inventorySlots.RemoveAt(i);
-            Destroy(slot.gameObject);
-        }
-        int j = inventorySize - size;
-        foreach (var mountSlot in mountSlots)
-            mountSlot.SetIndex(j++);
-        foreach (var hotbarSlot in hotbarSlots)
-            hotbarSlot.SetIndex(j++);
+    //public void RemoveSlots(int size)
+    //{
+    //    for (int i = inventorySize - 1; i > inventorySize - 1 - size; i--)
+    //    {
+    //        var slot = inventorySlots[i];
+    //        inventorySlots.RemoveAt(i);
+    //        Destroy(slot.gameObject);
+    //    }
+    //    int j = inventorySize - size;
+    //    foreach (var mountSlot in mountSlots)
+    //        mountSlot.SetIndex(j++);
+    //    foreach (var hotbarSlot in hotbarSlots)
+    //        hotbarSlot.SetIndex(j++);
 
-        inventorySize -= size;
-    }
+    //    inventorySize -= size;
+    //}
 
     /// <summary>
     /// Called to toggle display to inventory UI.
@@ -284,7 +291,7 @@ public class Inventory : MonoBehaviour
         isOpen = true;
         selectedTextDisplay.enabled = false;
         InventoryItem.draggable = true;
-        AllowHotbarHoverEffect();
+        ToggleSlotHoverEffect(true);
     }
 
     /// <summary>
@@ -300,7 +307,7 @@ public class Inventory : MonoBehaviour
         isOpen = false;
         selectedTextDisplay.enabled = true;
         InventoryItem.draggable = false;
-        ForbidHotbarHoverEffect();
+        ToggleSlotHoverEffect(false);
     }
 
 
@@ -311,8 +318,9 @@ public class Inventory : MonoBehaviour
     /// <param name="index"></param>
     public virtual void ShowHoverTooltip(int index)
     {
-        if (isOpen)
+        if (isOpen && !itemTransferPanel.activeInHierarchy)
         {
+            ToggleSlotHoverEffect(true);
             // If the provided index is greater than the number of inventory slots, then it is a mount slot.
             if (index >= inventorySlots.Count() + mountSlots.Count())
             {
@@ -359,6 +367,8 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+        else
+            ToggleSlotHoverEffect(false);
     }
 
     /// <summary>
@@ -445,6 +455,146 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// The right-click functionality of dragging an item from one slot to another. If the destination slot
+    /// is empty, or contains the same item as the origin slot, then the user should be prompted to specify
+    /// how much of the incoming item's stack they wish to transfer.
+    /// </summary>
+    /// <param name="indices"></param>
+    public void PromptUserForAmountToSwap(int[] indices)
+    {
+        var index1 = indices[0];
+        var index2 = indices[1];
+        if (index1 < inventorySlots.Count() && index2 < inventorySlots.Count())
+        {
+            var slot1 = inventorySlots[index1];
+            var slot2 = inventorySlots[index2];
+            if(!slot2.IsEmpty())
+            {
+                // If the slots do not contain the same item, just swap them as normal.
+                if (!slot1.ContainsSameItem(slot2))
+                    SwapSlots(indices);
+                else
+                {
+                    itemTransferPanel.SetActive(true);
+                    indicesToTransfer = indices;
+                }
+            }
+            else
+            {
+                itemTransferPanel.SetActive(true);
+                indicesToTransfer = indices;
+            }
+        }
+    }
+
+    /// <summary>
+    /// The event that occurs when the user changes the value inside the item transfer
+    /// prompt window.
+    /// </summary>
+    /// <returns></returns>
+    public void OnValueChangeItemTransferInput()
+    {
+        int input = 0;
+        InventorySlot slot = inventorySlots[indicesToTransfer[0]];
+        if (itemTransferNumber.text == "")
+            return;
+        else if (!Int32.TryParse(itemTransferNumber.text, out input))
+            itemTransferNumber.text = "0";
+        else if (input > slot.GetInventoryItem().GetQuantity())
+            itemTransferNumber.text = slot.GetInventoryItem().GetQuantity().ToString();
+    }
+
+    /// <summary>
+    /// Hides the window for selecting amount of item to transfer, and resets the input box.
+    /// </summary>
+    private void HidePromptWindow()
+    {
+        itemTransferPanel.SetActive(false);
+        itemTransferNumber.text = "0";
+    }
+
+    /// <summary>
+    /// The action to be done when this button is clicked.
+    /// </summary>
+    public void TransferItemButtonClick()
+    {
+        Debug.Log("Button clicked");
+
+        var index1 = indicesToTransfer[0];
+        var index2 = indicesToTransfer[1];
+        if (index1 < inventorySlots.Count() && index2 < inventorySlots.Count())
+        {
+            var slot1 = inventorySlots[index1];
+            var slot2 = inventorySlots[index2];
+
+            // Slot one should not be empty.
+            if (slot1.IsEmpty())
+            {
+                return;
+            }
+            // If slot two is empty
+            else if (slot2.IsEmpty())
+            {
+                var slot1Item = itemList.Find(x => (x.GetItemName().Equals(slot1.GetItem().GetItemName())));
+                var slot1Quantity = slot1.GetQuantity();
+                int numberToSwap;
+                if (!Int32.TryParse(itemTransferNumber.text, out numberToSwap)) return;
+                if (numberToSwap == 0 || numberToSwap > slot1Quantity) return;
+
+                slot2.SetItem(slot1Item, numberToSwap);
+                if (numberToSwap == slot1Quantity)
+                    slot1.ClearSlot();
+                else
+                    slot1.SetQuantity(slot1Quantity - numberToSwap);
+            }
+            // If both are non-empty, ensure they have the same object, and attempt to merge them.
+            else
+            {
+                var slot1Item = itemList.Find(x => (x.GetItemName().Equals(slot1.GetItem().GetItemName())));
+                var slot1Quantity = slot1.GetQuantity();
+
+                var slot2Item = itemList.Find(x => (x.GetItemName().Equals(slot2.GetItem().GetItemName())));
+                var slot2Quantity = slot2.GetQuantity();
+
+                // Are they the same item, and if so, are they stackable?
+                if (slot1.ContainsSameItem(slot2) && slot1Item.IsStackable())
+                {
+                    int numberToSwap;
+                    // Edge case checks
+                    bool canParseInput = Int32.TryParse(itemTransferNumber.text, out numberToSwap);
+                    bool numberToSwapIsInvalid = numberToSwap <= 0 || numberToSwap > slot1Quantity;
+                    bool slotContainsMaxStack = slot2Quantity == slot2Item.stackSize;
+
+                    if(!canParseInput || numberToSwapIsInvalid || slotContainsMaxStack)
+                    {
+                        HidePromptWindow();
+                        return;
+                    }
+
+                    if (numberToSwap + slot2Quantity > slot1Item.stackSize)
+                    {
+                        var difference = numberToSwap + slot2Quantity - slot1Item.stackSize;
+                        slot2.SetQuantity(slot1Item.stackSize);
+                        slot1.SetQuantity(difference);
+                    }
+                    else if (numberToSwap != slot1Quantity)
+                    {
+                        slot2.SetQuantity(numberToSwap + slot2Quantity);
+                        slot1.SetQuantity(slot1Quantity - numberToSwap);
+                    }
+                    else
+                    {
+                        slot2.SetQuantity(numberToSwap + slot2Quantity);
+                        slot1.ClearSlot();
+                    }
+                }
+            }
+        }
+        HidePromptWindow();
+        ToggleSlotHoverEffect(true);
+    }
+
+    /// <summary>
     /// Swap the items of the two slots.
     /// </summary>
     /// <param name="originalIndex"></param>
@@ -514,12 +664,32 @@ public class Inventory : MonoBehaviour
         // If they both contain an item.
         if (!slot1.IsEmpty() && !slot2.IsEmpty())
         {
-            var tempItem = Instantiate(slot2.GetItem());
-            var tempQuantity = slot2.GetQuantity();
+            var slot1Item = itemList.Find(x => (x.GetItemName().Equals(slot1.GetItem().GetItemName())));
+            var slot1Quantity = slot1.GetQuantity();
 
-            slot2.SetItem(slot1.GetItem(), slot1.GetQuantity());
-            slot1.SetItem(tempItem, tempQuantity);
-            Destroy(tempItem);
+            var slot2Item = itemList.Find(x => (x.GetItemName().Equals(slot2.GetItem().GetItemName())));
+            var slot2Quantity = slot2.GetQuantity();
+
+            // If the items are the same, and they are stackable, then merge them into slot2, and return the remainder (if any) to slot1.
+            if (slot1Item == slot2Item && slot1Item.IsStackable() && (slot1Quantity != slot1Item.stackSize && slot2Quantity != slot2Item.stackSize))
+            {
+                int remainder = (slot1.GetQuantity() + slot2.GetQuantity() > slot1Item.stackSize) ? slot1.GetQuantity() + slot2.GetQuantity() - slot1Item.stackSize : 0;
+                if (remainder > 0)
+                {
+                    slot2.SetQuantity(slot1Item.stackSize);
+                    slot1.SetQuantity(remainder);
+                }
+                else
+                {
+                    slot2.SetQuantity(slot1Quantity + slot2Quantity);
+                    slot1.ClearSlot();
+                }
+            }
+            else
+            {
+                slot2.SetItem(slot1Item, slot1Quantity);
+                slot1.SetItem(slot2Item, slot2Quantity);
+            }
         }
         // If slot2 is empty.
         else if (slot2.IsEmpty() && !slot1.IsEmpty())
@@ -639,11 +809,11 @@ public class Inventory : MonoBehaviour
                 if (invComp.IsSameComponentType(mountComp))
                 {
                     // Update size of inventory, if the component is a storage component.
-                    if (invComp is StorageComponent)
-                    {
-                        RemoveSlots((mountComp as StorageComponent).slotCount);
-                        AddSlots((invComp as StorageComponent).slotCount);
-                    }
+                    //if (invComp is StorageComponent)
+                    //{
+                    //    RemoveSlots((mountComp as StorageComponent).slotCount);
+                    //    AddSlots((invComp as StorageComponent).slotCount);
+                    //}
                     var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponent;
                     var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
                     invSlot.SetItem(mountItem);
@@ -657,8 +827,8 @@ public class Inventory : MonoBehaviour
             var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
             if (mountComp.GetItemType() == ItemType.Storage)
             {
-                RemoveSlots((mountComp as StorageComponent).slotCount);
-                mountSlot.ClearSlot();
+                //RemoveSlots((mountComp as StorageComponent).slotCount);
+                //mountSlot.ClearSlot();
             }
             else if (mountComp.GetItemType() == ItemType.Thruster)
             {
@@ -676,7 +846,7 @@ public class Inventory : MonoBehaviour
                 mountSlot.SetItem(invItem);
                 if (invComp is StorageComponent)
                 {
-                    AddSlots((invItem as StorageComponent).slotCount);
+                    //AddSlots((invItem as StorageComponent).slotCount);
                 }
                 else if (invComp is ThrusterComponent)
                 {
@@ -815,24 +985,48 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Allow hotbar slots to highlight when the user hovers their mouse over them.
+    /// Set whether all slots can hightlight when the user hovers their mouse over them.
     /// </summary>
-    private void AllowHotbarHoverEffect()
+    private void ToggleSlotHoverEffect(bool val)
     {
-        foreach (var slot in hotbarSlots)
+        ToggleInventorySlotHoverEffect(val);
+        ToggleHotbarSlotHoverEffect(val);
+        ToggleMountSlotHoverEffect(val);
+    }
+
+    /// <summary>
+    /// Set whether mount slots can highlight or not when hovered over.
+    /// </summary>
+    /// <param name="val"></param>
+    private void ToggleInventorySlotHoverEffect(bool val)
+    {
+        foreach (var slot in inventorySlots)
         {
-            slot.canHighlight = true;
+            slot.canHighlight = val;
         }
     }
 
     /// <summary>
-    /// Do not allow hotbar slots to highlight when the user hovers their mouse over them.
+    /// Set whether mount slots can highlight or not when hovered over.
     /// </summary>
-    private void ForbidHotbarHoverEffect()
+    /// <param name="val"></param>
+    private void ToggleHotbarSlotHoverEffect(bool val)
     {
         foreach (var slot in hotbarSlots)
         {
-            slot.canHighlight = false;
+            slot.canHighlight = val;
+        }
+    }
+
+    /// <summary>
+    /// Set whether mount slots can highlight or not when hovered over.
+    /// </summary>
+    /// <param name="val"></param>
+    private void ToggleMountSlotHoverEffect(bool val)
+    {
+        foreach (var slot in mountSlots)
+        {
+            slot.canHighlight = val;
         }
     }
 }
