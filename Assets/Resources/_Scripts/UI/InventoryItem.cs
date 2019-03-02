@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -53,7 +51,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     private void Update()
     {
-        if(item != null && item.sprites.Length > 0)
+        if (item != null && item.sprites.Length > 0)
         {
             // Player sprite animation
             if (Time.time > item.changeSprite)
@@ -64,18 +62,21 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 image.sprite = item.sprites[animFrameIndex];
             }
         }
-        if (Input.GetMouseButtonDown(1) && draggable && highlighted)
+        if (Input.GetMouseButton(1) && !Input.GetKey(KeyCode.LeftShift) && draggable && highlighted && !dragging)
         {
+            Debug.Log("Right click dragging");
             if (rightClickDragging)
                 OnDrag(null);
             else
+            {
+                rightClickDragging = true;
                 OnBeginDrag(null);
+            }
         }
-        else if(Input.GetMouseButtonUp(1) && rightClickDragging)
+        else if (Input.GetMouseButtonUp(1) && rightClickDragging && !dragging)
         {
             OnEndDrag(null);
         }
-           
     }
 
     /// <summary>
@@ -132,7 +133,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         if (!IsStackable())
             return;
-        
+
         this.quantity = quantity;
         count.text = this.quantity + "";
     }
@@ -240,19 +241,26 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && draggable && item != null)
+        // Cannot right click drag and left click drag at the same time.
+        if (!rightClickDragging)
         {
-            if(GetComponentInParent<SlotBase>() != null)
-                positions[0] = GetComponentInParent<SlotBase>().GetIndex();
-            dragging = true;
-            SendMessageUpwards("HideHoverTooltip");
+            if (Input.GetMouseButton(0) && draggable && item != null)
+            {
+                if (GetComponentInParent<SlotBase>() != null)
+                    positions[0] = GetComponentInParent<SlotBase>().GetIndex();
+                dragging = true;
+                SendMessageUpwards("HideHoverTooltip");
+            }
         }
-        else if(Input.GetMouseButtonDown(1) && draggable && item != null)
+        else if (!dragging)
         {
-            if (GetComponentInParent<SlotBase>() != null)
-                positions[0] = GetComponentInParent<SlotBase>().GetIndex();
-            rightClickDragging = true;
-            SendMessageUpwards("HideHoverTooltip");
+            if (Input.GetMouseButton(1) && draggable && item != null)
+            {
+                if (GetComponentInParent<SlotBase>() != null)
+                    positions[0] = GetComponentInParent<SlotBase>().GetIndex();
+                rightClickDragging = true;
+                SendMessageUpwards("HideHoverTooltip");
+            }
         }
 
     }
@@ -262,23 +270,28 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && draggable && item != null)
+        if (!rightClickDragging)
         {
-            if (image == null) { return; }
+            if (Input.GetMouseButton(0) && draggable && item != null)
+            {
+                if (image == null) { return; }
 
-            var newPos = Input.mousePosition;
-            newPos.z = transform.position.z - Camera.main.transform.position.z;
-            transform.position = Camera.main.ScreenToWorldPoint(newPos);
+                var newPos = Input.mousePosition;
+                newPos.z = transform.position.z - Camera.main.transform.position.z;
+                transform.position = Camera.main.ScreenToWorldPoint(newPos);
+            }
         }
-        else if (Input.GetMouseButton(1) && draggable && item != null)
+        else if (!dragging)
         {
-            if (image == null) { return; }
+            if (Input.GetMouseButton(1) && draggable && item != null)
+            {
+                if (image == null) { return; }
 
-            var newPos = Input.mousePosition;
-            newPos.z = transform.position.z - Camera.main.transform.position.z;
-            transform.position = Camera.main.ScreenToWorldPoint(newPos);
+                var newPos = Input.mousePosition;
+                newPos.z = transform.position.z - Camera.main.transform.position.z;
+                transform.position = Camera.main.ScreenToWorldPoint(newPos);
+            }
         }
-
     }
 
     /// <summary>
@@ -287,6 +300,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (rightClickDragging && eventData != null && eventData.button != PointerEventData.InputButton.Right)
+            return;
+        else if (dragging && eventData.button != PointerEventData.InputButton.Left)
+            return;
         if (image == null || !draggable || item == null) { return; }
         dragging = false;
         rightClickDragging = false;
@@ -301,9 +318,14 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
         }
-        else if(rightClickSwapping)
+        else if (rightClickSwapping)
         {
-            SendMessageUpwards("PromptUserForAmountToSwap", positions);
+            // If the item is not stackable, then just swap as usual with the right-click drag.
+            if(IsStackable())
+                SendMessageUpwards("PromptUserForAmountToSwap", positions);
+            else
+                SendMessageUpwards("SwapSlots", positions);
+
             rightClickSwapping = false;
         }
 

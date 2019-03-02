@@ -5,11 +5,9 @@ public class InventorySlot : SlotBase
 {
 
     // Use this for initialization
-    void Awake()
+    protected override void Awake()
     {
-        image = GetComponent<Image>();
-        audioSource = GetComponent<AudioSource>();
-        inventoryItem = GetComponentInChildren<InventoryItem>();
+        base.Awake();
         Dehighlight();
     }
 

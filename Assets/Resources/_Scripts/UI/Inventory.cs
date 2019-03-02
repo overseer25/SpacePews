@@ -101,7 +101,13 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(Input.GetButtonDown("Cancel") && itemTransferPanel.activeInHierarchy)
+        // Flash the selected inventory item when the transfer panel is open.
+        if(itemTransferPanel.activeInHierarchy)
+        {
+            StartCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
+        }
+
+        if (Input.GetButtonDown("Cancel") && itemTransferPanel.activeInHierarchy)
         {
             TransferItemCancelClick();
         }
@@ -520,6 +526,7 @@ public class Inventory : MonoBehaviour
 
     private void ShowPromptWindow()
     {
+        InventoryItem.draggable = false;
         itemTransferPanel.SetActive(true);
         ToggleSlotHoverEffect(false);
         itemTransferNumber.Select();
@@ -530,9 +537,12 @@ public class Inventory : MonoBehaviour
     /// </summary>
     private void HidePromptWindow()
     {
+        InventoryItem.draggable = true;
         itemTransferPanel.SetActive(false);
         itemTransferNumber.text = "0";
         ToggleSlotHoverEffect(true);
+        StopCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
+        inventorySlots[indicesToTransfer[0]].Dehighlight();
     }
 
     /// <summary>

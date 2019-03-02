@@ -22,12 +22,10 @@ public class MountSlot : SlotBase
     private LineRenderer line;
     private Color color;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         line = GetComponent<LineRenderer>();
-        image = GetComponent<Image>();
-        inventoryItem = GetComponentInChildren<InventoryItem>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -188,7 +186,7 @@ public class MountSlot : SlotBase
 
         if(canHighlight)
         {
-            if (!IsEmpty() && !InventoryItem.dragging)
+            if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 Highlight();
                 SendMessageUpwards("ShowHoverTooltip", index);
@@ -206,7 +204,7 @@ public class MountSlot : SlotBase
     {
         Dehighlight();
 
-        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class SlotBase : MonoBehaviour
@@ -14,6 +15,16 @@ public abstract class SlotBase : MonoBehaviour
     internal InventoryItem inventoryItem;
     internal AudioSource audioSource;
     internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
+
+    // For the flash animation. If this is true, then the slot is becoming more opaque.
+    private bool increaseAlpha;
+
+    protected virtual void Awake()
+    {
+        image = GetComponent<Image>();
+        audioSource = GetComponent<AudioSource>();
+        inventoryItem = GetComponentInChildren<InventoryItem>();
+    }
 
     /// <summary>
     /// Sets the index of the slot.
@@ -74,6 +85,29 @@ public abstract class SlotBase : MonoBehaviour
         else if (otherItem == null) return false;
 
         return thisItem.itemName == otherItem.itemName;
+    }
+
+    /// <summary>
+    /// Play a flashing animation for the slot.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Flash()
+    {
+        if(!increaseAlpha)
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - 0.02f);
+        }
+        else
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + 0.02f);
+        }
+
+        if (image.color.a <= 0.4f)
+            increaseAlpha = true;
+        else if (image.color.a >= 1.0f)
+            increaseAlpha = false;
+
+        yield return new WaitForSeconds(0.1f);
     }
 
     /// <summary>

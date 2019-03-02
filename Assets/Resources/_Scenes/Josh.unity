@@ -2392,15 +2392,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1715696573, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: StartingItem
-      value: 
-      objectReference: {fileID: 114576092819483036, guid: 81dbb57f685d7fc46bd1dab3690a1ee0,
-        type: 3}
-    - target: {fileID: 1715696573, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: StartingQuantity
-      value: 55
-      objectReference: {fileID: 0}
     - target: {fileID: 1715696617, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_havePropertiesChanged
       value: 1
@@ -3270,6 +3261,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2104957947, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1462437359, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1462437359, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
