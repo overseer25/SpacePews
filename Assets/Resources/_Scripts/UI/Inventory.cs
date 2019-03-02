@@ -101,6 +101,11 @@ public class Inventory : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if(Input.GetButtonDown("Cancel") && itemTransferPanel.activeInHierarchy)
+        {
+            TransferItemCancelClick();
+        }
+
         if (!dead && !isPaused && !itemTransferPanel.activeInHierarchy)
         {
             // If scrolling up the hotbar.
@@ -475,13 +480,13 @@ public class Inventory : MonoBehaviour
                     SwapSlots(indices);
                 else
                 {
-                    itemTransferPanel.SetActive(true);
+                    ShowPromptWindow();
                     indicesToTransfer = indices;
                 }
             }
             else
             {
-                itemTransferPanel.SetActive(true);
+                ShowPromptWindow();
                 indicesToTransfer = indices;
             }
         }
@@ -496,12 +501,28 @@ public class Inventory : MonoBehaviour
     {
         int input = 0;
         InventorySlot slot = inventorySlots[indicesToTransfer[0]];
-        if (itemTransferNumber.text == "")
-            return;
-        else if (!Int32.TryParse(itemTransferNumber.text, out input))
-            itemTransferNumber.text = "0";
+        if (!Int32.TryParse(itemTransferNumber.text, out input))
+            itemTransferNumber.text = "";
         else if (input > slot.GetInventoryItem().GetQuantity())
             itemTransferNumber.text = slot.GetInventoryItem().GetQuantity().ToString();
+    }
+
+    /// <summary>
+    /// Called when the user is finished editting the input form on the item transfer window.
+    /// </summary>
+    public void OnEndEditItemTransferInput()
+    {
+        if(Input.GetButtonDown("Submit"))
+        {
+            TransferItemButtonClick();
+        }
+    }
+
+    private void ShowPromptWindow()
+    {
+        itemTransferPanel.SetActive(true);
+        ToggleSlotHoverEffect(false);
+        itemTransferNumber.Select();
     }
 
     /// <summary>
@@ -511,6 +532,16 @@ public class Inventory : MonoBehaviour
     {
         itemTransferPanel.SetActive(false);
         itemTransferNumber.text = "0";
+        ToggleSlotHoverEffect(true);
+    }
+
+    /// <summary>
+    /// Cancel button click event for the transfer item window.
+    /// </summary>
+    public void TransferItemCancelClick()
+    {
+        audioSource.PlayOneShot(clearSlotSound);
+        HidePromptWindow();
     }
 
     /// <summary>
@@ -518,8 +549,6 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void TransferItemButtonClick()
     {
-        Debug.Log("Button clicked");
-
         var index1 = indicesToTransfer[0];
         var index2 = indicesToTransfer[1];
         if (index1 < inventorySlots.Count() && index2 < inventorySlots.Count())
@@ -538,8 +567,14 @@ public class Inventory : MonoBehaviour
                 var slot1Item = itemList.Find(x => (x.GetItemName().Equals(slot1.GetItem().GetItemName())));
                 var slot1Quantity = slot1.GetQuantity();
                 int numberToSwap;
-                if (!Int32.TryParse(itemTransferNumber.text, out numberToSwap)) return;
-                if (numberToSwap == 0 || numberToSwap > slot1Quantity) return;
+                bool canParseInput = Int32.TryParse(itemTransferNumber.text, out numberToSwap);
+                bool numberToSwapIsInvalid = numberToSwap <= 0 || numberToSwap > slot1Quantity;
+
+                if (!canParseInput || numberToSwapIsInvalid)
+                {
+                    HidePromptWindow();
+                    return;
+                }
 
                 slot2.SetItem(slot1Item, numberToSwap);
                 if (numberToSwap == slot1Quantity)
@@ -591,7 +626,8 @@ public class Inventory : MonoBehaviour
             }
         }
         HidePromptWindow();
-        ToggleSlotHoverEffect(true);
+        audioSource.PlayOneShot(swapSound);
+        HideHoverTooltip();
     }
 
     /// <summary>
@@ -694,7 +730,8 @@ public class Inventory : MonoBehaviour
         // If slot2 is empty.
         else if (slot2.IsEmpty() && !slot1.IsEmpty())
         {
-            slot2.SetItem(slot1.GetItem(), slot1.GetQuantity());
+            var slot1Item = itemList.Find(x => (x.GetItemName().Equals(slot1.GetItem().GetItemName())));
+            slot2.SetItem(slot1Item, slot1.GetQuantity());
             slot1.ClearSlot();
         }
         else

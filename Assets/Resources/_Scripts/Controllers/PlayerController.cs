@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Backspace) && !itemTransferConfirmWindow.activeInHierarchy)
                 health = 0;
 
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Tab) && !itemTransferConfirmWindow.activeInHierarchy)
             {
                 gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
                 inventory.Toggle();

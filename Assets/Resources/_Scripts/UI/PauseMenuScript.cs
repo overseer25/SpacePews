@@ -34,9 +34,9 @@ public class PauseMenuScript : MonoBehaviour
         ResumeGame();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        if(!dead)
+        if(!dead && !inventory.itemTransferPanel.activeInHierarchy)
         {
             bool pause = Input.GetKeyDown(pauseKey);
             //player has hit pause key
