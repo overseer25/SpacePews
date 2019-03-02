@@ -480,14 +480,14 @@ public class Inventory : MonoBehaviour
                     SwapSlots(indices);
                 else
                 {
-                    ShowPromptWindow();
                     indicesToTransfer = indices;
+                    ShowPromptWindow();
                 }
             }
             else
             {
-                ShowPromptWindow();
                 indicesToTransfer = indices;
+                ShowPromptWindow();
             }
         }
     }

@@ -18,7 +18,7 @@ public class InventorySlot : SlotBase
     /// </summary>
     void OnMouseEnter()
     {
-        if (canHighlight && !IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             if (enterSound != null)
             {
@@ -84,7 +84,7 @@ public class InventorySlot : SlotBase
 
         if(canHighlight)
         {
-            if (!IsEmpty() && !InventoryItem.dragging)
+            if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 Highlight();
                 SendMessageUpwards("ShowHoverTooltip", index);
@@ -101,7 +101,7 @@ public class InventorySlot : SlotBase
     void OnMouseExit()
     {
         Dehighlight();
-        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)
