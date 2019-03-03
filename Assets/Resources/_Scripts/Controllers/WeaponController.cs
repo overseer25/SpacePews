@@ -27,7 +27,7 @@ public class WeaponController : MonoBehaviour
     /// <param name="component"></param>
     public void UpdateTurret(ShipComponent component)
     {
-        if(!dead)
+        if (!dead)
         {
             if (currentComponent != null)
             {
@@ -42,7 +42,7 @@ public class WeaponController : MonoBehaviour
                 return;
             }
             var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
-            if(hotbarSlotItem != null)
+            if (hotbarSlotItem != null)
             {
                 currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
                 currentComponent.gameObject.SetActive(true);
@@ -57,17 +57,17 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!dead && !isPaused)
+        if (!dead && !isPaused)
         {
-            if(currentComponent is ChargedWeapon)
+            if (currentComponent is ChargedWeapon)
             {
                 HandleChargedWeapon(currentComponent as ChargedWeapon);
             }
-            else if(currentComponent is WeaponComponent)
+            else if (currentComponent is WeaponComponent)
             {
                 HandleWeapon(currentComponent as WeaponComponent);
             }
-            else if(currentComponent is MiningComponent)
+            else if (currentComponent is MiningComponent)
             {
                 HandleMiningTool(currentComponent as MiningComponent);
             }
@@ -92,11 +92,11 @@ public class WeaponController : MonoBehaviour
     /// <param name="weapon"></param>
     private void HandleChargedWeapon(ChargedWeapon weapon)
     {
-        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null && !weapon.cooldownActive)
+        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
         {
             UpdateChargedFire(weapon);
         }
-        else if (Input.GetMouseButtonUp(0) && !menuOpen && currentComponent != null)
+        else if (Input.GetMouseButtonUp(0) && !menuOpen && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
         {
             if (weapon.charged)
             {
@@ -108,11 +108,11 @@ public class WeaponController : MonoBehaviour
                 StartCoroutine(weapon.CancelCharge());
             }
         }
-        else if(weapon.cooldownActive)
+        else if (weapon.cooldownActive)
         {
             StartCoroutine(weapon.Cooldown());
         }
-        else if(weapon.decharging)
+        else if (weapon.decharging)
         {
             StartCoroutine(weapon.CancelCharge());
         }
@@ -156,14 +156,13 @@ public class WeaponController : MonoBehaviour
     private void UpdateChargedFire(ChargedWeapon currentComponent)
     {
         var weapon = currentComponent;
-        // Only attempt to fire if there is no cooldown.
-        if(!weapon.cooldownActive)
+        if (!weapon.charged)
         {
-            if (!weapon.charged)
-                StartCoroutine(weapon.Charge());
-            if (weapon.charged)
-                StartCoroutine(weapon.PlayChargedAnimation());
+            StartCoroutine(weapon.Charge());
+            StopCoroutine(weapon.CancelCharge());
         }
+        if (weapon.charged)
+            StartCoroutine(weapon.PlayChargedAnimation());
     }
 
     /// <summary>
@@ -182,17 +181,17 @@ public class WeaponController : MonoBehaviour
     /// <param name="isDead"></param>
     public void UpdateDead(bool isDead)
     {
-        if(!dead && isDead)
+        if (!dead && isDead)
         {
             dead = isDead;
             turret.gameObject.SetActive(false);
             menuOpen = false;
         }
-        else if(dead && !isDead)
+        else if (dead && !isDead)
         {
             dead = isDead;
             turret.gameObject.SetActive(true);
         }
-        
+
     }
 }

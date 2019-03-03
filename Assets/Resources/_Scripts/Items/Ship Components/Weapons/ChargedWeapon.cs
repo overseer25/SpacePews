@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class ChargedWeapon : WeaponComponent
@@ -45,12 +46,11 @@ public class ChargedWeapon : WeaponComponent
         charging = true;
         spriteRenderer.sprite = chargingAnimation[chargingIndex];
         yield return new WaitForSeconds(timeToCharge / chargingAnimation.Length);
-        chargingIndex++;
         charging = false;
+        chargingIndex++;
         // Once the animation finishes, exit.
         if (chargingIndex == chargingAnimation.Length)
         {
-            chargingIndex = 0;
             charged = true;
             audioSource.Stop();
             yield break;
@@ -66,20 +66,19 @@ public class ChargedWeapon : WeaponComponent
         {
             audioSource.Stop();
         }
-        else
+        
+        decharging = true;
+
+            spriteRenderer.sprite = chargingAnimation[chargingIndex];
+        dechargingActive = true;
+        yield return new WaitForSeconds(timeToCharge / chargingAnimation.Length);
+        dechargingActive = false;
+        if (chargingIndex == 0)
         {
             decharging = false;
             yield break;
         }
-        decharging = true;
-
-        spriteRenderer.sprite = chargingAnimation[chargingIndex];
-        dechargingActive = true;
-        yield return new WaitForSeconds(timeToCharge / chargingAnimation.Length);
-        dechargingActive = false;
-
-        if(chargingIndex > 0)
-            chargingIndex--;
+        chargingIndex--;
     }
 
     /// <summary>
@@ -135,8 +134,11 @@ public class ChargedWeapon : WeaponComponent
     public override void Fire()
     {
         audioSource.Stop();
+        StopCoroutine(CancelCharge());
         base.Fire();
         charged = false;
+        chargedIndex = 0;
+        chargingIndex = 0;
         decharging = false;
         cooldownActive = true;
         chargedAnimActive = false;
