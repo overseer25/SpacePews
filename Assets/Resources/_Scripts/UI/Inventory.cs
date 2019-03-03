@@ -99,7 +99,7 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// Mainly controls updating the hotbar.
     /// </summary>
-    void Update()
+    void LateUpdate()
     {
         // Flash the selected inventory item when the transfer panel is open.
         if(itemTransferPanel.activeInHierarchy)
