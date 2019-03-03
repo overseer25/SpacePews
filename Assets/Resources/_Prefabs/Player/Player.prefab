@@ -7630,11 +7630,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -10595,17 +10595,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114905066843204600, guid: a0d0fc72bf09be44d97952228f6e220b,
-        type: 3}
-      propertyPath: StartingItem
-      value: 
-      objectReference: {fileID: 114121405114875228, guid: 499f5c455bec73b4ba6f4fc1daeb8291,
-        type: 3}
-    - target: {fileID: 114905066843204600, guid: a0d0fc72bf09be44d97952228f6e220b,
-        type: 3}
-      propertyPath: StartingQuantity
-      value: 500
-      objectReference: {fileID: 0}
     - target: {fileID: 114680821953334524, guid: a0d0fc72bf09be44d97952228f6e220b,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -10903,17 +10892,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.0000106
-      objectReference: {fileID: 0}
-    - target: {fileID: 114905066843204600, guid: a0d0fc72bf09be44d97952228f6e220b,
-        type: 3}
-      propertyPath: StartingItem
-      value: 
-      objectReference: {fileID: 114576092819483036, guid: 81dbb57f685d7fc46bd1dab3690a1ee0,
-        type: 3}
-    - target: {fileID: 114905066843204600, guid: a0d0fc72bf09be44d97952228f6e220b,
-        type: 3}
-      propertyPath: StartingQuantity
-      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 114680821953334524, guid: a0d0fc72bf09be44d97952228f6e220b,
         type: 3}
@@ -11510,17 +11488,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.0000106
-      objectReference: {fileID: 0}
-    - target: {fileID: 114905066843204600, guid: a0d0fc72bf09be44d97952228f6e220b,
-        type: 3}
-      propertyPath: StartingItem
-      value: 
-      objectReference: {fileID: 114121405114875228, guid: 499f5c455bec73b4ba6f4fc1daeb8291,
-        type: 3}
-    - target: {fileID: 114905066843204600, guid: a0d0fc72bf09be44d97952228f6e220b,
-        type: 3}
-      propertyPath: StartingQuantity
-      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 114680821953334524, guid: a0d0fc72bf09be44d97952228f6e220b,
         type: 3}

@@ -153,7 +153,7 @@ public class MountSlot : SlotBase
     /// </summary>
     void OnMouseEnter()
     {
-        if (canHighlight && !IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             if (enterSound != null)
             {
