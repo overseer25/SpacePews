@@ -26,6 +26,7 @@ public class Item : MonoBehaviour
     public float changeSprite = 0.0f;
     public int index = 0;
     public Color itemColor;
+    public SpriteRenderer spriteRenderer;
 
     private const int FOLLOWSPEED = 50;
     private const int FOLLOWANGLEMAX = 10;
@@ -35,13 +36,13 @@ public class Item : MonoBehaviour
     private float minedFollowAngle; // Angle of descrepancy so that the items don't come out in a straight line.
     private Vector2 startingPos;
     private GameObject targetPlayer;
-    private SpriteRenderer spriteRenderer;
     private static System.Random random;
 
     protected virtual void Awake()
     {
         random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Creates the object to play the collection sprite, and destroys the item.
@@ -57,10 +58,10 @@ public class Item : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         // If the item is hidden, it should not hover toward the player or animate.
-        if(GetSpriteRenderer() != null && GetSpriteRenderer().enabled)
+        if(spriteRenderer != null && spriteRenderer.enabled)
         {
             if (sprites.Length > 1)
             {
@@ -123,17 +124,6 @@ public class Item : MonoBehaviour
         {
             targetPlayer = target;
         }
-    }
-
-    /// <summary>
-    /// Get the sprite renderer of the item.
-    /// </summary>
-    /// <returns></returns>
-    public SpriteRenderer GetSpriteRenderer()
-    {
-        if (spriteRenderer == null)
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        return spriteRenderer;
     }
 
     /// <summary>

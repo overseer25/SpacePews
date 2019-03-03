@@ -152,6 +152,22 @@ public class ProjectileEditor : Editor
         EditorGUILayout.BeginHorizontal();
         serializedObject.Update();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("fireSprites"), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
+        if (projectile.fireSprites.Length > 1)
+        {
+            EditorGUILayout.BeginHorizontal();
+            serializedObject.Update();
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("fireSpritesPlayspeed"), true, GUILayout.MaxWidth(500f));
+            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        serializedObject.Update();
+        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("sprites"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();

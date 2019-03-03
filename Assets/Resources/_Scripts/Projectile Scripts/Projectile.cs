@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[SerializeField]
 public class Projectile : MonoBehaviour
 {
     /// <summary>
@@ -81,12 +80,19 @@ public class Projectile : MonoBehaviour
     public int lifetime;
     [HideInInspector]
     public float playspeed;
+    public float fireSpritesPlayspeed;
 
     /// <summary>
     /// The sprites of the projectile. Only animates if there is more than one sprite, otherwise is static.
     /// </summary>
     [SerializeField]
     public Sprite[] sprites;
+
+    /// <summary>
+    /// The sprite animation that plays when the projectile is fired. Does not loop.
+    /// </summary>
+    [SerializeField]
+    public Sprite[] fireSprites;
 
     internal Rigidbody2D rigidBody;
     internal SpriteRenderer spriteRenderer;
@@ -97,7 +103,9 @@ public class Projectile : MonoBehaviour
     
     private int damage;
     private float changeSprite;
+    private float fireSpritesChangeSprite;
     private int index;
+    private int fireSpritesIndex;
 
     protected virtual void Awake()
     {
@@ -128,15 +136,26 @@ public class Projectile : MonoBehaviour
         {
             StartCoroutine(BeginSplit());
         }
-        if(sprites.Length > 1)
+
+        if(fireSpritesIndex != fireSprites.Length)
         {
-            // Player sprite animation
+            // Play fire sprite animation
+            if (Time.time > fireSpritesChangeSprite)
+            {
+                fireSpritesChangeSprite = Time.time + fireSpritesPlayspeed;
+                spriteRenderer.sprite = fireSprites[fireSpritesIndex];
+                fireSpritesIndex++;
+            }
+        }
+        else if(sprites.Length > 1 && fireSpritesIndex == fireSprites.Length)
+        {
+            // Play sprite animation
             if (Time.time > changeSprite)
             {
                 changeSprite = Time.time + playspeed;
+                spriteRenderer.sprite = sprites[index];
                 index++;
                 if (index >= sprites.Length) { index = 0; } // Restart animation
-                spriteRenderer.sprite = sprites[index];
             }
         }
     }
@@ -227,6 +246,8 @@ public class Projectile : MonoBehaviour
         lifetime = other.lifetime;
         playspeed = other.playspeed;
         sprites = other.sprites;
+        fireSprites = other.fireSprites;
+        fireSpritesPlayspeed = other.fireSpritesPlayspeed;
     }
 
     /// <summary>
@@ -243,6 +264,7 @@ public class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void OnEnable()
     {
+        fireSpritesIndex = 0;
         damage = ComputeDamage();
         waitForSplit = false;
         rigidBody = GetComponent<Rigidbody2D>();

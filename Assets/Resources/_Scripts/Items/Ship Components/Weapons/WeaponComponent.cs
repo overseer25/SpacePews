@@ -13,12 +13,12 @@ public class WeaponComponent : ShipComponent
     public Sprite[] fireAnimation;
     private List<GameObject> shotSpawns;
 
-    private static System.Random random;
-    private AudioSource audioSource;
+    internal static System.Random random;
+    internal AudioSource audioSource;
 
     // What time the last shot was fired.
-    private float lastShot = 0.0f;
-    private bool playingFireAnimation;
+    internal float lastShot = 0.0f;
+    internal bool playingFireAnimation;
 
     protected override void Awake()
     {
@@ -38,6 +38,12 @@ public class WeaponComponent : ShipComponent
                 child.GetComponent<SpriteRenderer>().enabled = false;
             }
         }
+    }
+
+    protected override void Update()
+    {
+        if(!playingFireAnimation)
+            base.Update();
     }
 
     /// <summary>
@@ -102,10 +108,10 @@ public class WeaponComponent : ShipComponent
         playingFireAnimation = true;
         foreach(var frame in fireAnimation)
         {
-            GetSpriteRenderer().sprite = frame;
+            spriteRenderer.sprite = frame;
             yield return new WaitForSeconds(fireAnimPlayspeed);
         }
-        GetSpriteRenderer().sprite = sprites[index];
+        spriteRenderer.sprite = sprites[index];
 
         playingFireAnimation = false;
         yield break;
@@ -115,7 +121,7 @@ public class WeaponComponent : ShipComponent
     /// Fire the projectile.
     /// </summary>
     /// <param name="time"> The current time that has passed. If the</param>
-    public void Fire()
+    public virtual void Fire()
     {
         foreach(var shotSpawn in shotSpawns)
         {

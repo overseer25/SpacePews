@@ -1,0 +1,351 @@
+fileFormatVersion: 2
+guid: abd58f0f09d893c4b825cba31685dd4a
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: OmegaCannon_AnimSheet_0
+    21300002: OmegaCannon_AnimSheet_1
+    21300004: OmegaCannon_AnimSheet_2
+    21300006: OmegaCannon_AnimSheet_3
+    21300008: OmegaCannon_AnimSheet_4
+    21300010: OmegaCannon_AnimSheet_5
+    21300012: OmegaCannon_AnimSheet_6
+    21300014: OmegaCannon_AnimSheet_7
+    21300016: OmegaCannon_AnimSheet_8
+    21300018: OmegaCannon_AnimSheet_9
+    21300020: OmegaCannon_AnimSheet_10
+    21300022: OmegaCannon_AnimSheet_11
+  externalObjects: {}
+  serializedVersion: 7
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 78
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 677838109cbf40a40b71e7ad63930267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_1
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 78
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b26cfa6989d1f5344be9da4ad7122cc2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_2
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 78
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9525eeb876c2c64ea1d15ad0452ab2c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_3
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 78
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13875517875d8914fb17589634c2c705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_4
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 46
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21ddb7e8b781b174e9b73ddfaa997cc5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_5
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 46
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ba5564595a338144b340563e8488cd7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_6
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 46
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb18136edef07d142ad0eed9a7c0d01c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 46
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2fa2bbff355344284478833937e7d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_8
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 14
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fb5e15693151cf48ab5c30df36d01b1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_9
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 14
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4698981fe79fc5347b5571923697a5a1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_10
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 14
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25ea54a6d047d244791200ff416d21c8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_AnimSheet_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 14
+        width: 24
+        height: 33
+      alignment: 9
+      pivot: {x: 0.49999988, y: 0.3520413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3747156fae6f56644aa7e59ba42279f3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 75c6ec6eda0610d4380622f2db773083
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

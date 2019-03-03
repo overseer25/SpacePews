@@ -59,33 +59,121 @@ public class WeaponController : MonoBehaviour
     {
         if(!dead && !isPaused)
         {
-            // Change the item if necessary.
-            if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+            if(currentComponent is ChargedWeapon)
             {
-                if (currentComponent is WeaponComponent)
-                {
-                    var weapon = currentComponent as WeaponComponent;
-                    if (Time.time > weapon.GetNextShotTime())
-                    {
-                        weapon.Fire();
-                        weapon.SetLastShot(Time.time);
-                    }
-                }
-                else if (currentComponent is MiningComponent)
-                {
-                    var miningLaser = currentComponent as MiningComponent;
-                    miningLaser.Fire();
-                }
+                HandleChargedWeapon(currentComponent as ChargedWeapon);
             }
-            if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
+            else if(currentComponent is WeaponComponent)
             {
-                if (currentComponent is MiningComponent)
-                {
-                    var miningLaser = currentComponent as MiningComponent;
-                    miningLaser.StopFire();
-                }
+                HandleWeapon(currentComponent as WeaponComponent);
+            }
+            else if(currentComponent is MiningComponent)
+            {
+                HandleMiningTool(currentComponent as MiningComponent);
             }
         }
+    }
+
+    /// <summary>
+    /// Handle the functionality of the standard weapon equipped.
+    /// </summary>
+    /// <param name="weapon"></param>
+    private void HandleWeapon(WeaponComponent weapon)
+    {
+        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+        {
+            UpdateWeaponFire(weapon);
+        }
+    }
+
+    /// <summary>
+    /// Handle the functionality of the charged weapon equipped.
+    /// </summary>
+    /// <param name="weapon"></param>
+    private void HandleChargedWeapon(ChargedWeapon weapon)
+    {
+        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null && !weapon.cooldownActive)
+        {
+            UpdateChargedFire(weapon);
+        }
+        else if (Input.GetMouseButtonUp(0) && !menuOpen && currentComponent != null)
+        {
+            if (weapon.charged)
+            {
+                weapon.Fire();
+            }
+            else
+            {
+                StopCoroutine(weapon.Charge());
+                StartCoroutine(weapon.CancelCharge());
+            }
+        }
+        else if(weapon.cooldownActive)
+        {
+            StartCoroutine(weapon.Cooldown());
+        }
+        else if(weapon.decharging)
+        {
+            StartCoroutine(weapon.CancelCharge());
+        }
+    }
+
+    /// <summary>
+    /// Handle the functionality of the mining tool equipped.
+    /// </summary>
+    /// <param name="miningComponent"></param>
+    private void HandleMiningTool(MiningComponent miningComponent)
+    {
+        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+        {
+            UpdateMiningFire(miningComponent);
+        }
+        // What to do if a menu opens.
+        if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
+        {
+            miningComponent.StopFire();
+        }
+    }
+
+    /// <summary>
+    /// Fires the weapon when it is allowed to, given the player is holding the fire button.
+    /// </summary>
+    /// <param name="currentComponent"></param>
+    private void UpdateWeaponFire(WeaponComponent currentComponent)
+    {
+        var weapon = currentComponent;
+        if (Time.time > weapon.GetNextShotTime())
+        {
+            weapon.Fire();
+            weapon.SetLastShot(Time.time);
+        }
+    }
+
+    /// <summary>
+    /// Fires a charged weapon, given the player is holding the fire button.
+    /// </summary>
+    /// <param name="currentComponent"></param>
+    private void UpdateChargedFire(ChargedWeapon currentComponent)
+    {
+        var weapon = currentComponent;
+        // Only attempt to fire if there is no cooldown.
+        if(!weapon.cooldownActive)
+        {
+            if (!weapon.charged)
+                StartCoroutine(weapon.Charge());
+            if (weapon.charged)
+                StartCoroutine(weapon.PlayChargedAnimation());
+        }
+    }
+
+    /// <summary>
+    /// Fires the mining laser.
+    /// </summary>
+    /// <param name="currentComponent"></param>
+    private void UpdateMiningFire(MiningComponent currentComponent)
+    {
+        var miningLaser = currentComponent;
+        miningLaser.Fire();
     }
 
     /// <summary>

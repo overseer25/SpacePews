@@ -26,7 +26,7 @@ public class ShipComponent : Item
     {
         mounted = val;
         if (mounted && visible)
-            GetSpriteRenderer().enabled = true;
+            spriteRenderer.enabled = true;
     }
 
     /// <summary>
