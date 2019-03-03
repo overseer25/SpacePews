@@ -62,21 +62,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 image.sprite = item.sprites[animFrameIndex];
             }
         }
-        if (Input.GetMouseButton(1) && !Input.GetKey(KeyCode.LeftShift) && draggable && highlighted && !dragging)
-        {
-            Debug.Log("Right click dragging");
-            if (rightClickDragging)
-                OnDrag(null);
-            else
-            {
-                rightClickDragging = true;
-                OnBeginDrag(null);
-            }
-        }
-        else if (Input.GetMouseButtonUp(1) && rightClickDragging && !dragging)
-        {
-            OnEndDrag(null);
-        }
     }
 
     /// <summary>
@@ -242,27 +227,20 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
         // Cannot right click drag and left click drag at the same time.
-        if (!rightClickDragging)
+        if (eventData.button == PointerEventData.InputButton.Left && draggable && item != null && !rightClickDragging)
         {
-            if (Input.GetMouseButton(0) && draggable && item != null)
-            {
-                if (GetComponentInParent<SlotBase>() != null)
-                    positions[0] = GetComponentInParent<SlotBase>().GetIndex();
-                dragging = true;
-                SendMessageUpwards("HideHoverTooltip");
-            }
+            if (GetComponentInParent<SlotBase>() != null)
+                positions[0] = GetComponentInParent<SlotBase>().GetIndex();
+            dragging = true;
+            SendMessageUpwards("HideHoverTooltip");
         }
-        else if (!dragging)
+        else if (eventData.button == PointerEventData.InputButton.Right && draggable && item != null && !dragging)
         {
-            if (Input.GetMouseButton(1) && draggable && item != null)
-            {
-                if (GetComponentInParent<SlotBase>() != null)
-                    positions[0] = GetComponentInParent<SlotBase>().GetIndex();
-                rightClickDragging = true;
-                SendMessageUpwards("HideHoverTooltip");
-            }
+            if (GetComponentInParent<SlotBase>() != null)
+                positions[0] = GetComponentInParent<SlotBase>().GetIndex();
+            rightClickDragging = true;
+            SendMessageUpwards("HideHoverTooltip");
         }
-
     }
 
     /// <summary>
@@ -272,7 +250,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         if (!rightClickDragging)
         {
-            if (Input.GetMouseButton(0) && draggable && item != null)
+            if (eventData.button == PointerEventData.InputButton.Left && draggable && item != null)
             {
                 if (image == null) { return; }
 
@@ -283,7 +261,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         }
         else if (!dragging)
         {
-            if (Input.GetMouseButton(1) && draggable && item != null)
+            if (eventData.button == PointerEventData.InputButton.Right && draggable && item != null)
             {
                 if (image == null) { return; }
 
@@ -329,7 +307,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             rightClickSwapping = false;
         }
 
-        transform.position = GetComponentInParent<SlotBase>().gameObject.transform.position;
+        transform.position = transform.parent.gameObject.transform.position;
 
     }
 
