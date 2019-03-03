@@ -5,11 +5,9 @@ public class InventorySlot : SlotBase
 {
 
     // Use this for initialization
-    void Awake()
+    protected override void Awake()
     {
-        image = GetComponent<Image>();
-        audioSource = GetComponent<AudioSource>();
-        inventoryItem = GetComponentInChildren<InventoryItem>();
+        base.Awake();
         Dehighlight();
     }
 
@@ -18,7 +16,7 @@ public class InventorySlot : SlotBase
     /// </summary>
     void OnMouseEnter()
     {
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             if (enterSound != null)
             {
@@ -82,15 +80,18 @@ public class InventorySlot : SlotBase
             }
         }
 
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if(canHighlight)
         {
-            Highlight();
-            SendMessageUpwards("ShowHoverTooltip", index);
-        }
-        else if(IsEmpty())
-        {
-            Dehighlight();
-            SendMessageUpwards("HideHoverTooltip", index);
+            if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
+            {
+                Highlight();
+                SendMessageUpwards("ShowHoverTooltip", index);
+            }
+            else if (IsEmpty())
+            {
+                Dehighlight();
+                SendMessageUpwards("HideHoverTooltip", index);
+            }
         }
     }
 
@@ -98,7 +99,7 @@ public class InventorySlot : SlotBase
     void OnMouseExit()
     {
         Dehighlight();
-        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)
@@ -139,6 +140,16 @@ public class InventorySlot : SlotBase
         {
             inventoryItem.SetItem(item, quantity);
         }
+    }
+
+    /// <summary>
+    /// Set the quantity of the item in this slot.
+    /// </summary>
+    /// <param name="quantity"></param>
+    public void SetQuantity(int quantity)
+    {
+        if(inventoryItem.IsStackable())
+            inventoryItem.SetQuantity(quantity);
     }
 
     /// <summary>

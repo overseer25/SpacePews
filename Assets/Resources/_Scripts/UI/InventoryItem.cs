@@ -1,15 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    // This is used for debugging and testing.
+    public Item StartingItem;
+    public int StartingQuantity;
+
     // Item data
     private int quantity;
     private bool swapping;
+    private bool rightClickSwapping;
     private Item item;
     private int animFrameIndex;
 
@@ -24,6 +27,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     // If swapping slots, send off these positions.
     private int[] positions;
     internal static bool dragging = false;
+    internal static bool rightClickDragging = false;
     // If the inventory item is not visible, it is not draggable.
     internal static bool draggable;
     internal bool destroying = false;
@@ -35,11 +39,19 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         count = GetComponentInChildren<TextMeshProUGUI>();
         positions = new int[2];
         positions[0] = GetComponentInParent<SlotBase>().GetIndex();
+
+        if (StartingItem != null)
+        {
+            if (!StartingItem.stackable || StartingQuantity > 0)
+            {
+                SetItem(StartingItem, StartingQuantity);
+            }
+        }
     }
 
     private void Update()
     {
-        if(item != null && item.sprites.Length > 0)
+        if (item != null && item.sprites.Length > 0)
         {
             // Player sprite animation
             if (Time.time > item.changeSprite)
@@ -106,7 +118,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         if (!IsStackable())
             return;
-        
+
         this.quantity = quantity;
         count.text = this.quantity + "";
     }
@@ -214,12 +226,19 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-
-        if (Input.GetMouseButton(0) && draggable && item != null)
+        // Cannot right click drag and left click drag at the same time.
+        if (eventData.button == PointerEventData.InputButton.Left && draggable && item != null && !rightClickDragging)
         {
-            if(GetComponentInParent<SlotBase>() != null)
+            if (GetComponentInParent<SlotBase>() != null)
                 positions[0] = GetComponentInParent<SlotBase>().GetIndex();
             dragging = true;
+            SendMessageUpwards("HideHoverTooltip");
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right && draggable && item != null && !dragging)
+        {
+            if (GetComponentInParent<SlotBase>() != null)
+                positions[0] = GetComponentInParent<SlotBase>().GetIndex();
+            rightClickDragging = true;
             SendMessageUpwards("HideHoverTooltip");
         }
     }
@@ -229,15 +248,28 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && draggable && item != null)
+        if (!rightClickDragging)
         {
-            if (image == null) { return; }
+            if (eventData.button == PointerEventData.InputButton.Left && draggable && item != null)
+            {
+                if (image == null) { return; }
 
-            var newPos = Input.mousePosition;
-            newPos.z = transform.position.z - Camera.main.transform.position.z;
-            transform.position = Camera.main.ScreenToWorldPoint(newPos);
+                var newPos = Input.mousePosition;
+                newPos.z = transform.position.z - Camera.main.transform.position.z;
+                transform.position = Camera.main.ScreenToWorldPoint(newPos);
+            }
         }
+        else if (!dragging)
+        {
+            if (eventData.button == PointerEventData.InputButton.Right && draggable && item != null)
+            {
+                if (image == null) { return; }
 
+                var newPos = Input.mousePosition;
+                newPos.z = transform.position.z - Camera.main.transform.position.z;
+                transform.position = Camera.main.ScreenToWorldPoint(newPos);
+            }
+        }
     }
 
     /// <summary>
@@ -246,21 +278,36 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (rightClickDragging && eventData != null && eventData.button != PointerEventData.InputButton.Right)
+            return;
+        else if (dragging && eventData.button != PointerEventData.InputButton.Left)
+            return;
         if (image == null || !draggable || item == null) { return; }
         dragging = false;
+        rightClickDragging = false;
 
         if (destroying)
         {
             SendMessageUpwards("DeleteSlot", positions[0]);
             destroying = false;
         }
-        if (swapping || mounting)
+        else if (swapping || mounting)
         {
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
         }
+        else if (rightClickSwapping)
+        {
+            // If the item is not stackable, then just swap as usual with the right-click drag.
+            if(IsStackable())
+                SendMessageUpwards("PromptUserForAmountToSwap", positions);
+            else
+                SendMessageUpwards("SwapSlots", positions);
 
-        transform.position = GetComponentInParent<SlotBase>().gameObject.transform.position;
+            rightClickSwapping = false;
+        }
+
+        transform.position = transform.parent.gameObject.transform.position;
 
     }
 
@@ -274,7 +321,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         {
             case ("InventorySlot"):
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
-                swapping = true;
+                if (dragging)
+                    swapping = true;
+                else if (rightClickDragging)
+                    rightClickSwapping = true;
                 break;
             case ("MountSlot"):
                 mountSlot = collider.gameObject.GetComponent<MountSlot>();
@@ -284,7 +334,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             case ("HotbarSlot"):
                 var hotbarSlot = collider.gameObject.GetComponent<HotbarSlot>();
                 positions[1] = hotbarSlot.GetIndex();
-                swapping = true;
+                if (dragging)
+                    swapping = true;
+                else if (rightClickDragging)
+                    rightClickSwapping = true;
                 break;
             case ("DeleteZone"):
                 collider.gameObject.GetComponent<Image>();
@@ -303,7 +356,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         {
             case ("InventorySlot"):
                 positions[1] = collider.gameObject.GetComponentInParent<InventorySlot>().GetIndex();
-                swapping = true;
+                if (dragging)
+                    swapping = true;
+                else if (rightClickDragging)
+                    rightClickSwapping = true;
                 break;
             case ("MountSlot"):
                 mountSlot = collider.gameObject.GetComponent<MountSlot>();
@@ -312,7 +368,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 break;
             case ("HotbarSlot"):
                 positions[1] = collider.gameObject.GetComponent<HotbarSlot>().GetIndex();
-                swapping = true;
+                if (dragging)
+                    swapping = true;
+                else if (rightClickDragging)
+                    rightClickSwapping = true;
                 break;
             case ("DeleteZone"):
                 destroying = true;
@@ -327,6 +386,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     void OnTriggerExit2D(Collider2D collider)
     {
         swapping = false;
+        rightClickSwapping = false;
         destroying = false;
         mounting = false;
         mountSlot = null;

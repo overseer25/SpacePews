@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class HotbarSlot : SlotBase
 {
 
-    internal bool canHighlight = false; // Allow the slot to highlight when hovered over.
     // The num key associated with this hotbar slot.
     private int numkey;
     private TextMeshProUGUI numkeyDisplay;
@@ -20,12 +19,10 @@ public class HotbarSlot : SlotBase
     [Header("Starting Component")]
     public ShipComponent startingComponent;
 
-    void Awake()
+    protected override void Awake()
     {
-        image = GetComponent<Image>();
-        audioSource = GetComponent<AudioSource>();
+        base.Awake();
         numkeyDisplay = GetComponentInChildren<TextMeshProUGUI>();
-        inventoryItem = GetComponentInChildren<InventoryItem>();
         image.color = DEFAULTCOLOR;
         if (startingComponent != null)
         {
@@ -141,7 +138,7 @@ public class HotbarSlot : SlotBase
     void OnMouseEnter()
     {
 
-        if (canHighlight && !IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             if (enterSound != null)
             {
@@ -162,7 +159,7 @@ public class HotbarSlot : SlotBase
                 SendMessageUpwards("QuickSwapWithInventorySlot", index);
             }
 
-            if (!IsEmpty() && !InventoryItem.dragging)
+            if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 Highlight();
                 SendMessageUpwards("ShowHoverTooltip", index);
@@ -184,7 +181,7 @@ public class HotbarSlot : SlotBase
 
         if (canHighlight)
         {
-            if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+            if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 if (!current)
                 {

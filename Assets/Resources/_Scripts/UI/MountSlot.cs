@@ -22,12 +22,10 @@ public class MountSlot : SlotBase
     private LineRenderer line;
     private Color color;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         line = GetComponent<LineRenderer>();
-        image = GetComponent<Image>();
-        inventoryItem = GetComponentInChildren<InventoryItem>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -155,7 +153,7 @@ public class MountSlot : SlotBase
     /// </summary>
     void OnMouseEnter()
     {
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if (canHighlight && !IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             if (enterSound != null)
             {
@@ -186,15 +184,18 @@ public class MountSlot : SlotBase
             }
         }
 
-        if (!IsEmpty() && !InventoryItem.dragging)
+        if(canHighlight)
         {
-            Highlight();
-            SendMessageUpwards("ShowHoverTooltip", index);
-        }
-        else if (IsEmpty())
-        {
-            Dehighlight();
-            SendMessageUpwards("HideHoverTooltip", index);
+            if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
+            {
+                Highlight();
+                SendMessageUpwards("ShowHoverTooltip", index);
+            }
+            else if (IsEmpty())
+            {
+                Dehighlight();
+                SendMessageUpwards("HideHoverTooltip", index);
+            }
         }
     }
 
@@ -203,7 +204,7 @@ public class MountSlot : SlotBase
     {
         Dehighlight();
 
-        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging)
+        if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
             SendMessageUpwards("HideHoverTooltip");
             if (exitSound != null)

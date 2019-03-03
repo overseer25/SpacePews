@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public Inventory inventory;
     public DeathScreen deathScreen;
     public PauseMenuScript pauseMenu;
+    public GameObject itemTransferConfirmWindow;
     public GameObject respawnPoint;
     [Header("Effects/Sounds")]
     public ParticleEffect deathExplosion;
@@ -80,12 +81,12 @@ public class PlayerController : MonoBehaviour
         {
             ship = shipRenderer.gameObject;
             _ship = ship.GetComponent<Ship>();
-            inventory.AddSlots(_ship.inventorySize);
-            foreach (var mount in mountController.GetStorageMounts())
-            {
-                if (mount.startingComponent != null)
-                    inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
-            }
+            //inventory.AddSlots(_ship.inventorySize);
+            //foreach (var mount in mountController.GetStorageMounts())
+            //{
+            //    if (mount.startingComponent != null)
+            //        inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
+            //}
         }
 
     }
@@ -167,10 +168,10 @@ public class PlayerController : MonoBehaviour
             }
 
             // Suicide button.
-            if (Input.GetKeyDown(KeyCode.Backspace))
+            if (Input.GetKeyDown(KeyCode.Backspace) && !itemTransferConfirmWindow.activeInHierarchy)
                 health = 0;
 
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Tab) && !itemTransferConfirmWindow.activeInHierarchy)
             {
                 gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
                 inventory.Toggle();
