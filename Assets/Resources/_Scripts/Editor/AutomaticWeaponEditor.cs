@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WeaponComponent))]
-public class WeaponComponentEditor : Editor
+[CustomEditor(typeof(AutomaticWeapon))]
+public class AutomaticWeaponEditor: Editor
 {
     public override void OnInspectorGUI()
     {
-        var weaponComponent = target as WeaponComponent;
+        var automaticWeapon = target as AutomaticWeapon;
         EditorGUILayout.Space();
 
         // ----- PROPERTIES SECTION ----- //
@@ -29,16 +29,16 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("    Value", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Item Type", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("value"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("itemType"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("    Item Type", GUILayout.MaxWidth(10f));
+        EditorGUILayout.LabelField("    Value", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("itemType"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("value"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
@@ -91,7 +91,7 @@ public class WeaponComponentEditor : Editor
                                                                                                 "added can be animated."), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-        if (weaponComponent.sprites.Length > 1)
+        if (automaticWeapon.sprites.Length > 1)
         {
             EditorGUILayout.BeginHorizontal();
             serializedObject.Update();
@@ -107,7 +107,7 @@ public class WeaponComponentEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimation"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-        if (weaponComponent.fireAnimation.Length > 0)
+        if (automaticWeapon.fireAnimation.Length > 0)
         {
             EditorGUILayout.BeginHorizontal();
             serializedObject.Update();

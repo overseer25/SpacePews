@@ -76,7 +76,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -99,8 +99,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -160,10 +160,12 @@ MonoBehaviour:
   splitOnCollision: 1
   destroyOnSplit: 1
   splitAfterTime: 0.2
-  fireSound: {fileID: 8300000, guid: f7cd664176af54746b838af281ee69c2, type: 3}
-  destroyEffect: {fileID: 114353173892645446, guid: 39fffa447ffea104d902c5285d13f3d2,
+  fireSound: {fileID: 8300000, guid: 14be63b2bfeff474ca311449410bedd3, type: 3}
+  destroyEffect: {fileID: 2448474026819181268, guid: f8975ca729e0560429747e3ed9f63f7f,
     type: 3}
   lifetime: 5
   playspeed: 0.15
+  fireSpritesPlayspeed: 0
   sprites:
   - {fileID: 21300000, guid: 9d5fa822983c3304ea4251a1633531dd, type: 3}
+  fireSprites: []

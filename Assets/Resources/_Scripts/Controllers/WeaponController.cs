@@ -3,7 +3,6 @@
 public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
-    internal bool isPaused = false;
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
@@ -57,15 +56,18 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!dead && !isPaused)
+        if (!dead)
         {
             if (currentComponent is ChargedWeapon)
             {
                 HandleChargedWeapon(currentComponent as ChargedWeapon);
             }
-            else if (currentComponent is WeaponComponent)
+            else if (currentComponent is AutomaticWeapon)
             {
-                HandleWeapon(currentComponent as WeaponComponent);
+                if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+                {
+                    (currentComponent as AutomaticWeapon).CheckFire();
+                }
             }
             else if (currentComponent is MiningComponent)
             {
@@ -75,28 +77,19 @@ public class WeaponController : MonoBehaviour
     }
 
     /// <summary>
-    /// Handle the functionality of the standard weapon equipped.
-    /// </summary>
-    /// <param name="weapon"></param>
-    private void HandleWeapon(WeaponComponent weapon)
-    {
-        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
-        {
-            UpdateWeaponFire(weapon);
-        }
-    }
-
-    /// <summary>
     /// Handle the functionality of the charged weapon equipped.
     /// </summary>
     /// <param name="weapon"></param>
     private void HandleChargedWeapon(ChargedWeapon weapon)
     {
-        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
+        if (Input.GetMouseButton(0) && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
         {
-            UpdateChargedFire(weapon);
+            if (!menuOpen)
+                weapon.CheckFire();
+            else
+                weapon.CancelFire();
         }
-        else if (Input.GetMouseButtonUp(0) && !menuOpen && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
+        else if (Input.GetMouseButtonUp(0) && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
         {
             if (weapon.charged)
             {
@@ -104,17 +97,16 @@ public class WeaponController : MonoBehaviour
             }
             else
             {
-                StopCoroutine(weapon.Charge());
-                StartCoroutine(weapon.CancelCharge());
+                weapon.CancelFire();
             }
         }
         else if (weapon.cooldownActive)
         {
-            StartCoroutine(weapon.Cooldown());
+            weapon.StartCooldown();
         }
         else if (weapon.decharging)
         {
-            StartCoroutine(weapon.CancelCharge());
+            weapon.CancelFire();
         }
     }
 
@@ -133,36 +125,6 @@ public class WeaponController : MonoBehaviour
         {
             miningComponent.StopFire();
         }
-    }
-
-    /// <summary>
-    /// Fires the weapon when it is allowed to, given the player is holding the fire button.
-    /// </summary>
-    /// <param name="currentComponent"></param>
-    private void UpdateWeaponFire(WeaponComponent currentComponent)
-    {
-        var weapon = currentComponent;
-        if (Time.time > weapon.GetNextShotTime())
-        {
-            weapon.Fire();
-            weapon.SetLastShot(Time.time);
-        }
-    }
-
-    /// <summary>
-    /// Fires a charged weapon, given the player is holding the fire button.
-    /// </summary>
-    /// <param name="currentComponent"></param>
-    private void UpdateChargedFire(ChargedWeapon currentComponent)
-    {
-        var weapon = currentComponent;
-        if (!weapon.charged)
-        {
-            StartCoroutine(weapon.Charge());
-            StopCoroutine(weapon.CancelCharge());
-        }
-        if (weapon.charged)
-            StartCoroutine(weapon.PlayChargedAnimation());
     }
 
     /// <summary>

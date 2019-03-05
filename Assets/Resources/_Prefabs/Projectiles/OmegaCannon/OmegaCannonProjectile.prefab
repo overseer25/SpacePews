@@ -76,10 +76,10 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.4, y: 0.46}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &2317330883007650190
@@ -99,8 +99,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.42, y: 0.54}
-    newSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 0.4, y: 0.46}
+    newSize: {x: 0.4, y: 0.46}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -146,9 +146,9 @@ MonoBehaviour:
   speed: 45
   critChance: 10
   critMultiplier: 2
-  homing: 1
-  homingDistance: 5
-  homingTurnSpeed: 5
+  homing: 0
+  homingDistance: 0
+  homingTurnSpeed: 0
   splitting: 0
   splitProjectiles:
   - projectile: {fileID: 114765949970268536, guid: 489198a139ac2284fab60c5e49798453,
@@ -160,8 +160,8 @@ MonoBehaviour:
   splitOnCollision: 1
   destroyOnSplit: 1
   splitAfterTime: 0.2
-  fireSound: {fileID: 8300000, guid: 5223dca4c252c964aa279b2dda32428a, type: 3}
-  destroyEffect: {fileID: 114353173892645446, guid: 39fffa447ffea104d902c5285d13f3d2,
+  fireSound: {fileID: 8300000, guid: 587ca44fa84ad2e47a628445136cf8be, type: 3}
+  destroyEffect: {fileID: 5772928558452342579, guid: 746c98629d056ac469c87a56eeed15c8,
     type: 3}
   lifetime: 5
   playspeed: 0.1
@@ -176,4 +176,3 @@ MonoBehaviour:
   - {fileID: 21300002, guid: 160c7a0b534b2524e8b11f1c99fb7599, type: 3}
   - {fileID: 21300004, guid: 160c7a0b534b2524e8b11f1c99fb7599, type: 3}
   - {fileID: 21300006, guid: 160c7a0b534b2524e8b11f1c99fb7599, type: 3}
-  - {fileID: 21300008, guid: 160c7a0b534b2524e8b11f1c99fb7599, type: 3}

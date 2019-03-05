@@ -13,7 +13,6 @@ TextureImporter:
     21300016: OmegaCannon_CooldownAnim_8
     21300018: OmegaCannon_CooldownAnim_9
     21300020: OmegaCannon_CooldownAnim_10
-    21300022: OmegaCannon_CooldownAnim_11
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -100,17 +99,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3
-        y: 89
-        width: 26
-        height: 32
+        y: 131
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a465f1e0d9e24b4585a5e2d76a29141
+      spriteID: db75d570dd6a6e147b93de32cab1f544
       vertices: []
       indices: 
       edges: []
@@ -119,18 +118,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_1
       rect:
         serializedVersion: 2
-        x: 35
-        y: 89
-        width: 26
-        height: 32
+        x: 67
+        y: 131
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ecb0bf416d47a7a4f90c10bc4b85cdd9
+      spriteID: 87103e10586eba04d8c82bd100dca165
       vertices: []
       indices: 
       edges: []
@@ -139,18 +138,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_2
       rect:
         serializedVersion: 2
-        x: 67
-        y: 89
-        width: 26
-        height: 32
+        x: 131
+        y: 131
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd96830ad7f3e714794431c4466542c4
+      spriteID: e0f50cea72141814baa79ee609814dda
       vertices: []
       indices: 
       edges: []
@@ -159,18 +158,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_3
       rect:
         serializedVersion: 2
-        x: 99
-        y: 89
-        width: 26
-        height: 32
+        x: 195
+        y: 131
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e647df22a14c52a42886bd2f4e0a31c3
+      spriteID: 9635854bd078f3f43afd9eec810f2f32
       vertices: []
       indices: 
       edges: []
@@ -180,17 +179,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3
-        y: 49
-        width: 26
-        height: 32
+        y: 67
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 974e2c04ab0b2904a95fa1a60a8eb02a
+      spriteID: f8ca70dd96a15254b90ef6a870bbf887
       vertices: []
       indices: 
       edges: []
@@ -199,18 +198,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_5
       rect:
         serializedVersion: 2
-        x: 35
-        y: 49
-        width: 26
-        height: 32
+        x: 67
+        y: 67
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7609947424016c94495cf348e3ac3405
+      spriteID: e821e543ca0ccdf4d978bbf42e0b4eef
       vertices: []
       indices: 
       edges: []
@@ -219,18 +218,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 49
-        width: 26
-        height: 32
+        x: 131
+        y: 67
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd1108cf915a59a48a5175a5b06064ab
+      spriteID: 78a80e4be272d224082cf205e0179bb6
       vertices: []
       indices: 
       edges: []
@@ -239,18 +238,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_7
       rect:
         serializedVersion: 2
-        x: 99
-        y: 49
-        width: 26
-        height: 32
+        x: 195
+        y: 67
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b0ef3884b9795a4ba319e3f1665f10c
+      spriteID: 539fb15a720ddb74690ce58c4d6f239c
       vertices: []
       indices: 
       edges: []
@@ -260,17 +259,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3
-        y: 9
-        width: 26
-        height: 32
+        y: 3
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3de67178f76a3b048bd8eded0eff8cd8
+      spriteID: 23cac4655c2d2574badf04f92d111485
       vertices: []
       indices: 
       edges: []
@@ -279,18 +278,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_9
       rect:
         serializedVersion: 2
-        x: 35
-        y: 9
-        width: 26
-        height: 32
+        x: 67
+        y: 3
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3163e26d3ed276449baa6109739a9a03
+      spriteID: ff737cabe28464b47ad4c3784083ca1d
       vertices: []
       indices: 
       edges: []
@@ -299,38 +298,18 @@ TextureImporter:
       name: OmegaCannon_CooldownAnim_10
       rect:
         serializedVersion: 2
-        x: 67
-        y: 9
-        width: 26
-        height: 32
+        x: 131
+        y: 3
+        width: 58
+        height: 58
       alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5521999a063b294f8f1c1b68740f535
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_11
-      rect:
-        serializedVersion: 2
-        x: 99
-        y: 9
-        width: 26
-        height: 32
-      alignment: 9
-      pivot: {x: 0.49999997, y: 0.3490126}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7a4ce7ee93d646a4d85cda17b7b2ae5c
+      spriteID: f1b594b0d0c6c5b4cbc64ca8930cd827
       vertices: []
       indices: 
       edges: []
@@ -338,7 +317,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ff85a75cfadaa624086f132669754bd7
+    spriteID: 48ea9d4fe3352244fb5540f2e24a9937
     vertices: []
     indices: 
     edges: []

@@ -155,7 +155,7 @@ public class Projectile : MonoBehaviour
                 changeSprite = Time.time + playspeed;
                 spriteRenderer.sprite = sprites[index];
                 index++;
-                if (index >= sprites.Length) { index = 0; } // Restart animation
+                if (index == sprites.Length) { index = 0; } // Restart animation
             }
         }
     }
@@ -264,7 +264,10 @@ public class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void OnEnable()
     {
+        index = 0;
         fireSpritesIndex = 0;
+        changeSprite = 0;
+        fireSpritesChangeSprite = 0;
         damage = ComputeDamage();
         waitForSplit = false;
         rigidBody = GetComponent<Rigidbody2D>();

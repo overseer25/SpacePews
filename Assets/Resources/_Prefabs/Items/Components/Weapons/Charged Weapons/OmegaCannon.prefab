@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258187785173582213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.233, z: 0}
+  m_LocalPosition: {x: 0, y: 0.095, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 252475637435270597}
@@ -104,7 +104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258395107813790997}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.059, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0138, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 252475637435270597}
@@ -258,23 +258,23 @@ MonoBehaviour:
     type: 3}
   fireAnimation: []
   chargingAnimation:
-  - {fileID: 21300000, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300002, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300004, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300006, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300008, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300010, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300012, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300014, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300016, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300018, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300020, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
-  - {fileID: 21300022, guid: abd58f0f09d893c4b825cba31685dd4a, type: 3}
+  - {fileID: 21300000, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300002, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300004, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300006, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300008, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300010, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300012, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300014, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300016, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300018, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300020, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
+  - {fileID: 21300022, guid: 886d8115bcc8b3e4d8da53f6beec5af5, type: 3}
   chargedAnimationLoop:
-  - {fileID: 21300000, guid: 9f8ef4fe4078717468def9ee207d013f, type: 3}
-  - {fileID: 21300002, guid: 9f8ef4fe4078717468def9ee207d013f, type: 3}
-  - {fileID: 21300004, guid: 9f8ef4fe4078717468def9ee207d013f, type: 3}
-  - {fileID: 21300006, guid: 9f8ef4fe4078717468def9ee207d013f, type: 3}
+  - {fileID: 21300000, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
+  - {fileID: 21300002, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
+  - {fileID: 21300004, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
+  - {fileID: 21300006, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
   cooldownAnimation:
   - {fileID: 21300000, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
   - {fileID: 21300002, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
@@ -287,17 +287,17 @@ MonoBehaviour:
   - {fileID: 21300016, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
   - {fileID: 21300018, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
   - {fileID: 21300020, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
-  - {fileID: 21300022, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
+  dechargeAnimation: []
   chargedLoopPlayspeed: 0.1
   timeToCooldown: 1
-  timeToCharge: 1.78
+  timeToDecharge: 0.5
   cooldown: 1.5
   cooldownActive: 0
   charged: 0
   charging: 0
   decharging: 0
   chargeSound: {fileID: 8300000, guid: 6b3d5e83414d90441890b3b839326a14, type: 3}
-  chargedSound: {fileID: 8300000, guid: b137b07aeea07a042b2922f22348b1c7, type: 3}
+  chargedSound: {fileID: 8300000, guid: 8820d18bec89205458e05821446e7b88, type: 3}
 --- !u!82 &194701115731323963
 AudioSource:
   m_ObjectHideFlags: 0

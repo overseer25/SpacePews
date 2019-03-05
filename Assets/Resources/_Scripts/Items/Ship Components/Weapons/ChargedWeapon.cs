@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class ChargedWeapon : WeaponComponent
 {
+    // Animations
     public Sprite[] chargingAnimation;
     public Sprite[] chargedAnimationLoop;
     public Sprite[] cooldownAnimation;
+    public Sprite[] dechargeAnimation;
+
     public float chargedLoopPlayspeed;
     public float timeToCooldown;
-    public float timeToCharge;
+    public float timeToDecharge;
     public float cooldown;
     public bool cooldownActive;
     private bool cooldownAnimActive;
@@ -20,10 +23,12 @@ public class ChargedWeapon : WeaponComponent
     public bool charging;
     public bool decharging;
     public AudioClip chargeSound;
+    public AudioClip chargedSound;
 
     private int chargingIndex;
     private int chargedIndex;
     private int cooldownIndex;
+    private int dechargeIndex;
 
     protected override void Update()
     {
@@ -31,64 +36,111 @@ public class ChargedWeapon : WeaponComponent
             base.Update();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     /// <summary>
     /// While the player holds the fire button, a charging animation will play. Once that animation has completed, the player may
     /// release the fire button to attack.
     /// </summary>
-    public IEnumerator Charge()
+    private IEnumerator Charge()
     {
-        if (charging)
+        if (chargingAnimActive || charged)
             yield break;
 
-        if(!audioSource.isPlaying)
-            audioSource.PlayOneShot(chargeSound);
-
-        charging = true;
+        chargingAnimActive = true;
         spriteRenderer.sprite = chargingAnimation[chargingIndex];
-        yield return new WaitForSeconds(timeToCharge / chargingAnimation.Length);
-        charging = false;
         chargingIndex++;
         // Once the animation finishes, exit.
         if (chargingIndex == chargingAnimation.Length)
         {
+            chargingIndex--;
             charged = true;
-            audioSource.Stop();
             yield break;
+        }
+        playChargeSound();
+
+        yield return new WaitForSeconds(chargeSound.length / chargingAnimation.Length);
+
+        chargingAnimActive = false;
+    }
+
+    /// <summary>
+    /// Play the charge sound once, and begins the delay for the charged sound.
+    /// </summary>
+    private void playChargeSound()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(chargeSound);
+            audioSource.clip = chargedSound;
+            audioSource.loop = true;
+            audioSource.PlayDelayed(chargeSound.length);
         }
     }
 
     /// <summary>
     /// Cancel the charge. This can occur when the player releases the fire button before it is fully charged.
     /// </summary>
-    public IEnumerator CancelCharge()
+    private IEnumerator CancelCharge()
     {
-        if (chargingIndex > 0)
-        {
+        if(!decharging)
             audioSource.Stop();
-        }
+
+        if (dechargingActive)
+            yield break;
         
         decharging = true;
-
-            spriteRenderer.sprite = chargingAnimation[chargingIndex];
         dechargingActive = true;
-        yield return new WaitForSeconds(timeToCharge / chargingAnimation.Length);
-        dechargingActive = false;
-        if (chargingIndex == 0)
+        // Play the decharge animation, if it exists.
+        if (dechargeAnimation.Length != 0)
         {
-            decharging = false;
-            yield break;
+            spriteRenderer.sprite = dechargeAnimation[dechargeIndex];
+            yield return new WaitForSeconds(timeToDecharge / dechargeAnimation.Length);
+            dechargeIndex++;
+            if (dechargeIndex == dechargeAnimation.Length)
+            {
+                dechargeIndex = 0;
+                chargingIndex = 0;
+                charged = false;
+                decharging = false;
+                dechargingActive = false;
+                chargingAnimActive = false;
+                yield break;
+            }
         }
-        chargingIndex--;
+        // Otherwise, just reverse the charging animation.
+        else
+        {
+            spriteRenderer.sprite = chargingAnimation[chargingIndex];
+            yield return new WaitForSeconds(timeToDecharge / chargingAnimation.Length);
+            if (chargingIndex == 0)
+            {
+                charged = false;
+                decharging = false;
+                dechargingActive = false;
+                chargingAnimActive = false;
+                yield break;
+            }
+            chargingIndex--;
+        }
+        dechargingActive = false;
+
     }
 
     /// <summary>
     /// Once the weapon has been charged, play the charged animation loop.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator PlayChargedAnimation()
+    private IEnumerator PlayChargedAnimation()
     {
-        if (!charged || chargedAnimActive)
+        
+        if (chargedAnimActive)
+        {
             yield break;
+        }
 
         chargedAnimActive = true;
         spriteRenderer.sprite = chargedAnimationLoop[chargedIndex];
@@ -102,7 +154,7 @@ public class ChargedWeapon : WeaponComponent
     /// <summary>
     /// Play the cooldown animation.
     /// </summary>
-    public IEnumerator Cooldown()
+    private IEnumerator Cooldown()
     {
         if(cooldownAnimation.Length <= 1)
         {
@@ -129,18 +181,69 @@ public class ChargedWeapon : WeaponComponent
     }
 
     /// <summary>
+    /// If the weapon is ready to charge, begin charging it.
+    /// </summary>
+    public override void CheckFire()
+    {
+        if (!charged)
+        {
+            StartCoroutine(Charge());
+            StopCoroutine(CancelCharge());
+        }
+        else if (charged)
+            StartCoroutine(PlayChargedAnimation());
+    }
+
+    /// <summary>
+    /// Handles canceling the charging.
+    /// </summary>
+    public void CancelFire()
+    {
+        StopCoroutine(Charge());
+        StartCoroutine(CancelCharge());
+    }
+
+    /// <summary>
+    /// Start the cooldown process.
+    /// </summary>
+    public void StartCooldown()
+    {
+        StartCoroutine(Cooldown());
+    }
+
+    /// <summary>
     /// Fires the charged weapon.
     /// </summary>
     public override void Fire()
     {
         audioSource.Stop();
+        audioSource.loop = false;
         StopCoroutine(CancelCharge());
-        base.Fire();
         charged = false;
         chargedIndex = 0;
         chargingIndex = 0;
         decharging = false;
         cooldownActive = true;
         chargedAnimActive = false;
+        chargingAnimActive = false;
+
+        foreach (var shotSpawn in shotSpawns)
+        {
+            var projectile = ProjectilePool.current.GetPooledObject();
+            if (projectile == null)
+                continue;
+
+            projectile.Copy(this.projectile);
+            projectile.gameObject.transform.position = shotSpawn.transform.position;
+            Quaternion rotation = shotSpawn.transform.transform.rotation;
+            var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
+            rotation *= Quaternion.Euler(0, 0, angle);
+            projectile.gameObject.transform.rotation = rotation;
+            audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
+            audioSource.Play();
+            projectile.gameObject.SetActive(true);
+        }
+        if (fireAnimation.Length > 0 && !playingFireAnimation)
+            StartCoroutine(PlayFireAnimation());
     }
 }

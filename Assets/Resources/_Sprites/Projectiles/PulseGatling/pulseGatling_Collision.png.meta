@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 9f8ef4fe4078717468def9ee207d013f
+guid: e1aed9ff96f933249b8d67e8c6cc7337
 TextureImporter:
   fileIDToRecycleName:
-    21300000: OmegaCannon_ChargedAnimSheet_0
-    21300002: OmegaCannon_ChargedAnimSheet_1
-    21300004: OmegaCannon_ChargedAnimSheet_2
-    21300006: OmegaCannon_ChargedAnimSheet_3
+    21300000: pulseGatling_Collision_0
+    21300002: pulseGatling_Collision_1
+    21300004: pulseGatling_Collision_2
+    21300006: pulseGatling_Collision_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -64,9 +64,9 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -88,81 +88,81 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnimSheet_0
+      name: pulseGatling_Collision_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 33
-        width: 28
-        height: 31
-      alignment: 9
-      pivot: {x: 0.5066717, y: 0.33328}
+        x: 14
+        y: 92
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c2660ce9ff4292458e86796627571ec
+      spriteID: 1709e0764d3ab0e40809e4b50d4663b0
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnimSheet_1
+      name: pulseGatling_Collision_1
       rect:
         serializedVersion: 2
-        x: 34
-        y: 33
-        width: 28
-        height: 31
-      alignment: 9
-      pivot: {x: 0.5066717, y: 0.33328}
+        x: 77
+        y: 92
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f5ad2d597e28b614abede26bcfc5a233
+      spriteID: 3e4fc1a4b31818442b19d349e3e31a66
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnimSheet_2
+      name: pulseGatling_Collision_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 1
-        width: 28
-        height: 31
-      alignment: 9
-      pivot: {x: 0.5066717, y: 0.33328}
+        x: 14
+        y: 24
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 65a546b45a8c036438861d3652dded7c
+      spriteID: 167c404657b1122448172746ec25e71d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnimSheet_3
+      name: pulseGatling_Collision_3
       rect:
         serializedVersion: 2
-        x: 34
-        y: 1
-        width: 28
-        height: 31
-      alignment: 9
-      pivot: {x: 0.5066717, y: 0.33328}
+        x: 77
+        y: 24
+        width: 36
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b292d87d163dd34489c9c38ff46facf3
+      spriteID: aae76b879c15c0b4b9fafb7c929891f9
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 676d52e19a5c04f469f421789c413123
+    spriteID: bb762ae7296654c499e2ef8aad7ae280
     vertices: []
     indices: 
     edges: []

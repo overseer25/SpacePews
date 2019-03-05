@@ -1,11 +1,13 @@
 fileFormatVersion: 2
-guid: 0c5a09655e88b014fa3a2b83184618fc
+guid: ba9ef5096688da64d880ead122f75fa1
 TextureImporter:
   fileIDToRecycleName:
-    21300000: OmegaCannonProjectile_AnimSheet_0
-    21300002: OmegaCannonProjectile_AnimSheet_1
-    21300004: OmegaCannonProjectile_AnimSheet_2
-    21300006: OmegaCannonProjectile_AnimSheet_3
+    21300000: pulseGatling_0
+    21300002: pulseGatling_1
+    21300004: pulseGatling_2
+    21300006: pulseGatling_3
+    21300008: pulseGatling_4
+    21300010: pulseGatling_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -88,81 +90,121 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_0
+      name: pulseGatling_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 66
-        width: 60
-        height: 60
+        x: 21
+        y: 80
+        width: 22
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bec4328a0c510ee47b197718e53681ad
+      spriteID: aadd8890d21d1a94a9f9739b276df9fc
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_1
+      name: pulseGatling_1
       rect:
         serializedVersion: 2
-        x: 66
-        y: 66
-        width: 60
-        height: 60
+        x: 85
+        y: 80
+        width: 22
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6254a1fa49806cf4f928fd535d4a773c
+      spriteID: 7645303563354344ba6f06d7eced0ebf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_2
+      name: pulseGatling_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
-        width: 60
-        height: 60
+        x: 149
+        y: 80
+        width: 22
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94b8bcf4808c6364296317bc4f0ab776
+      spriteID: 6ccffc869f89dc147bf8584dbfa74d65
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_3
+      name: pulseGatling_3
       rect:
         serializedVersion: 2
-        x: 66
-        y: 2
-        width: 60
-        height: 60
+        x: 21
+        y: 16
+        width: 22
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74854255ac08a724c8cbe3c715fec3cf
+      spriteID: 810a208e90b50404db05242c288799b9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pulseGatling_4
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 16
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6de4f68e23cfb9c49b7a89dbc69d00e3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pulseGatling_5
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 16
+        width: 22
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3d25c38053cf8649a8701b1f90f6a05
       vertices: []
       indices: 
       edges: []
@@ -170,7 +212,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8b38107b93995b3418782d98caa8cf2a
+    spriteID: 385e66adefbb9d84e951d94083dcf671
     vertices: []
     indices: 
     edges: []

@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 0c5a09655e88b014fa3a2b83184618fc
+guid: 84371c8545d345a4f92271743439f93f
 TextureImporter:
   fileIDToRecycleName:
-    21300000: OmegaCannonProjectile_AnimSheet_0
-    21300002: OmegaCannonProjectile_AnimSheet_1
-    21300004: OmegaCannonProjectile_AnimSheet_2
-    21300006: OmegaCannonProjectile_AnimSheet_3
+    21300000: pulseTierOne_Collision_0
+    21300002: pulseTierOne_Collision_1
+    21300004: pulseTierOne_Collision_2
+    21300006: pulseTierOne_Collision_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -88,13 +88,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_0
+      name: pulseTierOne_Collision_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 66
-        width: 60
-        height: 60
+        x: 19
+        y: 89
+        width: 25
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -102,19 +102,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bec4328a0c510ee47b197718e53681ad
+      spriteID: 04c52e4e198007a488cbe28dff1b3a48
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_1
+      name: pulseTierOne_Collision_1
       rect:
         serializedVersion: 2
-        x: 66
-        y: 66
-        width: 60
-        height: 60
+        x: 82
+        y: 89
+        width: 25
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -122,19 +122,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6254a1fa49806cf4f928fd535d4a773c
+      spriteID: 46165ca167d95974baf98e6f53e0490b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_2
+      name: pulseTierOne_Collision_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
-        width: 60
-        height: 60
+        x: 18
+        y: 25
+        width: 25
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,19 +142,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94b8bcf4808c6364296317bc4f0ab776
+      spriteID: 96c44eda83277e845aa93eb05e6e64f4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_3
+      name: pulseTierOne_Collision_3
       rect:
         serializedVersion: 2
-        x: 66
-        y: 2
-        width: 60
-        height: 60
+        x: 82
+        y: 25
+        width: 25
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,7 +162,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74854255ac08a724c8cbe3c715fec3cf
+      spriteID: 97eb48c85e84d6a4bb543243a5f9e8ed
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8b38107b93995b3418782d98caa8cf2a
+    spriteID: 645e50b45232f0a479c17e874f6a4c01
     vertices: []
     indices: 
     edges: []

@@ -1,11 +1,13 @@
 fileFormatVersion: 2
-guid: 0c5a09655e88b014fa3a2b83184618fc
+guid: e7d7a70774f76d340a924727c2ca35c3
 TextureImporter:
   fileIDToRecycleName:
-    21300000: OmegaCannonProjectile_AnimSheet_0
-    21300002: OmegaCannonProjectile_AnimSheet_1
-    21300004: OmegaCannonProjectile_AnimSheet_2
-    21300006: OmegaCannonProjectile_AnimSheet_3
+    21300000: OmegaCannonProjectile_Collision_0
+    21300002: OmegaCannonProjectile_Collision_1
+    21300004: OmegaCannonProjectile_Collision_2
+    21300006: OmegaCannonProjectile_Collision_3
+    21300008: OmegaCannonProjectile_Collision_4
+    21300010: OmegaCannonProjectile_Collision_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -88,7 +90,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_0
+      name: OmegaCannonProjectile_Collision_0
       rect:
         serializedVersion: 2
         x: 2
@@ -102,13 +104,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bec4328a0c510ee47b197718e53681ad
+      spriteID: 039d65a5f7c8c25438779100854bfa19
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_1
+      name: OmegaCannonProjectile_Collision_1
       rect:
         serializedVersion: 2
         x: 66
@@ -122,13 +124,33 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6254a1fa49806cf4f928fd535d4a773c
+      spriteID: 236fdf34675b9da408bd1ba6bcb8bf52
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_2
+      name: OmegaCannonProjectile_Collision_2
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 66
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93fb937039f68924a969152a50ced901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannonProjectile_Collision_3
       rect:
         serializedVersion: 2
         x: 2
@@ -142,13 +164,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94b8bcf4808c6364296317bc4f0ab776
+      spriteID: f6a898f51e48aa541be1355851273a6f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannonProjectile_AnimSheet_3
+      name: OmegaCannonProjectile_Collision_4
       rect:
         serializedVersion: 2
         x: 66
@@ -162,7 +184,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74854255ac08a724c8cbe3c715fec3cf
+      spriteID: 00bd9792e7d5920479e6b1f2ca275106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannonProjectile_Collision_5
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 2
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34cd88909eabe7747abbb85e195a3fc5
       vertices: []
       indices: 
       edges: []
@@ -170,7 +212,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8b38107b93995b3418782d98caa8cf2a
+    spriteID: 603354422c8d2e844a50cb98232a5355
     vertices: []
     indices: 
     edges: []
