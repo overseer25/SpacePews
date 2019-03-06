@@ -126,7 +126,7 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   itemType: 1
   itemTier: 0
-  itemName: The Ruiner
+  itemName: Gatling Pulse Cannon
   quantity: 1
   value: 1500
   description: A rapid fire pulse weapon.
@@ -141,7 +141,7 @@ MonoBehaviour:
   componentClass: 0
   visible: 1
   mounted: 0
-  firerate: 0.2
+  firerate: 0.1
   shotSpread: 10
   fireAnimPlayspeed: 0.1
   projectile: {fileID: 114122166460085274, guid: 654889b205a763c4e89008781d43fabf,

@@ -82,16 +82,16 @@ public class WeaponController : MonoBehaviour
     /// <param name="weapon"></param>
     private void HandleChargedWeapon(ChargedWeapon weapon)
     {
-        if (Input.GetMouseButton(0) && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
+        if (Input.GetMouseButton(0) && currentComponent != null && !weapon.IsCoolingDown() && !weapon.IsDecharging())
         {
             if (!menuOpen)
                 weapon.CheckFire();
             else
                 weapon.CancelFire();
         }
-        else if (Input.GetMouseButtonUp(0) && currentComponent != null && !weapon.cooldownActive && !weapon.decharging)
+        else if (Input.GetMouseButtonUp(0) && currentComponent != null && !weapon.IsCoolingDown() && !weapon.IsDecharging())
         {
-            if (weapon.charged)
+            if (weapon.IsCharged())
             {
                 weapon.Fire();
             }
@@ -100,11 +100,11 @@ public class WeaponController : MonoBehaviour
                 weapon.CancelFire();
             }
         }
-        else if (weapon.cooldownActive)
+        else if (weapon.IsCoolingDown())
         {
             weapon.StartCooldown();
         }
-        else if (weapon.decharging)
+        else if (weapon.IsDecharging())
         {
             weapon.CancelFire();
         }

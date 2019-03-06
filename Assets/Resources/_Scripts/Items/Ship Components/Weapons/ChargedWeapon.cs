@@ -10,21 +10,28 @@ public class ChargedWeapon : WeaponComponent
     public Sprite[] cooldownAnimation;
     public Sprite[] dechargeAnimation;
 
+    // Sounds
+    public AudioClip chargeSound;
+    public AudioClip chargedSound;
+
+    // Timing variables
     public float chargedLoopPlayspeed;
     public float timeToCooldown;
     public float timeToDecharge;
-    public float cooldown;
-    public bool cooldownActive;
+
+    // State variables
+    private bool coolingDown;
+    private bool charged;
+    private bool charging;
+    private bool decharging;
+
+    // Internal State variables
     private bool cooldownAnimActive;
     private bool chargedAnimActive;
     private bool chargingAnimActive;
     private bool dechargingActive;
-    public bool charged;
-    public bool charging;
-    public bool decharging;
-    public AudioClip chargeSound;
-    public AudioClip chargedSound;
 
+    // Animation indices
     private int chargingIndex;
     private int chargedIndex;
     private int cooldownIndex;
@@ -32,8 +39,44 @@ public class ChargedWeapon : WeaponComponent
 
     protected override void Update()
     {
-        if (!charging && !playingFireAnimation && !cooldownActive)
+        if (!charging && !playingFireAnimation && !coolingDown)
             base.Update();
+    }
+
+    /// <summary>
+    /// Is the weapon currently charging up?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCharging()
+    {
+        return charging;
+    }
+
+    /// <summary>
+    /// Is the weapon decharging (occurs when the player releases the fire button too early)?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDecharging()
+    {
+        return decharging;
+    }
+
+    /// <summary>
+    /// Is the weapon currently charged?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCharged()
+    {
+        return charged;
+    }
+
+    /// <summary>
+    /// Is the weapon cooling down.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCoolingDown()
+    {
+        return coolingDown;
     }
 
     private void OnDisable()
@@ -158,7 +201,7 @@ public class ChargedWeapon : WeaponComponent
     {
         if(cooldownAnimation.Length <= 1)
         {
-            cooldownActive = false;
+            coolingDown = false;
             yield break;
         }
 
@@ -174,7 +217,7 @@ public class ChargedWeapon : WeaponComponent
         if (cooldownIndex == cooldownAnimation.Length)
         {
             cooldownIndex = 0;
-            cooldownActive = false;
+            coolingDown = false;
             spriteRenderer.sprite = sprites[0];
             yield break;
         }
@@ -223,7 +266,7 @@ public class ChargedWeapon : WeaponComponent
         chargedIndex = 0;
         chargingIndex = 0;
         decharging = false;
-        cooldownActive = true;
+        coolingDown = true;
         chargedAnimActive = false;
         chargingAnimActive = false;
 

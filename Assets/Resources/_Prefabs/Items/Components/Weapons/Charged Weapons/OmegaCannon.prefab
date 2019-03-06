@@ -238,8 +238,8 @@ MonoBehaviour:
   itemTier: 1
   itemName: Omega Cannon
   quantity: 1
-  value: 25000
-  description: A powerful plasma cannon that can pierce enemies.
+  value: 2500
+  description: A powerful laser that requires charging to use.
   pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
   stackable: 0
   stackSize: 0
@@ -288,16 +288,11 @@ MonoBehaviour:
   - {fileID: 21300018, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
   - {fileID: 21300020, guid: f9bfb161cbf9a6549b713ca7e64f54c5, type: 3}
   dechargeAnimation: []
+  chargeSound: {fileID: 8300000, guid: 6b3d5e83414d90441890b3b839326a14, type: 3}
+  chargedSound: {fileID: 8300000, guid: 8820d18bec89205458e05821446e7b88, type: 3}
   chargedLoopPlayspeed: 0.1
   timeToCooldown: 1
   timeToDecharge: 0.5
-  cooldown: 1.5
-  cooldownActive: 0
-  charged: 0
-  charging: 0
-  decharging: 0
-  chargeSound: {fileID: 8300000, guid: 6b3d5e83414d90441890b3b839326a14, type: 3}
-  chargedSound: {fileID: 8300000, guid: 8820d18bec89205458e05821446e7b88, type: 3}
 --- !u!82 &194701115731323963
 AudioSource:
   m_ObjectHideFlags: 0
