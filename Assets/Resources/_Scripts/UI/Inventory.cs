@@ -340,7 +340,7 @@ public class Inventory : MonoBehaviour
                 {
                     infoScreen.Hide();
                 }
-                else if (!infoScreen.gameObject.activeSelf)
+                else if (!infoScreen.IsVisible())
                 {
                     var item = hotbarSlots[index].GetItem();
 
@@ -355,7 +355,7 @@ public class Inventory : MonoBehaviour
                 {
                     infoScreen.Hide();
                 }
-                else if (!infoScreen.gameObject.activeSelf)
+                else if (!infoScreen.IsVisible())
                 {
                     var item = mountSlots[index].GetItem();
 
@@ -369,7 +369,7 @@ public class Inventory : MonoBehaviour
                 {
                     infoScreen.Hide();
                 }
-                else if (!infoScreen.gameObject.activeSelf)
+                else if (!infoScreen.IsVisible())
                 {
                     var item = inventorySlots[index].GetItem();
 

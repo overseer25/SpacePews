@@ -88,10 +88,10 @@ TextureImporter:
       name: OmegaCannon_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 15
-        width: 36
-        height: 35
+        x: 12
+        y: 11
+        width: 40
+        height: 41
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -99,7 +99,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed3f8238e56cfd840980fbde3ecd72b9
+      spriteID: fd1ab68631ff2f6488219320969df421
       vertices: []
       indices: 
       edges: []
@@ -107,7 +107,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 964f5730e430b1a4389144056ff50e17
+    spriteID: 9029b1ad76162ef4689c57db2f2b6a78
     vertices: []
     indices: 
     edges: []

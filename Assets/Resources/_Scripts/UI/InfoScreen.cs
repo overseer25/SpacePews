@@ -14,6 +14,14 @@ public class InfoScreen : MonoBehaviour
     public TextMeshProUGUI value;
     public TextMeshProUGUI quantity;
 
+    //Enabling/disabling this hides the screen.
+    private CanvasGroup cg;
+
+    private void Awake()
+    {
+        cg = GetComponent<CanvasGroup>();
+    }
+
     void Update()
     {
         var mousePos = Input.mousePosition;
@@ -26,13 +34,22 @@ public class InfoScreen : MonoBehaviour
     }
 
     /// <summary>
+    /// Is the panel currently visible?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsVisible()
+    {
+        return cg.alpha == 1;
+    }
+
+    /// <summary>
     /// Shows the info screen.
     /// </summary>
     public void Show()
     {
-        if (!gameObject.activeSelf)
+        if (cg.alpha == 0)
         {
-            gameObject.SetActive(true);
+            cg.alpha = 1;
         }
     }
 
@@ -41,9 +58,9 @@ public class InfoScreen : MonoBehaviour
     /// </summary>
     public void Hide()
     {
-        if (gameObject.activeSelf)
+        if (cg.alpha == 1)
         {
-            gameObject.SetActive(false);
+            cg.alpha = 0;
         }
     }
 

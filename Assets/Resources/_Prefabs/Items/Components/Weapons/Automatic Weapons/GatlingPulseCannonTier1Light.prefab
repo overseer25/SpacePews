@@ -141,9 +141,8 @@ MonoBehaviour:
   componentClass: 0
   visible: 1
   mounted: 0
-  firerate: 0.1
+  firerate: 0.15
   shotSpread: 10
-  fireAnimPlayspeed: 0.1
   projectile: {fileID: 114122166460085274, guid: 654889b205a763c4e89008781d43fabf,
     type: 3}
   fireAnimation:

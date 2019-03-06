@@ -152,7 +152,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.26, y: 0.34}
+  m_Size: {x: 0.58, y: 0.58}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -253,7 +253,6 @@ MonoBehaviour:
   mounted: 0
   firerate: 0
   shotSpread: 0
-  fireAnimPlayspeed: 0
   projectile: {fileID: 2406266259783823320, guid: e90eadca83128744a9d9296d0556edad,
     type: 3}
   fireAnimation: []
