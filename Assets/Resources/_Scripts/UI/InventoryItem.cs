@@ -226,6 +226,8 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+            return;
         // Cannot right click drag and left click drag at the same time.
         if (eventData.button == PointerEventData.InputButton.Left && draggable && item != null && !rightClickDragging)
         {
