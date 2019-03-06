@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class ChargedWeapon : WeaponComponent
@@ -81,6 +80,113 @@ public class ChargedWeapon : WeaponComponent
 
     private void OnDisable()
     {
+        Revert();
+    }
+
+    private void OnDestroy()
+    {
+        Revert();
+    }
+
+    /// <summary>
+    /// If the weapon is ready to charge, begin charging it.
+    /// </summary>
+    public override void CheckFire()
+    {
+        if (this != null)
+        {
+            if (!charged)
+            {
+                StartCoroutine(Charge());
+                StopCoroutine(CancelCharge());
+            }
+            else if (charged)
+                StartCoroutine(PlayChargedAnimation());
+        }
+    }
+
+    /// <summary>
+    /// Handles canceling the charging.
+    /// </summary>
+    public void CancelFire()
+    {
+        if (this != null)
+        {
+            StopCoroutine(Charge());
+            StartCoroutine(CancelCharge());
+        }
+    }
+
+    /// <summary>
+    /// Start the cooldown process.
+    /// </summary>
+    public void StartCooldown()
+    {
+        if (this != null)
+            StartCoroutine(Cooldown());
+    }
+
+    /// <summary>
+    /// Fires the charged weapon.
+    /// </summary>
+    public override void Fire()
+    {
+        audioSource.Stop();
+        audioSource.loop = false;
+        StopCoroutine(CancelCharge());
+        charged = false;
+        chargedIndex = 0;
+        chargingIndex = 0;
+        decharging = false;
+        coolingDown = true;
+        chargedAnimActive = false;
+        chargingAnimActive = false;
+
+        foreach (var shotSpawn in shotSpawns)
+        {
+            var projectile = ProjectilePool.current.GetPooledObject();
+            if (projectile == null)
+                continue;
+
+            projectile.Copy(this.projectile);
+            projectile.gameObject.transform.position = shotSpawn.transform.position;
+            Quaternion rotation = shotSpawn.transform.transform.rotation;
+            var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
+            rotation *= Quaternion.Euler(0, 0, angle);
+            projectile.gameObject.transform.rotation = rotation;
+            audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
+            audioSource.Play();
+            projectile.gameObject.SetActive(true);
+        }
+        if (fireAnimation.Length > 0 && !playingFireAnimation)
+            StartCoroutine(PlayFireAnimation());
+    }
+
+    /// <summary>
+    /// Resets the charged weapon to it's default state. This is called when the player is killed.
+    /// </summary>
+    private void Revert()
+    {
+        // State variables
+        coolingDown = false;
+        charged = false;
+        charging = false;
+        decharging = false;
+
+        // Internal State variables
+        cooldownAnimActive = false;
+        chargedAnimActive = false;
+        chargingAnimActive = false;
+        dechargingActive = false;
+
+        // Animation indices
+        chargingIndex = 0;
+        chargedIndex = 0;
+        cooldownIndex = 0;
+        dechargeIndex = 0;
+
+        spriteRenderer.sprite = sprites[0];
+
         StopAllCoroutines();
     }
 
@@ -129,12 +235,12 @@ public class ChargedWeapon : WeaponComponent
     /// </summary>
     private IEnumerator CancelCharge()
     {
-        if(!decharging)
+        if (!decharging)
             audioSource.Stop();
 
         if (dechargingActive)
             yield break;
-        
+
         decharging = true;
         dechargingActive = true;
         // Play the decharge animation, if it exists.
@@ -179,7 +285,7 @@ public class ChargedWeapon : WeaponComponent
     /// <returns></returns>
     private IEnumerator PlayChargedAnimation()
     {
-        
+
         if (chargedAnimActive)
         {
             yield break;
@@ -197,9 +303,10 @@ public class ChargedWeapon : WeaponComponent
     /// <summary>
     /// Play the cooldown animation.
     /// </summary>
+    /// <returns></returns>
     private IEnumerator Cooldown()
     {
-        if(cooldownAnimation.Length <= 1)
+        if (cooldownAnimation.Length <= 1)
         {
             coolingDown = false;
             yield break;
@@ -221,72 +328,5 @@ public class ChargedWeapon : WeaponComponent
             spriteRenderer.sprite = sprites[0];
             yield break;
         }
-    }
-
-    /// <summary>
-    /// If the weapon is ready to charge, begin charging it.
-    /// </summary>
-    public override void CheckFire()
-    {
-        if (!charged)
-        {
-            StartCoroutine(Charge());
-            StopCoroutine(CancelCharge());
-        }
-        else if (charged)
-            StartCoroutine(PlayChargedAnimation());
-    }
-
-    /// <summary>
-    /// Handles canceling the charging.
-    /// </summary>
-    public void CancelFire()
-    {
-        StopCoroutine(Charge());
-        StartCoroutine(CancelCharge());
-    }
-
-    /// <summary>
-    /// Start the cooldown process.
-    /// </summary>
-    public void StartCooldown()
-    {
-        StartCoroutine(Cooldown());
-    }
-
-    /// <summary>
-    /// Fires the charged weapon.
-    /// </summary>
-    public override void Fire()
-    {
-        audioSource.Stop();
-        audioSource.loop = false;
-        StopCoroutine(CancelCharge());
-        charged = false;
-        chargedIndex = 0;
-        chargingIndex = 0;
-        decharging = false;
-        coolingDown = true;
-        chargedAnimActive = false;
-        chargingAnimActive = false;
-
-        foreach (var shotSpawn in shotSpawns)
-        {
-            var projectile = ProjectilePool.current.GetPooledObject();
-            if (projectile == null)
-                continue;
-
-            projectile.Copy(this.projectile);
-            projectile.gameObject.transform.position = shotSpawn.transform.position;
-            Quaternion rotation = shotSpawn.transform.transform.rotation;
-            var angle = UnityEngine.Random.Range(-shotSpread, shotSpread);
-            rotation *= Quaternion.Euler(0, 0, angle);
-            projectile.gameObject.transform.rotation = rotation;
-            audioSource.clip = projectile.GetComponent<Projectile>().GetFireSound();
-            audioSource.Play();
-            projectile.gameObject.SetActive(true);
-        }
-        if (fireAnimation.Length > 0 && !playingFireAnimation)
-            StartCoroutine(PlayFireAnimation());
     }
 }

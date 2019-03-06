@@ -15,7 +15,6 @@ TextureImporter:
     21300020: OmegaCannon_ChargingAnim_10
     21300022: OmegaCannon_ChargingAnim_11
     21300024: OmegaCannon_ChargingAnim_12
-    21300026: OmegaCannon_ChargingAnim_13
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -102,17 +101,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3
-        y: 131
+        y: 195
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 264837267d0521a45960832fa190138f
+      spriteID: 47864490229906546b7eea4078347ae2
       vertices: []
       indices: 
       edges: []
@@ -122,17 +121,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 67
-        y: 131
+        y: 195
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5bd25406a19cad54a94ba1bc9298f838
+      spriteID: a6b09a3705e29ad45a3ee9c4e3ab4c01
       vertices: []
       indices: 
       edges: []
@@ -142,17 +141,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 131
-        y: 131
+        y: 195
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f344d96396516354b9b263def6ec1caf
+      spriteID: 2af762ab288b4bc4781968a120fedb9a
       vertices: []
       indices: 
       edges: []
@@ -162,17 +161,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 195
-        y: 131
+        y: 195
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 45905d54fe546424e815099084119e2a
+      spriteID: 5ea6cc1e139775f48972f317b2725bf9
       vertices: []
       indices: 
       edges: []
@@ -181,18 +180,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_4
       rect:
         serializedVersion: 2
-        x: 195
+        x: 3
         y: 131
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2678e5cf2ec4576418ccdb7130c71674
+      spriteID: a6e7e57efc377b74ab4c4f4bf0ae80a2
       vertices: []
       indices: 
       edges: []
@@ -201,18 +200,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_5
       rect:
         serializedVersion: 2
-        x: 195
+        x: 67
         y: 131
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9893103419bd34344b1e7133a8af6908
+      spriteID: 1ce63330b5475a248a93d509499f5b11
       vertices: []
       indices: 
       edges: []
@@ -221,18 +220,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_6
       rect:
         serializedVersion: 2
-        x: 3
-        y: 67
+        x: 131
+        y: 131
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 917246e4c7198764b826e7cbfcdc775e
+      spriteID: 6b35a28637597bd4db4568f3a575c7fa
       vertices: []
       indices: 
       edges: []
@@ -241,18 +240,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_7
       rect:
         serializedVersion: 2
-        x: 67
-        y: 67
+        x: 195
+        y: 131
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e16a1baaf86e2ae46a59918058ab7df3
+      spriteID: 63951f4aa89565642be7a1e974b77406
       vertices: []
       indices: 
       edges: []
@@ -261,18 +260,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_8
       rect:
         serializedVersion: 2
-        x: 131
+        x: 3
         y: 67
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 244f3c8b9f6f55144bcd9f7f84a44359
+      spriteID: af305194eecfa2547a6b624f96517f8c
       vertices: []
       indices: 
       edges: []
@@ -281,18 +280,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_9
       rect:
         serializedVersion: 2
-        x: 195
+        x: 67
         y: 67
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f0c8b93db1b0c5b4ea4fdcf5d430aef2
+      spriteID: 0983a4fb668636c4a8bb847aba053809
       vertices: []
       indices: 
       edges: []
@@ -301,18 +300,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_10
       rect:
         serializedVersion: 2
-        x: 3
-        y: 3
+        x: 131
+        y: 67
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94745956e19fb1043989abfca5430d74
+      spriteID: 79d707643530a074d9ca81a41a75685d
       vertices: []
       indices: 
       edges: []
@@ -321,18 +320,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_11
       rect:
         serializedVersion: 2
-        x: 67
-        y: 3
+        x: 195
+        y: 67
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0878e50fc376328448327ce224c8f153
+      spriteID: de28207b379325e40a6b6b5846b0e794
       vertices: []
       indices: 
       edges: []
@@ -341,38 +340,18 @@ TextureImporter:
       name: OmegaCannon_ChargingAnim_12
       rect:
         serializedVersion: 2
-        x: 131
+        x: 3
         y: 3
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e92a2ad753aaaf49ab5f0d4f7ecec13
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_ChargingAnim_13
-      rect:
-        serializedVersion: 2
-        x: 195
-        y: 3
-        width: 58
-        height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f0a5309274c155641b988a2360c16ef1
+      spriteID: 75bbaa28453b0ba45aa0e574f0de8c2b
       vertices: []
       indices: 
       edges: []
@@ -380,7 +359,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2f717ca54de726a4ab298a6256c1c702
+    spriteID: 81ca0391d7c02b147aa64da0804d88d1
     vertices: []
     indices: 
     edges: []

@@ -37,7 +37,6 @@ public class AutomaticWeapon : WeaponComponent
             audioSource.Play();
             projectile.gameObject.SetActive(true);
         }
-        if (fireAnimation.Length > 0 && !playingFireAnimation)
-            StartCoroutine(PlayFireAnimation());
+        StartCoroutine(PlayFireAnimation());
     }
 }

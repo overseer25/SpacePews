@@ -121,15 +121,6 @@ public class BaseWeaponEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimation"), new GUIContent("    Fire Animation"), true, GUILayout.MaxWidth(500f));
             serializedObject.ApplyModifiedProperties();
             EditorGUILayout.EndHorizontal();
-            if (component.fireAnimation.Length > 0)
-            {
-                EditorGUILayout.BeginHorizontal();
-                tooltip = "The rate at which to play the fire animation";
-                serializedObject.Update();
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("fireAnimPlayspeed"), new GUIContent("    Fire Anim Play Speed"), true, GUILayout.MaxWidth(500f));
-                serializedObject.ApplyModifiedProperties();
-                EditorGUILayout.EndHorizontal();
-            }
         }
 
         EditorGUILayout.Space();

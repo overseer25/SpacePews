@@ -8,7 +8,6 @@ public abstract class WeaponComponent : ShipComponent
 {
     public float firerate;
     public float shotSpread;
-    public float fireAnimPlayspeed;
     public Projectile projectile;
     public Sprite[] fireAnimation;
     internal List<GameObject> shotSpawns;
@@ -114,7 +113,7 @@ public abstract class WeaponComponent : ShipComponent
         foreach(var frame in fireAnimation)
         {
             spriteRenderer.sprite = frame;
-            yield return new WaitForSeconds(fireAnimPlayspeed);
+            yield return new WaitForSeconds(firerate / fireAnimation.Length);
         }
         spriteRenderer.sprite = sprites[index];
 

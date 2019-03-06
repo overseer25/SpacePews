@@ -95,14 +95,14 @@ TextureImporter:
         y: 67
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dce6aa306b1e7ef4a978400db76f40b2
+      spriteID: b15e98c0d6f15f24c815165df26428a7
       vertices: []
       indices: 
       edges: []
@@ -115,14 +115,14 @@ TextureImporter:
         y: 67
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8a9353302b5fba408c6e64ca2a2e18d
+      spriteID: 4dd62ffade9f24e47a0e9cbb2d2e8739
       vertices: []
       indices: 
       edges: []
@@ -135,14 +135,14 @@ TextureImporter:
         y: 3
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a77eb25a19691844b93b7c1248d1c0c
+      spriteID: 7b083445695be37459b09340511141ee
       vertices: []
       indices: 
       edges: []
@@ -155,14 +155,14 @@ TextureImporter:
         y: 3
         width: 58
         height: 58
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64bda733bf8cc364791f80dee7ac110e
+      spriteID: 563cded668c2a1646b893a09ca5e6a4f
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: c8c02ca2c3a75b741b6a1a9518efe0a2
+    spriteID: 766a60d1ea18e254db71a8e9236b5f8d
     vertices: []
     indices: 
     edges: []
