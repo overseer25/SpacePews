@@ -11,9 +11,9 @@ public class PlayerController : MonoBehaviour
     // Constants
     private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
-    private const float CAMERA_ZOOM_INCREMENT = 20.0f;
-    private const float CAMERA_MAX_ZOOM = -30.0f;
-    private const float CAMERA_MIN_ZOOM = -90.0f;
+    private const float CAMERA_ZOOM_INCREMENT = 10.0f;
+    private const float CAMERA_MAX_ZOOM = -20.0f;
+    private const float CAMERA_MIN_ZOOM = -50.0f;
     private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
     [Header("State")]
@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
     private GameObject ship;
     private Ship _ship;
 
+    private Canvas[] canvases;
+
     /// <summary>
     /// Use this for initialization
     /// </summary>
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
         prevHealth = health;
         engine = GetComponent<AudioSource>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
-
+        canvases = transform.parent.GetComponentsInChildren<Canvas>();
         // Initial thrusters.
         thrusters = new List<Thruster>();
         foreach (var thrusterObj in mountController.GetThrusterMounts())
@@ -143,6 +145,10 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom += CAMERA_ZOOM_INCREMENT;
+        foreach(var canvas in canvases)
+        {
+            canvas.planeDistance = -currentCameraZoom;
+        }
     }
 
     /// <summary>
@@ -154,6 +160,10 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom -= CAMERA_ZOOM_INCREMENT;
+        foreach (var canvas in canvases)
+        {
+            canvas.planeDistance = -currentCameraZoom;
+        }
     }
 
     /// <summary>
