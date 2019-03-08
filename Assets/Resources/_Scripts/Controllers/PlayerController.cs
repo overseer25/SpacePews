@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     // Constants
     private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
+    private const float CAMERA_ZOOM_INCREMENT = 20.0f;
+    private const float CAMERA_MAX_ZOOM = -30.0f;
+    private const float CAMERA_MIN_ZOOM = -90.0f;
+    private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
     [Header("State")]
     [SerializeField]
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private bool movingForward;
 
     private int health; // The amount of health the player currently has.
+    private float currentCameraZoom;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -88,7 +93,7 @@ public class PlayerController : MonoBehaviour
             //        inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
             //}
         }
-
+        currentCameraZoom = CAMERA_MIN_ZOOM;
     }
 
     /// <summary>
@@ -108,13 +113,13 @@ public class PlayerController : MonoBehaviour
         if (movingForward)
         {
             movementController.MoveForward();
-            if(thrusters.Count > 0)
+            if (thrusters.Count > 0)
                 PlayEngineSound();
         }
         else
         {
             movementController.Decelerate();
-            if(engine.isPlaying)
+            if (engine.isPlaying)
                 StopEngineSound();
         }
 
@@ -125,6 +130,30 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + rigidBody.velocity, Color.green);
         Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + ((Vector2)ship.transform.up * 5.0f), Color.white);
 
+        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
+                                        new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom), CAMERA_FOLLOW_SPEED * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Zoom in the player camera, by increments based on constant defined.
+    /// </summary>
+    private void ZoomInCamera()
+    {
+        if (currentCameraZoom + CAMERA_ZOOM_INCREMENT > CAMERA_MAX_ZOOM)
+            return;
+
+        currentCameraZoom += CAMERA_ZOOM_INCREMENT;
+    }
+
+    /// <summary>
+    /// Zoom out the player camera, by increments based on constant defined.
+    /// </summary>
+    private void ZoomOutCamera()
+    {
+        if (currentCameraZoom - CAMERA_ZOOM_INCREMENT < CAMERA_MIN_ZOOM)
+            return;
+
+        currentCameraZoom -= CAMERA_ZOOM_INCREMENT;
     }
 
     /// <summary>
@@ -177,6 +206,11 @@ public class PlayerController : MonoBehaviour
                 inventory.Toggle();
                 inventory.infoScreen.Hide();
             }
+
+            if (Input.GetKeyDown(KeyCode.KeypadPlus))
+                ZoomInCamera();
+            if (Input.GetKeyDown(KeyCode.KeypadMinus))
+                ZoomOutCamera();
         }
         else
         {

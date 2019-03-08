@@ -3,7 +3,6 @@
 public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
-    internal bool isPaused = false;
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
@@ -27,7 +26,7 @@ public class WeaponController : MonoBehaviour
     /// <param name="component"></param>
     public void UpdateTurret(ShipComponent component)
     {
-        if(!dead)
+        if (!dead)
         {
             if (currentComponent != null)
             {
@@ -42,7 +41,7 @@ public class WeaponController : MonoBehaviour
                 return;
             }
             var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
-            if(hotbarSlotItem != null)
+            if (hotbarSlotItem != null)
             {
                 currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
                 currentComponent.gameObject.SetActive(true);
@@ -57,35 +56,85 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!dead && !isPaused)
+        if (!dead)
         {
-            // Change the item if necessary.
-            if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+            if (currentComponent is ChargedWeapon)
             {
-                if (currentComponent is WeaponComponent)
+                HandleChargedWeapon(currentComponent as ChargedWeapon);
+            }
+            else if (currentComponent is AutomaticWeapon)
+            {
+                if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
                 {
-                    var weapon = currentComponent as WeaponComponent;
-                    if (Time.time > weapon.GetNextShotTime())
-                    {
-                        weapon.Fire();
-                        weapon.SetLastShot(Time.time);
-                    }
-                }
-                else if (currentComponent is MiningComponent)
-                {
-                    var miningLaser = currentComponent as MiningComponent;
-                    miningLaser.Fire();
+                    (currentComponent as AutomaticWeapon).CheckFire();
                 }
             }
-            if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
+            else if (currentComponent is MiningComponent)
             {
-                if (currentComponent is MiningComponent)
-                {
-                    var miningLaser = currentComponent as MiningComponent;
-                    miningLaser.StopFire();
-                }
+                HandleMiningTool(currentComponent as MiningComponent);
             }
         }
+    }
+
+    /// <summary>
+    /// Handle the functionality of the charged weapon equipped.
+    /// </summary>
+    /// <param name="weapon"></param>
+    private void HandleChargedWeapon(ChargedWeapon weapon)
+    {
+        if (Input.GetMouseButton(0) && currentComponent != null && !weapon.IsCoolingDown() && !weapon.IsDecharging())
+        {
+            if (!menuOpen)
+                weapon.CheckFire();
+            else
+                weapon.CancelFire();
+        }
+        else if (Input.GetMouseButtonUp(0) && currentComponent != null && !weapon.IsCoolingDown() && !weapon.IsDecharging())
+        {
+            if (weapon.IsCharged())
+            {
+                weapon.Fire();
+            }
+            else
+            {
+                weapon.CancelFire();
+            }
+        }
+        else if (weapon.IsCoolingDown())
+        {
+            weapon.StartCooldown();
+        }
+        else if (weapon.IsDecharging())
+        {
+            weapon.CancelFire();
+        }
+    }
+
+    /// <summary>
+    /// Handle the functionality of the mining tool equipped.
+    /// </summary>
+    /// <param name="miningComponent"></param>
+    private void HandleMiningTool(MiningComponent miningComponent)
+    {
+        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
+        {
+            UpdateMiningFire(miningComponent);
+        }
+        // What to do if a menu opens.
+        if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
+        {
+            miningComponent.StopFire();
+        }
+    }
+
+    /// <summary>
+    /// Fires the mining laser.
+    /// </summary>
+    /// <param name="currentComponent"></param>
+    private void UpdateMiningFire(MiningComponent currentComponent)
+    {
+        var miningLaser = currentComponent;
+        miningLaser.Fire();
     }
 
     /// <summary>
@@ -94,17 +143,17 @@ public class WeaponController : MonoBehaviour
     /// <param name="isDead"></param>
     public void UpdateDead(bool isDead)
     {
-        if(!dead && isDead)
+        if (!dead && isDead)
         {
             dead = isDead;
             turret.gameObject.SetActive(false);
             menuOpen = false;
         }
-        else if(dead && !isDead)
+        else if (dead && !isDead)
         {
             dead = isDead;
             turret.gameObject.SetActive(true);
         }
-        
+
     }
 }

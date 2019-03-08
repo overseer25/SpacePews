@@ -71,12 +71,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7c842c3028e3071439e75c035f6e0446, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.22, y: 0.37}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -120,8 +120,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 0.22, y: 0.37}
+    newSize: {x: 0.22, y: 0.37}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDamage: 1
   maxDamage: 3
-  speed: 50
+  speed: 25
   critChance: 5
   critMultiplier: 2
   homing: 0
@@ -164,6 +164,13 @@ MonoBehaviour:
   destroyEffect: {fileID: 114353173892645446, guid: 39fffa447ffea104d902c5285d13f3d2,
     type: 3}
   lifetime: 5
-  playspeed: 0.15
+  playspeed: 0.1
+  fireSpritesPlayspeed: 0
   sprites:
-  - {fileID: 21300000, guid: 7c842c3028e3071439e75c035f6e0446, type: 3}
+  - {fileID: 21300000, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
+  - {fileID: 21300002, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
+  - {fileID: 21300004, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
+  - {fileID: 21300006, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
+  - {fileID: 21300008, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
+  - {fileID: 21300010, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
+  fireSprites: []

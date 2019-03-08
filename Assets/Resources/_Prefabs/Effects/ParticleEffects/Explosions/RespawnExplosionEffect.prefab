@@ -75,7 +75,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.78, y: 2.9200003}
+  m_Size: {x: 1.26, y: 1.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -103,15 +103,7 @@ MonoBehaviour:
   - {fileID: 21300012, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
   - {fileID: 21300014, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
   - {fileID: 21300016, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300018, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300020, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300022, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300024, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300026, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300028, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300030, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  - {fileID: 21300032, guid: b295ccbc942b0ae4281bd17dd7f94244, type: 3}
-  playspeed: 0.03
+  playspeed: 0.05
   sound: {fileID: 8300000, guid: 4b29ca289332c4749879e330ba324afa, type: 3}
 --- !u!82 &6749955024590718141
 AudioSource:

@@ -78,14 +78,14 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
@@ -94,10 +94,10 @@ TextureImporter:
       name: ShipDeathExplosion1_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 565
-        width: 267
-        height: 234
+        x: 7
+        y: 103
+        width: 53
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -105,7 +105,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f635d3f18bb8c4a47b7d6a65cb0e1cb9
+      spriteID: b09318527daab7f4b8a46ab65e82958a
       vertices: []
       indices: 
       edges: []
@@ -114,10 +114,10 @@ TextureImporter:
       name: ShipDeathExplosion1_1
       rect:
         serializedVersion: 2
-        x: 357
-        y: 545
-        width: 315
-        height: 280
+        x: 72
+        y: 103
+        width: 61
+        height: 66
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,7 +125,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 61bb2880b2b38cb4bb6febc38a455fd5
+      spriteID: ec89b0bc257b8eb449a60a60a5ebbf54
       vertices: []
       indices: 
       edges: []
@@ -134,10 +134,10 @@ TextureImporter:
       name: ShipDeathExplosion1_2
       rect:
         serializedVersion: 2
-        x: 695
-        y: 501
-        width: 386
-        height: 378
+        x: 140
+        y: 100
+        width: 69
+        height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,7 +145,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eef6270081634384da35153f70f5c743
+      spriteID: be6143bfecb24924dbf638d68fefa24f
       vertices: []
       indices: 
       edges: []
@@ -154,10 +154,10 @@ TextureImporter:
       name: ShipDeathExplosion1_3
       rect:
         serializedVersion: 2
-        x: 1115
-        y: 481
-        width: 375
-        height: 431
+        x: 222
+        y: 103
+        width: 69
+        height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,7 +165,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ab4bab5ec9f63146bb8a9daea1f955e
+      spriteID: e064c9d5f2d87054a819121d02ef3138
       vertices: []
       indices: 
       edges: []
@@ -174,10 +174,10 @@ TextureImporter:
       name: ShipDeathExplosion1_4
       rect:
         serializedVersion: 2
-        x: 105
-        y: 54
-        width: 381
-        height: 426
+        x: 15
+        y: 11
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -185,7 +185,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd5dfeb35b141ca4ab5ced8b62bee674
+      spriteID: a32db0c8841d2694f8e9936fb397e634
       vertices: []
       indices: 
       edges: []
@@ -194,10 +194,10 @@ TextureImporter:
       name: ShipDeathExplosion1_5
       rect:
         serializedVersion: 2
-        x: 541
-        y: 64
-        width: 357
-        height: 401
+        x: 98
+        y: 10
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,7 +205,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3bf8c1ed08cf9ed469f0c62e885cdcec
+      spriteID: 659c5241e6c59d948a6762f06c64823d
       vertices: []
       indices: 
       edges: []
@@ -214,10 +214,10 @@ TextureImporter:
       name: ShipDeathExplosion1_6
       rect:
         serializedVersion: 2
-        x: 930
-        y: 77
-        width: 370
-        height: 375
+        x: 184
+        y: 15
+        width: 69
+        height: 74
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,7 +225,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7b14ee572cfe994e8dba95fb7607332
+      spriteID: a5d8d2e04d49d8f4694bae3e9a562b13
       vertices: []
       indices: 
       edges: []
@@ -233,7 +233,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: e1e9261e8b0429949bdfe8fdbe43858c
+    spriteID: 02098e358f8383f4d848cab44bbbf435
     vertices: []
     indices: 
     edges: []
