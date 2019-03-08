@@ -6,11 +6,7 @@ public class InfoScreen : MonoBehaviour
 {
 
     [Header("Displays")]
-    public TextMeshProUGUI text1;
-    public TextMeshProUGUI text2;
-    public TextMeshProUGUI text3;
-    public TextMeshProUGUI text4;
-    public TextMeshProUGUI text5;
+    public TextMeshProUGUI displayText;
     public TextMeshProUGUI value;
     public TextMeshProUGUI quantity;
 
@@ -73,53 +69,49 @@ public class InfoScreen : MonoBehaviour
         if (item is WeaponComponent)
         {
             var weapComp = item as WeaponComponent;
-            text1.text = item.itemName;
-            text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>";
-            text3.text = "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)";
-            text4.text = "Crit Chance: " + weapComp.GetCriticalChanceString() + " (<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)";
-            text5.text = "<style=\"Description\">" + weapComp.description + "</style>";
+            displayText.text = item.itemName + "\n";
+            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.text += "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>\n";
+            displayText.text += "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)\n";
+            displayText.text += "<style=\"CritChanceText\">Crit Chance: " + weapComp.GetCriticalChanceString() + "</style>(<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)\n";
+            displayText.text += "<style=\"Description\">" + weapComp.description + "</style>\n";
         }
         // If the item is a thruster component.
         else if(item is ThrusterComponent)
         {
             var thrusterComp = item as ThrusterComponent;
-            text1.text = item.itemName;
-            text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + thrusterComp.GetComponentClass() + " " + thrusterComp.GetItemType() + "</style>";
-            text3.text = "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>";
-            text4.text = "<style=\"Acceleration\">" + "Acceleration: <style=\"AccNum\">" + thrusterComp.acceleration + "</style> m/s^2" + "</style>";
-            text5.text = "<style=\"Description\">" + thrusterComp.description + "</style>";
+            displayText.text = item.itemName + "\n";
+            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.text += "<style=\"Type\">" + thrusterComp.GetComponentClass() + " " + thrusterComp.GetItemType() + "</style>\n";
+            displayText.text += "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>\n";
+            displayText.text += "<style=\"Acceleration\">" + "Acceleration: <style=\"AccNum\">" + thrusterComp.acceleration + "</style> m/s^2" + "</style>\n";
+            displayText.text += "<style=\"Description\">" + thrusterComp.description + "</style>\n";
         }
         else if(item is StorageComponent)
         {
             var storageComp = item as StorageComponent;
-            text1.text = item.itemName;
-            text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>";
-            text3.text = "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>";
-            text4.text = "";
-            text5.text = "<style=\"Description\">" + storageComp.description + "</style>";
+            displayText.text = item.itemName + "\n";
+            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.text += "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>\n";
+            displayText.text += "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>\n";
+            displayText.text += "<style=\"Description\">" + storageComp.description + "</style>\n";
         }
         else if(item is MiningComponent)
         {
             var miningComp = item as MiningComponent;
-            text1.text = item.itemName;
-            text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>";
-            text3.text = "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>";
-            text4.text = "";
-            text5.text = "<style=\"Description\">" + miningComp.description + "</style>";
+            displayText.text = item.itemName + "\n";
+            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.text += "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>\n";
+            displayText.text += "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>\n";
+            displayText.text += "<style=\"Description\">" + miningComp.description + "</style>\n";
         }
         // Generic item.
         else
         {
-            text1.text = item.itemName;
-            text1.color = ItemColors.colors[(int)item.itemTier];
-            text2.text = "<style=\"Type\">" + item.GetItemType() + "</style>";
-            text3.text = "<style=\"Description\">" + item.description + "</style>";
-            text4.text = "";
-            text5.text = "";
+            displayText.text = item.itemName + "\n";
+            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.text += "<style=\"Type\">" + item.GetItemType() + "</style>\n";
+            displayText.text += "<style=\"Description\">" + item.description + "</style>\n";
         }
 
         value.text = "<style=\"Value\">" + item.value + ((item.value == 1) ? " Unit " : " Units ");
@@ -137,11 +129,7 @@ public class InfoScreen : MonoBehaviour
     {
         float height = 0.0f;
         float spacing = GetComponentInChildren<VerticalLayoutGroup>().spacing;
-        height += (text1.text != "") ? text1.preferredHeight + spacing : 0;
-        height += (text2.text != "") ? text2.preferredHeight + spacing : 0;
-        height += (text3.text != "") ? text3.preferredHeight + spacing : 0;
-        height += (text4.text != "") ? text4.preferredHeight + spacing : 0;
-        height += (text5.text != "") ? text5.preferredHeight + spacing : 0;
+        height += (displayText.text != "") ? displayText.preferredHeight + spacing : 0;
         height += (value.text != "") ? value.preferredHeight + spacing : 0;
         height += (quantity.text != "") ? quantity.preferredHeight + spacing : 0;
 

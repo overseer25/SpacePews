@@ -22,13 +22,13 @@ public class AnimImagePulsate : MonoBehaviour {
             if(!scaleUp)
             {
                 changeSprite = Time.time + playspeed;
-                gameObject.GetComponent<Image>().transform.localScale *= 1 - rateOfChange;
+                gameObject.transform.localScale *= 1 - rateOfChange;
                 counter++;
             }
             else
             {
                 changeSprite = Time.time + playspeed;
-                gameObject.GetComponent<Image>().transform.localScale *= 1 + rateOfChange;
+                gameObject.transform.localScale *= 1 + rateOfChange;
                 counter--;
             }
 
