@@ -28,6 +28,8 @@ public class Inventory : MonoBehaviour
     private AudioClip hotbarSelectSound;
 
     private const int INVENTORY_SIZE = 20;
+
+    // Must be greater than 0 and less than 10.
     private const int HOTBAR_COUNT = 5;
 
     internal AudioSource audioSource;
@@ -118,7 +120,7 @@ public class Inventory : MonoBehaviour
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 // Wrap to the beginning if at the end of the hotbar.
-                if (selectedHotbarSlotIndex + 1 >= hotbarSlots.Count)
+                if (selectedHotbarSlotIndex + 1 >= HOTBAR_COUNT)
                     SwitchHotbarSlot(0);
                 // Otherwise, just move to the next hotbar slot.
                 else
@@ -138,16 +140,11 @@ public class Inventory : MonoBehaviour
                     SwitchHotbarSlot(selectedHotbarSlotIndex - 1);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                SwitchHotbarSlot(0);
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-                SwitchHotbarSlot(1);
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-                SwitchHotbarSlot(2);
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-                SwitchHotbarSlot(3);
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-                SwitchHotbarSlot(4);
+            for(int i = 1; i <= HOTBAR_COUNT; i++)
+            {
+                if (Input.GetKeyDown(i.ToString()))
+                    SwitchHotbarSlot(i-1);
+            }
         }
         UpdateSelectedItemDisplay(GetSelectedHotbarSlot().GetItem());
     }
@@ -369,13 +366,10 @@ public class Inventory : MonoBehaviour
                 {
                     infoScreen.Hide();
                 }
-                else if (!infoScreen.IsVisible())
-                {
-                    var item = inventorySlots[index].GetItem();
+                var item = inventorySlots[index].GetItem();
 
-                    infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
-                    infoScreen.Show();
-                }
+                infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
+                infoScreen.Show();
             }
         }
         else
@@ -450,6 +444,8 @@ public class Inventory : MonoBehaviour
                 if (slot.GetItem().IsStackable() && slot.GetQuantity() < slot.GetItem().GetStackSize())
                 {
                     slot.GetInventoryItem().AddQuantity(item.GetQuantity());
+                    if (infoScreen.IsVisible())
+                        ShowHoverTooltip(slot.GetIndex());
                     return;
                 }
             }

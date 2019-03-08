@@ -89,6 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0b10e0ca9ee15240aadaa507cc23fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartingItem: {fileID: 0}
+  StartingQuantity: 0
 --- !u!61 &61361616201244136
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -252,7 +254,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 71.29382, y: -13.794983}
-  m_SizeDelta: {x: 64, y: 27.59}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222800849052254726
 CanvasRenderer:
@@ -481,11 +483,11 @@ RectTransform:
   m_Father: {fileID: 224290312271322428}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.7294, y: 9.8}
-  m_SizeDelta: {x: 13.459, y: -7.98}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 5.882}
+  m_SizeDelta: {x: 0, y: 5.882}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &222005972106172512
 CanvasRenderer:
   m_ObjectHideFlags: 0
