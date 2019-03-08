@@ -160,7 +160,7 @@ public class PauseMenuScript : MonoBehaviour
         ChangeQuitDialogueState(false);
         ActivatePauseMenu();
     }
-    
+
     /// <summary>
     /// Actually quit the game.
     /// </summary>
