@@ -31,13 +31,6 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
-                                        new Vector3(ship.transform.position.x, ship.transform.position.y, Camera.main.transform.position.z), rigidBody.velocity.magnitude * Time.deltaTime);
-    }
-
     /// <summary>
     /// Move the ship forward.
     /// </summary>
