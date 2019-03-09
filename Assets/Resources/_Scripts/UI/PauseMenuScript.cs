@@ -22,7 +22,6 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField]
     private AudioClip resumeSound;
     private AudioSource source;
-    public KeyCode pauseKey = KeyCode.Escape;
 
     public static bool IsPaused { get; protected set; }
     private bool dead = false;
@@ -32,28 +31,6 @@ public class PauseMenuScript : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         ResumeGame();
-    }
-
-    private void Update()
-    {
-        if(!dead && !inventory.itemTransferPanel.activeInHierarchy)
-        {
-            bool pause = Input.GetKeyDown(pauseKey);
-            //player has hit pause key
-            if (pause)
-            {
-                //player has hit quit but has not quit yet and has the dialogue open
-                if (confirmQuitDialogue.activeInHierarchy)
-                {
-                    ChangeQuitDialogueState(false);
-                    ActivatePauseMenu();
-                }
-                else
-                {
-                    PauseGame(!IsPaused);
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -68,7 +45,7 @@ public class PauseMenuScript : MonoBehaviour
     /// <summary>
     /// Deactivates all the pieces of the pause menu.
     /// </summary>
-    private void DeactivatePauseMenu()
+    public void DeactivatePauseMenu()
     {
         for (int i = 0; i < this.transform.childCount; i++)
         {
@@ -80,8 +57,9 @@ public class PauseMenuScript : MonoBehaviour
     /// <summary>
     /// Activates all the pieces of the pause menu.
     /// </summary>
-    private void ActivatePauseMenu()
+    public void ActivatePauseMenu()
     {
+        ChangeQuitDialogueState(false);
         for (int i = 0; i < this.transform.childCount; i++)
         {
             this.transform.GetChild(i).gameObject.SetActive(true);

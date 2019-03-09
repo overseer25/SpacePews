@@ -46,9 +46,13 @@ public class PlayerController : MonoBehaviour
     private float healthToDisplay;
     private PlayerHealth healthUI;
     private bool dead = false;
-    private bool rotatingLeft;
-    private bool rotatingRight;
-    private bool movingForward;
+
+    [HideInInspector]
+    public bool rotatingLeft;
+    [HideInInspector]
+    public bool rotatingRight;
+    [HideInInspector]
+    public bool movingForward;
 
     private int health; // The amount of health the player currently has.
     private float currentCameraZoom;
@@ -139,7 +143,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Zoom in the player camera, by increments based on constant defined.
     /// </summary>
-    private void ZoomInCamera()
+    public void ZoomInCamera()
     {
         if (currentCameraZoom + CAMERA_ZOOM_INCREMENT > CAMERA_MAX_ZOOM)
             return;
@@ -154,7 +158,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Zoom out the player camera, by increments based on constant defined.
     /// </summary>
-    private void ZoomOutCamera()
+    public void ZoomOutCamera()
     {
         if (currentCameraZoom - CAMERA_ZOOM_INCREMENT < CAMERA_MIN_ZOOM)
             return;
@@ -171,58 +175,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // Only allow controls if the player is alive.
-        if (!dead)
-        {
-            if ((!Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.W)) || (Input.GetKeyDown(KeyCode.W) && thrusters.FirstOrDefault() != null))
-            {
-                movingForward = true;
-                if (!GetThrusterState())
-                    SetThrusterState(true);
-            }
-            else if (Input.GetKeyUp(KeyCode.W))
-            {
-                movingForward = false;
-                if (GetThrusterState())
-                    SetThrusterState(false);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                rotatingRight = true;
-                rotatingLeft = false;
-            }
-            else if (Input.GetKeyUp(KeyCode.D))
-            {
-                rotatingRight = false;
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                rotatingRight = false;
-                rotatingLeft = true;
-            }
-            else if (Input.GetKeyUp(KeyCode.A))
-            {
-                rotatingLeft = false;
-            }
-
-            // Suicide button.
-            if (Input.GetKeyDown(KeyCode.Backspace) && !itemTransferConfirmWindow.activeInHierarchy)
-                health = 0;
-
-            if (Input.GetKeyDown(KeyCode.Tab) && !itemTransferConfirmWindow.activeInHierarchy)
-            {
-                gameObject.GetComponent<WeaponController>().menuOpen = !gameObject.GetComponent<WeaponController>().menuOpen;
-                inventory.Toggle();
-                inventory.infoScreen.Hide();
-            }
-
-            if (Input.GetKeyDown(KeyCode.KeypadPlus))
-                ZoomInCamera();
-            if (Input.GetKeyDown(KeyCode.KeypadMinus))
-                ZoomOutCamera();
-        }
-        else
+        if(dead)
         {
             if (GetThrusterState())
                 SetThrusterState(false);
@@ -276,7 +229,7 @@ public class PlayerController : MonoBehaviour
     /// Set the state of all thrusters on the ship.
     /// </summary>
     /// <param name="state"></param>
-    private void SetThrusterState(bool state)
+    public void SetThrusterState(bool state)
     {
         if (thrusters.FirstOrDefault() == null)
             return;
@@ -284,6 +237,18 @@ public class PlayerController : MonoBehaviour
         {
             thruster.gameObject.SetActive(state);
         }
+    }
+
+    /// <summary>
+    /// Get the state of the thrusters on the ship.
+    /// </summary>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    public bool GetThrusterState()
+    {
+        if (thrusters.FirstOrDefault() == null)
+            return false;
+        return thrusters.FirstOrDefault().gameObject.activeSelf;
     }
 
     /// <summary>
@@ -304,18 +269,6 @@ public class PlayerController : MonoBehaviour
         engine.volume = (engine.volume > 0) ? engine.volume - movementController.GetDeceleration() : 0.0f;
         if (engine.volume <= 0.0f)
             engine.Stop();
-    }
-
-    /// <summary>
-    /// Get the state of the thrusters on the ship.
-    /// </summary>
-    /// <param name="state"></param>
-    /// <returns></returns>
-    private bool GetThrusterState()
-    {
-        if (thrusters.FirstOrDefault() == null)
-            return false;
-        return thrusters.FirstOrDefault().gameObject.activeSelf;
     }
 
     private void LateUpdate()
@@ -421,6 +374,14 @@ public class PlayerController : MonoBehaviour
     public bool IsDead()
     {
         return dead;
+    }
+
+    /// <summary>
+    /// Kill the player. This can be called when something other than a world object kills the player (eg suicide button).
+    /// </summary>
+    public void Kill()
+    {
+        health = 0;
     }
 
     /// <summary>
