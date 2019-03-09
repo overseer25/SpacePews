@@ -3,12 +3,14 @@
 public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
+    [HideInInspector]
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
     private Ship ship;
 
     private GameObject turret;
+    [HideInInspector]
     public ShipComponent currentComponent;
 
     [SerializeField]
