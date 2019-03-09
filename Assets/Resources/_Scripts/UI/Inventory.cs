@@ -109,11 +109,6 @@ public class Inventory : MonoBehaviour
             StartCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
         }
 
-        if (Input.GetButtonDown("Cancel") && itemTransferPanel.activeInHierarchy)
-        {
-            TransferItemCancelClick();
-        }
-
         if (!dead && !isPaused && !itemTransferPanel.activeInHierarchy)
         {
             // If scrolling up the hotbar.
@@ -514,7 +509,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void OnEndEditItemTransferInput()
     {
-        if(Input.GetButtonDown("Submit"))
+        if(Input.GetKeyDown(InputManager.current.submit))
         {
             TransferItemButtonClick();
         }

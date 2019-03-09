@@ -3,13 +3,15 @@
 public class WeaponController : MonoBehaviour
 {
     private bool dead = false;
+    [HideInInspector]
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
     private Ship ship;
 
     private GameObject turret;
-    private ShipComponent currentComponent;
+    [HideInInspector]
+    public ShipComponent currentComponent;
 
     [SerializeField]
     private ShipMountController mountController;
@@ -51,90 +53,6 @@ public class WeaponController : MonoBehaviour
                     (currentComponent as MiningComponent).SetMounted(true);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!dead)
-        {
-            if (currentComponent is ChargedWeapon)
-            {
-                HandleChargedWeapon(currentComponent as ChargedWeapon);
-            }
-            else if (currentComponent is AutomaticWeapon)
-            {
-                if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
-                {
-                    (currentComponent as AutomaticWeapon).CheckFire();
-                }
-            }
-            else if (currentComponent is MiningComponent)
-            {
-                HandleMiningTool(currentComponent as MiningComponent);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Handle the functionality of the charged weapon equipped.
-    /// </summary>
-    /// <param name="weapon"></param>
-    private void HandleChargedWeapon(ChargedWeapon weapon)
-    {
-        if (Input.GetMouseButton(0) && currentComponent != null && !weapon.IsCoolingDown() && !weapon.IsDecharging())
-        {
-            if (!menuOpen)
-                weapon.CheckFire();
-            else
-                weapon.CancelFire();
-        }
-        else if (Input.GetMouseButtonUp(0) && currentComponent != null && !weapon.IsCoolingDown() && !weapon.IsDecharging())
-        {
-            if (weapon.IsCharged())
-            {
-                weapon.Fire();
-            }
-            else
-            {
-                weapon.CancelFire();
-            }
-        }
-        else if (weapon.IsCoolingDown())
-        {
-            weapon.StartCooldown();
-        }
-        else if (weapon.IsDecharging())
-        {
-            weapon.CancelFire();
-        }
-    }
-
-    /// <summary>
-    /// Handle the functionality of the mining tool equipped.
-    /// </summary>
-    /// <param name="miningComponent"></param>
-    private void HandleMiningTool(MiningComponent miningComponent)
-    {
-        if (Input.GetMouseButton(0) && !menuOpen && currentComponent != null)
-        {
-            UpdateMiningFire(miningComponent);
-        }
-        // What to do if a menu opens.
-        if (Input.GetMouseButtonUp(0) || menuOpen || currentComponent == null)
-        {
-            miningComponent.StopFire();
-        }
-    }
-
-    /// <summary>
-    /// Fires the mining laser.
-    /// </summary>
-    /// <param name="currentComponent"></param>
-    private void UpdateMiningFire(MiningComponent currentComponent)
-    {
-        var miningLaser = currentComponent;
-        miningLaser.Fire();
     }
 
     /// <summary>
