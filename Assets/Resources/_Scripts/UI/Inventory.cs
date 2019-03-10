@@ -509,7 +509,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void OnEndEditItemTransferInput()
     {
-        if(Input.GetKeyDown(InputManager.current.submit))
+        if(Input.GetKeyDown(InputManager.current.controls.submit))
         {
             TransferItemButtonClick();
         }

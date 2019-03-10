@@ -103,6 +103,17 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Tells the movement controller to decelerate the player ship and stop rotating.
+    /// </summary>
+    public void StopAllMovement()
+    {
+        movingForward = false;
+        rotatingLeft = false;
+        rotatingRight = false;
+        SetThrusterState(false);
+    }
+
+    /// <summary>
     /// Gets the current health value of the player.
     /// </summary>
     /// <returns></returns>
