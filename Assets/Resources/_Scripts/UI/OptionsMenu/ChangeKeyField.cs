@@ -30,7 +30,7 @@ public class ChangeKeyField : MonoBehaviour
     /// <summary>
     /// This is executed when a text input in the controls window is selected.
     /// </summary>
-    private void Update()
+    private void LateUpdate()
     {
         if (Input.anyKeyDown)
         {

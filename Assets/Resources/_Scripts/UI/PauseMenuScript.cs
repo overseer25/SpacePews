@@ -7,6 +7,7 @@ public class PauseMenuScript : MonoBehaviour
 {
     public OptionsMenu optionsMenu;
     public ControlsMenu controlsMenu;
+    public AudioMenu audioMenu;
     public GameObject confirmQuitDialogue;
     public Texture2D menuCursor;
     public Texture2D shootCursor;
@@ -34,6 +35,7 @@ public class PauseMenuScript : MonoBehaviour
     private void Start()
     {
         source = GetComponent<AudioSource>();
+        optionsMenu.Initialize();
         ResumeGame();
     }
 
@@ -120,8 +122,7 @@ public class PauseMenuScript : MonoBehaviour
         IsPaused = false;
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
-        optionsMenu.Hide();
-        controlsMenu.Hide();
+        optionsMenu.HideAll();
         Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
         weaponController.menuOpen = false;
         inventory.UpdatePaused(false);

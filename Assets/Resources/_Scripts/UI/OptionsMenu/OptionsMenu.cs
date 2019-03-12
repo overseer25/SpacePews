@@ -8,6 +8,7 @@ public class OptionsMenu : MonoBehaviour
 {
 
     public ControlsMenu controlsMenu;
+    public AudioMenu audioMenu;
 
     [Header("Sound")]
     public AudioClip hoverSound;
@@ -18,18 +19,44 @@ public class OptionsMenu : MonoBehaviour
     public bool isOpen;
     private AudioSource audioSource;
 
-    private void Start()
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        if (isOpen && Input.GetKeyDown(InputManager.current.controls.pause))
+        if (isOpen && !SubmenuIsOpen() && Input.GetKeyDown(InputManager.current.controls.pause))
         {
+            PlayClickSound();
             Hide();
             pauseMenu.ActivatePauseMenu();
         }
+    }
+
+    /// <summary>
+    /// Initialize saved data.
+    /// </summary>
+    public void Initialize()
+    {
+        InputManager.current.LoadFromFile();
+        audioMenu.LoadFromFile();
+    }
+
+    /// <summary>
+    /// Is one of the sub-menus open?
+    /// </summary>
+    /// <returns></returns>
+    public bool SubmenuIsOpen()
+    {
+        return controlsMenu.isOpen || audioMenu.isOpen;
+    }
+
+    private IEnumerator ChangeIsOpenBool()
+    {
+        yield return new WaitForSeconds(0.01f);
+        isOpen = false;
+        yield break;
     }
 
     /// <summary>
@@ -55,7 +82,17 @@ public class OptionsMenu : MonoBehaviour
             this.transform.GetChild(i).gameObject.SetActive(false);
         }
         this.GetComponent<Image>().enabled = false;
-        isOpen = false;
+        StartCoroutine(ChangeIsOpenBool());
+    }
+
+    /// <summary>
+    /// Hide all parts of the options menu.
+    /// </summary>
+    public void HideAll()
+    {
+        Hide();
+        controlsMenu.Hide();
+        audioMenu.Hide();
     }
 
     /// <summary>
@@ -74,6 +111,24 @@ public class OptionsMenu : MonoBehaviour
     {
         Show();
         controlsMenu.Hide();
+    }
+
+    /// <summary>
+    /// Show the audio menu.
+    /// </summary>
+    public void ShowAudio()
+    {
+        Hide();
+        audioMenu.Show();
+    }
+
+    /// <summary>
+    /// Hide the audio menu.
+    /// </summary>
+    public void HideAudio()
+    {
+        Show();
+        audioMenu.Hide();
     }
 
     /// <summary>

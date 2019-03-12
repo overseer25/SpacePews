@@ -95,7 +95,7 @@ public class Inventory : MonoBehaviour
         }
         hotbarSlots[0].Select();
 
-        CloseInventory();
+        CloseInventory(false);
     }
 
     /// <summary>

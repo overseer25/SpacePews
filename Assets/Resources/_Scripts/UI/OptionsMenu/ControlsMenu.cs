@@ -18,21 +18,26 @@ public class ControlsMenu : MonoBehaviour
     [Header("Other")]
     public OptionsMenu optionsMenu;
     public AudioClip failedSound;
+    public AudioClip clickSound;
+    public AudioClip hoverSound;
 
     public bool isOpen;
     public bool inputIsSelected;
 
     private AudioSource audioSource;
 
-    private void Start()
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if(!inputIsSelected && Input.GetKeyDown(InputManager.current.controls.pause) && isOpen)
+        {
+            PlayClickSound();
             optionsMenu.HideControls();
+        }
 
         foreach (var input in GetComponentsInChildren<ChangeKeyField>())
         {
@@ -71,6 +76,22 @@ public class ControlsMenu : MonoBehaviour
         }
         this.GetComponent<Image>().enabled = false;
         isOpen = false;
+    }
+
+    /// <summary>
+    /// Plays the control menu click sound.
+    /// </summary>
+    public void PlayClickSound()
+    {
+        audioSource.PlayOneShot(clickSound);
+    }
+
+    /// <summary>
+    /// Plays the control menu hover sound.
+    /// </summary>
+    public void PlayHoverSound()
+    {
+        audioSource.PlayOneShot(hoverSound);
     }
 
     /// <summary>

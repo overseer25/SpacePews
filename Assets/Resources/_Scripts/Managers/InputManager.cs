@@ -22,13 +22,13 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public static InputManager current;
 
-    private string FileLocation;
+    private string fileLocation;
 
     private PlayerController pController;
     private MovementController mController;
     private WeaponController wController;
 
-    private void Start()
+    private void Awake()
     {
         if (current == null)
             current = this;
@@ -39,15 +39,14 @@ public class InputManager : MonoBehaviour
         mController = playerShip.GetComponent<MovementController>();
         wController = playerShip.GetComponent<WeaponController>();
 
-        FileLocation = Application.persistentDataPath + "/controls.json";
-        LoadFromFile();
+        fileLocation = Application.persistentDataPath + "/controls.json";
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!controlsMenu.isOpen)
+        if (!optionsMenu.SubmenuIsOpen() && !optionsMenu.isOpen)
         {
             // Suicide button.
             if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
@@ -55,12 +54,21 @@ public class InputManager : MonoBehaviour
 
             HandleMovementControls();
             HandleWeaponControls();
+            HandleUIControls();
         }
         else
         {
             pController.StopAllMovement();
         }
-        HandleUIControls();
+
+        // Handle pause screen.
+        if (!pController.IsDead() && !pController.inventory.itemTransferPanel.activeInHierarchy && !optionsMenu.SubmenuIsOpen() && !optionsMenu.isOpen)
+        {
+            if (Input.GetKeyDown(controls.pause))
+            {
+                pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
+            }
+        }
     }
 
     /// <summary>
@@ -77,7 +85,6 @@ public class InputManager : MonoBehaviour
         controls.cameraZoomIn = KeyCode.KeypadPlus;
         controls.cameraZoomOut = KeyCode.KeypadMinus;
         controls.suicide = KeyCode.Backspace;
-        SaveToFile();
     }
 
     /// <summary>
@@ -87,11 +94,10 @@ public class InputManager : MonoBehaviour
     {
         try
         {
-            if(File.Exists(FileLocation))
+            if(File.Exists(fileLocation))
             {
-                var file = File.ReadAllText(FileLocation);
+                var file = File.ReadAllText(fileLocation);
                 controls = JsonUtility.FromJson<Controls>(file);
-                controlsMenu.UpdateControlWindow();
             }
             else
                 ResetToDefault();
@@ -99,8 +105,12 @@ public class InputManager : MonoBehaviour
         }
         catch (Exception)
         {
-            Debug.LogWarning("Failed to load controls file " + FileLocation + ", using default values instead.");
+            Debug.Log("Failed to load controls file " + fileLocation + ", using default values instead.");
             ResetToDefault();
+        }
+        finally
+        {
+            controlsMenu.UpdateControlWindow();
         }
     }
 
@@ -112,15 +122,15 @@ public class InputManager : MonoBehaviour
         try
         {
             var file = JsonUtility.ToJson(controls);
-            if(!File.Exists(FileLocation))
-                File.Create(FileLocation);
+            if(!File.Exists(fileLocation))
+                File.Create(fileLocation);
 
-            File.WriteAllText(FileLocation, file);
+            File.WriteAllText(fileLocation, file);
         }
         catch (Exception)
         {
-            Debug.LogWarning("Failed to save controls file " + FileLocation + ", reverting to default values.");
-            ResetToDefault();
+            Debug.Log("Failed to save controls file " + fileLocation + ", reverting to previously saved values.");
+            LoadFromFile();
         }
         controlsMenu.UpdateControlWindow();
     }
@@ -233,7 +243,7 @@ public class InputManager : MonoBehaviour
             miningComponent.Fire();
         }
         // What to do if a menu opens.
-        if (Input.GetKey(controls.fire) || wController.menuOpen)
+        if (!Input.GetKey(controls.fire) || wController.menuOpen)
         {
             miningComponent.StopFire();
         }
@@ -260,14 +270,6 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(controls.pause) && pController.inventory.itemTransferPanel.activeInHierarchy)
         {
             pController.inventory.TransferItemCancelClick();
-        }
-        // Handle pause screen.
-        else if (!pController.IsDead() && !pController.inventory.itemTransferPanel.activeInHierarchy && (!controlsMenu.isOpen && !optionsMenu.isOpen))
-        {
-            if (Input.GetKeyDown(controls.pause))
-            {
-                pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
-            }
         }
     }
 }

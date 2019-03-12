@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Serialized data for saving user control preferences.
+/// </summary>
 [Serializable]
 public class Controls
 {
