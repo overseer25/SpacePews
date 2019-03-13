@@ -2784,10 +2784,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2042427859, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_MaxValue
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 828760706, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_havePropertiesChanged
       value: 1
@@ -2795,11 +2791,6 @@ PrefabInstance:
     - target: {fileID: 828760706, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5159937049781243837, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_MaxValue
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3909720305274416251, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}
@@ -2810,11 +2801,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3342000135815148488, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_MaxValue
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1072138667158219899, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}
@@ -2835,11 +2821,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5825243904708336603, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_MaxValue
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
