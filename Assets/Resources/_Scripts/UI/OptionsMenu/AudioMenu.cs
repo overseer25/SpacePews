@@ -176,12 +176,15 @@ public class AudioMenu : MonoBehaviour
         try
         {
             var file = JsonUtility.ToJson(data);
-            if (!File.Exists(fileLocation))
-                File.Create(fileLocation);
-
-            File.WriteAllText(fileLocation, file);
+            using (FileStream stream = File.Create(fileLocation))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine(file);
+                }
+            }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             Debug.Log("Failed to save audio file " + fileLocation + ", reverting to previously saved values.");
             LoadFromFile();
@@ -199,8 +202,14 @@ public class AudioMenu : MonoBehaviour
         {
             if (File.Exists(fileLocation))
             {
-                var file = File.ReadAllText(fileLocation);
-                data = JsonUtility.FromJson<AudioData>(file);
+                using (var stream = File.Open(fileLocation, FileMode.Open))
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string json = reader.ReadToEnd();
+                        data = JsonUtility.FromJson<AudioData>(json);
+                    }
+                }
             }
             else
                 data = ResetToDefault();
