@@ -64,7 +64,6 @@ public class ControlsMenu : MonoBehaviour
         {
             this.transform.GetChild(i).gameObject.SetActive(true);
         }
-        this.GetComponent<Image>().enabled = true;
         isOpen = true;
     }
 
@@ -74,7 +73,6 @@ public class ControlsMenu : MonoBehaviour
         {
             this.transform.GetChild(i).gameObject.SetActive(false);
         }
-        this.GetComponent<Image>().enabled = false;
         isOpen = false;
     }
 

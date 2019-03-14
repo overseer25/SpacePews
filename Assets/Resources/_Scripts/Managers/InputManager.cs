@@ -186,7 +186,7 @@ public class InputManager : MonoBehaviour
             }
             else if (wController.currentComponent is AutomaticWeapon)
             {
-                if (Input.GetMouseButton(0) && !wController.menuOpen && wController.currentComponent != null)
+                if (Input.GetKey(current.controls.fire) && !wController.menuOpen && wController.currentComponent != null)
                 {
                     (wController.currentComponent as AutomaticWeapon).CheckFire();
                 }

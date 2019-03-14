@@ -9,6 +9,7 @@ public class OptionsMenu : MonoBehaviour
 
     public ControlsMenu controlsMenu;
     public AudioMenu audioMenu;
+    public GraphicsMenu graphicsMenu;
 
     [Header("Sound")]
     public AudioClip hoverSound;
@@ -93,6 +94,7 @@ public class OptionsMenu : MonoBehaviour
         Hide();
         controlsMenu.Hide();
         audioMenu.Hide();
+        graphicsMenu.Hide();
     }
 
     /// <summary>
@@ -129,6 +131,24 @@ public class OptionsMenu : MonoBehaviour
     {
         Show();
         audioMenu.Hide();
+    }
+
+    /// <summary>
+    /// Show the graphics menu.
+    /// </summary>
+    public void ShowGraphics()
+    {
+        Hide();
+        graphicsMenu.Show();
+    }
+
+    /// <summary>
+    /// Hide the graphics menu.
+    /// </summary>
+    public void HideGraphics()
+    {
+        Show();
+        graphicsMenu.Hide();
     }
 
     /// <summary>
