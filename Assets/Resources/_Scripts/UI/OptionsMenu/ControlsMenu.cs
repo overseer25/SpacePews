@@ -15,11 +15,13 @@ public class ControlsMenu : MonoBehaviour
     public Image cameraZoomOut;
     public Image suicide;
 
-    [Header("Other")]
-    public OptionsMenu optionsMenu;
+    [Header("Audio")]
     public AudioClip failedSound;
     public AudioClip clickSound;
     public AudioClip hoverSound;
+
+    [Header("Other")]
+    public OptionsMenu optionsMenu;
 
     public bool isOpen;
     public bool inputIsSelected;
@@ -29,6 +31,7 @@ public class ControlsMenu : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        transform.position = Vector2.zero;
     }
 
     private void LateUpdate()

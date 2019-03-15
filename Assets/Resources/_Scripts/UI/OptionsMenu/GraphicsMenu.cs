@@ -1,28 +1,44 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
+using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GraphicsMenu : MonoBehaviour
 {
-    [Header("Audio")]
-    public AudioClip clickSound;
-
     [Header("Video Settings")]
     public Dropdown resolutionSelection;
     public Dropdown aspectSelection;
-    public Dropdown framerateSelection;
+    public Dropdown refreshRateSelection;
+    public Toggle vsyncToggle;
+    public Slider itemCountSlider;
+    public TextMeshProUGUI itemCountText;
+    public Slider effectCountSlider;
+    public TextMeshProUGUI effectCountText;
+
+    [Header("Audio")]
+    public AudioClip clickSound;
+    public AudioClip hoverSound;
+    public AudioClip saveChangesPopUpSound;
 
     [Header("Other")]
     public OptionsMenu optionsMenu;
-    public bool isOpen;
+    public GameObject confirmationWindow;
+    public Button applyButton;
+
+    private bool isOpen;
+    private bool isConfirmationOpen;
 
     private AudioSource audioSource;
 
-    private Resolution previousResolution;
-    private string previousAspectRatio;
+    // These are the selections that are stored in the file.
+    private int previousResolution;
+    private int previousAspectRatio;
     private int previousRefreshRate;
+    private int previousItemCount;
+    private int previousEffectCount;
+    private bool previousVsync;
 
     private List<int> refreshRates;
     private List<string> aspectRatios;
@@ -30,33 +46,65 @@ public class GraphicsMenu : MonoBehaviour
 
     // Variables for selections.
     private bool vsyncEnabled;
-    private int selectedFramerate;
+    private int selectedRefreshRate;
     private int selectedResolution;
     private int selectedAspectRatio;
+    private int itemCount;
+    private int effectCount;
+
+    private string fileLocation;
+    private bool firstLoad = true;
+
+    // Track whether options have been changed. One of these must be true for the save changes dialog window to display.
+    private bool changedResolution = false;
+    private bool changedAspectRatio = false;
+    private bool changedRefreshRate = false;
+    private bool changedItemCount = false;
+    private bool changedEffectCount = false;
+    private bool changedVsync = false;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        InitializeDropdownMenus();
+        if (vsyncToggle.isOn)
+            SetDisableFramerateSlider(true);
+
+        fileLocation = Application.persistentDataPath + "/graphics.json";
+        LoadFromFile();
+        transform.position = Vector2.zero;
+        confirmationWindow.transform.position = Vector2.zero;
+        HideConfirmation();
     }
 
     private void LateUpdate()
     {
         if (!Input.GetMouseButton(0) && Input.GetKeyDown(InputManager.current.controls.pause) && isOpen)
         {
-            PlayClickSound();
-            optionsMenu.HideAudio();
+            if(ChangesMade())
+            {
+                Hide();
+                DisplayConfirmation();
+            }
+            else
+            {
+                PlayClickSound();
+                optionsMenu.HideGraphics();
+            }
         }
+        if (ChangesMade())
+            applyButton.interactable = true;
+        else
+            applyButton.interactable = false;
+
     }
 
     /// <summary>
-    /// After making changes to the resolution, ask the user to confirm. After a set amount of time,
-    /// the resolution will reset to the previous value. This is to prevent the user from using a resolution
-    /// that doesn't work well with their monitor and the game.
+    /// Is any element of this menu open?
     /// </summary>
-    public void AskForConfirmation()
+    /// <returns></returns>
+    public bool IsOpen()
     {
-
+        return isOpen || isConfirmationOpen;
     }
 
     /// <summary>
@@ -65,7 +113,36 @@ public class GraphicsMenu : MonoBehaviour
     /// <param name="selection"></param>
     public void SetAspectRatio(int selection)
     {
+        if (selection == previousAspectRatio)
+            changedAspectRatio = false;
+        else if (selection != selectedAspectRatio)
+            changedAspectRatio = true;
+
         selectedAspectRatio = selection;
+    }
+
+    /// <summary>
+    /// Update the list of aspect ratios available.
+    /// </summary>
+    public void UpdateAspectRatioDropdown()
+    {
+        aspectRatios = new List<string>();
+        aspectSelection.options = new List<Dropdown.OptionData>();
+        foreach (var resolution in Screen.resolutions)
+        {
+            var aspect = (float)resolution.width / resolution.height;
+            var aspectString = GetAspectRatio(aspect);
+
+            if (!aspectRatios.Contains(aspectString))
+            {
+                aspectRatios.Add(aspectString);
+                aspectSelection.options.Add(new Dropdown.OptionData(aspectString));
+            }
+        }
+
+        aspectSelection.value = selectedAspectRatio;
+        aspectSelection.captionText.text = aspectRatios[selectedAspectRatio];
+        UpdateResolutionDropdown();
     }
 
     /// <summary>
@@ -74,6 +151,11 @@ public class GraphicsMenu : MonoBehaviour
     /// <param name="selection"></param>
     public void SetResolution(int selection)
     {
+        if (selection == previousResolution)
+            changedResolution = false;
+        else if (selection != selectedResolution)
+            changedResolution = true;
+
         selectedResolution = selection;
     }
 
@@ -82,9 +164,6 @@ public class GraphicsMenu : MonoBehaviour
     /// </summary>
     public void UpdateResolutionDropdown()
     {
-        if (resolutions != null)
-            previousResolution = resolutions[selectedResolution];
-
         resolutionSelection.options = new List<Dropdown.OptionData>();
         List<string> resolutionStrings = new List<string>();
         resolutions = new List<Resolution>();
@@ -103,11 +182,9 @@ public class GraphicsMenu : MonoBehaviour
                 resolutions.Add(resolution);
             }
         }
-
-        selectedResolution = 0;
-        resolutionSelection.value = selectedResolution;
+        SetResolution(0);
+        resolutionSelection.value = selectedAspectRatio;
         resolutionSelection.captionText.text = resolutionSelection.options[selectedResolution].text;
-
         UpdateFramerateDropdown();
     }
 
@@ -115,17 +192,22 @@ public class GraphicsMenu : MonoBehaviour
     /// Set the framerate selection.
     /// </summary>
     /// <param name="val"></param>
-    public void SetFrameRate(int selection)
+    public void SetRefreshRate(int selection)
     {
-        selectedFramerate = selection;
+        if(selection == previousRefreshRate)
+            changedRefreshRate = false;
+        else if (selection != selectedRefreshRate)
+            changedRefreshRate = true;
+
+        selectedRefreshRate = selection;
     }
 
+    /// <summary>
+    /// Update the list of framerates the user can choose from.
+    /// </summary>
     public void UpdateFramerateDropdown()
     {
-        if(refreshRates != null)
-            previousRefreshRate = refreshRates[selectedFramerate];
-
-        framerateSelection.options = new List<Dropdown.OptionData>();
+        refreshRateSelection.options = new List<Dropdown.OptionData>();
         refreshRates = new List<int>();
 
         foreach (var resolution in Screen.resolutions)
@@ -133,19 +215,13 @@ public class GraphicsMenu : MonoBehaviour
             string resolutionAspect = GetAspectRatio((float)resolution.width / resolution.height);
             if (!refreshRates.Contains(resolution.refreshRate) && resolutionAspect == aspectRatios[selectedAspectRatio])
             {
-                framerateSelection.options.Add(new Dropdown.OptionData(resolution.refreshRate + " hz"));
+                refreshRateSelection.options.Add(new Dropdown.OptionData(resolution.refreshRate + " hz"));
                 refreshRates.Add(resolution.refreshRate);
             }
         }
-        var index = refreshRates.IndexOf(previousRefreshRate);
-
-        if (index > 0)
-            selectedFramerate = index;
-        else
-            selectedFramerate = 0;
-
-        framerateSelection.value = selectedFramerate;
-        framerateSelection.captionText.text = framerateSelection.options[selectedFramerate].text;
+        SetRefreshRate(0);
+        refreshRateSelection.value = selectedRefreshRate;
+        refreshRateSelection.captionText.text = refreshRateSelection.options[selectedRefreshRate].text;
     }
 
     /// <summary>
@@ -154,10 +230,49 @@ public class GraphicsMenu : MonoBehaviour
     /// <param name="val"></param>
     public void ToggleVsync(bool val)
     {
-        if (!val)
-            vsyncEnabled = false;
+        if (val == previousVsync)
+            changedVsync = false;
         else
-            vsyncEnabled = true;
+            changedVsync = true;
+
+        vsyncEnabled = val;
+    }
+
+    /// <summary>
+    /// Have changes been made?
+    /// </summary>
+    /// <returns></returns>
+    public bool ChangesMade()
+    {
+        return changedAspectRatio || changedResolution || changedRefreshRate || changedItemCount || changedEffectCount || changedVsync;
+    }
+
+    /// <summary>
+    /// Update the item count and the text on the UI.
+    /// </summary>
+    public void UpdateItemCount()
+    {
+        itemCount = (int)itemCountSlider.value;
+        itemCountText.text = itemCount.ToString();
+
+        if (itemCount == previousItemCount)
+            changedItemCount = false;
+        else
+            changedItemCount = true;
+    }
+
+    /// <summary>
+    /// Update the effect count and the text on the UI.
+    /// </summary>
+    public void UpdateEffectCount()
+    {
+        effectCount = (int)effectCountSlider.value;
+        effectCountText.text = effectCount.ToString();
+
+        if (effectCount == previousEffectCount)
+            changedEffectCount = false;
+        else
+            changedEffectCount = true;
     }
 
     /// <summary>
@@ -166,18 +281,45 @@ public class GraphicsMenu : MonoBehaviour
     /// <param name="val"></param>
     public void SetDisableFramerateSlider(bool val)
     {
-        if(!val)
+        if (!val)
         {
-            resolutionSelection.enabled = true;
-            foreach (var childImage in resolutionSelection.GetComponentsInChildren<Image>())
+            refreshRateSelection.enabled = true;
+            foreach (var childImage in refreshRateSelection.GetComponentsInChildren<Image>())
                 childImage.color = new Color(childImage.color.r, childImage.color.g, childImage.color.b, 1.0f);
         }
-        if(val)
+        if (val)
         {
-            resolutionSelection.enabled = false;
-            foreach (var childImage in resolutionSelection.GetComponentsInChildren<Image>())
+            refreshRateSelection.enabled = false;
+            foreach (var childImage in refreshRateSelection.GetComponentsInChildren<Image>())
                 childImage.color = new Color(childImage.color.r, childImage.color.g, childImage.color.b, 0.5f);
         }
+    }
+
+    /// <summary>
+    /// After making changes to the resolution/aspect ratio/refresh rate, ask the user to confirm. After a set amount of time,
+    /// the resolution will reset to the previous value. This is to prevent the user from using a resolution
+    /// that doesn't work well with their monitor and the game.
+    /// </summary>
+    public void DisplayConfirmation()
+    {
+        if (ChangesMade())
+        {
+            confirmationWindow.SetActive(true);
+            isConfirmationOpen = true;
+            Hide();
+            PlayPopUpSound();
+        }
+        else
+            optionsMenu.HideGraphics();
+    }
+
+    /// <summary>
+    /// Hide the apply changes confirmation window.
+    /// </summary>
+    public void HideConfirmation()
+    {
+        confirmationWindow.SetActive(false);
+        isConfirmationOpen = false;
     }
 
     /// <summary>
@@ -185,13 +327,149 @@ public class GraphicsMenu : MonoBehaviour
     /// </summary>
     public void ApplyChanges()
     {
-        if (vsyncEnabled)
-            QualitySettings.vSyncCount = 1;
-        else
-            QualitySettings.vSyncCount = 0;
+        if(changedVsync)
+        {
+            if (vsyncEnabled)
+                QualitySettings.vSyncCount = 1;
+            else
+                QualitySettings.vSyncCount = 0;
+        }
 
-        Screen.SetResolution(resolutions[selectedResolution].width, resolutions[selectedResolution].height, FullScreenMode.ExclusiveFullScreen, refreshRates[selectedFramerate]);
+        if(changedResolution || changedRefreshRate)
+        {
+            Screen.SetResolution(resolutions[selectedResolution].width, resolutions[selectedResolution].height, FullScreenMode.ExclusiveFullScreen, refreshRates[selectedRefreshRate]);
+            Application.targetFrameRate = refreshRates[selectedRefreshRate];
+        }
 
+        previousAspectRatio = selectedAspectRatio;
+        previousResolution = selectedResolution;
+        previousRefreshRate = selectedRefreshRate;
+        previousItemCount = itemCount;
+        previousEffectCount = effectCount;
+        previousVsync = vsyncEnabled;
+
+        changedAspectRatio = false;
+        changedResolution = false;
+        changedRefreshRate = false;
+        changedItemCount = false;
+        changedEffectCount = false;
+        changedVsync = false;
+    }
+
+    /// <summary>
+    /// Reset the graphics settings to their default values.
+    /// </summary>
+    /// <returns></returns>
+    public GraphicsData ResetToDefault()
+    {
+        vsyncEnabled = false;
+        selectedAspectRatio = 0;
+        selectedResolution = 0;
+        selectedRefreshRate = 0;
+        itemCount = 64;
+        effectCount = 64;
+
+        var data = new GraphicsData()
+        {
+            vsync = vsyncEnabled,
+            aspectRatio = selectedAspectRatio,
+            resolution = selectedResolution,
+            framerate = selectedRefreshRate,
+            itemCount = itemCount,
+            effectCount = effectCount
+        };
+
+        SaveToFile();
+        return data;
+    }
+
+    /// <summary>
+    /// Saves the settings to file.
+    /// </summary>
+    public void SaveToFile()
+    {
+        var data = new GraphicsData()
+        {
+            vsync = vsyncEnabled,
+            aspectRatio = selectedAspectRatio,
+            resolution = selectedResolution,
+            framerate = selectedRefreshRate,
+            itemCount = itemCount,
+            effectCount = effectCount
+        };
+
+        var json = JsonUtility.ToJson(data);
+
+        try
+        {
+            using (FileStream stream = File.Create(fileLocation))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine(json);
+                }
+            }
+        }
+        catch (Exception)
+        {
+            Debug.Log("Failed to save graphics file " + fileLocation + ", reverting to previously saved values.");
+            LoadFromFile();
+        }
+    }
+
+    /// <summary>
+    /// Loads the settings from file.
+    /// </summary>
+    public void LoadFromFile()
+    {
+        GraphicsData data = null;
+        try
+        {
+            if (File.Exists(fileLocation))
+            {
+                using (var stream = File.Open(fileLocation, FileMode.Open))
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string json = reader.ReadToEnd();
+                        data = JsonUtility.FromJson<GraphicsData>(json);
+                    }
+                }
+            }
+            else
+            {
+                data = ResetToDefault();
+                SaveToFile();
+            }
+        }
+        catch (Exception)
+        {
+            Debug.Log("Failed to load graphics file " + fileLocation + ", using default values instead.");
+            data = ResetToDefault();
+        }
+        finally
+        {
+            UpdateSettings(data);
+            ApplyChanges();
+        }
+    }
+
+    private void UpdateSettings(GraphicsData data)
+    {
+        vsyncEnabled = data.vsync;
+        selectedAspectRatio = data.aspectRatio;
+        selectedResolution = data.resolution;
+        selectedRefreshRate = data.framerate;
+        itemCount = data.itemCount;
+        effectCount = data.effectCount;
+
+        UpdateAspectRatioDropdown();
+
+        itemCountSlider.value = itemCount;
+        itemCountText.text = itemCount.ToString();
+        effectCountSlider.value = effectCount;
+        effectCountText.text = effectCount.ToString();
+        vsyncToggle.isOn = vsyncEnabled;
     }
 
     public void Show()
@@ -221,30 +499,19 @@ public class GraphicsMenu : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets up the framerate slider.
+    /// Plays the hover sound.
     /// </summary>
-    private void InitializeDropdownMenus()
+    public void PlayHoverSound()
     {
-        //TODO: Logic for value loaded from file.
-        if (aspectRatios != null)
-            previousAspectRatio = aspectRatios[selectedAspectRatio];
+        audioSource.PlayOneShot(hoverSound);
+    }
 
-        aspectSelection.options = new List<Dropdown.OptionData>();
-        aspectRatios = new List<string>();
-        
-        foreach (var resolution in Screen.resolutions)
-        {
-            var aspect = (float)resolution.width / resolution.height;
-            var aspectString = GetAspectRatio(aspect);
-
-            if (!aspectRatios.Contains(aspectString))
-            {
-                aspectRatios.Add(aspectString);
-                aspectSelection.options.Add(new Dropdown.OptionData(aspectString));
-            }
-        }
-
-        UpdateResolutionDropdown();
+    /// <summary>
+    /// Plays the pop up sound for the save changes window.
+    /// </summary>
+    public void PlayPopUpSound()
+    {
+        audioSource.PlayOneShot(saveChangesPopUpSound);
     }
 
     private string GetAspectRatio(float val)

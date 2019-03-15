@@ -23,6 +23,7 @@ public class OptionsMenu : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        transform.position = Vector2.zero;
     }
 
     private void Update()
@@ -50,7 +51,7 @@ public class OptionsMenu : MonoBehaviour
     /// <returns></returns>
     public bool SubmenuIsOpen()
     {
-        return controlsMenu.isOpen || audioMenu.isOpen;
+        return controlsMenu.isOpen || audioMenu.isOpen || graphicsMenu.IsOpen();
     }
 
     private IEnumerator ChangeIsOpenBool()
