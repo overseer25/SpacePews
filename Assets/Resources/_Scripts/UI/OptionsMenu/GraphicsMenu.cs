@@ -357,6 +357,21 @@ public class GraphicsMenu : MonoBehaviour
     }
 
     /// <summary>
+    /// If the user doesn't want to save their changes, revert to what is on file.
+    /// </summary>
+    public void CancelChanges()
+    {
+        changedAspectRatio = false;
+        changedResolution = false;
+        changedRefreshRate = false;
+        changedItemCount = false;
+        changedEffectCount = false;
+        changedVsync = false;
+
+        LoadFromFile();
+    }
+
+    /// <summary>
     /// Reset the graphics settings to their default values.
     /// </summary>
     /// <returns></returns>
