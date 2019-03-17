@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -115,7 +116,7 @@ public class GraphicsMenu : MonoBehaviour
     {
         if (selection == previousAspectRatio)
             changedAspectRatio = false;
-        else if (selection != selectedAspectRatio)
+        else
             changedAspectRatio = true;
 
         selectedAspectRatio = selection;
@@ -139,7 +140,6 @@ public class GraphicsMenu : MonoBehaviour
                 aspectSelection.options.Add(new Dropdown.OptionData(aspectString));
             }
         }
-
         aspectSelection.value = selectedAspectRatio;
         aspectSelection.captionText.text = aspectRatios[selectedAspectRatio];
         UpdateResolutionDropdown();
@@ -153,7 +153,7 @@ public class GraphicsMenu : MonoBehaviour
     {
         if (selection == previousResolution)
             changedResolution = false;
-        else if (selection != selectedResolution)
+        else
             changedResolution = true;
 
         selectedResolution = selection;
@@ -182,9 +182,12 @@ public class GraphicsMenu : MonoBehaviour
                 resolutions.Add(resolution);
             }
         }
-        SetResolution(0);
-        resolutionSelection.value = selectedAspectRatio;
-        resolutionSelection.captionText.text = resolutionSelection.options[selectedResolution].text;
+        if(previousAspectRatio != selectedAspectRatio)
+        {
+            selectedResolution = 0;
+        }
+        resolutionSelection.value = selectedResolution;
+        resolutionSelection.captionText.text = resolutionStrings[selectedResolution];
         UpdateFramerateDropdown();
     }
 
@@ -196,7 +199,7 @@ public class GraphicsMenu : MonoBehaviour
     {
         if(selection == previousRefreshRate)
             changedRefreshRate = false;
-        else if (selection != selectedRefreshRate)
+        else
             changedRefreshRate = true;
 
         selectedRefreshRate = selection;
@@ -209,6 +212,7 @@ public class GraphicsMenu : MonoBehaviour
     {
         refreshRateSelection.options = new List<Dropdown.OptionData>();
         refreshRates = new List<int>();
+        var curRefreshRate = refreshRateSelection.captionText.text;
 
         foreach (var resolution in Screen.resolutions)
         {
@@ -219,7 +223,11 @@ public class GraphicsMenu : MonoBehaviour
                 refreshRates.Add(resolution.refreshRate);
             }
         }
-        SetRefreshRate(0);
+        if(refreshRateSelection.options.Select(e => e.text).Contains(curRefreshRate))
+        {
+            selectedRefreshRate = 0;
+        }
+
         refreshRateSelection.value = selectedRefreshRate;
         refreshRateSelection.captionText.text = refreshRateSelection.options[selectedRefreshRate].text;
     }
@@ -327,7 +335,7 @@ public class GraphicsMenu : MonoBehaviour
     /// </summary>
     public void ApplyChanges()
     {
-        if(changedVsync)
+        if(changedVsync || firstLoad)
         {
             if (vsyncEnabled)
                 QualitySettings.vSyncCount = 1;
@@ -335,18 +343,13 @@ public class GraphicsMenu : MonoBehaviour
                 QualitySettings.vSyncCount = 0;
         }
 
-        if(changedResolution || changedRefreshRate)
+        if(changedResolution || changedRefreshRate || firstLoad)
         {
             Screen.SetResolution(resolutions[selectedResolution].width, resolutions[selectedResolution].height, FullScreenMode.ExclusiveFullScreen, refreshRates[selectedRefreshRate]);
             Application.targetFrameRate = refreshRates[selectedRefreshRate];
         }
 
-        previousAspectRatio = selectedAspectRatio;
-        previousResolution = selectedResolution;
-        previousRefreshRate = selectedRefreshRate;
-        previousItemCount = itemCount;
-        previousEffectCount = effectCount;
-        previousVsync = vsyncEnabled;
+        firstLoad = false;
 
         changedAspectRatio = false;
         changedResolution = false;
@@ -430,6 +433,11 @@ public class GraphicsMenu : MonoBehaviour
             Debug.Log("Failed to save graphics file " + fileLocation + ", reverting to previously saved values.");
             LoadFromFile();
         }
+        finally
+        {
+            UpdateSettings(data);
+            ApplyChanges();
+        }
     }
 
     /// <summary>
@@ -477,6 +485,13 @@ public class GraphicsMenu : MonoBehaviour
         selectedRefreshRate = data.framerate;
         itemCount = data.itemCount;
         effectCount = data.effectCount;
+
+        previousAspectRatio = selectedAspectRatio;
+        previousResolution = selectedResolution;
+        previousRefreshRate = selectedRefreshRate;
+        previousItemCount = itemCount;
+        previousEffectCount = effectCount;
+        previousVsync = vsyncEnabled;
 
         UpdateAspectRatioDropdown();
 
