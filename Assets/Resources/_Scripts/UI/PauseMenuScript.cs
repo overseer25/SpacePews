@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 public class PauseMenuScript : MonoBehaviour
 {
+    public OptionsMenu optionsMenu;
+    public ControlsMenu controlsMenu;
+    public AudioMenu audioMenu;
     public GameObject confirmQuitDialogue;
     public Texture2D menuCursor;
     public Texture2D shootCursor;
+
+
     [SerializeField]
     private Inventory inventory;
     [SerializeField]
@@ -30,6 +35,7 @@ public class PauseMenuScript : MonoBehaviour
     private void Start()
     {
         source = GetComponent<AudioSource>();
+        optionsMenu.Initialize();
         ResumeGame();
     }
 
@@ -116,6 +122,7 @@ public class PauseMenuScript : MonoBehaviour
         IsPaused = false;
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
+        optionsMenu.HideAll();
         Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
         weaponController.menuOpen = false;
         inventory.UpdatePaused(false);
@@ -152,7 +159,17 @@ public class PauseMenuScript : MonoBehaviour
     /// </summary>
     public void OpenOptions()
     {
-        //TODO: make options screen
+        DeactivatePauseMenu();
+        optionsMenu.Show();
+    }
+
+    /// <summary>
+    /// Hide the options menu, and return to the main pause screen.
+    /// </summary>
+    public void CloseOptions()
+    {
+        ActivatePauseMenu();
+        optionsMenu.Hide();
     }
 
     /// <summary>

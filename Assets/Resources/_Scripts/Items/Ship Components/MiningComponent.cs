@@ -57,12 +57,10 @@ public class MiningComponent : ShipComponent
         {
             switch (hit.collider.tag)
             {
-
                 case "Enemy":
                 case "Immovable":
                 case "Shop":
                 case "Asteroid":
-
                     UpdateLinePosition(lineSpawner.transform.up * Vector3.Distance(lineSpawner.transform.position, hit.point));
                     if (Time.time > timePassed)
                     {

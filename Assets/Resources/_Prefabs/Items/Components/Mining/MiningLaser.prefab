@@ -65,6 +65,7 @@ MonoBehaviour:
   changeSprite: 0
   index: 0
   itemColor: {r: 0, g: 0, b: 0, a: 0}
+  spriteRenderer: {fileID: 0}
   componentClass: 0
   visible: 1
   mounted: 0
@@ -207,7 +208,8 @@ AudioSource:
   m_GameObject: {fileID: 224}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1673904715902786941, guid: c6d836d31ed5913489ad8b8f2fcb7acb,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.25
@@ -303,7 +305,8 @@ AudioSource:
   m_GameObject: {fileID: 224}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1673904715902786941, guid: c6d836d31ed5913489ad8b8f2fcb7acb,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.25

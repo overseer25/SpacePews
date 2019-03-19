@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 114353173892645446}
   - component: {fileID: 82795668506079572}
   m_Layer: 0
-  m_Name: PulseGatling
+  m_Name: PulseGatlingProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,8 @@ AudioSource:
   m_GameObject: {fileID: 1570939830461566}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -333069374604427472, guid: c6d836d31ed5913489ad8b8f2fcb7acb,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.25

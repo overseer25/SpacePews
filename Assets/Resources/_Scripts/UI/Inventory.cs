@@ -95,7 +95,7 @@ public class Inventory : MonoBehaviour
         }
         hotbarSlots[0].Select();
 
-        CloseInventory();
+        CloseInventory(false);
     }
 
     /// <summary>
@@ -509,7 +509,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void OnEndEditItemTransferInput()
     {
-        if(Input.GetKeyDown(InputManager.current.submit))
+        if(Input.GetKeyDown(InputManager.current.controls.submit))
         {
             TransferItemButtonClick();
         }

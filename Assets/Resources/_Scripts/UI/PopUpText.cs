@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class PopUpText : MonoBehaviour
 {
-
+    public AudioClip defaultSound;
     public TextMeshPro textMesh;
+
     private float fadeTime = 0.0f;
     private float fadeSpeed = 0.2f;
     private int delay = 0;
@@ -52,8 +53,11 @@ public class PopUpText : MonoBehaviour
         // If a sound was provided, play it.
         if (sound != null)
         {
-            GetComponent<AudioSource>().clip = sound;
-            GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().PlayOneShot(sound);
+        }
+        else
+        {
+            GetComponent<AudioSource>().PlayOneShot(defaultSound);
         }
     }
 

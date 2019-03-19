@@ -1360,6 +1360,7 @@ ParticleSystem:
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
   UVModule:
+    serializedVersion: 2
     enabled: 0
     mode: 0
     timeMode: 0
@@ -1477,7 +1478,7 @@ ParticleSystem:
     rowIndex: 0
     cycles: 1
     uvChannelMask: -1
-    randomRow: 1
+    rowMode: 1
     sprites:
     - sprite: {fileID: 0}
     flipU: 0
@@ -4639,7 +4640,7 @@ ParticleSystem:
 --- !u!199 &71502921
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -4919,6 +4920,7 @@ MonoBehaviour:
   changeSprite: 0
   index: 0
   itemColor: {r: 0, g: 0, b: 0, a: 0}
+  spriteRenderer: {fileID: 0}
   componentClass: 0
   visible: 1
   mounted: 1
@@ -4964,7 +4966,8 @@ AudioSource:
   m_GameObject: {fileID: 1912550097887076}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1673904715902786941, guid: c6d836d31ed5913489ad8b8f2fcb7acb,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.25
