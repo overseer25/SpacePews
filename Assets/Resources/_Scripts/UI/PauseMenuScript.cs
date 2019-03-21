@@ -6,9 +6,8 @@ using UnityEngine.UI;
 public class PauseMenuScript : MonoBehaviour
 {
     public OptionsMenu optionsMenu;
-    public ControlsMenu controlsMenu;
-    public AudioMenu audioMenu;
     public GameObject confirmQuitDialogue;
+	public OutputWindow outputWindow;
     public Texture2D menuCursor;
     public Texture2D shootCursor;
 
@@ -110,6 +109,7 @@ public class PauseMenuScript : MonoBehaviour
         IsPaused = true;
         ActivatePauseMenu();
         Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
+		outputWindow.Hide();
         weaponController.menuOpen = true;
         inventory.UpdatePaused(true);
     }
@@ -123,6 +123,7 @@ public class PauseMenuScript : MonoBehaviour
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
         optionsMenu.HideAll();
+		outputWindow.Show();
         Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
         weaponController.menuOpen = false;
         inventory.UpdatePaused(false);

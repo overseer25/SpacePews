@@ -441,7 +441,9 @@ public class Inventory : MonoBehaviour
                     slot.GetInventoryItem().AddQuantity(item.GetQuantity());
                     if (infoScreen.IsVisible())
                         ShowHoverTooltip(slot.GetIndex());
-                    return;
+
+					OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
+					return;
                 }
             }
         }
@@ -451,7 +453,8 @@ public class Inventory : MonoBehaviour
             if (slot.IsEmpty())
             {
                 slot.SetItem(prefab, item.GetQuantity());
-                return;
+				OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
+				return;
             }
         }
     }

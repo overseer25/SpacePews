@@ -236,7 +236,7 @@ public class Item : MonoBehaviour
         playspeed = other.playspeed;
         changeSprite = other.changeSprite;
         index = other.index;
-        itemColor = other.itemColor;
+        itemColor = ItemColors.colors[(int)other.itemTier];
         pickupSound = other.pickupSound;
         mined = other.mined;
         targetPlayer = other.targetPlayer;
