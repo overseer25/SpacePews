@@ -550,7 +550,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultItem: {fileID: 3366748365023837901, guid: ea352c65c480e454ba594ff9dfadff34,
     type: 3}
-  amountPooled: 64
 --- !u!114 &437889028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,7 +564,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultParticle: {fileID: 1472322088390081295, guid: 36a79ef3f2575b045b50cadc6420b0ad,
     type: 3}
-  amountPooled: 40
 --- !u!114 &437889029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3052,7 +3050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1117, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -231.15518
+      value: -231.15515
       objectReference: {fileID: 0}
     - target: {fileID: 5371221389400365628, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}

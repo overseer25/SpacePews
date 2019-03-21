@@ -12,8 +12,8 @@ public class ItemPool : MonoBehaviour
 
     [SerializeField]
     private Item defaultItem;
-    [SerializeField]
-    private int amountPooled = 64;
+
+	private int amountPooled;
     private static List<Item> itemPool;
     private static int oldestIndex = 0;
 
@@ -23,19 +23,41 @@ public class ItemPool : MonoBehaviour
         current = this;    
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        itemPool = new List<Item>();
+	/// <summary>
+	/// Set the size of the pool.
+	/// </summary>
+	public void SetPoolSize(int size)
+	{
+		if (itemPool == null)
+			itemPool = new List<Item>();
 
-        // Populate the list.
-        for (int i = 0; i < amountPooled; i++)
-        {
-            var item = Instantiate(defaultItem);
-            item.gameObject.SetActive(false);
-            itemPool.Add(item);
-        }
-    }
+		if (size == amountPooled)
+			return;
+
+		int difference = amountPooled - size;
+
+		if(size > amountPooled)
+		{
+			// Add on to the list.
+			for (int i = amountPooled; i < size; i++)
+			{
+				var item = Instantiate(defaultItem);
+				item.gameObject.SetActive(false);
+				itemPool.Add(item);
+			}
+		}
+		else
+		{
+			// Subtract from the list.
+			for (int i = amountPooled-1; i >= amountPooled - difference; i--)
+			{
+				Destroy(itemPool[itemPool.Count - 1].gameObject);
+				itemPool.RemoveAt(itemPool.Count - 1);
+			}
+		}
+
+		amountPooled = itemPool.Count;
+	}
 
     /// <summary>
     /// Gets an unused object in the object pool, if it exists.

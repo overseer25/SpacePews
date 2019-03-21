@@ -349,6 +349,11 @@ public class GraphicsMenu : MonoBehaviour
             Application.targetFrameRate = refreshRates[selectedRefreshRate];
         }
 
+		if (changedItemCount || firstLoad)
+			ItemPool.current.SetPoolSize(itemCount);
+		if (changedEffectCount || firstLoad)
+			ParticlePool.current.SetPoolSize(effectCount);
+
         firstLoad = false;
 
         changedAspectRatio = false;
