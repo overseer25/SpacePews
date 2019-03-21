@@ -14,6 +14,12 @@ public class FadingTextbox : MonoBehaviour
 	private bool fading;
 	private bool doneWaiting = false;
 
+	private void Start()
+	{
+		if(textbox == null)
+			textbox = GetComponent<TextMeshProUGUI>();
+	}
+
 	private void Update()
 	{
 		if(!fading)
