@@ -294,9 +294,9 @@ public class Projectile : MonoBehaviour
 
             // Spawn popup text within a radius of 2 from the collision.
             if (!isCritical)
-                popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), ItemTier.Tier1, radius: true);
+                popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), ItemTier.Tier1, radius: true, playDefaultSound: false);
             else
-                popUptext.GetComponent<PopUpText>().Initialize(gameObject, "<style=\"CritHit\">" + damage.ToString() + "</style>", ItemTier.Tier1, radius: true);
+                popUptext.GetComponent<PopUpText>().Initialize(gameObject, "<style=\"CritHit\">" + damage.ToString() + "</style>", ItemTier.Tier1, radius: true, playDefaultSound: false);
         }
 
     }

@@ -4913,7 +4913,7 @@ MonoBehaviour:
   value: 250
   description: Standard issue civilian thruster. It gets the job done, but don't expect
     to break any records.
-  pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
+  pickupSound: {fileID: 0}
   stackable: 0
   stackSize: 0
   playspeed: 0.1

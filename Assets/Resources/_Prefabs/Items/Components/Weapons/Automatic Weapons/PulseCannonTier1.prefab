@@ -131,7 +131,7 @@ MonoBehaviour:
   value: 250
   description: A standard issue pulse cannon. Nothing special, and should certainly
     be replaced.
-  pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
+  pickupSound: {fileID: 0}
   stackable: 0
   stackSize: 0
   playspeed: 0.5
@@ -256,6 +256,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4743501439746272}
     m_Modifications:
+    - target: {fileID: 5348905257845514928, guid: 938628e9d0c1b45478924a16813bb742,
+        type: 3}
+      propertyPath: m_Name
+      value: shotspawn
+      objectReference: {fileID: 0}
     - target: {fileID: 5346026360990980074, guid: 938628e9d0c1b45478924a16813bb742,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -310,11 +315,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5348905257845514928, guid: 938628e9d0c1b45478924a16813bb742,
-        type: 3}
-      propertyPath: m_Name
-      value: shotspawn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 938628e9d0c1b45478924a16813bb742, type: 3}
