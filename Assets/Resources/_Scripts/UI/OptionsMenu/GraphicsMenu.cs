@@ -64,7 +64,7 @@ public class GraphicsMenu : MonoBehaviour
     private bool changedEffectCount = false;
     private bool changedVsync = false;
 
-    private void Awake()
+    private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         if (vsyncToggle.isOn)

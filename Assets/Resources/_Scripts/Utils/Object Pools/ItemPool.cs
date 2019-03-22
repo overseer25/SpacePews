@@ -65,6 +65,9 @@ public class ItemPool : MonoBehaviour
     /// <returns> Unused GameObject in object pool, or the oldest active one (LRU). </returns>
     public Item GetPooledObject()
     {
+        if (itemPool == null)
+            return null;
+
         // Attempt to find an unused object in the pool.
         foreach (var item in itemPool)
         {

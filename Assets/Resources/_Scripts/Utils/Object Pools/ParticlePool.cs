@@ -67,6 +67,9 @@ public class ParticlePool : MonoBehaviour
 	/// <returns> Unused GameObject in object pool, or the oldest active one (LRU). </returns>
 	public ParticleEffect GetPooledObject()
     {
+        if (objectPool == null)
+            return null;
+
         foreach (var obj in objectPool)
         {
             if (obj != null && !obj.gameObject.activeInHierarchy)

@@ -26,6 +26,8 @@ public class Inventory : MonoBehaviour
     private AudioClip clearSlotSound;
     [SerializeField]
     private AudioClip hotbarSelectSound;
+    [SerializeField]
+    private AudioClip collectSound;
 
     private const int INVENTORY_SIZE = 20;
 
@@ -443,6 +445,7 @@ public class Inventory : MonoBehaviour
                         ShowHoverTooltip(slot.GetIndex());
 
 					OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
+                    audioSource.PlayOneShot(collectSound);
 					return;
                 }
             }
@@ -454,7 +457,8 @@ public class Inventory : MonoBehaviour
             {
                 slot.SetItem(prefab, item.GetQuantity());
 				OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
-				return;
+                audioSource.PlayOneShot(collectSound);
+                return;
             }
         }
     }
