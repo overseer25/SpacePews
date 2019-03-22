@@ -52,7 +52,7 @@ public class ChangeKeyField : MonoBehaviour
                     pressed = code;
                     if(isSelected)
                     {
-                        box.GetComponentInChildren<Text>().text = code.ToString();
+                        box.GetComponentInChildren<TextMeshProUGUI>().text = code.ToString();
                         menu.ChangeControl(name.ToLower(), code);
                         if (isFocused)
                         {
@@ -95,7 +95,7 @@ public class ChangeKeyField : MonoBehaviour
         if (isSelected)
             return;
         box.color = highlightColor;
-        box.GetComponentInChildren<Text>().color = highlightColor;
+        box.GetComponentInChildren<TextMeshProUGUI>().color = highlightColor;
     }
 
     public void Dehighlight()
@@ -104,7 +104,7 @@ public class ChangeKeyField : MonoBehaviour
         if (isSelected)
             return;
         box.color = defaultColor;
-        box.GetComponentInChildren<Text>().color = defaultColor;
+        box.GetComponentInChildren<TextMeshProUGUI>().color = defaultColor;
     }
 
     public void Select()
@@ -112,7 +112,7 @@ public class ChangeKeyField : MonoBehaviour
         if (pressed != KeyCode.Mouse0 || waiting || isSelected)
             return;
         box.color = selectedColor;
-        box.GetComponentInChildren<Text>().color = selectedColor;
+        box.GetComponentInChildren<TextMeshProUGUI>().color = selectedColor;
         isSelected = true;
     }
 
@@ -121,7 +121,7 @@ public class ChangeKeyField : MonoBehaviour
         if (!isSelected)
             return;
         box.color = defaultColor;
-        box.GetComponentInChildren<Text>().color = defaultColor;
+        box.GetComponentInChildren<TextMeshProUGUI>().color = defaultColor;
         isSelected = false;
     }
 }

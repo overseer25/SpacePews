@@ -124,19 +124,5 @@ public class BaseWeaponEditor : Editor
         }
 
         EditorGUILayout.Space();
-
-        EditorGUILayout.BeginHorizontal();
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("pickupSound"), new GUIContent("    Pickup Sound"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("hoverText"), new GUIContent("    Hover Text"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space();
     }
 }

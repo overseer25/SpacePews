@@ -141,19 +141,5 @@ public class MiningComponentEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("laserContactSprite"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("pickupSound"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("hoverText"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.EndHorizontal();
     }
 }
