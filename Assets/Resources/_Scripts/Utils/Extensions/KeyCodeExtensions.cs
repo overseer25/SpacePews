@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -9,6 +8,8 @@ public static class KeyCodeExtensions
 {
     public static Dictionary<KeyCode, string> keyCodeNames = new Dictionary<KeyCode, string>()
     {
+        { KeyCode.Mouse0, "Left Click" },
+        { KeyCode.Mouse1, "Right Click" },
         { KeyCode.None, "None" },
         { KeyCode.Backspace, "Backspace" },
         { KeyCode.Delete, "Delete" },
@@ -77,5 +78,11 @@ public static class KeyCodeExtensions
         { KeyCode.Backslash, "Backslash" },
         { KeyCode.RightBracket, "Right Bracket" },
         { KeyCode.BackQuote, "Back Quote" },
+        { KeyCode.RightShift, "Right Shift" },
+        { KeyCode.LeftShift, "Shift" },
+        { KeyCode.RightControl, "Right Control" },
+        { KeyCode.LeftControl, "Control" },
+        { KeyCode.RightAlt, "Right Alt" },
+        { KeyCode.LeftAlt, "Alt" }
     };
 }

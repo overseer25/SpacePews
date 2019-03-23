@@ -1119,24 +1119,6 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 63069341}
-    - target: {fileID: 103327915, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 501.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 103327915, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 332.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 1165613227912804517, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -307.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 773462417077471223, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 23.6
-      objectReference: {fileID: 0}
     - target: {fileID: 8772608111976747638, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}
       propertyPath: m_havePropertiesChanged
