@@ -19,7 +19,7 @@ public class ChangeKeyField : MonoBehaviour
 
     private Color defaultColor = new Color(Color.white.r, Color.white.g, Color.white.b, 0.5f);
     private Color highlightColor = new Color(Color.white.r, Color.white.g, Color.white.b, 1.0f);
-    private Color selectedColor = new Color(Color.cyan.r, Color.cyan.g, Color.cyan.b, 1.0f);
+    private Color selectedColor = new Color(1.0f, 0.49f, 0.0f, 1.0f);
 
     private void Start()
     {

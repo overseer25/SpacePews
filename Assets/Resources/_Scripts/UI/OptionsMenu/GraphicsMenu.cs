@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GraphicsMenu : MonoBehaviour
@@ -69,6 +70,7 @@ public class GraphicsMenu : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (vsyncToggle.isOn)
             SetDisableFramerateSlider(true);
+
 
         fileLocation = Application.persistentDataPath + "/graphics.json";
         LoadFromFile();
@@ -547,6 +549,24 @@ public class GraphicsMenu : MonoBehaviour
     public void PlayPopUpSound()
     {
         audioSource.PlayOneShot(saveChangesPopUpSound);
+    }
+
+    /// <summary>
+    /// Handles the event that the input hovers over the apply button.
+    /// </summary>
+    public void ApplyButtonHoverEvent()
+    {
+        if (applyButton.interactable)
+            PlayHoverSound();
+    }
+
+    /// <summary>
+    /// Handles the event that the input hovers over the apply button.
+    /// </summary>
+    public void ApplyButtonClickEvent()
+    {
+        if (applyButton.interactable)
+            PlayClickSound();
     }
 
     private string GetAspectRatio(float val)
