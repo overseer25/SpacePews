@@ -342,42 +342,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 202947652}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &249597017 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 249597017, guid: d23582f2dd340bb49ad08c784c0e5364,
-    type: 3}
-  m_PrefabInstance: {fileID: 329955794}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &249597018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 249597017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1870166669}
-          m_MethodName: PlayHoverSound
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &269448329
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,33 +1293,13 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+    - target: {fileID: 1399, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveToFile
-      objectReference: {fileID: 0}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: HideConfirmation
-      objectReference: {fileID: 0}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 1738695808734688671}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: HideGraphics
-      objectReference: {fileID: 0}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
-      value: 
-      objectReference: {fileID: 1870166669}
-    - target: {fileID: 249597019, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: PlayClickSound
+    - target: {fileID: 1399, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 351464756, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1370,6 +1314,36 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 10226338, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495667095723825044, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495667095723825044, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495667095723825044, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789466731226332669, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789466731226332669, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789466731226332669, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
@@ -2097,42 +2071,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1119029806}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1155643778 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1155643778, guid: d23582f2dd340bb49ad08c784c0e5364,
-    type: 3}
-  m_PrefabInstance: {fileID: 329955794}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1155643779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155643778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1870166669}
-          m_MethodName: PlayHoverSound
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1001 &1219331684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3205,18 +3143,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1844127827}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1870166669 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1870166669, guid: d23582f2dd340bb49ad08c784c0e5364,
-    type: 3}
-  m_PrefabInstance: {fileID: 329955794}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9887e16d74f010a4ba83fb0a589261ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1961957397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3413,18 +3339,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1485837463}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1738695808734688671 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1738695808734688671, guid: d23582f2dd340bb49ad08c784c0e5364,
-    type: 3}
-  m_PrefabInstance: {fileID: 329955794}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c7e2fbaaf774fe44b54f5bc6af194b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8890621846691666717
 PrefabInstance:
   m_ObjectHideFlags: 0
