@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GraphicsMenu : MonoBehaviour
@@ -64,11 +65,12 @@ public class GraphicsMenu : MonoBehaviour
     private bool changedEffectCount = false;
     private bool changedVsync = false;
 
-    private void Awake()
+    private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         if (vsyncToggle.isOn)
             SetDisableFramerateSlider(true);
+
 
         fileLocation = Application.persistentDataPath + "/graphics.json";
         LoadFromFile();
@@ -349,6 +351,11 @@ public class GraphicsMenu : MonoBehaviour
             Application.targetFrameRate = refreshRates[selectedRefreshRate];
         }
 
+		if (changedItemCount || firstLoad)
+			ItemPool.current.SetPoolSize(itemCount);
+		if (changedEffectCount || firstLoad)
+			ParticlePool.current.SetPoolSize(effectCount);
+
         firstLoad = false;
 
         changedAspectRatio = false;
@@ -542,6 +549,24 @@ public class GraphicsMenu : MonoBehaviour
     public void PlayPopUpSound()
     {
         audioSource.PlayOneShot(saveChangesPopUpSound);
+    }
+
+    /// <summary>
+    /// Handles the event that the input hovers over the apply button.
+    /// </summary>
+    public void ApplyButtonHoverEvent()
+    {
+        if (applyButton.interactable)
+            PlayHoverSound();
+    }
+
+    /// <summary>
+    /// Handles the event that the input hovers over the apply button.
+    /// </summary>
+    public void ApplyButtonClickEvent()
+    {
+        if (applyButton.interactable)
+            PlayClickSound();
     }
 
     private string GetAspectRatio(float val)

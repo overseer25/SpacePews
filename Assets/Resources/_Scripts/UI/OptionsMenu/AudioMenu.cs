@@ -63,7 +63,7 @@ public class AudioMenu : MonoBehaviour
     /// <param name="slider"></param>
     public void DehighlightSlider(Image slider)
     {
-        slider.color = new Color(slider.color.r, slider.color.g, slider.color.b, 0.7f);
+        slider.color = new Color(slider.color.r, slider.color.g, slider.color.b, 1.0f);
     }
 
     public void Show()

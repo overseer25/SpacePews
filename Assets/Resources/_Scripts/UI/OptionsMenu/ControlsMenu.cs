@@ -102,31 +102,31 @@ public class ControlsMenu : MonoBehaviour
     {
         string result;
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.fire, out result);
-        fire.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.fire.ToString() : result;
+        fire.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.fire.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.forward, out result);
-        forward.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.forward.ToString() : result;
+        forward.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.forward.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.left, out result);
-        left.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.left.ToString() : result;
+        left.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.left.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.right, out result);
-        right.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.right.ToString() : result;
+        right.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.right.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.inventory, out result);
-        inventory.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.inventory.ToString() : result;
+        inventory.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.inventory.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.submit, out result);
-        submit.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.submit.ToString() : result;
+        submit.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.submit.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.cameraZoomIn, out result);
-        cameraZoomIn.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomIn.ToString() : result;
+        cameraZoomIn.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomIn.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.cameraZoomOut, out result);
-        cameraZoomOut.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomOut.ToString() : result;
+        cameraZoomOut.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomOut.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.suicide, out result);
-        suicide.GetComponentInChildren<Text>().text = (result == default(string)) ? InputManager.current.controls.suicide.ToString() : result;
+        suicide.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.suicide.ToString() : result;
     }
 
     /// <summary>

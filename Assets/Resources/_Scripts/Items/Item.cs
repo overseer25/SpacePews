@@ -17,7 +17,6 @@ public class Item : MonoBehaviour
     [TextArea(1, 5)]
     public string description;
 
-    public AudioClip pickupSound;
     public bool stackable;
     public int stackSize;
 
@@ -43,18 +42,6 @@ public class Item : MonoBehaviour
         random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-    }
-
-    // Creates the object to play the collection sprite, and destroys the item.
-    internal void DisplayHoverText()
-    {
-        var collected = PopUpTextPool.current.GetPooledObject();
-
-        // if there is an available pop up text, display it.
-        if(collected != null)
-        {
-            collected.GetComponent<PopUpText>().Initialize(PlayerUtils.GetClosestPlayer(gameObject), itemName, itemTier, pickupSound);
-        }
     }
 
     // Update is called once per frame
@@ -209,7 +196,6 @@ public class Item : MonoBehaviour
                 if(obj.GetComponent<PlayerController>().inventory.ContainsEmptySlot() || obj.GetComponent<PlayerController>().inventory.ContainsItem(this))
                 {
                     obj.GetComponent<PlayerController>().inventory.AddItem(this);
-                    DisplayHoverText();
                     gameObject.SetActive(false);
                 }
                 break;
@@ -236,8 +222,7 @@ public class Item : MonoBehaviour
         playspeed = other.playspeed;
         changeSprite = other.changeSprite;
         index = other.index;
-        itemColor = other.itemColor;
-        pickupSound = other.pickupSound;
+        itemColor = ItemColors.colors[(int)other.itemTier];
         mined = other.mined;
         targetPlayer = other.targetPlayer;
     }

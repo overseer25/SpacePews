@@ -4817,7 +4817,7 @@ MonoBehaviour:
   value: 1500
   description: Lightweight racing thruster using pallodium energy, making it both
     powerful and efficient for its weight.
-  pickupSound: {fileID: 8300000, guid: c8c7949c791b5a94693af34d10a7c080, type: 3}
+  pickupSound: {fileID: 0}
   stackable: 0
   stackSize: 0
   playspeed: 0.1
