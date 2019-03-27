@@ -11,4 +11,14 @@ public abstract class Actor : MonoBehaviour
 	/// The max health of the actor.
 	/// </summary>
 	public int health;
+
+	/// <summary>
+	/// Regen tick rate.
+	/// </summary>
+	public float healthRegenSpeed;
+
+	/// <summary>
+	/// Health regen per tick.
+	/// </summary>
+	public int healthRegenAmount;
 }

@@ -9,10 +9,15 @@ using UnityEngine;
 [CustomEditor(typeof(Buff))]
 public abstract class BuffBaseEditor : Editor
 {
-	/// <summary>
-	/// Each Buff can have a title that is displayed in the inspector to help the developer
-	/// understand what the buff does.
-	/// </summary>
-	public abstract void DisplayTitle();
+	public override void OnInspectorGUI()
+	{
+		Buff buff = target as Buff;
 
+		EditorGUILayout.BeginHorizontal();
+		string tip = "A general overview of what the buff does.";
+		EditorGUILayout.LabelField(new GUIContent(buff.BuildDescription(), tip), EditorStyles.boldLabel);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.Space();
+
+	}
 }

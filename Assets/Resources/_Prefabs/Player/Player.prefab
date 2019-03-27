@@ -1420,8 +1420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a554baab9a54f3342b1c3b8e111e98eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 40
-  healthRegenSpeed: 0.2
+  health: 50
+  healthRegenSpeed: 1
   healthRegenAmount: 1
 --- !u!114 &1388
 MonoBehaviour:
@@ -1464,6 +1464,7 @@ MonoBehaviour:
   healthBar: {fileID: 1176772155687102410}
   healthBarBG: {fileID: 4784161416516189292}
   counter: {fileID: 8817103130915446565}
+  damageSound: {fileID: 8300000, guid: 02978070e96865448ba5de2714f4fcce, type: 3}
 --- !u!114 &1404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24261,7 +24262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.000023127, y: -5.2225}
+  m_AnchoredPosition: {x: 0, y: -5.2225}
   m_SizeDelta: {x: 44.4, y: 15.825}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3155114920026848985
@@ -24294,8 +24295,9 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4b5d56a84051896428a157c2fd97a7e4, type: 2}
+  m_sharedMaterial: {fileID: 5360974472824516084, guid: 4b5d56a84051896428a157c2fd97a7e4,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -24320,12 +24322,12 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 12
+  m_fontSize: 8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 4
-  m_fontSizeMax: 12
+  m_fontSizeMax: 8
   m_fontStyle: 0
   m_textAlignment: 257
   m_isAlignmentEnumConverted: 1

@@ -19,7 +19,7 @@ public class HealthBuff : Buff
 	/// <param name="actor"></param>
 	public override void Apply(Actor actor)
 	{
-		if(isMultiplier)
+		if (isMultiplier)
 			actor.health = (int)(actor.health * multiplier);
 		else
 			actor.health = (debuff) ? (actor.health - healthAmount) : (actor.health + healthAmount);
@@ -35,5 +35,27 @@ public class HealthBuff : Buff
 			actor.health = (int)(actor.health / multiplier);
 		else
 			actor.health = (debuff) ? (actor.health + healthAmount) : (actor.health - healthAmount);
+	}
+
+	/// <summary>
+	/// Build description of buff.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildDescription()
+	{
+		var result = "This buff ";
+		if (isMultiplier)
+		{
+			result += "multiplies an entity's health by " + multiplier + "x.";
+		}
+		else
+		{
+			if (debuff)
+				result += "decreases ";
+			else
+				result += "increases ";
+			result += "an entity's health by " + healthAmount + " points";
+		}
+		return result;
 	}
 }

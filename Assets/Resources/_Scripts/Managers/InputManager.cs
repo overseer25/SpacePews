@@ -141,6 +141,9 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleMovementControls()
     {
+		if (hController.IsDead())
+			return;
+
         if ((!Input.GetKeyDown(controls.forward) && Input.GetKey(controls.forward)) || (Input.GetKeyDown(controls.forward)))
         {
             pController.movingForward = true;

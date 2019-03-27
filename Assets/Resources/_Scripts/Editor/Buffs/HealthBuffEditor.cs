@@ -15,7 +15,7 @@ public class HealthBuffEditor : BuffBaseEditor
 	{
 		HealthBuff buff = target as HealthBuff;
 
-		DisplayTitle();
+		base.OnInspectorGUI();
 
 		EditorGUILayout.BeginHorizontal();
 		tooltip = "Is this a static value or a multiplier?";
@@ -49,31 +49,5 @@ public class HealthBuffEditor : BuffBaseEditor
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.EndHorizontal();
 		}
-	}
-
-	public override void DisplayTitle()
-	{
-		HealthBuff buff = target as HealthBuff;
-
-		var result = "This buff ";
-		if(buff.isMultiplier)
-		{
-			result += "multiplies an entity's health by " + buff.multiplier + "x.";
-		}
-		else
-		{
-			if (buff.debuff)
-				result += "decreases ";
-			else
-				result += "increases ";
-			result += "an entity's health by " + buff.healthAmount + " points";
-		}
-
-
-		EditorGUILayout.BeginHorizontal();
-		tooltip = "A general overview of what the buff does.";
-		EditorGUILayout.LabelField(new GUIContent(result, tooltip), EditorStyles.boldLabel);
-		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.Space();
 	}
 }

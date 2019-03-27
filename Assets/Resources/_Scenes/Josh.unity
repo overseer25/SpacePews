@@ -1333,10 +1333,10 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8436866966478406520, guid: d23582f2dd340bb49ad08c784c0e5364,
+    - target: {fileID: 1073396297690440187, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
+      propertyPath: health
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8817103130915446565, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}
@@ -1348,18 +1348,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8817103130915446565, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b5d56a84051896428a157c2fd97a7e4,
-        type: 2}
-    - target: {fileID: 8817103130915446565, guid: d23582f2dd340bb49ad08c784c0e5364,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5360974472824516084, guid: 4b5d56a84051896428a157c2fd97a7e4,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
 --- !u!1001 &414465704

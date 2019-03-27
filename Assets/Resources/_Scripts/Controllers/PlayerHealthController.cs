@@ -20,7 +20,7 @@ public class PlayerHealthController : MonoBehaviour
 	private float healthbarLength;
 	private AudioSource audioSource;
 
-	private const float REGEN_WAIT_TIME = 1.0f;
+	private const float REGEN_WAIT_TIME = 3.0f;
 	private bool finishedWaiting;
 	private bool regeneratingHealth;
 
@@ -39,8 +39,12 @@ public class PlayerHealthController : MonoBehaviour
 	private void Update()
 	{
 		UpdateHealthbar();
-		if (currentHealth < actor.health && actor.healthRegenAmount != 0)
-			StartCoroutine(RegenHealth());
+
+		if (!IsDead())
+		{
+			if (currentHealth < actor.health && actor.healthRegenAmount > 0)
+				StartCoroutine(RegenHealth());
+		}
 	}
 
 	/// <summary>
@@ -90,7 +94,8 @@ public class PlayerHealthController : MonoBehaviour
 					finishedWaiting = true;
 				}
 				Heal(actor.healthRegenAmount);
-				yield return new WaitForSeconds(actor.healthRegenSpeed);
+				float waitTime = (actor.healthRegenSpeed < 0) ? 0 : actor.healthRegenSpeed;
+				yield return new WaitForSeconds(waitTime);
 			}
 			regeneratingHealth = false;
 			finishedWaiting = false;

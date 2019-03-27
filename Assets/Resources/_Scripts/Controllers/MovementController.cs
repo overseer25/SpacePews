@@ -170,5 +170,7 @@ public class MovementController : MonoBehaviour
     {
         dead = isDead;
         desiredRotation = 0;
+		if (dead)
+			Stop();
     }
 }

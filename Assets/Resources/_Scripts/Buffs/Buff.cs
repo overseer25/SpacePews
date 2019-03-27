@@ -23,4 +23,10 @@ public abstract class Buff : ScriptableObject
 	/// <param name="actor"></param>
 	public abstract void Remove(Actor actor);
 
+	/// <summary>
+	/// Build the description of the buff based on the settings.
+	/// </summary>
+	/// <returns></returns>
+	public abstract string BuildDescription();
+
 }

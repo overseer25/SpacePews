@@ -7,13 +7,5 @@ using UnityEngine;
 /// </summary>
 public class PlayerActor : Actor
 {
-	/// <summary>
-	/// Regen tick rate.
-	/// </summary>
-	public float healthRegenSpeed;
 
-	/// <summary>
-	/// Health regen per tick.
-	/// </summary>
-	public int healthRegenAmount;
 }

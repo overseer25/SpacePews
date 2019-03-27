@@ -112,9 +112,11 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   componentClass: 0
   visible: 0
-  mounted: 0
+  mounted: 1
   buffs:
   - {fileID: 11400000, guid: 51ea54efd79d9024e9d7b365eebdd078, type: 2}
+  - {fileID: 11400000, guid: 99cf746ac28820d4f8505f55bed86cdd, type: 2}
+  - {fileID: 11400000, guid: 5911a32295ed92544a1c9177c48b23a4, type: 2}
 --- !u!61 &3582638809885936709
 BoxCollider2D:
   m_ObjectHideFlags: 0
