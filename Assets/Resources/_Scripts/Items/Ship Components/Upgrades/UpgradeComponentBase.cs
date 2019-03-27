@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Base class for all Upgrade Components.
 /// </summary>
-public class UpgradeComponentBase : ShipComponentBase
+public abstract class UpgradeComponentBase : ShipComponentBase
 {
-    
+
 }

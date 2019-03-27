@@ -24,6 +24,10 @@ public class StatBuffUpgradeComponent : UpgradeComponentBase
 		}
 	}
 
+	/// <summary>
+	/// Remove all the buffs added by this component.
+	/// </summary>
+	/// <param name="actor"></param>
 	public void RemoveAllBuffs(Actor actor)
 	{
 		foreach (var buff in buffs)

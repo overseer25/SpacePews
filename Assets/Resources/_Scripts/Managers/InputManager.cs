@@ -25,6 +25,7 @@ public class InputManager : MonoBehaviour
     private string fileLocation;
 
     private PlayerController pController;
+	private PlayerHealthController hController;
     private MovementController mController;
     private WeaponController wController;
 
@@ -36,9 +37,9 @@ public class InputManager : MonoBehaviour
             Debug.Log("An Input Manager already exists. Please check that only one Input Manager script exists in the scene.");
 
         pController = playerShip.GetComponent<PlayerController>();
+		hController = playerShip.GetComponent<PlayerHealthController>();
         mController = playerShip.GetComponent<MovementController>();
-        wController = playerShip.GetComponent<WeaponController>();
-
+		wController = playerShip.GetComponent<WeaponController>();
         fileLocation = Application.persistentDataPath + "/controls.json";
 
     }
@@ -50,7 +51,7 @@ public class InputManager : MonoBehaviour
         {
             // Suicide button.
             if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
-                pController.Kill();
+                hController.Kill();
 
             HandleMovementControls();
             HandleWeaponControls();
@@ -62,7 +63,7 @@ public class InputManager : MonoBehaviour
         }
 
         // Handle pause screen.
-        if (!pController.IsDead() && !pController.inventory.itemTransferPanel.activeInHierarchy && !optionsMenu.SubmenuIsOpen() && !optionsMenu.isOpen)
+        if (!hController.IsDead() && !pController.inventory.itemTransferPanel.activeInHierarchy && !optionsMenu.SubmenuIsOpen() && !optionsMenu.isOpen)
         {
             if (Input.GetKeyDown(controls.pause))
             {
@@ -178,7 +179,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleWeaponControls()
     {
-        if (!pController.IsDead())
+        if (!hController.IsDead())
         {
             if (wController.currentComponent is ChargedWeapon)
             {

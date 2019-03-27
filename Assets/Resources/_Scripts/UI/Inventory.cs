@@ -853,12 +853,6 @@ public class Inventory : MonoBehaviour
                 // Only swap if the components are the same type/tier/class.
                 if (invComp.IsSameComponentType(mountComp))
                 {
-                    // Update size of inventory, if the component is a storage component.
-                    //if (invComp is StorageComponent)
-                    //{
-                    //    RemoveSlots((mountComp as StorageComponent).slotCount);
-                    //    AddSlots((invComp as StorageComponent).slotCount);
-                    //}
                     var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
                     var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
                     invSlot.SetItem(mountItem);
@@ -870,10 +864,9 @@ public class Inventory : MonoBehaviour
         else if (invSlot.IsEmpty() && !mountSlot.IsEmpty())
         {
             var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
-            if (mountComp.GetItemType() == ItemType.Storage)
+            if (mountComp.GetItemType() == ItemType.Upgrade)
             {
-                //RemoveSlots((mountComp as StorageComponent).slotCount);
-                //mountSlot.ClearSlot();
+				mountSlot.ClearSlot();
             }
             else if (mountComp.GetItemType() == ItemType.Thruster)
             {

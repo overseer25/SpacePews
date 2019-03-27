@@ -108,7 +108,7 @@ public class RammingAI : MonoBehaviour
     /// </summary>
     private void UpdateIfTargetIsDead()
     {
-        if (target != null && target.transform.parent != null && target.transform.parent.gameObject.GetComponentInChildren<PlayerController>() != null && target.transform.parent.gameObject.GetComponentInChildren<PlayerController>().IsDead())
+        if (target != null && target.transform.parent != null && target.transform.parent.gameObject.GetComponentInChildren<PlayerController>() != null && target.transform.parent.gameObject.GetComponentInChildren<PlayerHealthController>().IsDead())
         {
             patrolling = true;
             target = null;

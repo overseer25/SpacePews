@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
     private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
     [Header("State")]
-    [SerializeField]
-    private int healthChunk = 20;
     public Inventory inventory;
     public DeathScreen deathScreen;
     public PauseMenuScript pauseMenu;
@@ -35,17 +33,12 @@ public class PlayerController : MonoBehaviour
     private MovementController movementController;
     private ShipMountController mountController;
     private WeaponController weaponController;
+	private PlayerHealthController healthController;
     private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
     private AudioSource engine;
     private AudioClip engineAudio;
-
-    private int prevHealth;
-    private float healthToDisplay;
-    private PlayerHealth healthUI;
-    private bool dead = false;
-	private bool regeneratingHealth = false;
 
     [HideInInspector]
     public bool rotatingLeft;
@@ -53,14 +46,11 @@ public class PlayerController : MonoBehaviour
     public bool rotatingRight;
     [HideInInspector]
     public bool movingForward;
-
-    private int health; // The amount of health the player currently has.
     private float currentCameraZoom;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
     private GameObject ship;
-	private PlayerActor actor;
     private Canvas[] canvases;
 
     /// <summary>
@@ -68,15 +58,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-		actor = GetComponent<PlayerActor>();
-        movementController = gameObject.GetComponent<MovementController>();
-        mountController = gameObject.GetComponent<ShipMountController>();
-        weaponController = gameObject.GetComponent<WeaponController>();
-		health = actor.health;
-		prevHealth = health;
-		healthToDisplay = actor.health / healthChunk;
-        healthUI = GetComponent<PlayerHealth>();
-        healthUI.SetupHealthSprite((int)healthToDisplay);
+        movementController = GetComponent<MovementController>();
+        mountController = GetComponent<ShipMountController>();
+        weaponController = GetComponent<WeaponController>();
+		healthController = GetComponent<PlayerHealthController>();
         engine = GetComponent<AudioSource>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         canvases = transform.parent.GetComponentsInChildren<Canvas>();
@@ -91,7 +76,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             ship = shipRenderer.gameObject;
-			actor = GetComponent<PlayerActor>();
             //inventory.AddSlots(_ship.inventorySize);
             //foreach (var mount in mountController.GetStorageMounts())
             //{
@@ -119,7 +103,7 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public int GetHealth()
     {
-        return health;
+        return 0;
     }
 
     /// <summary>
@@ -186,13 +170,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(dead)
-        {
-            if (GetThrusterState())
-                SetThrusterState(false);
-            movementController.Stop();
-        }
-    }
+		if (healthController.IsDead())
+		{
+			if (GetThrusterState())
+				SetThrusterState(false);
+			movementController.Stop();
+		}
+	}
 
     /// <summary>
     /// Update the list of thrusters.
@@ -282,33 +266,6 @@ public class PlayerController : MonoBehaviour
             engine.Stop();
     }
 
-    private void LateUpdate()
-    {
-        if (!CheckIfDead() && prevHealth != health)
-        {
-            prevHealth = health;
-            DisplayHealth();
-        }
-
-		if (health < actor.health)
-			StartCoroutine(RegenHealth());
-    }
-
-	/// <summary>
-	/// Regenerate player health.
-	/// </summary>
-	/// <returns></returns>
-	private IEnumerator RegenHealth()
-	{
-		if(!regeneratingHealth)
-		{
-			regeneratingHealth = true;
-			yield return new WaitForSeconds(0.5f);
-			health++;
-			regeneratingHealth = false;
-		}
-	}
-
     /// <summary>
     /// Deals with all collisions with the player character
     /// </summary>
@@ -331,7 +288,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (rigidBody.velocity.magnitude > 10)
                     {
-                        health -= (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
+                        healthController.TakeDamage((int)System.Math.Floor(rigidBody.velocity.magnitude / 3));
                     }
                     direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * 10f;
                 }
@@ -340,77 +297,42 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case "Enemy":
-                health -= 5;
+                healthController.TakeDamage(5);
                 break;
         }
-    }
-
-    /// <summary>
-    /// Calculates number of hearts to draw, and transparency of last one if necessary. Sends to
-    /// UI for updating.
-    /// </summary>
-    private void DisplayHealth()
-    {
-        healthToDisplay = (float)health / healthChunk;
-        int fullDisplayHealth = health / healthChunk;
-        float remainingHealth = healthToDisplay - fullDisplayHealth;
-        healthUI.RedrawHealthSprites(fullDisplayHealth, remainingHealth);
     }
 
     /// <summary>
     /// Check to see if the player is dead, set some variables if he is and render them dead.
     /// </summary>
     /// <returns>Returns true if health is less than or equal to 0</returns>
-    public bool CheckIfDead()
+    public void CheckIfDead()
     {
-        if (health <= 0)
+		var dead = healthController.IsDead();
+
+		if (dead)
         {
-            if (!dead)
-            {
-                dead = true;
-                this.GetComponentInChildren<SpriteRenderer>().enabled = false;
-                mountController.HideMounted();
-                weaponController.UpdateDead(dead);
-                inventory.UpdateDead(dead);
-                movementController.UpdateDead(dead);
-                pauseMenu.UpdateDead(dead);
-                pauseMenu.ResumeGame();
-                this.SendMessage("UpdateDead", true);
-                healthUI.SetIsDead(true);
-                healthUI.RedrawHealthSprites(0, 0);
-                deathScreen.Display();
-                engine.Stop();
+            GetComponentInChildren<SpriteRenderer>().enabled = false;
+            mountController.HideMounted();
+            weaponController.UpdateDead(dead);
+            inventory.UpdateDead(dead);
+            movementController.UpdateDead(dead);
+            pauseMenu.UpdateDead(dead);
+            pauseMenu.ResumeGame();
+            deathScreen.Display();
+            engine.Stop();
 
-                movingForward = false;
-                rotatingLeft = false;
-                rotatingRight = false;
-                if (GetThrusterState())
-                    SetThrusterState(false);
+            movingForward = false;
+            rotatingLeft = false;
+            rotatingRight = false;
+            if (GetThrusterState())
+                SetThrusterState(false);
 
-                //spawn explosion effect.
-                ParticleManager.PlayParticle(deathExplosion, gameObject);
+            //spawn explosion effect.
+            ParticleManager.PlayParticle(deathExplosion, gameObject);
 
-                StartCoroutine(Respawn());
-            }
+            StartCoroutine(Respawn());
         }
-        return health <= 0;
-    }
-
-    /// <summary>
-    /// Gives the result if the player is dead or not.
-    /// </summary>
-    /// <returns>True if player is dead, false otherwise.</returns>
-    public bool IsDead()
-    {
-        return dead;
-    }
-
-    /// <summary>
-    /// Kill the player. This can be called when something other than a world object kills the player (eg suicide button).
-    /// </summary>
-    public void Kill()
-    {
-        health = 0;
     }
 
     /// <summary>
@@ -433,17 +355,15 @@ public class PlayerController : MonoBehaviour
         // Wait before returning control to the player.
         yield return new WaitForSeconds(RESPAWN_ANIMATION_TIME);
 
-        dead = false;
-        health = actor.health;
-        this.GetComponentInChildren<SpriteRenderer>().enabled = true;
+		healthController.ResetHealth();
+
+		var dead = healthController.IsDead();
+        GetComponentInChildren<SpriteRenderer>().enabled = true;
         mountController.ShowMounted();
         weaponController.UpdateDead(dead);
         inventory.UpdateDead(dead);
         movementController.UpdateDead(dead);
         pauseMenu.UpdateDead(dead);
-        this.SendMessage("UpdateDead", false);
-        healthUI.SetIsDead(false);
-        healthUI.ResetHealth();
 
     }
 }

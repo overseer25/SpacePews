@@ -7,5 +7,8 @@ using UnityEngine;
 /// </summary>
 public abstract class Actor : MonoBehaviour
 {
+	/// <summary>
+	/// The max health of the actor.
+	/// </summary>
 	public int health;
 }

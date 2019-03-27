@@ -12,13 +12,14 @@ public abstract class ShipComponentBase : Item
     public bool visible = true;
 
     // Is this item mounted to the ship?
-    public bool mounted = false;
+    public bool mounted;
 
     protected override void Awake()
     {
         base.Awake();
         stackable = false;
         stackSize = 0;
+		mounted = false;
     }
 
     /// <summary>
