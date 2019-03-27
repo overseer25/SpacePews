@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
 	/// </summary>
 	private void FixedUpdate()
 	{
-		if (!healthController.IsDead())
+		if (!dead)
 		{
 
 			if (movingForward)
@@ -128,14 +128,10 @@ public class PlayerController : MonoBehaviour
 				movementController.RotateRight();
 			else if (rotatingLeft)
 				movementController.RotateLeft();
-			Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + rigidBody.velocity, Color.green);
-			Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + ((Vector2)ship.transform.up * 5.0f), Color.white);
 
 			Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
 											new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom), CAMERA_FOLLOW_SPEED * Time.deltaTime);
 		}
-		else
-			StopAllMovement();
 	}
 
 	/// <summary>
@@ -296,7 +292,8 @@ public class PlayerController : MonoBehaviour
 					direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * 10f;
 				}
 				movementController.Stop();
-				movementController.MoveDirection(direction);
+                if(!healthController.IsDead())
+				    movementController.MoveDirection(direction);
 				break;
 
 			case "Enemy":
@@ -314,6 +311,7 @@ public class PlayerController : MonoBehaviour
 			SetThrusterState(false);
 
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
+        movementController.Stop();
 		mountController.HideMounted();
 		weaponController.UpdateDead(dead);
 		inventory.UpdateDead(dead);
