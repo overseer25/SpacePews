@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AutomaticWeapon : WeaponComponent
+public class AutomaticWeapon : WeaponComponentBase
 {
     /// <summary>
     /// Fire the weapon if it is ready to fire the next round.

@@ -1,14 +1,14 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WeaponComponent))]
-public class BaseWeaponEditor : Editor
+[CustomEditor(typeof(WeaponComponentBase))]
+public class BaseWeaponEditor : ComponentBaseEditor
 {
     public string tooltip;
 
     public override void OnInspectorGUI()
     {
-        var component = target as WeaponComponent;
+        var component = target as WeaponComponentBase;
         EditorGUILayout.Space();
 
         DisplayPropertySection(component);
@@ -17,7 +17,7 @@ public class BaseWeaponEditor : Editor
     /// <summary>
     /// Creates the part of the inspector for the component's properties.
     /// </summary>
-    public void DisplayPropertySection(WeaponComponent component)
+    public void DisplayPropertySection(WeaponComponentBase component)
     {
         // ----- PROPERTIES SECTION ----- //
         EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
@@ -92,7 +92,7 @@ public class BaseWeaponEditor : Editor
     /// <summary>
     /// Displays the audio/visual section of the inspector.
     /// </summary>
-    public void DisplayAudioVisualSection(WeaponComponent component, bool showFireAnimation = true)
+    public void DisplayAudioVisualSection(WeaponComponentBase component, bool showFireAnimation = true)
     {
         EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
 

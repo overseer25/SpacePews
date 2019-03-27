@@ -89,18 +89,11 @@ public class MountSlot : SlotBase
     /// <param name="item"></param>
     public override void SetItem(Item item)
     {
-        var component = item as ShipComponent;
+        var component = item as ShipComponentBase;
         component.mounted = true;
         inventoryItem.SetItem(component, 0);
-        component = inventoryItem.GetItem() as ShipComponent;
-        if (component is WeaponComponent)
-            mount.SetComponent(component as WeaponComponent);
-        else if (component is StorageComponent)
-            mount.SetComponent(component as StorageComponent);
-        else if (component is ThrusterComponent)
-            mount.SetComponent(component as ThrusterComponent);
-        else if (component is MiningComponent)
-            mount.SetComponent(component as MiningComponent);
+        component = inventoryItem.GetItem() as ShipComponentBase;
+		mount.SetComponent(component);
     }
 
     /// <summary>

@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     [Header("State")]
     [SerializeField]
     private int healthChunk = 20;
-    public int maxHealth = 200; // Max health the player can currently have.
     public Inventory inventory;
     public DeathScreen deathScreen;
     public PauseMenuScript pauseMenu;
@@ -46,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private float healthToDisplay;
     private PlayerHealth healthUI;
     private bool dead = false;
+	private bool regeneratingHealth = false;
 
     [HideInInspector]
     public bool rotatingLeft;
@@ -60,8 +60,7 @@ public class PlayerController : MonoBehaviour
     // The ship variables.
     private SpriteRenderer shipRenderer;
     private GameObject ship;
-    private Ship _ship;
-
+	private PlayerActor actor;
     private Canvas[] canvases;
 
     /// <summary>
@@ -69,14 +68,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        health = maxHealth;
+		actor = GetComponent<PlayerActor>();
         movementController = gameObject.GetComponent<MovementController>();
         mountController = gameObject.GetComponent<ShipMountController>();
         weaponController = gameObject.GetComponent<WeaponController>();
-        healthToDisplay = maxHealth / healthChunk;
+		health = actor.health;
+		prevHealth = health;
+		healthToDisplay = actor.health / healthChunk;
         healthUI = GetComponent<PlayerHealth>();
         healthUI.SetupHealthSprite((int)healthToDisplay);
-        prevHealth = health;
         engine = GetComponent<AudioSource>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         canvases = transform.parent.GetComponentsInChildren<Canvas>();
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             ship = shipRenderer.gameObject;
-            _ship = ship.GetComponent<Ship>();
+			actor = GetComponent<PlayerActor>();
             //inventory.AddSlots(_ship.inventorySize);
             //foreach (var mount in mountController.GetStorageMounts())
             //{
@@ -289,7 +289,25 @@ public class PlayerController : MonoBehaviour
             prevHealth = health;
             DisplayHealth();
         }
+
+		if (health < actor.health)
+			StartCoroutine(RegenHealth());
     }
+
+	/// <summary>
+	/// Regenerate player health.
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator RegenHealth()
+	{
+		if(!regeneratingHealth)
+		{
+			regeneratingHealth = true;
+			yield return new WaitForSeconds(0.5f);
+			health++;
+			regeneratingHealth = false;
+		}
+	}
 
     /// <summary>
     /// Deals with all collisions with the player character
@@ -416,7 +434,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(RESPAWN_ANIMATION_TIME);
 
         dead = false;
-        health = maxHealth;
+        health = actor.health;
         this.GetComponentInChildren<SpriteRenderer>().enabled = true;
         mountController.ShowMounted();
         weaponController.UpdateDead(dead);

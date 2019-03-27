@@ -11,7 +11,7 @@ public class WeaponController : MonoBehaviour
 
     private GameObject turret;
     [HideInInspector]
-    public ShipComponent currentComponent;
+    public ShipComponentBase currentComponent;
 
     [SerializeField]
     private ShipMountController mountController;
@@ -26,14 +26,14 @@ public class WeaponController : MonoBehaviour
     /// Update the turret to use the provided component.
     /// </summary>
     /// <param name="component"></param>
-    public void UpdateTurret(ShipComponent component)
+    public void UpdateTurret(ShipComponentBase component)
     {
         if (!dead)
         {
             if (currentComponent != null)
             {
-                if (currentComponent is WeaponComponent)
-                    (currentComponent as WeaponComponent).SetMounted(false);
+                if (currentComponent is WeaponComponentBase)
+                    (currentComponent as WeaponComponentBase).SetMounted(false);
                 else if (currentComponent is MiningComponent)
                     (currentComponent as MiningComponent).SetMounted(false);
                 Destroy(currentComponent.gameObject);
@@ -45,10 +45,10 @@ public class WeaponController : MonoBehaviour
             var hotbarSlotItem = inventory.GetSelectedHotbarSlot().GetItem();
             if (hotbarSlotItem != null)
             {
-                currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponent;
+                currentComponent = Instantiate(hotbarSlotItem, turret.transform.position, turret.transform.rotation, turret.transform) as ShipComponentBase;
                 currentComponent.gameObject.SetActive(true);
-                if (currentComponent is WeaponComponent)
-                    (currentComponent as WeaponComponent).SetMounted(true);
+                if (currentComponent is WeaponComponentBase)
+                    (currentComponent as WeaponComponentBase).SetMounted(true);
                 else if (currentComponent is MiningComponent)
                     (currentComponent as MiningComponent).SetMounted(true);
             }

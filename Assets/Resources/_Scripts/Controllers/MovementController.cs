@@ -16,7 +16,6 @@ public class MovementController : MonoBehaviour
     // The ship variables.
     private SpriteRenderer shipRenderer;
     private GameObject ship;
-    private Ship _ship;
 
     void Start()
     {
@@ -27,7 +26,6 @@ public class MovementController : MonoBehaviour
         else
         {
             ship = shipRenderer.gameObject;
-            _ship = ship.GetComponent<Ship>();
         }
     }
 

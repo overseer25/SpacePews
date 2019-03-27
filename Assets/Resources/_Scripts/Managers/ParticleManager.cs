@@ -13,7 +13,6 @@ public class ParticleManager : MonoBehaviour
     /// </summary>
     public static void PlayParticle(ParticleEffect particle, GameObject position)
     {
-        var audioSource = particle.GetComponent<AudioSource>();
         var exp = ParticlePool.current.GetPooledObject();
         if (exp == null)
             return;

@@ -11,7 +11,8 @@ public class AutomaticWeaponEditor: BaseWeaponEditor
         var automaticWeapon = target as AutomaticWeapon;
         EditorGUILayout.Space();
 
-        DisplayPropertySection(automaticWeapon);
+		// ----- PROPERTIES SECTION ----- //
+		DisplayPropertySection(automaticWeapon);
 
         // ----- WEAPON STATS SECTION ----- //
         DisplayWeaponStatsSection();

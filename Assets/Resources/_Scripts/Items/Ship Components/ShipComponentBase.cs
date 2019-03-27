@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipComponent : Item
+/// <summary>
+/// Base class for all ship components.
+/// </summary>
+public abstract class ShipComponentBase : Item
 {
     public ItemClass componentClass;
     // Whether or not the component is visible on the ship.
@@ -70,7 +73,7 @@ public class ShipComponent : Item
     /// their type, tier, and class.
     /// </summary>
     /// <returns></returns>
-    public bool IsSameComponentType(ShipComponent other)
+    public bool IsSameComponentType(ShipComponentBase other)
     {
         return itemType == other.GetItemType() && itemTier == other.GetComponentTier() && componentClass == other.GetComponentClass();
     }

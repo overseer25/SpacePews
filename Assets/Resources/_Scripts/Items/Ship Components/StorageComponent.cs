@@ -1,4 +1,4 @@
-﻿public class StorageComponent : ShipComponent
+﻿public class StorageComponent : ShipComponentBase
 {
     // The number of slots the storage component adds to the inventory.
     public int slotCount;

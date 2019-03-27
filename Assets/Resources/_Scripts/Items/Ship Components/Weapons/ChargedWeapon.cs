@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ChargedWeapon : WeaponComponent
+public class ChargedWeapon : WeaponComponentBase
 {
     // Animations
     public Sprite[] chargingAnimation;

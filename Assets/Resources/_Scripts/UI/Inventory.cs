@@ -156,7 +156,7 @@ public class Inventory : MonoBehaviour
         selectedHotbarSlotIndex = index;
         hotbarSlots[selectedHotbarSlotIndex].Select();
         var item = hotbarSlots[selectedHotbarSlotIndex].GetItem();
-        weaponController.UpdateTurret(item as ShipComponent);
+        weaponController.UpdateTurret(item as ShipComponentBase);
         audioSource.PlayOneShot(hotbarSelectSound);
         UpdateSelectedItemDisplay(item);
     }
@@ -769,7 +769,7 @@ public class Inventory : MonoBehaviour
                 {
                     invSlot.SetItem(hotbarComp);
                     hotbarSlot.SetItem(invComp);
-                    weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+                    weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponentBase);
                 }
             }
         }
@@ -790,7 +790,7 @@ public class Inventory : MonoBehaviour
             {
                 hotbarSlot.SetItem(invComp);
                 invSlot.ClearSlot();
-                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+                weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponentBase);
             }
         }
         else
@@ -827,9 +827,9 @@ public class Inventory : MonoBehaviour
             return;
 
         if (hotbarSlot.IsSelected())
-            weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponent);
+            weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponentBase);
         else if (hotbarSlot2.IsSelected())
-            weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponent);
+            weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponentBase);
 
         audioSource.PlayOneShot(swapSound);
         HideHoverTooltip();
@@ -842,8 +842,8 @@ public class Inventory : MonoBehaviour
     /// <param name="mountSlot"></param>
     private void SwapInventoryToMountSlot(InventorySlot invSlot, MountSlot mountSlot)
     {
-        var invComp = invSlot.GetItem() as ShipComponent;
-        var mountComp = mountSlot.GetItem() as ShipComponent;
+        var invComp = invSlot.GetItem() as ShipComponentBase;
+        var mountComp = mountSlot.GetItem() as ShipComponentBase;
 
         // If they both contain an item.
         if (!mountSlot.IsEmpty() && !invSlot.IsEmpty())
@@ -859,8 +859,8 @@ public class Inventory : MonoBehaviour
                     //    RemoveSlots((mountComp as StorageComponent).slotCount);
                     //    AddSlots((invComp as StorageComponent).slotCount);
                     //}
-                    var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponent;
-                    var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
+                    var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
+                    var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
                     invSlot.SetItem(mountItem);
                     mountSlot.SetItem(invItem);
                 }
@@ -869,7 +869,7 @@ public class Inventory : MonoBehaviour
         // If inventory slot is empty.
         else if (invSlot.IsEmpty() && !mountSlot.IsEmpty())
         {
-            var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponent;
+            var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
             if (mountComp.GetItemType() == ItemType.Storage)
             {
                 //RemoveSlots((mountComp as StorageComponent).slotCount);
@@ -887,7 +887,7 @@ public class Inventory : MonoBehaviour
         {
             if (mountSlot.GetMount().IsComponentCompatible(invComp))
             {
-                var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponent;
+                var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
                 mountSlot.SetItem(invItem);
                 if (invComp is StorageComponent)
                 {

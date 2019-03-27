@@ -66,9 +66,9 @@ public class InfoScreen : MonoBehaviour
     public void SetInfo(Item item, int count)
     {
         // Display stats different if item is a weapon component.
-        if (item is WeaponComponent)
+        if (item is WeaponComponentBase)
         {
-            var weapComp = item as WeaponComponent;
+            var weapComp = item as WeaponComponentBase;
             displayText.text = item.itemName + "\n";
             displayText.color = ItemColors.colors[(int)item.itemTier];
             displayText.text += "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>\n";

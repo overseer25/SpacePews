@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiningComponent : ShipComponent
+public class MiningComponent : ShipComponentBase
 {
     public float miningRate;
     public float laserWidth;
@@ -43,7 +43,7 @@ public class MiningComponent : ShipComponent
         // Raycast for detecting collision/ "~(1 << 5) is a LayerMask. Layer 5 is the UI layer, and we don't want the raycast detecting the UI."
         int mask = 1 << LayerMask.NameToLayer("UI");
         mask |= 1 << LayerMask.NameToLayer("Item");
-        mask |= 1 << LayerMask.NameToLayer("ShipComponent");
+        mask |= 1 << LayerMask.NameToLayer("ShipComponentBase");
         mask = ~mask;
         RaycastHit2D hit = Physics2D.Raycast(lineSpawner.transform.position, lineSpawner.transform.up, laserLength, mask);
 

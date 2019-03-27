@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public abstract class WeaponComponent : ShipComponent
+/// <summary>
+/// Base class for all Weapon Components.
+/// </summary>
+public abstract class WeaponComponentBase : ShipComponentBase
 {
     public float firerate;
     public float shotSpread;

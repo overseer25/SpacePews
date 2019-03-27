@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ThrusterComponent : ShipComponent
+public class ThrusterComponent : ShipComponentBase
 {
     public float acceleration;
     public float deceleration;
