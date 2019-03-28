@@ -49,28 +49,32 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!optionsMenu.SubmenuIsOpen() && !optionsMenu.isOpen)
+        if (!optionsMenu.isOpen && !optionsMenu.SubmenuIsOpen() && !pController.IsDead())
         {
-            // Suicide button.
-            if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
-                hController.Kill();
-
             HandleMovementControls();
-            HandleWeaponControls();
-            HandleUIControls();
-        }
+			if(!PauseMenuScript.IsPaused)
+			{
+				Debug.Log("Handling Weapons");
+				HandleWeaponControls();
+
+				// Suicide button.
+				if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
+					hController.Kill();
+			}
+			HandleUIControls();
+
+			// Handle pause menu.
+			if(!pController.inventory.itemTransferPanel.activeInHierarchy)
+			{
+				if (Input.GetKeyDown(controls.pause))
+				{
+					pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
+				}
+			}
+		}
         else
         {
-            pController.StopAllMovement();
-        }
-
-        // Handle pause screen.
-        if (!hController.IsDead() && !pController.inventory.itemTransferPanel.activeInHierarchy && !optionsMenu.SubmenuIsOpen() && !optionsMenu.isOpen)
-        {
-            if (Input.GetKeyDown(controls.pause))
-            {
-                pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
-            }
+			pController.StopAllMovement();
         }
     }
 

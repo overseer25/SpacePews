@@ -10,6 +10,7 @@ public class PauseMenuScript : MonoBehaviour
 	public OutputWindow outputWindow;
     public Texture2D menuCursor;
     public Texture2D shootCursor;
+	public GameObject healthUI;
 
 
     [SerializeField]
@@ -106,7 +107,8 @@ public class PauseMenuScript : MonoBehaviour
     /// </summary>
     public void PauseGame()
     {
-        IsPaused = true;
+		healthUI.SetActive(false);
+		IsPaused = true;
         ActivatePauseMenu();
         Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
 		outputWindow.Hide();
@@ -119,7 +121,8 @@ public class PauseMenuScript : MonoBehaviour
     /// </summary>
     public void ResumeGame()
     {
-        IsPaused = false;
+		healthUI.SetActive(true);
+		IsPaused = false;
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
         optionsMenu.HideAll();
@@ -171,7 +174,7 @@ public class PauseMenuScript : MonoBehaviour
     {
         ActivatePauseMenu();
         optionsMenu.Hide();
-    }
+	}
 
     /// <summary>
     /// Play the hover sound. Used by the Unity Event System.

@@ -17,7 +17,6 @@ public class OptionsMenu : MonoBehaviour
 
     [Header("Other")]
     public PauseMenuScript pauseMenu;
-	public GameObject healthUI;
     public bool isOpen;
     private AudioSource audioSource;
 
@@ -73,7 +72,6 @@ public class OptionsMenu : MonoBehaviour
         }
         this.GetComponent<Image>().enabled = true;
         isOpen = true;
-		healthUI.SetActive(false);
     }
 
     /// <summary>
@@ -87,7 +85,6 @@ public class OptionsMenu : MonoBehaviour
         }
         this.GetComponent<Image>().enabled = false;
         StartCoroutine(ChangeIsOpenBool());
-		healthUI.SetActive(true);
     }
 
     /// <summary>
