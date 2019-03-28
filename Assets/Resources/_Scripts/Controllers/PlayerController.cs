@@ -304,15 +304,6 @@ public class PlayerController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Is the player dead?
-	/// </summary>
-	/// <returns></returns>
-	public bool IsDead()
-	{
-		return dead;
-	}
-
-	/// <summary>
 	/// Die really hard.
 	/// </summary>
 	public void Die()

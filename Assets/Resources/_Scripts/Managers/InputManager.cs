@@ -49,7 +49,7 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!optionsMenu.isOpen && !optionsMenu.SubmenuIsOpen() && !pController.IsDead())
+        if (!optionsMenu.isOpen && !optionsMenu.SubmenuIsOpen() && !hController.IsDead())
         {
             HandleMovementControls();
 			HandleWeaponControls();
