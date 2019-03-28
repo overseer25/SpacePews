@@ -39,7 +39,7 @@ public class PlayerHealthController : MonoBehaviour
     private void Update()
     {
         UpdateHealthbar();
-        if (currentHealth < actor.health && !regeneratingHealth && !actor.disableHealthRegen)
+        if (currentHealth < actor.health && !regeneratingHealth && !actor.disableHealthRegen && !IsDead())
         {
             regenerationCoroutine = StartCoroutine("RegenHealth");
         }

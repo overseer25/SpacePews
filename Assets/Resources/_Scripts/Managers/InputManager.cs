@@ -52,11 +52,10 @@ public class InputManager : MonoBehaviour
         if (!optionsMenu.isOpen && !optionsMenu.SubmenuIsOpen() && !pController.IsDead())
         {
             HandleMovementControls();
-			if(!PauseMenuScript.IsPaused)
-			{
-				Debug.Log("Handling Weapons");
-				HandleWeaponControls();
+			HandleWeaponControls();
 
+			if (!PauseMenuScript.IsPaused)
+			{
 				// Suicide button.
 				if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
 					hController.Kill();
