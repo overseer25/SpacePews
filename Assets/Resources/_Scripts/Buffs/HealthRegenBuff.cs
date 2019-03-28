@@ -9,6 +9,7 @@ using UnityEngine;
 public class HealthRegenBuff : Buff
 {
 	public int regenAmount;
+    public bool disableRegen;
 
 	/// <summary>
 	/// Add buff to actor.
@@ -16,7 +17,9 @@ public class HealthRegenBuff : Buff
 	/// <param name="actor"></param>
 	public override void Apply(Actor actor)
 	{
-		if (debuff)
+        if (disableRegen)
+            actor.disableHealthRegen = true;
+		else if (debuff)
 			actor.healthRegenAmount -= regenAmount;
 		else
 			actor.healthRegenAmount += regenAmount;
@@ -28,7 +31,9 @@ public class HealthRegenBuff : Buff
 	/// <param name="actor"></param>
 	public override void Remove(Actor actor)
 	{
-		if (debuff)
+        if (disableRegen)
+            actor.disableHealthRegen = false;
+        else if (debuff)
 			actor.healthRegenAmount += regenAmount;
 		else
 			actor.healthRegenAmount -= regenAmount;
@@ -41,10 +46,12 @@ public class HealthRegenBuff : Buff
 	public override string BuildDescription()
 	{
 		string result;
-		if (debuff)
-			result = "Decreases health regen amount by " + regenAmount;
-		else
-			result = "Increases health regen amount by " + regenAmount;
+        if (disableRegen)
+            result = "Disables health regen.";
+        else if (debuff)
+            result = "Decreases health regen amount by " + regenAmount;
+        else
+            result = "Increases health regen amount by " + regenAmount;
 
 		return result;
 	}
@@ -56,7 +63,9 @@ public class HealthRegenBuff : Buff
     public override string BuildInfoScreenString()
     {
         string result;
-        if (debuff)
+        if (disableRegen)
+            result = "Disables health regen.";
+        else if (debuff)
             result = "Decreases health regen amount by <color=\"red\">" + regenAmount + "</color>";
         else
             result = "Increases health regen amount by <color=\"green\">" + regenAmount + "</color>";

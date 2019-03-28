@@ -122,7 +122,7 @@ public class MountSlot : SlotBase
     {
         if (image != null)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 1.0f);
             if (inventoryItem != null)
                 inventoryItem.Highlight();
         }
@@ -135,7 +135,7 @@ public class MountSlot : SlotBase
     {
         if (image != null)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 0.7f);
             if (inventoryItem != null)
                 inventoryItem.Dehighlight();
         }

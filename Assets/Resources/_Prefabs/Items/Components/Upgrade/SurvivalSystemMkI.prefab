@@ -99,10 +99,11 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   itemType: 6
   itemTier: 0
-  itemName: Health buff
+  itemName: Survival System Mk.I
   quantity: 1
   value: 1000
-  description: Increases player health by 100 points.
+  description: Provides strength to the ships exterior, as well as the built-in restoration
+    systems.
   stackable: 0
   stackSize: 0
   playspeed: 0.5

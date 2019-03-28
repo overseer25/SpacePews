@@ -924,7 +924,7 @@ public class Inventory : MonoBehaviour
     {
         var item = inventorySlots[index].GetItem();
         var slotIndex = 0;
-        slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.GetItemType());
+        slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.GetItemType(), item.itemTier);
 
         if (slotIndex >= 0)
             SwapSlots(new int[] { index, slotIndex });
@@ -947,14 +947,14 @@ public class Inventory : MonoBehaviour
     /// Get the index of an empty mount slot of the provided type, or the first non-empty one.
     /// </summary>
     /// <param name="type"></param>
-    public int GetIndexOfEmptyOrFirstMountSlotOfType(ItemType type)
+    public int GetIndexOfEmptyOrFirstMountSlotOfType(ItemType type, ItemTier tier)
     {
-        foreach (var mountSlot in mountSlots.Where(e => e.GetMount().GetMountType() == type))
+        foreach (var mountSlot in mountSlots.Where(e => e.GetMount().GetMountType() == type && e.GetMount().GetMountTier() == tier))
         {
             if (mountSlot.GetItem() == null)
                 return mountSlot.GetIndex();
         }
-        var first = mountSlots.Where(e => e.GetMount().GetMountType() == type).OrderBy(e => e.GetIndex()).FirstOrDefault();
+        var first = mountSlots.Where(e => e.GetMount().GetMountType() == type && e.GetMount().GetMountTier() == tier).OrderBy(e => e.GetIndex()).FirstOrDefault();
         if (first != null)
             return first.GetIndex();
         return -1;

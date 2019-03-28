@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fec6be834a871f4cb71103a699106cb, type: 3}
-  m_Name: HealthRegenSpeedBuff1
+  m_Script: {fileID: 11500000, guid: f32af30c065332342a7e4fc24620c76d, type: 3}
+  m_Name: DisableHealthRegen
   m_EditorClassIdentifier: 
   debuff: 0
-  regenSpeed: 0.5
+  regenAmount: 0
+  disableRegen: 1

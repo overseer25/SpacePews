@@ -76,6 +76,6 @@ public abstract class ShipComponentBase : Item
     /// <returns></returns>
     public bool IsSameComponentType(ShipComponentBase other)
     {
-        return itemType == other.GetItemType() && itemTier == other.GetComponentTier() && componentClass == other.GetComponentClass();
+        return itemType == other.GetItemType() && itemTier == other.GetComponentTier();
     }
 }

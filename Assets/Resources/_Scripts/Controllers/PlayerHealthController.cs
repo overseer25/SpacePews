@@ -40,10 +40,12 @@ public class PlayerHealthController : MonoBehaviour
     private void Update()
     {
         UpdateHealthbar();
-        if(currentHealth < actor.health && !regeneratingHealth)
+        if (currentHealth < actor.health && !regeneratingHealth && !actor.disableHealthRegen)
         {
             regenerationCoroutine = StartCoroutine("RegenHealth");
         }
+        else if (regeneratingHealth && actor.disableHealthRegen)
+            StopCoroutine(regenerationCoroutine);
     }
 
     /// <summary>
@@ -68,7 +70,7 @@ public class PlayerHealthController : MonoBehaviour
 
         if (!IsDead())
         {
-            if (currentHealth < actor.health && actor.healthRegenAmount > 0)
+            if (currentHealth < actor.health && actor.healthRegenAmount > 0 && !actor.disableHealthRegen)
             {
                 regenerationCoroutine = StartCoroutine("RegenHealth");
             }
@@ -114,8 +116,8 @@ public class PlayerHealthController : MonoBehaviour
         healthbarLength = actor.health;
         if (currentHealth > actor.health)
             ResetHealth();
-        healthBar.sizeDelta = new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y);
-        healthBarBG.sizeDelta = new Vector2(healthbarLength, healthBarBG.sizeDelta.y);
+        healthBar.sizeDelta = Vector2.Lerp(healthBar.sizeDelta, new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y), 10.0f * Time.deltaTime);
+        healthBarBG.sizeDelta = Vector2.Lerp(healthBarBG.sizeDelta, new Vector2(healthbarLength, healthBarBG.sizeDelta.y), 10.0f * Time.deltaTime);
         Vector3[] v = new Vector3[4];
         healthBarBG.GetWorldCorners(v);
         healthBarEnding.transform.position = new Vector2(v[2][0], healthBarEnding.transform.position.y);

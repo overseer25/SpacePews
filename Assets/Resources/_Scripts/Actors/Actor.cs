@@ -21,4 +21,9 @@ public abstract class Actor : MonoBehaviour
 	/// Health regen per tick.
 	/// </summary>
 	public int healthRegenAmount;
+
+    /// <summary>
+    /// When true, disables health regeneration on this actor.
+    /// </summary>
+    public bool disableHealthRegen;
 }

@@ -13,20 +13,32 @@ public class HealthRegenBuffEditor : BuffBaseEditor
 
 	public override void OnInspectorGUI()
 	{
+        var buff = target as HealthRegenBuff;
+
 		base.OnInspectorGUI();
 
-		EditorGUILayout.BeginHorizontal();
-		tooltip = "Is this a buff or a debuff?";
-		serializedObject.Update();
-		EditorGUILayout.PropertyField(serializedObject.FindProperty("debuff"), new GUIContent("    Is Debuff?", tooltip), true, GUILayout.MaxWidth(500f));
-		serializedObject.ApplyModifiedProperties();
-		EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        tooltip = "Does this disable regen?";
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("disableRegen"), new GUIContent("    Disables Regen?", tooltip), true, GUILayout.MaxWidth(500f));
+        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndHorizontal();
 
-		EditorGUILayout.BeginHorizontal();
-		tooltip = "Static value to modify regen amount by.";
-		serializedObject.Update();
-		EditorGUILayout.PropertyField(serializedObject.FindProperty("regenAmount"), new GUIContent("    Regen Amount", tooltip), true, GUILayout.MaxWidth(500f));
-		serializedObject.ApplyModifiedProperties();
-		EditorGUILayout.EndHorizontal();
+        if(!buff.disableRegen)
+        {
+            EditorGUILayout.BeginHorizontal();
+            tooltip = "Is this a buff or a debuff?";
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("debuff"), new GUIContent("    Is Debuff?", tooltip), true, GUILayout.MaxWidth(500f));
+            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            tooltip = "Static value to modify regen amount by.";
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("regenAmount"), new GUIContent("    Regen Amount", tooltip), true, GUILayout.MaxWidth(500f));
+            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.EndHorizontal();
+        }
 	}
 }

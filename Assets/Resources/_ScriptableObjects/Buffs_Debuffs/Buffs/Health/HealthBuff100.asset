@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f32af30c065332342a7e4fc24620c76d, type: 3}
-  m_Name: HealthRegenAmountDebuff5
+  m_Script: {fileID: 11500000, guid: 436afe83d330db84eab685560f549a32, type: 3}
+  m_Name: HealthBuff100
   m_EditorClassIdentifier: 
-  debuff: 1
-  regenAmount: 5
+  debuff: 0
+  isMultiplier: 0
+  healthAmount: 100
+  multiplier: 2

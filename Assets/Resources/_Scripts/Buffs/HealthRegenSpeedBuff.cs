@@ -43,9 +43,9 @@ public class HealthRegenSpeedBuff : Buff
 	{
 		string result;
 		if (debuff)
-			result = "Reduces health regen speed by " + regenSpeed + " seconds";
+			result = "Lengthens health regen delay by " + regenSpeed + " seconds";
 		else
-			result = "Increases health regen speed by " + regenSpeed + " seconds";
+			result = "Reduces health regen delay by " + regenSpeed + " seconds";
 
 		return result;
 	}
@@ -58,9 +58,9 @@ public class HealthRegenSpeedBuff : Buff
     {
         string result;
         if (debuff)
-            result = "Reduces health regen speed by <color=\"red\">" + regenSpeed + "</color> seconds";
+            result = "Lengthens health regen delay by <color=\"red\">" + regenSpeed + "</color> seconds";
         else
-            result = "Increases health regen speed by <color=\"green\">" + regenSpeed + "</color> seconds";
+            result = "Reduces health regen delay by <color=\"green\">" + regenSpeed + "</color> seconds";
 
         return result;
     }
