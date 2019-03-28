@@ -10,7 +10,6 @@ public class PlayerHealthController : MonoBehaviour
     public RectTransform healthBar;
     public RectTransform healthBarBG;
     public TextMeshProUGUI counter;
-    public GameObject healthBarEnding;
 
     [Header("Audio")]
     public AudioClip damageSound;
@@ -121,9 +120,6 @@ public class PlayerHealthController : MonoBehaviour
             ResetHealth();
         healthBar.sizeDelta = Vector2.Lerp(healthBar.sizeDelta, new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y), 10.0f * Time.deltaTime);
         healthBarBG.sizeDelta = Vector2.Lerp(healthBarBG.sizeDelta, new Vector2(healthbarLength, healthBarBG.sizeDelta.y), 10.0f * Time.deltaTime);
-        Vector3[] v = new Vector3[4];
-        healthBarBG.GetWorldCorners(v);
-        healthBarEnding.transform.position = new Vector2(v[2][0], healthBarEnding.transform.position.y);
         counter.text = currentHealth.ToString();
     }
 

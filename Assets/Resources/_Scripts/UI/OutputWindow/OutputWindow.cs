@@ -28,7 +28,7 @@ public class OutputWindow : MonoBehaviour
 	public bool isOpen;
 
 	// The max number of text boxes that can exist.
-	private const int MAX_NUMBER_OF_TEXT_BOXES = 10;
+	private const int MAX_NUMBER_OF_TEXT_BOXES = 15;
 
 	private void Start()
 	{
