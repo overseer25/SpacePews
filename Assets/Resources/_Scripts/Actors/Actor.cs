@@ -8,8 +8,15 @@ using UnityEngine;
 public abstract class Actor : MonoBehaviour
 {
 	/// <summary>
-	/// The max health of the actor.
+	/// The base health of the actor. This is used for multipliers so that they don't apply/remove 
+	/// too much or too little health.
 	/// </summary>
+	public int baseHealth;
+
+	/// <summary>
+	/// The max health of the actor. This is the value that gets modified.
+	/// </summary>
+	[HideInInspector]
 	public int health;
 
 	/// <summary>
@@ -26,4 +33,10 @@ public abstract class Actor : MonoBehaviour
     /// When true, disables health regeneration on this actor.
     /// </summary>
     public bool disableHealthRegen;
+
+	private void Start()
+	{
+		health = baseHealth;
+	}
+
 }

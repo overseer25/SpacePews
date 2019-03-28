@@ -13,6 +13,8 @@ public class HealthBuff : Buff
 	public int healthAmount;
 	public float multiplier;
 
+	private int multiplierAmount;
+
 	/// <summary>
 	/// Apply the health buff/debuff to the provided actor.
 	/// </summary>
@@ -20,7 +22,10 @@ public class HealthBuff : Buff
 	public override void Apply(Actor actor)
 	{
 		if (isMultiplier)
-			actor.health = (int)(actor.health * multiplier);
+		{
+			multiplierAmount = (int)(actor.baseHealth * multiplier) - actor.baseHealth;
+			actor.health += multiplierAmount;
+		}
 		else
 			actor.health = (debuff) ? (actor.health - healthAmount) : (actor.health + healthAmount);
 	}
@@ -32,7 +37,7 @@ public class HealthBuff : Buff
 	public override void Remove(Actor actor)
 	{
 		if (isMultiplier)
-			actor.health = (int)(actor.health / multiplier);
+			actor.health -= multiplierAmount;
 		else
 			actor.health = (debuff) ? (actor.health + healthAmount) : (actor.health - healthAmount);
 	}
@@ -46,7 +51,10 @@ public class HealthBuff : Buff
 		string result;
 		if (isMultiplier)
 		{
-			result = "Multiplies an entity's health by " + multiplier + "x.";
+			if (multiplier > 1.0f)
+				result = "Boosts base health by " + (int)((multiplier - 1) * 100) + "%.";
+			else
+				result = "Cuts base health by " + (int)((1 - multiplier) * 100) + "%.";
 		}
 		else
 		{
@@ -68,8 +76,11 @@ public class HealthBuff : Buff
         string result;
         if (isMultiplier)
         {
-            result = "Multiplies health by <color=\"green\">" + multiplier + "x</color>.";
-        }
+			if(multiplier > 1.0f)
+				result = "Boosts base health by <color=\"green\">" + (int)((multiplier - 1) * 100) + "%</color>.";
+			else
+				result = "Cuts base health by <color=\"red\">" + (int)((1 - multiplier) * 100) + "%</color>.";
+		}
         else
         {
             if (debuff)

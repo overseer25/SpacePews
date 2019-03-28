@@ -1420,6 +1420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a554baab9a54f3342b1c3b8e111e98eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseHealth: 50
   health: 50
   healthRegenSpeed: 1
   healthRegenAmount: 1
