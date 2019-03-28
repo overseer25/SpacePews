@@ -99,11 +99,10 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   itemType: 6
   itemTier: 0
-  itemName: My Dude
+  itemName: Test
   quantity: 1
   value: 1000
-  description: Provides strength to the ships exterior, as well as the built-in restoration
-    systems.
+  description: This is a test for swapping mounts.
   stackable: 0
   stackSize: 0
   playspeed: 0.5
