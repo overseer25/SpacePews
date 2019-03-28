@@ -43,19 +43,40 @@ public class HealthBuff : Buff
 	/// <returns></returns>
 	public override string BuildDescription()
 	{
-		var result = "This buff ";
+		string result;
 		if (isMultiplier)
 		{
-			result += "multiplies an entity's health by " + multiplier + "x.";
+			result = "Multiplies an entity's health by " + multiplier + "x.";
 		}
 		else
 		{
 			if (debuff)
-				result += "decreases ";
+				result = "Decreases ";
 			else
-				result += "increases ";
-			result += "an entity's health by " + healthAmount + " points";
+				result = "Increases ";
+			result += " an entity's health by " + healthAmount + " points";
 		}
 		return result;
 	}
+
+    /// <summary>
+    /// Build the screen to be used by the info screen.
+    /// </summary>
+    /// <returns></returns>
+    public override string BuildInfoScreenString()
+    {
+        string result;
+        if (isMultiplier)
+        {
+            result = "Multiplies health by <color=\"green\">" + multiplier + "x</color>.";
+        }
+        else
+        {
+            if (debuff)
+                result = "Decreases health by <color=\"red\">" + healthAmount + "</color> points";
+            else
+                result = "Increases health by <color=\"green\">" + healthAmount + "</color> points";
+        }
+        return result;
+    }
 }

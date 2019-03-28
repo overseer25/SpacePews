@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
 	public DeathScreen deathScreen;
 	public PauseMenuScript pauseMenu;
 	public GameObject itemTransferConfirmWindow;
+    public GameObject HealthUI;
 	public GameObject respawnPoint;
 	[Header("Effects/Sounds")]
 	public ParticleEffect deathExplosion;
@@ -319,6 +320,7 @@ public class PlayerController : MonoBehaviour
 		pauseMenu.UpdateDead(dead);
 		pauseMenu.ResumeGame();
 		deathScreen.Display();
+        HealthUI.SetActive(false);
 		engine.Stop();
 
 		movingForward = false;
@@ -362,6 +364,7 @@ public class PlayerController : MonoBehaviour
 			inventory.UpdateDead(dead);
 			movementController.UpdateDead(dead);
 			pauseMenu.UpdateDead(dead);
+            HealthUI.SetActive(true);
 			respawning = false;
 			healthController.ResetHealth();
 		}

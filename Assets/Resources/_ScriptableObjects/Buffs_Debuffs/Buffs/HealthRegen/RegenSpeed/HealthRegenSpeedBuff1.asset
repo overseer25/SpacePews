@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: HealthRegenSpeedBuff1
   m_EditorClassIdentifier: 
   debuff: 0
-  regenSpeed: 0.5
+  regenSpeed: 0.3

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 436afe83d330db84eab685560f549a32, type: 3}
-  m_Name: HealthBuff100
+  m_Name: HealthBuff50
   m_EditorClassIdentifier: 
   debuff: 0
   isMultiplier: 0
-  healthAmount: 100
+  healthAmount: 50
   multiplier: 0.75

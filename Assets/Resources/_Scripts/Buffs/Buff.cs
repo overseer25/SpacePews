@@ -29,4 +29,10 @@ public abstract class Buff : ScriptableObject
 	/// <returns></returns>
 	public abstract string BuildDescription();
 
+    /// <summary>
+    /// The text to be display in the info screen.
+    /// </summary>
+    /// <returns></returns>
+    public abstract string BuildInfoScreenString();
+
 }

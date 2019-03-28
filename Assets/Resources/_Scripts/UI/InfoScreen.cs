@@ -70,7 +70,7 @@ public class InfoScreen : MonoBehaviour
         {
             var weapComp = item as WeaponComponentBase;
             displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.color = ItemColors.colors[(int)weapComp.itemTier];
             displayText.text += "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>\n";
             displayText.text += "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)\n";
             displayText.text += "<style=\"CritChanceText\">Crit Chance: " + weapComp.GetCriticalChanceString() + "</style>(<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)\n";
@@ -81,7 +81,7 @@ public class InfoScreen : MonoBehaviour
         {
             var thrusterComp = item as ThrusterComponent;
             displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.color = ItemColors.colors[(int)thrusterComp.itemTier];
             displayText.text += "<style=\"Type\">" + thrusterComp.GetComponentClass() + " " + thrusterComp.GetItemType() + "</style>\n";
             displayText.text += "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>\n";
             displayText.text += "<style=\"Acceleration\">" + "Acceleration: <style=\"AccNum\">" + thrusterComp.acceleration + "</style> m/s^2" + "</style>\n";
@@ -91,7 +91,7 @@ public class InfoScreen : MonoBehaviour
         {
             var storageComp = item as StorageComponent;
             displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.color = ItemColors.colors[(int)storageComp.itemTier];
             displayText.text += "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>\n";
             displayText.text += "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>\n";
             displayText.text += "<style=\"Description\">" + storageComp.description + "</style>\n";
@@ -100,10 +100,21 @@ public class InfoScreen : MonoBehaviour
         {
             var miningComp = item as MiningComponent;
             displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
+            displayText.color = ItemColors.colors[(int)miningComp.itemTier];
             displayText.text += "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>\n";
             displayText.text += "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>\n";
             displayText.text += "<style=\"Description\">" + miningComp.description + "</style>\n";
+        }
+        else if(item is StatBuffUpgradeComponent)
+        {
+            var buffComponent = item as StatBuffUpgradeComponent;
+            displayText.text = item.itemName + "\n";
+            displayText.color = ItemColors.colors[(int)buffComponent.itemTier];
+            displayText.text += "<style=\"Type\">" + buffComponent.GetComponentClass() + " Upgrade Component</style>\n";
+            foreach(var buff in buffComponent.buffs)
+                displayText.text += "<style=\"BuffText\">" + "-" + buff.BuildInfoScreenString() + "</style>\n";
+            displayText.text += "\n<style=\"Description\">" + buffComponent.description + "</style>\n";
+
         }
         // Generic item.
         else

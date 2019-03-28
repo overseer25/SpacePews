@@ -48,4 +48,19 @@ public class HealthRegenBuff : Buff
 
 		return result;
 	}
+
+    /// <summary>
+    /// Build the screen to be used by the info screen.
+    /// </summary>
+    /// <returns></returns>
+    public override string BuildInfoScreenString()
+    {
+        string result;
+        if (debuff)
+            result = "Decreases health regen amount by <color=\"red\">" + regenAmount + "</color>";
+        else
+            result = "Increases health regen amount by <color=\"green\">" + regenAmount + "</color>";
+
+        return result;
+    }
 }
