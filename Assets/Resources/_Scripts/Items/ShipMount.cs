@@ -79,7 +79,6 @@ public class ShipMount : MonoBehaviour {
     /// <param name="component"></param>
     public void SetComponent(ShipComponentBase component)
     {
-
         // If the starting component is not compatible with the ship mount.
         if (component != null && !IsComponentCompatible(component))
         {
@@ -90,7 +89,10 @@ public class ShipMount : MonoBehaviour {
 		// Destroy the old component.
         if (this.component != null)
         {
-			this.component.SetMounted(false);
+			if(this.component is StatBuffUpgradeComponent)
+				(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
+			else
+				this.component.SetMounted(false);
 			Destroy(this.component.gameObject);
         }
 
@@ -119,7 +121,7 @@ public class ShipMount : MonoBehaviour {
     {
         if (component == null)
             return false;
-        return mountType == component.GetItemType() && mountTier == component.GetComponentTier();
+        return mountType == component.GetItemType() && mountTier >= component.GetComponentTier();
     }
 
     /// <summary>

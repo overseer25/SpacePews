@@ -31,9 +31,9 @@ public class HealthRegenBuff : Buff
 	/// <param name="actor"></param>
 	public override void Remove(Actor actor)
 	{
-        if (disableRegen)
-            actor.disableHealthRegen = false;
-        else if (debuff)
+		if(disableRegen)
+			actor.disableHealthRegen = false;
+        if (debuff)
 			actor.healthRegenAmount += regenAmount;
 		else
 			actor.healthRegenAmount -= regenAmount;

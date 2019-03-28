@@ -45,8 +45,11 @@ public class PlayerHealthController : MonoBehaviour
             regenerationCoroutine = StartCoroutine("RegenHealth");
         }
         else if (regeneratingHealth && actor.disableHealthRegen)
+		{
+			regeneratingHealth = false;
             StopCoroutine(regenerationCoroutine);
-    }
+		}
+	}
 
     /// <summary>
     /// Damage the player's health by the given amount.
@@ -125,14 +128,19 @@ public class PlayerHealthController : MonoBehaviour
     }
 
     /// <summary>
-    /// Reset the player's health to full. If the player's upgrade components lead them to have exactly 0 health, give them 1 point.
+    /// Reset the player's health to full.
     /// </summary>
-    public void ResetHealth()
+    public void ResetHealth(int? amount = null)
     {
-        if (actor.health == 0)
-            currentHealth = actor.health + 1;
-        else
-            currentHealth = actor.health;
+		if(regenerationCoroutine != null)
+		{
+			StopCoroutine(regenerationCoroutine);
+			regeneratingHealth = false;
+		}
+		if (amount == null)
+			currentHealth = actor.health;
+		else
+			currentHealth = (int)amount;
     }
 
     /// <summary>

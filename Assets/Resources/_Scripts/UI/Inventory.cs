@@ -4,6 +4,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Inventory management system for the player. Manages inventory slots, hotbar slots, and mount slots.
+/// </summary>
 public class Inventory : MonoBehaviour
 {
     [Header("Tool Tip")]
@@ -225,47 +228,6 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds slots to the inventory.
-    /// </summary>
-    /// <param name="size"></param>
-    //public void AddSlots(int size)
-    //{
-    //    var inventorySlot = Resources.Load("_Prefabs/UI/Inventory/Inventory_Slot") as GameObject;
-    //    for (int i = 0; i < size; i++)
-    //    {
-    //        var slot = Instantiate(inventorySlot, inventoryUI.transform);
-    //        slot.GetComponent<InventorySlot>().SetIndex(i);
-    //        inventorySlots.Add(slot.GetComponent<InventorySlot>());
-    //    }
-    //    int j = inventorySlots.Count;
-    //    foreach (var mountSlot in mountSlots)
-    //        mountSlot.SetIndex(j++);
-    //    foreach (var hotbarSlot in hotbarSlots)
-    //        hotbarSlot.SetIndex(j++);
-    //}
-
-    /// <summary>
-    /// Remove Slots from the inventory.
-    /// </summary>
-    /// <param name="size"></param>
-    //public void RemoveSlots(int size)
-    //{
-    //    for (int i = inventorySize - 1; i > inventorySize - 1 - size; i--)
-    //    {
-    //        var slot = inventorySlots[i];
-    //        inventorySlots.RemoveAt(i);
-    //        Destroy(slot.gameObject);
-    //    }
-    //    int j = inventorySize - size;
-    //    foreach (var mountSlot in mountSlots)
-    //        mountSlot.SetIndex(j++);
-    //    foreach (var hotbarSlot in hotbarSlots)
-    //        hotbarSlot.SetIndex(j++);
-
-    //    inventorySize -= size;
-    //}
-
-    /// <summary>
     /// Called to toggle display to inventory UI.
     /// </summary>
     public virtual void Toggle()
@@ -412,8 +374,6 @@ public class Inventory : MonoBehaviour
     {
         if (index < inventorySlots.Count())
             inventorySlots[index].ClearSlot();
-        else
-            mountSlots[index - inventorySlots.Count()].ClearSlot();
 
         // Play the delete sound.
         audioSource.Stop();
@@ -690,6 +650,13 @@ public class Inventory : MonoBehaviour
             var invSlot = inventorySlots[index1];
             SwapInventoryToMountSlot(invSlot, mountSlot);
         }
+		// If swapping from mount slot to mountslot.
+		else if(index1 >= inventorySlots.Count() && index2 >= inventorySlots.Count())
+		{
+			var mountSlot1 = mountSlots[index1 - inventorySlots.Count()];
+			var mountSlot2 = mountSlots[index2 - inventorySlots.Count()];
+			SwapMountSlots(mountSlot1, mountSlot2);
+		}
         else
             return;
     }
@@ -850,8 +817,8 @@ public class Inventory : MonoBehaviour
         {
             if (invComp != null && mountComp != null)
             {
-                // Only swap if the components are the same type/tier/class.
-                if (invComp.IsSameComponentType(mountComp))
+                // Only swap if the components are the same type. The tier of the incoming can be greater.
+                if (mountSlot.GetMount().IsComponentCompatible(invComp))
                 {
                     var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
                     var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
@@ -864,15 +831,10 @@ public class Inventory : MonoBehaviour
         else if (invSlot.IsEmpty() && !mountSlot.IsEmpty())
         {
             var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
-            if (mountComp.GetItemType() == ItemType.Upgrade)
-            {
-				mountSlot.ClearSlot();
-            }
-            else if (mountComp.GetItemType() == ItemType.Thruster)
-            {
-                mountSlot.ClearSlot();
+			mountSlot.ClearSlot();
+            if (mountComp.GetItemType() == ItemType.Thruster)
                 playerController.UpdateThrusterList();
-            }
+            
             invSlot.SetItem(mountItem);
         }
         // If mount slot is empty.
@@ -882,14 +844,8 @@ public class Inventory : MonoBehaviour
             {
                 var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
                 mountSlot.SetItem(invItem);
-                if (invComp is StorageComponent)
-                {
-                    //AddSlots((invItem as StorageComponent).slotCount);
-                }
-                else if (invComp is ThrusterComponent)
-                {
+                if (invComp is ThrusterComponent)
                     playerController.UpdateThrusterList();
-                }
 
                 invSlot.ClearSlot();
             }
@@ -901,11 +857,41 @@ public class Inventory : MonoBehaviour
         HideHoverTooltip();
     }
 
-    /// <summary>
-    /// Swap provided index with an empty hotbar slot, or the currently selected one if
-    /// no hotbar slots are empty.
-    /// </summary>
-    public void QuickSwapWithHotbarSlot(int index)
+	/// <summary>
+	/// Swap two mount slots.
+	/// </summary>
+	/// <param name="mountSlot1"></param>
+	/// <param name="mountSlot2"></param>
+	private void SwapMountSlots(MountSlot mountSlot1, MountSlot mountSlot2)
+	{
+		var mountComp1 = mountSlot1.GetItem() as ShipComponentBase;
+		var mountComp2 = mountSlot2.GetItem() as ShipComponentBase;
+
+		// If both mount slots contain an item, and are compatible, swap them.
+		if (!mountSlot1.IsEmpty() && !mountSlot2.IsEmpty() && mountSlot1.GetMount().IsComponentCompatible(mountComp2)
+														  && mountSlot2.GetMount().IsComponentCompatible(mountComp1))
+		{
+			mountSlot1.SetItem(itemList.Find(x => (x.GetItemName().Equals(mountComp2.GetItemName()))) as ShipComponentBase);
+			mountSlot2.SetItem(itemList.Find(x => (x.GetItemName().Equals(mountComp1.GetItemName()))) as ShipComponentBase);
+		}
+		// If swapping to an empty mount slot.
+		else if(!mountSlot1.IsEmpty() && mountSlot2.IsEmpty() && mountSlot2.GetMount().IsComponentCompatible(mountComp1))
+		{
+			mountSlot2.SetItem(itemList.Find(x => (x.GetItemName().Equals(mountComp1.GetItemName()))) as ShipComponentBase);
+			mountSlot1.ClearSlot();
+		}
+		else
+			return;
+
+		audioSource.PlayOneShot(swapSound);
+		HideHoverTooltip();
+	}
+
+	/// <summary>
+	/// Swap provided index with an empty hotbar slot, or the currently selected one if
+	/// no hotbar slots are empty.
+	/// </summary>
+	public void QuickSwapWithHotbarSlot(int index)
     {
         var slot = GetEmptyHotbarSlot();
         if (slot == null)
@@ -949,12 +935,12 @@ public class Inventory : MonoBehaviour
     /// <param name="type"></param>
     public int GetIndexOfEmptyOrFirstMountSlotOfType(ItemType type, ItemTier tier)
     {
-        foreach (var mountSlot in mountSlots.Where(e => e.GetMount().GetMountType() == type && e.GetMount().GetMountTier() == tier))
+        foreach (var mountSlot in mountSlots.Where(e => e.GetMount().GetMountType() == type && e.GetMount().GetMountTier() >= tier))
         {
             if (mountSlot.GetItem() == null)
                 return mountSlot.GetIndex();
         }
-        var first = mountSlots.Where(e => e.GetMount().GetMountType() == type && e.GetMount().GetMountTier() == tier).OrderBy(e => e.GetIndex()).FirstOrDefault();
+        var first = mountSlots.Where(e => e.GetMount().GetMountType() == type && e.GetMount().GetMountTier() >= tier).OrderBy(e => e.GetIndex()).FirstOrDefault();
         if (first != null)
             return first.GetIndex();
         return -1;

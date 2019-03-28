@@ -366,7 +366,7 @@ public class PlayerController : MonoBehaviour
 			pauseMenu.UpdateDead(dead);
             HealthUI.SetActive(true);
 			respawning = false;
-			healthController.ResetHealth();
+			healthController.ResetHealth(GetComponent<Actor>().health / 2);
 		}
 	}
 }

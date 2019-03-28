@@ -92,7 +92,7 @@ public class MountSlot : SlotBase
         var component = item as ShipComponentBase;
         component.mounted = true;
         inventoryItem.SetItem(component, 0);
-        component = inventoryItem.GetItem() as ShipComponentBase;
+        component = item as ShipComponentBase;
 		mount.SetComponent(component);
     }
 
@@ -164,17 +164,6 @@ public class MountSlot : SlotBase
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
         {
             SendMessageUpwards("QuickSwapWithInventorySlot", index);
-        }
-
-        // Shift clicking will clear the slot.
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
-        {
-            if(inventoryItem.GetItem() != null)
-            {
-                SendMessageUpwards("ClearSlot", index);
-                Dehighlight();
-                return;
-            }
         }
 
         if(canHighlight)

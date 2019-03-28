@@ -30,7 +30,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     internal static bool rightClickDragging = false;
     // If the inventory item is not visible, it is not draggable.
     internal static bool draggable;
-    internal bool destroying = false;
     private bool highlighted = false;
 
     void Awake()
@@ -288,12 +287,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         dragging = false;
         rightClickDragging = false;
 
-        if (destroying)
-        {
-            SendMessageUpwards("DeleteSlot", positions[0]);
-            destroying = false;
-        }
-        else if (swapping || mounting)
+        if (swapping || mounting)
         {
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
@@ -341,10 +335,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 else if (rightClickDragging)
                     rightClickSwapping = true;
                 break;
-            case ("DeleteZone"):
-                collider.gameObject.GetComponent<Image>();
-                destroying = true;
-                break;
         }
     }
 
@@ -375,9 +365,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 else if (rightClickDragging)
                     rightClickSwapping = true;
                 break;
-            case ("DeleteZone"):
-                destroying = true;
-                break;
         }
     }
 
@@ -389,7 +376,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         swapping = false;
         rightClickSwapping = false;
-        destroying = false;
         mounting = false;
         mountSlot = null;
     }
