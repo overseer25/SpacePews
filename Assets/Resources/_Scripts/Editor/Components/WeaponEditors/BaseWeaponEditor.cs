@@ -1,18 +1,12 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WeaponComponentBase))]
-public class BaseWeaponEditor : ComponentBaseEditor
+/// <summary>
+/// Base editor for all weapon components.
+/// </summary>
+public class BaseWeaponEditor : Editor
 {
     public string tooltip;
-
-    public override void OnInspectorGUI()
-    {
-        var component = target as WeaponComponentBase;
-        EditorGUILayout.Space();
-
-        DisplayPropertySection(component);
-    }
 
     /// <summary>
     /// Creates the part of the inspector for the component's properties.
