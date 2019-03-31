@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ShipComponentBase))]
 public class ComponentBaseEditor : Editor
 {
 	ShipComponentBase component;

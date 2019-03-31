@@ -15,7 +15,7 @@ public class HealthBuffEditor : BuffBaseEditor
 	{
 		HealthBuff buff = target as HealthBuff;
 
-		base.OnInspectorGUI();
+        DisplayDescription(buff);
 
 		EditorGUILayout.BeginHorizontal();
 		tooltip = "Is this a static value or a multiplier?";

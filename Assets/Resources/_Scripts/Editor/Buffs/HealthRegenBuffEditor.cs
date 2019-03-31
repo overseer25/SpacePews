@@ -15,7 +15,7 @@ public class HealthRegenBuffEditor : BuffBaseEditor
 	{
         var buff = target as HealthRegenBuff;
 
-		base.OnInspectorGUI();
+        DisplayDescription(buff);
 
         EditorGUILayout.BeginHorizontal();
         tooltip = "Does this disable regen?";

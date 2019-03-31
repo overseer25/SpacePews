@@ -13,9 +13,10 @@ public class HealthRegenSpeedBuffEditor : BuffBaseEditor
 
 	public override void OnInspectorGUI()
 	{
-		base.OnInspectorGUI();
+        var buff = target as HealthRegenSpeedBuff;
+        DisplayDescription(buff);
 
-		EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginHorizontal();
 		tooltip = "Is this a buff or a debuff?";
 		serializedObject.Update();
 		EditorGUILayout.PropertyField(serializedObject.FindProperty("debuff"), new GUIContent("    Is Debuff?", tooltip), true, GUILayout.MaxWidth(500f));

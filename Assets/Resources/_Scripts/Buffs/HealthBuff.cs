@@ -62,7 +62,7 @@ public class HealthBuff : Buff
 				result = "Decreases ";
 			else
 				result = "Increases ";
-			result += " an entity's health by " + healthAmount + " points";
+			result += "an entity's health by " + healthAmount + " points";
 		}
 		return result;
 	}
