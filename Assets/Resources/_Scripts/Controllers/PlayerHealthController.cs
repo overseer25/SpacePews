@@ -12,12 +12,12 @@ public class PlayerHealthController : MonoBehaviour
 	public TextMeshProUGUI counter;
 
 	[Header("Audio")]
+	public AudioSource audioSource;
 	public AudioClip damageSound;
 
 	private int currentHealth;
 	private PlayerActor actor;
 	private float healthbarLength;
-	private AudioSource audioSource;
 
 	private const float REGEN_WAIT_TIME = 3.0f;
 	private bool regeneratingHealth;
@@ -30,7 +30,6 @@ public class PlayerHealthController : MonoBehaviour
 		if (actor == null)
 			Debug.LogError("Failed to find player actor for " + this);
 		currentHealth = actor.health;
-		audioSource = GetComponent<AudioSource>();
 
 		healthBar.sizeDelta = new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y);
 		healthBarBG.sizeDelta = new Vector2(healthbarLength, healthBarBG.sizeDelta.y);
@@ -62,7 +61,7 @@ public class PlayerHealthController : MonoBehaviour
 			regeneratingHealth = false;
 		}
 
-		if (currentHealth - amount < 0)
+		if (currentHealth - amount <= 0)
 			currentHealth = 0;
 		else
 		{

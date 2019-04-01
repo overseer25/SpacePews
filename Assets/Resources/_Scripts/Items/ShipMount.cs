@@ -23,6 +23,7 @@ public class ShipMount : MonoBehaviour {
     private ShipComponentBase component;
     private bool isEmpty = false;
 	private Actor parentActor;
+	private PlayerController pController;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class ShipMount : MonoBehaviour {
             transform.GetComponent<SortingGroup>().sortingOrder = 1;
         }
 		parentActor = GetComponentInParent<Actor>();
+		pController = GetComponentInParent<PlayerController>();
 		if (parentActor == null)
 			Debug.LogError("Failed to find parent actor of " + this);
         
@@ -63,12 +65,12 @@ public class ShipMount : MonoBehaviour {
     /// </summary>
     public void ClearMount()
     {
-        if (component is StatBuffUpgradeComponent)
-		{
+		if (component is StatBuffUpgradeComponent)
 			(component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
-		}
+		else if (component is ActiveAbilityComponent)
+			(component as ActiveAbilityComponent).SetMounted(pController, false);
 		else
-            component.SetMounted(false);
+			component.SetMounted(false);
         Destroy(component.gameObject);
         isEmpty = true;
     }
@@ -89,8 +91,10 @@ public class ShipMount : MonoBehaviour {
 		// Destroy the old component.
         if (this.component != null)
         {
-			if(this.component is StatBuffUpgradeComponent)
+			if (this.component is StatBuffUpgradeComponent)
 				(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
+			else if (this.component is ActiveAbilityComponent)
+				(this.component as ActiveAbilityComponent).SetMounted(pController, false);
 			else
 				this.component.SetMounted(false);
 			Destroy(this.component.gameObject);
@@ -106,6 +110,8 @@ public class ShipMount : MonoBehaviour {
 		}
 		else if (this.component is StatBuffUpgradeComponent)
 			(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, true);
+		else if (this.component is ActiveAbilityComponent)
+			(this.component as ActiveAbilityComponent).SetMounted(pController, true);
 		else
 			this.component.SetMounted(true);
 

@@ -10,7 +10,7 @@ public class ControlsMenu : MonoBehaviour
     public Image left;
     public Image right;
     public Image inventory;
-    public Image submit;
+    public Image ability;
     public Image cameraZoomIn;
     public Image cameraZoomOut;
     public Image suicide;
@@ -116,8 +116,8 @@ public class ControlsMenu : MonoBehaviour
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.inventory, out result);
         inventory.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.inventory.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.submit, out result);
-        submit.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.submit.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.ability, out result);
+        ability.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.ability.ToString() : result;
 
         KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.cameraZoomIn, out result);
         cameraZoomIn.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomIn.ToString() : result;
@@ -154,8 +154,8 @@ public class ControlsMenu : MonoBehaviour
             InputManager.current.controls.right = KeyCode.None;
         else if (InputManager.current.controls.inventory == value)
             InputManager.current.controls.inventory = KeyCode.None;
-        else if (InputManager.current.controls.submit == value)
-            InputManager.current.controls.submit = KeyCode.None;
+        else if (InputManager.current.controls.ability == value)
+            InputManager.current.controls.ability = KeyCode.None;
         else if (InputManager.current.controls.cameraZoomIn == value)
             InputManager.current.controls.cameraZoomIn = KeyCode.None;
         else if (InputManager.current.controls.cameraZoomOut == value)
@@ -194,8 +194,8 @@ public class ControlsMenu : MonoBehaviour
                 InputManager.current.controls.inventory = value;
                 optionsMenu.PlayClickSound();
                 break;
-            case "submit":
-                InputManager.current.controls.submit = value;
+            case "ability":
+                InputManager.current.controls.ability = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "camerazoomin":

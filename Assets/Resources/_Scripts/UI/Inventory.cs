@@ -738,7 +738,10 @@ public class Inventory : MonoBehaviour
 				weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponentBase);
 			}
 			else
+			{
+				OutputWindow.current.DisplayText(invSlot.GetItem().GetPrettyName() + "<color=\"white\"> is not compatible with the hotbar</color>");
 				return;
+			}
 		}
 		// If inventory slot is empty.
 		else if (invSlot.IsEmpty() && !hotbarSlot.IsEmpty())
@@ -757,7 +760,11 @@ public class Inventory : MonoBehaviour
 			weaponController.UpdateTurret(hotbarSlot.GetItem() as ShipComponentBase);
 		}
 		else
+		{
+			OutputWindow.current.DisplayText(invSlot.GetItem().GetPrettyName() + "<color=\"white\"> is not compatible with the hotbar</color>");
 			return;
+		}
+
 
 		audioSource.PlayOneShot(swapSound);
 		HideHoverTooltip();
@@ -811,18 +818,23 @@ public class Inventory : MonoBehaviour
 		// If they both contain an item.
 		if (!mountSlot.IsEmpty() && !invSlot.IsEmpty())
 		{
-			if (invComp != null && mountComp != null)
+			// Only swap if the components are the same type. The tier of the incoming can be greater.
+			if (mountSlot.GetMount().IsComponentCompatible(invComp))
 			{
-				// Only swap if the components are the same type. The tier of the incoming can be greater.
-				if (mountSlot.GetMount().IsComponentCompatible(invComp))
+				if (invComp is ActiveAbilityComponent && !(mountComp is ActiveAbilityComponent) && playerController.GetAbility() != null)
 				{
-					var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
-					var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
-					invSlot.SetItem(mountItem);
-					mountSlot.SetItem(invItem);
-				}
-				else
+					OutputWindow.current.DisplayText("<color=\"white\">Ship already has an active ability</color>");
 					return;
+				}
+				var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
+				var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
+				invSlot.SetItem(mountItem);
+				mountSlot.SetItem(invItem);
+			}
+			else
+			{
+				OutputWindow.current.DisplayText(invSlot.GetItem().GetPrettyName() + "<color=\"white\"> is not compatible with this mount</color>");
+				return;
 			}
 		}
 		// If inventory slot is empty.
@@ -838,6 +850,13 @@ public class Inventory : MonoBehaviour
 		// If mount slot is empty.
 		else if (mountSlot.IsEmpty() && !invSlot.IsEmpty())
 		{
+			// A player can only have one active ability at any given time, so make sure they can't add a second one.
+			if (invComp is ActiveAbilityComponent && playerController.GetAbility() != null)
+			{
+				OutputWindow.current.DisplayText("<color=\"white\">Ship already has an active ability</color>");
+				return;
+			}
+
 			if (mountSlot.GetMount().IsComponentCompatible(invComp))
 			{
 				var invItem = itemList.Find(x => (x.GetItemName().Equals(invSlot.GetItem().GetItemName()))) as ShipComponentBase;
@@ -848,7 +867,11 @@ public class Inventory : MonoBehaviour
 				invSlot.ClearSlot();
 			}
 			else
+			{
+				OutputWindow.current.DisplayText(invSlot.GetItem().GetPrettyName() + "<color=\"white\"> is not compatible with this mount</color>");
 				return;
+			}
+
 		}
 		else
 			return;
@@ -877,11 +900,16 @@ public class Inventory : MonoBehaviour
 		// If swapping to an empty mount slot.
 		else if (!mountSlot1.IsEmpty() && mountSlot2.IsEmpty() && mountSlot2.GetMount().IsComponentCompatible(mountComp1))
 		{
-			mountSlot2.SetItem(itemList.Find(x => (x.GetItemName().Equals(mountComp1.GetItemName()))) as ShipComponentBase);
+			var comp = itemList.Find(x => (x.GetItemName().Equals(mountComp1.GetItemName())));
 			mountSlot1.ClearSlot();
+			mountSlot2.SetItem(comp as ShipComponentBase);
 		}
 		else
+		{
+			OutputWindow.current.DisplayText("<color=\"white\">Mounts are incompatible</color>");
 			return;
+
+		}
 
 		audioSource.PlayOneShot(swapSound);
 		HideHoverTooltip();
@@ -910,10 +938,25 @@ public class Inventory : MonoBehaviour
 	{
 		var item = inventorySlots[index].GetItem();
 		var slotIndex = 0;
-		slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.GetItemType(), item.itemTier);
+		if (item is ActiveAbilityComponent)
+		{
+			slotIndex = GetIndexOfActiveAbilityMountSlot(item.itemTier);
+		}
+		else
+			slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.GetItemType(), item.itemTier);
+
+		if (slotIndex == -2)
+		{
+			OutputWindow.current.DisplayText("<color=\"white\">Ship already has an active ability, and they cannot be swapped.</color>");
+			return;
+		}
+		else if (slotIndex == -1)
+			slotIndex = GetIndexOfEmptyOrFirstMountSlotOfType(item.GetItemType(), item.itemTier);
 
 		if (slotIndex >= 0)
 			SwapSlots(new int[] { index, slotIndex });
+		else
+			OutputWindow.current.DisplayText("Not compatible mount found.");
 	}
 
 	/// <summary>
@@ -944,6 +987,31 @@ public class Inventory : MonoBehaviour
 		if (first != null)
 			return first.GetIndex();
 		return -1;
+	}
+
+	/// <summary>
+	/// Get the index of a mount slot containing an active ability component. This method is used when the incoming item is an active ability.
+	/// A player can only have one active ability at a time.
+	/// </summary>
+	/// <param name="tier"></param>
+	/// <returns>Index of mount slot to swap, or -1 if no mount slot has an active ability, or -2 if a mount slot has an active ability, 
+	/// but cannot be swapped due to the tier.</returns>
+	public int GetIndexOfActiveAbilityMountSlot(ItemTier tier)
+	{
+		MountSlot result = null;
+		List<MountSlot> possibleMounts = mountSlots.Where(e => e.GetMount().GetShipComponent() != null && e.GetMount().GetShipComponent() is ActiveAbilityComponent).ToList();
+		if (possibleMounts != null)
+			result = possibleMounts.Where(e => e.GetMount().GetMountTier() >= tier).FirstOrDefault();
+
+		if (result == null)
+		{
+			if (possibleMounts.Count() == 0)
+			{
+				return -1;
+			}
+			return -2;
+		}
+		return result.GetIndex();
 	}
 
 	/// <summary>

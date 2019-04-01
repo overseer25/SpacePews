@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -21,14 +22,16 @@ public class PlayerController : MonoBehaviour
 	public DeathScreen deathScreen;
 	public PauseMenuScript pauseMenu;
 	public GameObject itemTransferConfirmWindow;
-    public GameObject HealthUI;
+	public GameObject healthUI;
+	public GameObject abilityChargeBar;
 	public GameObject respawnPoint;
 	[Header("Effects/Sounds")]
 	public ParticleEffect deathExplosion;
-	public AudioClip deathSound;
 	public ParticleEffect respawnEffect;
-	public AudioClip respawnSound;
 
+	// The active ability the player can currently use.
+	private Ability ability;
+	private Coroutine abilityCooldown;
 	private float acceleration;
 	private Rigidbody2D rigidBody;
 	private MovementController movementController;
@@ -175,7 +178,17 @@ public class PlayerController : MonoBehaviour
 			dead = true;
 			Die();
 		}
-
+		if (ability != null)
+		{
+			if (!abilityChargeBar.activeInHierarchy)
+				abilityChargeBar.SetActive(true);
+			abilityChargeBar.GetComponent<ChargeBar>().SetFillPercentage(1 - ability.GetCooldownTimeRemaining());
+		}
+		else
+		{
+			if (abilityChargeBar.activeInHierarchy)
+				abilityChargeBar.SetActive(false);
+		}
 	}
 
 	/// <summary>
@@ -277,30 +290,62 @@ public class PlayerController : MonoBehaviour
 			case "Immovable":
 			case "Asteroid":
 			case "Mineable":
-				Vector2 direction = Vector2.zero; // Direction of the collision, with the magnitude applied being the speed of the player.
-												  // If the player isn't moving, we need to move them away, as they would be able to clip into the immovable otherwise.
-				if (rigidBody.velocity == Vector2.zero)
+				Vector2 direction = Vector2.zero;
+				if (rigidBody.velocity.magnitude > 10)
 				{
-					direction = (gameObject.transform.position - collider.gameObject.transform.position) * 20;
+					healthController.TakeDamage((int)System.Math.Floor(rigidBody.velocity.magnitude / 3));
 				}
-				// The difference here is the player has a velocity, so we will propel them away from the immovable using their velocity magnitude.
-				else
-				{
-					if (rigidBody.velocity.magnitude > 10)
-					{
-						healthController.TakeDamage((int)System.Math.Floor(rigidBody.velocity.magnitude / 3));
-					}
-					direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * 10f;
-				}
+				direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.deltaTime * 20f;
+
 				movementController.Stop();
-                if(!healthController.IsDead())
-				    movementController.MoveDirection(direction);
+				if (!healthController.IsDead())
+				{
+					movementController.MoveDirection(direction, true);
+				}
 				break;
 
 			case "Enemy":
 				healthController.TakeDamage(5);
 				break;
 		}
+	}
+
+	/// <summary>
+	/// Set the active ability of the player. Also forces the ability to initially cooldown so that it cannot be abused.
+	/// </summary>
+	/// <param name="ability"></param>
+	public void SetAbility(Ability ability)
+	{
+
+		// If the same, do nothing.
+		if (this.ability == ability)
+			return;
+
+		this.ability = ability;
+		if (ability != null)
+		{
+			abilityChargeBar.GetComponentInChildren<TextMeshProUGUI>().text = ability.abilityName;
+			if (abilityCooldown != null)
+				StopCoroutine(abilityCooldown);
+			abilityCooldown = StartCoroutine(this.ability.Cooldown());
+		}
+	}
+
+	/// <summary>
+	/// Get the active ability of the player.
+	/// </summary>
+	/// <returns></returns>
+	public Ability GetAbility()
+	{
+		return ability;
+	}
+
+	/// <summary>
+	/// Start the cooldown process of the active ability.
+	/// </summary>
+	public void StartAbilityCooldown()
+	{
+		abilityCooldown = StartCoroutine(ability.Cooldown());
 	}
 
 	/// <summary>
@@ -312,7 +357,7 @@ public class PlayerController : MonoBehaviour
 			SetThrusterState(false);
 
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
-        movementController.Stop();
+		movementController.Stop();
 		mountController.HideMounted();
 		weaponController.UpdateDead(dead);
 		inventory.UpdateDead(dead);
@@ -320,7 +365,7 @@ public class PlayerController : MonoBehaviour
 		pauseMenu.UpdateDead(dead);
 		pauseMenu.ResumeGame();
 		deathScreen.Display();
-        HealthUI.SetActive(false);
+		healthUI.SetActive(false);
 		engine.Stop();
 
 		movingForward = false;
@@ -340,7 +385,7 @@ public class PlayerController : MonoBehaviour
 	/// <returns></returns>
 	public IEnumerator Respawn()
 	{
-		if(!respawning)
+		if (!respawning)
 		{
 			respawning = true;
 			// Wait before beginning the respawn animation.
@@ -364,7 +409,7 @@ public class PlayerController : MonoBehaviour
 			inventory.UpdateDead(dead);
 			movementController.UpdateDead(dead);
 			pauseMenu.UpdateDead(dead);
-            HealthUI.SetActive(true);
+			healthUI.SetActive(true);
 			respawning = false;
 			healthController.ResetHealth(GetComponent<Actor>().health / 2);
 		}

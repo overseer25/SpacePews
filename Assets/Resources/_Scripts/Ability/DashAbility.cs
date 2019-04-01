@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Represents a dash ability, which accelerates the player forward at a high speed.
 /// </summary>
-[CreateAssetMenu(menuName = "Abilities/DashAbility")]
+[CreateAssetMenu(menuName = "Abilities/Dash Ability")]
 public class DashAbility : Ability
 {
     /// <summary>
@@ -14,20 +14,12 @@ public class DashAbility : Ability
     public float speed;
 
     /// <summary>
-    /// The rate at which the dash reaches it's max speed.
-    /// </summary>
-    public float acceleration;
-
-    /// <summary>
-    /// The rate at which the player returns to their max speed.
-    /// </summary>
-    public float deceleration;
-
-    /// <summary>
     /// Activates the dash ability.
     /// </summary>
-    public override void Activate()
+    public override void Activate(GameObject player)
     {
-        throw new System.NotImplementedException();
+		var movementController = player.GetComponent<MovementController>();
+
+		movementController.MoveDirection(movementController.GetShip().transform.up * speed);
     }
 }

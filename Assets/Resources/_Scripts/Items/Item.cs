@@ -140,6 +140,16 @@ public class Item : MonoBehaviour
         return itemName;
     }
 
+	/// <summary>
+	/// Get name colored with item's tier color.
+	/// </summary>
+	/// <returns></returns>
+	public string GetPrettyName()
+	{
+		var hex = itemColor.ToHex();
+		return "<color=" + hex + ">" + itemName + "</color>";
+	}
+
     /// <summary>
     /// Is the item stackable?
     /// </summary>

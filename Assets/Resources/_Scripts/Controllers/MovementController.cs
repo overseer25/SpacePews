@@ -35,7 +35,9 @@ public class MovementController : MonoBehaviour
     public void MoveForward()
     {
         rigidBody.AddForce(ship.transform.up * acceleration * Time.deltaTime, ForceMode2D.Impulse);
-        rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
+
+		if (rigidBody.velocity.magnitude > maxSpeed)
+			Decelerate();
     }
 
     /// <summary>
@@ -76,11 +78,14 @@ public class MovementController : MonoBehaviour
     /// <summary>
     /// Add force in the provided direction.
     /// </summary>
-    /// <param name="direction"></param>
-    public void MoveDirection(Vector2 direction)
+    /// <param name="direction">The direction to propel the ship.</param>
+	/// <param name="clampSpeed">Whether or not to clamp the speed to the max speed of the ship.</param>
+    public void MoveDirection(Vector2 direction, bool clampSpeed = false)
     {
-        rigidBody.AddForce(direction);
-    }
+        rigidBody.velocity += direction;
+		if(clampSpeed)
+			rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
+	}
 
     /// <summary>
     /// Stop the movement completely.
@@ -161,6 +166,15 @@ public class MovementController : MonoBehaviour
     {
         return rotationSpeed;
     }
+
+	/// <summary>
+	/// Get the ship the movement controller moves.
+	/// </summary>
+	/// <returns></returns>
+	public GameObject GetShip()
+	{
+		return ship;
+	}
 
     /// <summary>
     /// Update the death state of the player.

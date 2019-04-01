@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
-    [Header("Controls")]
+	[Header("Controls")]
     public Controls controls;
 
     [Header("Other")]
@@ -28,8 +28,9 @@ public class InputManager : MonoBehaviour
 	private PlayerHealthController hController;
     private MovementController mController;
     private WeaponController wController;
+	private AudioSource audioSource;
 
-    private void Awake()
+	private void Awake()
     {
         if (current == null)
             current = this;
@@ -40,10 +41,9 @@ public class InputManager : MonoBehaviour
 		hController = playerShip.GetComponent<PlayerHealthController>();
         mController = playerShip.GetComponent<MovementController>();
 		wController = playerShip.GetComponent<WeaponController>();
+		audioSource = GetComponent<AudioSource>();
         fileLocation = Application.persistentDataPath + "/controls.json";
-
 		Cursor.lockState = CursorLockMode.Confined;
-
     }
 
     // Update is called once per frame
@@ -70,6 +70,15 @@ public class InputManager : MonoBehaviour
 					pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
 				}
 			}
+
+			var ability = pController.GetAbility();
+			// Handle abilities.
+			if(Input.GetKeyDown(controls.ability) && ability != null && !ability.recharging)
+			{
+				ability.Activate(pController.gameObject);
+				audioSource.PlayOneShot(ability.useSound);
+				pController.StartAbilityCooldown();
+			}
 		}
         else
         {
@@ -82,15 +91,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public void ResetToDefault()
     {
-        controls.fire = KeyCode.Mouse0;
-        controls.forward = KeyCode.W;
-        controls.left = KeyCode.A;
-        controls.right = KeyCode.D;
-        controls.inventory = KeyCode.Tab;
-        controls.submit = KeyCode.Return;
-        controls.cameraZoomIn = KeyCode.KeypadPlus;
-        controls.cameraZoomOut = KeyCode.KeypadMinus;
-        controls.suicide = KeyCode.Backspace;
+		controls = new Controls();
     }
 
     /// <summary>
@@ -104,11 +105,14 @@ public class InputManager : MonoBehaviour
             {
                 var file = File.ReadAllText(fileLocation);
                 controls = JsonUtility.FromJson<Controls>(file);
-            }
-            else
-                ResetToDefault();
+			}
+			else
+			{
+				ResetToDefault();
+				SaveToFile();
+			}
 
-        }
+		}
         catch (Exception)
         {
             Debug.Log("Failed to load controls file " + fileLocation + ", using default values instead.");
