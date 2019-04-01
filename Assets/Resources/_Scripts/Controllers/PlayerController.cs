@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
 			dead = true;
 			Die();
 		}
-		if (ability != null)
+		if (ability != null && !PauseMenuScript.IsPaused && !dead)
 		{
 			if (!abilityChargeBar.activeInHierarchy)
 				abilityChargeBar.SetActive(true);
@@ -366,6 +366,9 @@ public class PlayerController : MonoBehaviour
 		pauseMenu.ResumeGame();
 		deathScreen.Display();
 		healthUI.SetActive(false);
+		if (GetAbility() != null)
+			abilityChargeBar.SetActive(false);
+
 		engine.Stop();
 
 		movingForward = false;
@@ -410,6 +413,9 @@ public class PlayerController : MonoBehaviour
 			movementController.UpdateDead(dead);
 			pauseMenu.UpdateDead(dead);
 			healthUI.SetActive(true);
+			if (GetAbility() != null)
+				abilityChargeBar.SetActive(true);
+
 			respawning = false;
 			healthController.ResetHealth(GetComponent<Actor>().health / 2);
 		}

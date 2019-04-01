@@ -4048,8 +4048,10 @@ MonoBehaviour:
   menuCursor: {fileID: 2800000, guid: 7d70f6a288d50354a95ab82e1446f85f, type: 3}
   shootCursor: {fileID: 2800000, guid: 844884e82c47cd446b0413a605a669a8, type: 3}
   healthUI: {fileID: 8495471542997866418}
+  abilityBar: {fileID: 1221699790}
   inventory: {fileID: 1398}
   weaponController: {fileID: 1414}
+  playerController: {fileID: 1388}
   buttonHoverSound: {fileID: 8300000, guid: c693bb1571b8dca4d9a22031284e4111, type: 3}
   buttonClickSound: {fileID: 8300000, guid: cc9483a92f0e01d45986ab847c425eaf, type: 3}
   pauseSound: {fileID: 8300000, guid: 7f3ce9c1016c8e24fa28a9b2c414c744, type: 3}
