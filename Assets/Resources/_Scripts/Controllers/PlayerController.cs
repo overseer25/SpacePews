@@ -132,6 +132,8 @@ public class PlayerController : MonoBehaviour
             else if (rotatingLeft)
                 movementController.RotateLeft();
         }
+
+       
     }
 
     /// <summary>
@@ -185,12 +187,14 @@ public class PlayerController : MonoBehaviour
             if (abilityChargeBar.activeInHierarchy)
                 abilityChargeBar.SetActive(false);
         }
+
+
     }
 
     private void LateUpdate()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position,
-                   new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom), CAMERA_FOLLOW_SPEED * Time.deltaTime);
+                Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
+                                   new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom), 0.1f);
     }
 
     /// <summary>

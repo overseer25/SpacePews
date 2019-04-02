@@ -13,9 +13,4 @@ public class UpgradeBaseEditor : ComponentBaseEditor
 		component.visible = false;
 
 	}
-
-	public override void DisplayAudioVisualSection(ShipComponentBase component)
-	{
-		base.DisplayAudioVisualSection(component);
-	}
 }

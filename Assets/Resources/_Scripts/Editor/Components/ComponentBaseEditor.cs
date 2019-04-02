@@ -51,7 +51,7 @@ public class ComponentBaseEditor : Editor
 	/// <summary>
 	/// Display the audio/visual properties of the component.
 	/// </summary>
-	public virtual void DisplayAudioVisualSection(ShipComponentBase component)
+	public void DisplayAudioVisualSection(ShipComponentBase component)
 	{
 		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
 

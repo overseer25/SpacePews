@@ -38,7 +38,7 @@ public class ChargedWeapon : WeaponComponentBase
 
     protected override void Update()
     {
-        if (!charging && !playingFireAnimation && !coolingDown)
+        if (!charging && !coolingDown)
             base.Update();
     }
 
@@ -95,7 +95,7 @@ public class ChargedWeapon : WeaponComponentBase
     {
         if (this != null)
         {
-            if (!charged)
+            if (!chargingAnimActive && !charged)
             {
                 StartCoroutine(Charge());
                 StopCoroutine(CancelCharge());
@@ -196,9 +196,6 @@ public class ChargedWeapon : WeaponComponentBase
     /// </summary>
     private IEnumerator Charge()
     {
-        if (chargingAnimActive || charged)
-            yield break;
-
         chargingAnimActive = true;
         spriteRenderer.sprite = chargingAnimation[chargingIndex];
         chargingIndex++;
