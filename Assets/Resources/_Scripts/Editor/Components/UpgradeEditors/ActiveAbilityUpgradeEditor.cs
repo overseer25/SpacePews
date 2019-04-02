@@ -24,7 +24,7 @@ public class ActiveAbilityUpgradeEditor : UpgradeBaseEditor
 		serializedObject.ApplyModifiedProperties();
 		EditorGUILayout.EndHorizontal();
 
-		// ----- AUDIO/VISUAL SECTION ----- //
-		DisplayAudioVisualSection(component);
+        // ----- AUDIO/VISUAL SECTION ----- //
+        DisplayAudioVisualSection(component);
 	}
 }

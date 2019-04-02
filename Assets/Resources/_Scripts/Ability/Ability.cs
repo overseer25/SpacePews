@@ -10,7 +10,7 @@ using UnityEngine;
 public abstract class Ability : ScriptableObject, IEquatable<Ability>
 {
 	public string abilityName;
-	public AudioClip useSound;
+    public ParticleEffect useEffect;
 	public float cooldownTime;
 	[HideInInspector]
 	public bool recharging = false;

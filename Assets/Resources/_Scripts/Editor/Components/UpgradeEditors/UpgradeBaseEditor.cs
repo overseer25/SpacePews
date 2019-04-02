@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(UpgradeComponentBase))]
 public class UpgradeBaseEditor : ComponentBaseEditor
 {
 

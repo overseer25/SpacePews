@@ -1448,6 +1448,7 @@ MonoBehaviour:
     type: 3}
   respawnEffect: {fileID: 2507454449156312789, guid: e811f9b8fdd3c1b47af37e5d606e2b3e,
     type: 3}
+  engineSource: {fileID: 699}
   rotatingLeft: 0
   rotatingRight: 0
   movingForward: 0
@@ -1513,7 +1514,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -3485,7 +3486,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 518}
   m_PlaneDistance: 50
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -3590,7 +3591,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 518}
   m_PlaneDistance: 50
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -4572,7 +4573,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.0151367, y: 2.5420609}
+  m_AnchoredPosition: {x: 3.0151367, y: 2.5420685}
   m_SizeDelta: {x: -6.041, y: -5.055}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1400
@@ -9586,7 +9587,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -138.82996, y: 5.6950073}
+  m_AnchoredPosition: {x: -138.82996, y: 5.6949463}
   m_SizeDelta: {x: 76.099976, y: 29.269989}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1221699793

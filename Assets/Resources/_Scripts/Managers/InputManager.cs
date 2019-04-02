@@ -28,7 +28,6 @@ public class InputManager : MonoBehaviour
 	private PlayerHealthController hController;
     private MovementController mController;
     private WeaponController wController;
-	private AudioSource audioSource;
 
 	private void Awake()
     {
@@ -41,7 +40,6 @@ public class InputManager : MonoBehaviour
 		hController = playerShip.GetComponent<PlayerHealthController>();
         mController = playerShip.GetComponent<MovementController>();
 		wController = playerShip.GetComponent<WeaponController>();
-		audioSource = GetComponent<AudioSource>();
         fileLocation = Application.persistentDataPath + "/controls.json";
 		Cursor.lockState = CursorLockMode.Confined;
     }
@@ -76,7 +74,6 @@ public class InputManager : MonoBehaviour
 			if(Input.GetKeyDown(controls.ability) && ability != null && !ability.recharging)
 			{
 				ability.Activate(pController.gameObject);
-				audioSource.PlayOneShot(ability.useSound);
 				pController.StartAbilityCooldown();
 			}
 		}

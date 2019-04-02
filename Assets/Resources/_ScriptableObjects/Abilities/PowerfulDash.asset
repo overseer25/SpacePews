@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: PowerfulDash
   m_EditorClassIdentifier: 
   abilityName: Powerful Dash
-  useSound: {fileID: 8300000, guid: b9d692862754eea4e802413117b4dfa8, type: 3}
+  useEffect: {fileID: 4275729241763225750, guid: 3dd5608ae64d28e4b8b415c98534f216,
+    type: 3}
   cooldownTime: 7
   recharging: 1
   speed: 120

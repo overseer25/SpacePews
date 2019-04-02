@@ -13,6 +13,8 @@ public class PopUpText : MonoBehaviour
     private int delay = 0;
     private static System.Random random;
 
+    private const float LIFT_SPEED = 30.0f;
+
     void Awake()
     {
         random = new System.Random();
@@ -83,8 +85,8 @@ public class PopUpText : MonoBehaviour
             else { delay++; }
 
             // Move the sprite upward
-            transform.position = new Vector3(transform.position.x,
-                transform.position.y + (0.2f), transform.position.z); // Set this once
+            transform.position = Vector2.Lerp(transform.position, new Vector3(transform.position.x,
+                transform.position.y + (0.2f), transform.position.z), Time.deltaTime * LIFT_SPEED); // Set this once
 
         }
     }

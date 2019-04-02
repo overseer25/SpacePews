@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ComponentBaseEditor : Editor
 {
-	ShipComponentBase component;
 	private string tooltip;
 
 	public override void OnInspectorGUI()

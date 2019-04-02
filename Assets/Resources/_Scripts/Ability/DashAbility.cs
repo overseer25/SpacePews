@@ -19,7 +19,9 @@ public class DashAbility : Ability
     public override void Activate(GameObject player)
     {
 		var movementController = player.GetComponent<MovementController>();
-
 		movementController.MoveDirection(movementController.GetShip().transform.up * speed);
+
+        if(useEffect != null)
+            ParticleManager.PlayParticle(useEffect, player, movementController.GetShip().transform.rotation);
     }
 }
