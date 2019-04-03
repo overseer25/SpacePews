@@ -29,7 +29,8 @@ public class PlayerHealthController : MonoBehaviour
 		actor = GetComponent<PlayerActor>();
 		if (actor == null)
 			Debug.LogError("Failed to find player actor for " + this);
-		currentHealth = actor.health;
+        else
+		    currentHealth = actor.health;
 	}
 
 	private void Update()
