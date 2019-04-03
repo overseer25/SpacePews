@@ -102,17 +102,17 @@ public class Projectile : MonoBehaviour
 
     
     private int damage;
-    private float changeSprite;
-    private float fireSpritesChangeSprite;
-    private int index;
     private int fireSpritesIndex;
+
+    private bool fireAnimPlaying;
+    private bool animPlaying;
 
     protected virtual void Awake()
     {
         random = new System.Random();
         random.Next();
-
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rigidBody = GetComponent<Rigidbody2D>();
         if (spriteRenderer == null)
             Debug.LogError("WARNING: Projectile " + this + " does not contain a sprite renderer. This will cause problems with rendering.");
         else if (sprites.Length == 0)
@@ -132,36 +132,58 @@ public class Projectile : MonoBehaviour
                 rigidBody.velocity = transform.up.normalized * rigidBody.velocity.magnitude;
             }
         }
-        if(splitting && splitAfterTime > 0.0f)
+
+        if (splitting && splitAfterTime > 0.0f)
         {
             StartCoroutine(BeginSplit());
         }
 
-        if(fireSpritesIndex != fireSprites.Length)
+        if(fireSpritesIndex != fireSprites.Length && !fireAnimPlaying)
         {
-            // Play fire sprite animation
-            if (Time.time > fireSpritesChangeSprite)
-            {
-                fireSpritesChangeSprite = Time.time + fireSpritesPlayspeed;
-                spriteRenderer.sprite = fireSprites[fireSpritesIndex];
-                fireSpritesIndex++;
-            }
+            StartCoroutine(PlayFireAnimation());
         }
-        else if(sprites.Length > 1 && fireSpritesIndex == fireSprites.Length)
+        else if(fireSpritesIndex == fireSprites.Length && sprites.Length > 1 && !animPlaying)
         {
-            // Play sprite animation
-            if (Time.time > changeSprite)
-            {
-                changeSprite = Time.time + playspeed;
-                spriteRenderer.sprite = sprites[index];
-                index++;
-                if (index == sprites.Length) { index = 0; } // Restart animation
-            }
+            StartCoroutine(PlayAnimation());
         }
+
     }
 
     /// <summary>
-    /// 
+    /// Play the fire animation.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PlayFireAnimation()
+    {
+        while (fireSpritesIndex != fireSprites.Length)
+        {
+            fireAnimPlaying = true;
+            spriteRenderer.sprite = fireSprites[fireSpritesIndex];
+            fireSpritesIndex++;
+            yield return new WaitForSeconds(fireSpritesPlayspeed);
+        }
+        fireAnimPlaying = false;
+    }
+
+    /// <summary>
+    /// Play the standard traveling animation.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PlayAnimation()
+    {
+        var index = 0;
+        while(gameObject.activeInHierarchy)
+        {
+            animPlaying = true;
+            spriteRenderer.sprite = sprites[index];
+            index = (index + 1) % sprites.Length;
+            yield return new WaitForSeconds(playspeed);
+        }
+        animPlaying = false;
+    }
+
+    /// <summary>
+    /// After an amount of time has passed, split the projectile.
     /// </summary>
     /// <returns></returns>
     private IEnumerator BeginSplit()
@@ -264,13 +286,9 @@ public class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void OnEnable()
     {
-        index = 0;
         fireSpritesIndex = 0;
-        changeSprite = 0;
-        fireSpritesChangeSprite = 0;
         damage = ComputeDamage();
         waitForSplit = false;
-        rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.velocity = transform.up * speed;
         // Start the clock to disabling again.
         StartCoroutine(RemoveAfterSeconds(lifetime));
@@ -298,7 +316,10 @@ public class Projectile : MonoBehaviour
             else
                 popUptext.GetComponent<PopUpText>().Initialize(gameObject, "<style=\"CritHit\">" + damage.ToString() + "</style>", ItemTier.Tier1, radius: true, playDefaultSound: false);
         }
-
+        StopCoroutine(PlayFireAnimation());
+        StopCoroutine(PlayAnimation());
+        fireAnimPlaying = false;
+        animPlaying = false;
     }
 
     /// <summary>

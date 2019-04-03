@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class AutomaticWeapon : WeaponComponentBase
 {
+    private bool waitingForFire;
+    private Coroutine waitForFireRoutine;
     /// <summary>
     /// Fire the weapon if it is ready to fire the next round.
     /// </summary>
     public override void CheckFire()
     {
-        if (Time.time > GetNextShotTime())
+        if (!waitingForFire)
         {
             Fire();
-            SetLastShot(Time.time);
+            waitForFireRoutine = StartCoroutine(WaitForFire());
         }
+    }
+
+    private IEnumerator WaitForFire()
+    {
+        waitingForFire = true;
+        yield return new WaitForSeconds(firerate);
+        waitingForFire = false;
     }
 
     /// <summary>

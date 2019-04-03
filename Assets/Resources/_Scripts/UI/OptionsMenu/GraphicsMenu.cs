@@ -77,6 +77,7 @@ public class GraphicsMenu : MonoBehaviour
         transform.position = Vector2.zero;
         confirmationWindow.transform.position = Vector2.zero;
         HideConfirmation();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void LateUpdate()

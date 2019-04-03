@@ -37,11 +37,19 @@ public class Item : MonoBehaviour
     private GameObject targetPlayer;
     private static System.Random random;
 
+    protected Coroutine animate;
+    protected bool animating;
+
     protected virtual void Awake()
     {
         random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        if (sprites.Length > 1 && !animating)
+        {
+            StartCoroutine(Animate());
+        }
     }
 
     // Update is called once per frame
@@ -50,19 +58,25 @@ public class Item : MonoBehaviour
         // If the item is hidden, it should not hover toward the player or animate.
         if(spriteRenderer != null && spriteRenderer.enabled)
         {
-            if (sprites.Length > 1)
-            {
-                // Player sprite animation
-                if (Time.time > changeSprite)
-                {
-                    changeSprite = Time.time + playspeed;
-                    index++;
-                    if (index >= sprites.Length) { index = 0; } // Restart animation
-                    spriteRenderer.sprite = sprites[index];
-                }
-            }
             HoverTowardPlayer(targetPlayer);
         }
+    }
+
+    /// <summary>
+    /// Animate if the item has more than one sprite.
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator Animate()
+    {
+        var index = 0;
+        while(gameObject.activeInHierarchy)
+        {
+            animating = true;
+            spriteRenderer.sprite = sprites[index];
+            index = (index + 1) % sprites.Length;
+            yield return new WaitForSeconds(playspeed);
+        }
+        animating = false;
     }
 
     /// <summary>

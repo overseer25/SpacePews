@@ -63,23 +63,6 @@ public abstract class WeaponComponentBase : ShipComponentBase
     }
 
     /// <summary>
-    /// Gets the fire rate of the weapon.
-    /// </summary>
-    /// <returns></returns>
-    public float GetNextShotTime()
-    {
-        return firerate + lastShot;
-    }
-
-    /// <summary>
-    /// Sets the last time a shot was fired.
-    /// </summary>
-    public void SetLastShot(float time)
-    {
-        lastShot = time;
-    }
-
-    /// <summary>
     /// Returns a string representation of the damage range of this weapon component.
     /// </summary>
     /// <returns></returns>

@@ -4830,7 +4830,7 @@ MonoBehaviour:
   acceleration: 10
   deceleration: 0.05
   maxSpeed: 20
-  rotationSpeed: 2
+  rotationSpeed: 100
   engine: {fileID: 8300000, guid: 92c1b8a0f3b95a740ae547590a75c1e9, type: 3}
   thruster: {fileID: 0}
   particleSystem: {fileID: 0}

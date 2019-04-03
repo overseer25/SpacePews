@@ -106,9 +106,7 @@ public class PlayerController : MonoBehaviour
         return 0;
     }
 
-    /// <summary>
-    /// Movement stuff.
-    /// </summary>
+
     private void FixedUpdate()
     {
         if (!dead)
@@ -132,8 +130,36 @@ public class PlayerController : MonoBehaviour
             else if (rotatingLeft)
                 movementController.RotateLeft();
         }
+    }
 
-       
+    /// <summary>
+    /// Movement stuff.
+    /// </summary>
+    private void Update()
+    {
+
+        if (healthController.IsDead() && !dead)
+        {
+            dead = true;
+            Die();
+        }
+        if (ability != null && !PauseMenuScript.IsPaused && !dead)
+        {
+            if (!abilityChargeBar.activeInHierarchy)
+                abilityChargeBar.SetActive(true);
+            abilityChargeBar.GetComponent<ChargeBar>().SetFillPercentage(1 - ability.GetCooldownTimeRemaining());
+        }
+        else
+        {
+            if (abilityChargeBar.activeInHierarchy)
+                abilityChargeBar.SetActive(false);
+        }
+
+        var x = Mathf.Lerp(Camera.main.transform.position.x, ship.transform.position.x, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+        var y = Mathf.Lerp(Camera.main.transform.position.y, ship.transform.position.y, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+        Camera.main.transform.position = new Vector3(x, y, currentCameraZoom);
+
+        //Camera.main.transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom)
     }
 
     /// <summary>
@@ -164,37 +190,6 @@ public class PlayerController : MonoBehaviour
         {
             canvas.planeDistance = -currentCameraZoom;
         }
-    }
-
-    /// <summary>
-    /// Deals with inputs.
-    /// </summary>
-    void Update()
-    {
-        if (healthController.IsDead() && !dead)
-        {
-            dead = true;
-            Die();
-        }
-        if (ability != null && !PauseMenuScript.IsPaused && !dead)
-        {
-            if (!abilityChargeBar.activeInHierarchy)
-                abilityChargeBar.SetActive(true);
-            abilityChargeBar.GetComponent<ChargeBar>().SetFillPercentage(1 - ability.GetCooldownTimeRemaining());
-        }
-        else
-        {
-            if (abilityChargeBar.activeInHierarchy)
-                abilityChargeBar.SetActive(false);
-        }
-
-
-    }
-
-    private void LateUpdate()
-    {
-                Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
-                                   new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom), 0.1f);
     }
 
     /// <summary>

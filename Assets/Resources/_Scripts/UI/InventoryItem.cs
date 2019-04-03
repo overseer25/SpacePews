@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -32,6 +33,9 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     internal static bool draggable;
     private bool highlighted = false;
 
+    protected Coroutine animate;
+    protected bool animating;
+
     void Awake()
     {
         image = GetComponent<Image>();
@@ -48,21 +52,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         }
     }
 
-    private void Update()
-    {
-        if (item != null && item.sprites.Length > 0)
-        {
-            // Player sprite animation
-            if (Time.time > item.changeSprite)
-            {
-                item.changeSprite = Time.time + item.playspeed;
-                animFrameIndex++;
-                if (animFrameIndex >= item.sprites.Length) { animFrameIndex = 0; } // Restart animation
-                image.sprite = item.sprites[animFrameIndex];
-            }
-        }
-    }
-
     /// <summary>
     /// Set the item.
     /// </summary>
@@ -71,7 +60,8 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void SetItem(Item incomingItem, int quantity)
     {
         this.quantity = quantity;
-
+        if (animating)
+            StopCoroutine(animate);
         // If the current item for this inventory item is not empty, destroy the old item first.
         if (item != null)
         {
@@ -97,6 +87,21 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 count.text = "";
         }
         gameObject.SetActive(true);
+        if (item.sprites.Length > 1)
+            animate = StartCoroutine(Animate());
+    }
+
+    private IEnumerator Animate()
+    {
+        var index = 0;
+        while(item != null)
+        {
+            animating = true;
+            image.sprite = item.sprites[index];
+            index = (index+1) % item.sprites.Length;
+            yield return new WaitForSeconds(item.playspeed);
+        }
+        animating = false;
     }
 
     /// <summary>

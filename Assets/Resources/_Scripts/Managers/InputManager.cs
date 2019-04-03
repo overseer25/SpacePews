@@ -41,7 +41,6 @@ public class InputManager : MonoBehaviour
         mController = playerShip.GetComponent<MovementController>();
 		wController = playerShip.GetComponent<WeaponController>();
         fileLocation = Application.persistentDataPath + "/controls.json";
-		Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame

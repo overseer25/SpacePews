@@ -30,14 +30,11 @@ public class PlayerHealthController : MonoBehaviour
 		if (actor == null)
 			Debug.LogError("Failed to find player actor for " + this);
 		currentHealth = actor.health;
-
-		healthBar.sizeDelta = new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y);
-		healthBarBG.sizeDelta = new Vector2(healthbarLength, healthBarBG.sizeDelta.y);
 	}
 
 	private void Update()
 	{
-		UpdateHealthbar();
+        UpdateHealthbar();
 		if (currentHealth < actor.health && !regeneratingHealth && !actor.disableHealthRegen && !IsDead())
 		{
 			regenerationCoroutine = StartCoroutine("RegenHealth");
@@ -68,11 +65,12 @@ public class PlayerHealthController : MonoBehaviour
 			currentHealth -= amount;
 			audioSource.PlayOneShot(damageSound);
 		}
-
-		if (currentHealth < actor.health && actor.healthRegenAmount > 0 && !actor.disableHealthRegen && !IsDead())
+        
+        if (currentHealth < actor.health && actor.healthRegenAmount > 0 && !actor.disableHealthRegen && !IsDead())
 		{
 			regenerationCoroutine = StartCoroutine("RegenHealth");
 		}
+
 	}
 
 	/// <summary>
@@ -85,7 +83,7 @@ public class PlayerHealthController : MonoBehaviour
 			currentHealth = actor.health;
 		else
 			currentHealth += amount;
-	}
+    }
 
 	/// <summary>
 	/// Coroutine for regenerating health.
@@ -99,7 +97,7 @@ public class PlayerHealthController : MonoBehaviour
 		while (currentHealth < actor.health)
 		{
 			Heal(actor.healthRegenAmount);
-			float waitTime = (actor.healthRegenSpeed < 0) ? 0 : actor.healthRegenSpeed;
+            float waitTime = (actor.healthRegenSpeed < 0) ? 0 : actor.healthRegenSpeed;
 			yield return new WaitForSeconds(waitTime);
 		}
 		regeneratingHealth = false;
@@ -114,8 +112,8 @@ public class PlayerHealthController : MonoBehaviour
 		healthbarLength = actor.health;
 		if (currentHealth > actor.health)
 			ResetHealth();
-		healthBar.sizeDelta = Vector2.Lerp(healthBar.sizeDelta, new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y), 10.0f * Time.deltaTime);
-		healthBarBG.sizeDelta = Vector2.Lerp(healthBarBG.sizeDelta, new Vector2(healthbarLength, healthBarBG.sizeDelta.y), 10.0f * Time.deltaTime);
+		healthBar.sizeDelta = new Vector2((float)currentHealth / actor.health * healthbarLength, healthBar.sizeDelta.y);
+		healthBarBG.sizeDelta = new Vector2(healthbarLength, healthBarBG.sizeDelta.y);
 		counter.text = currentHealth.ToString();
 	}
 
