@@ -106,7 +106,6 @@ public class PlayerController : MonoBehaviour
         return 0;
     }
 
-
     private void FixedUpdate()
     {
         if (!dead)
@@ -297,7 +296,13 @@ public class PlayerController : MonoBehaviour
                 Vector2 direction = Vector2.zero;
                 if (rigidBody.velocity.magnitude > 10)
                 {
-                    healthController.TakeDamage((int)System.Math.Floor(rigidBody.velocity.magnitude / 3));
+					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
+					healthController.TakeDamage(damage);
+					var popUpText = PopUpTextPool.current.GetPooledObject();
+					if(popUpText != null)
+					{
+						popUpText.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 12f, Color.red, radius: 2.0f);
+					}
                 }
                 direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.deltaTime * 20f;
 
