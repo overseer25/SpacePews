@@ -17,4 +17,4 @@ MonoBehaviour:
     type: 3}
   cooldownTime: 2
   recharging: 0
-  speed: 70
+  speed: 35
