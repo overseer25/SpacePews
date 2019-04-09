@@ -132,8 +132,7 @@ public class Projectile : MonoBehaviour
                 rigidBody.velocity = transform.up.normalized * rigidBody.velocity.magnitude;
             }
         }
-
-        if (splitting && splitAfterTime > 0.0f)
+		if (splitting && splitAfterTime > 0.0f)
         {
             StartCoroutine(BeginSplit());
         }

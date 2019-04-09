@@ -4924,7 +4924,7 @@ MonoBehaviour:
   visible: 1
   mounted: 1
   acceleration: 10
-  deceleration: 0.05
+  deceleration: 2
   maxSpeed: 15
   rotationSpeed: 100
   engine: {fileID: 8300000, guid: 0572afc8812ce034fa66dd9ae668c298, type: 3}

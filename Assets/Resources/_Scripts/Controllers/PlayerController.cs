@@ -155,12 +155,15 @@ public class PlayerController : MonoBehaviour
                 abilityChargeBar.SetActive(false);
         }
 
-        var x = Mathf.Lerp(Camera.main.transform.position.x, ship.transform.position.x, CAMERA_FOLLOW_SPEED * Time.deltaTime);
-        var y = Mathf.Lerp(Camera.main.transform.position.y, ship.transform.position.y, CAMERA_FOLLOW_SPEED * Time.deltaTime);
-        Camera.main.transform.position = new Vector3(x, y, currentCameraZoom);
-
         //Camera.main.transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom)
     }
+
+	private void LateUpdate()
+	{
+		var x = Mathf.Lerp(Camera.main.transform.position.x, ship.transform.position.x, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+		var y = Mathf.Lerp(Camera.main.transform.position.y, ship.transform.position.y, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+		Camera.main.transform.position = new Vector3(x, y, currentCameraZoom);
+	}
 
     /// <summary>
     /// Zoom in the player camera, by increments based on constant defined.
