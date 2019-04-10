@@ -32,7 +32,7 @@ public class AutomaticWeapon : WeaponComponentBase
     {
         foreach (var shotSpawn in shotSpawns)
         {
-            var projectile = ProjectilePool.current.GetPooledObject();
+            var projectile = ProjectilePool.current.GetPooledObject() as Projectile;
             if (projectile == null)
                 continue;
 

@@ -98,7 +98,7 @@ public class Mineable : MonoBehaviour
             if(percentChance <= spawnChance[i] + chanceThusFar)
             {
                 Item loot = lootPossible[i].GetComponent<Item>();
-                Item pooledItem = ItemPool.current.GetPooledObject();
+                Item pooledItem = ItemPool.current.GetPooledObject() as Item;
                 loot.SetWasMined(true, miner);
                 pooledItem.Initialize(gameObject, loot);
                 break;

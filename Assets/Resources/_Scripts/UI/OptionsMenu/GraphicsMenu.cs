@@ -358,6 +358,11 @@ public class GraphicsMenu : MonoBehaviour
 		if (changedEffectCount || firstLoad)
 			ParticlePool.current.SetPoolSize(effectCount);
 
+		// Perhaps we include sliders for these pools?
+		ProjectilePool.current.SetPoolSize(100);
+		PopUpTextPool.current.SetPoolSize(50);
+		CurrencyPool.current.SetPoolSize(25);
+
         firstLoad = false;
 
         changedAspectRatio = false;

@@ -1503,9 +1503,17 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 394009879, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 760748812, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 21.669983
+      value: 21.669922
+      objectReference: {fileID: 0}
+    - target: {fileID: 760748812, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76.65997
       objectReference: {fileID: 0}
     - target: {fileID: 425573514, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1714,6 +1722,7 @@ GameObject:
   - component: {fileID: 437889028}
   - component: {fileID: 437889027}
   - component: {fileID: 437889026}
+  - component: {fileID: 437889031}
   m_Layer: 0
   m_Name: ObjectPools
   m_TagString: Untagged
@@ -1735,7 +1744,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultProjectile: {fileID: 6986495545673423630, guid: 3b62233e218f83840be62474f34393b6,
     type: 3}
-  amountPooled: 100
 --- !u!114 &437889027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1776,9 +1784,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151ce57745cfa79469293d1b9ea2ff17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledObject: {fileID: 1027994767850796, guid: 06c2498a86f900d42b6c6288fd22001e,
+  defaultPopUp: {fileID: 114110714054687278, guid: 06c2498a86f900d42b6c6288fd22001e,
     type: 3}
-  amountPooled: 20
 --- !u!4 &437889030
 Transform:
   m_ObjectHideFlags: 0
@@ -1793,6 +1800,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &437889031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437889025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd8d0633ac55c8148b3902b5a438ce16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultCurrency: {fileID: 145276430843108404, guid: 5b930b6fe85a7e146ac4dcb3334e1866,
+    type: 3}
 --- !u!4 &494636330 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4110123283893586, guid: 81dbb57f685d7fc46bd1dab3690a1ee0,

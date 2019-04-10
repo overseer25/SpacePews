@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 /// <summary>
 /// Contains methods used to interact with the ParticleEffect pool. Other scripts should not directly
@@ -8,19 +9,23 @@ using UnityEngine;
 /// </summary>
 public class ParticleManager : MonoBehaviour
 {
+	private static ParticleManager current;
+
     /// <summary>
     /// Allocates and plays the specified particle effect.
     /// </summary>
-    public static void PlayParticle(ParticleEffect particle, GameObject position, Quaternion? rotation = null)
+    public static void PlayParticle(ParticleEffect particle, Vector2 position, Quaternion? rotation = null)
     {
-        var exp = ParticlePool.current.GetPooledObject();
-        if (exp == null)
+        var part = ParticlePool.current.GetPooledObject() as ParticleEffect;
+        if (part == null)
             return;
-        exp.Copy(particle);
+
+        part.Copy(particle);
         if (rotation == null)
-            exp.SetTransform(position);
+            part.SetTransform(position);
         else
-            exp.SetTransform(position.transform.position, (Quaternion)rotation);
-        exp.gameObject.SetActive(true);
+            part.SetTransform(position, (Quaternion)rotation);
+		part.EnableEffect();
+
     }
 }

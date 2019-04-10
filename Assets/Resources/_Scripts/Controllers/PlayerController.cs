@@ -330,7 +330,7 @@ public class PlayerController : MonoBehaviour
         rotatingRight = false;
 
         //spawn explosion effect.
-        ParticleManager.PlayParticle(deathExplosion, gameObject);
+        ParticleManager.PlayParticle(deathExplosion, gameObject.transform.position);
 
         StartCoroutine(Respawn());
 
@@ -349,7 +349,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
 
             // Spawn respawn effect.
-            ParticleManager.PlayParticle(respawnEffect, respawnPoint);
+            ParticleManager.PlayParticle(respawnEffect, respawnPoint.transform.position);
 
             transform.position = respawnPoint.transform.position;
             ship.transform.rotation = respawnPoint.transform.rotation;
@@ -411,10 +411,10 @@ public class PlayerController : MonoBehaviour
                 {
 					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
 					healthController.TakeDamage(damage);
-					var popUpText = PopUpTextPool.current.GetPooledObject();
+					var popUpText = PopUpTextPool.current.GetPooledObject() as PopUpText;
 					if(popUpText != null)
 					{
-						popUpText.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 10f, Color.red);
+						popUpText.Initialize(gameObject, damage.ToString(), 10f, Color.red);
 					}
                 }
                 direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;

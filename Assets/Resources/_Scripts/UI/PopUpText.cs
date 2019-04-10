@@ -16,6 +16,8 @@ public class PopUpText : MonoBehaviour
     // Number of times to wait until fading.
     private const int WAIT_COUNT = 50;
 
+	private Coroutine fade;
+
 	void Awake()
 	{
 		random = new System.Random();
@@ -33,7 +35,8 @@ public class PopUpText : MonoBehaviour
 	/// <param name="playDefaultSound">Play the default sound of the pop up text.</param>
 	public void Initialize(GameObject target, string text, float size, Color color, AudioClip sound = null, float radius = 0.0f, bool playDefaultSound = true)
 	{
-        StopCoroutine(Fade());
+		if(fade != null)
+			StopCoroutine(fade);
 
 		textMesh.color = color;
 		textMesh.text = text;
@@ -64,7 +67,7 @@ public class PopUpText : MonoBehaviour
 			GetComponent<AudioSource>().PlayOneShot(defaultSound);
 		}
 
-        StartCoroutine(Fade());
+        fade = StartCoroutine(Fade());
 	}
 
     /// <summary>
@@ -99,6 +102,7 @@ public class PopUpText : MonoBehaviour
             yield return new WaitForSeconds(timeUntilFade / WAIT_COUNT);
         }
 
+		fade = null;
         yield return null;
     }
 }

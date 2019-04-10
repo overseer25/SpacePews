@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticlePool : MonoBehaviour
+/// <summary>
+/// This class is a pool that will manage the maximum number of particles that can exist in the world.
+/// If the maximum number of particles is reached, and more particles are being spawned, the pool will need
+/// to clear out the oldest particles in the world, and replace them with the newly spawned ones.
+/// </summary>
+public class ParticlePool : BasePool
 {
 
     public static ParticlePool current;
@@ -10,14 +15,8 @@ public class ParticlePool : MonoBehaviour
     // The object pooled.
     public ParticleEffect defaultParticle;
 
-    // How many of the object to pool.
-    private int amountPooled;
-
     // The internal list of objects.
-    private List<ParticleEffect> objectPool;
-
-    private static int oldestIndex = 0;
-
+    private List<ParticleEffect> particlePool;
 
     private void Awake()
     {
@@ -27,56 +26,60 @@ public class ParticlePool : MonoBehaviour
 	/// <summary>
 	/// Set the size of the pool.
 	/// </summary>
-	public void SetPoolSize(int size)
+	public override void SetPoolSize(int size)
 	{
-		if (objectPool == null)
-			objectPool = new List<ParticleEffect>();
+		if (particlePool == null)
+			particlePool = new List<ParticleEffect>();
 
-		if (size == amountPooled)
+		if (size == poolSize)
 			return;
 
-		int difference = amountPooled - size;
+		int difference = poolSize - size;
 
-		if (size > amountPooled)
+		if (size > poolSize)
 		{
 			// Add on to the list.
-			for (int i = amountPooled; i < size; i++)
+			for (int i = poolSize; i < size; i++)
 			{
-				var item = Instantiate(defaultParticle);
-				item.gameObject.SetActive(false);
-				objectPool.Add(item);
+				var particle = Instantiate(defaultParticle, gameObject.transform);
+				particle.DisableEffect();
+				particlePool.Add(particle);
 			}
 		}
 		else
 		{
 			// Subtract from the list.
-			for (int i = amountPooled - 1; i >= amountPooled - difference; i--)
+			for (int i = poolSize - 1; i >= poolSize - difference; i--)
 			{
-				var effect = objectPool[objectPool.Count - 1];
-				objectPool.RemoveAt(objectPool.Count-1);
-				Destroy(effect);
+				Destroy(particlePool[particlePool.Count - 1].gameObject);
+				particlePool.RemoveAt(particlePool.Count - 1);
 			}
 		}
 
-		amountPooled = objectPool.Count;
+		poolSize = particlePool.Count;
 	}
 
 	/// <summary>
 	/// Gets an unused object in the object pool, if it exists.
 	/// </summary>
 	/// <returns> Unused GameObject in object pool, or the oldest active one (LRU). </returns>
-	public ParticleEffect GetPooledObject()
+	public override object GetPooledObject()
     {
-        if (objectPool == null)
+        if (particlePool == null)
             return null;
 
-        foreach (var obj in objectPool)
+        foreach (var particle in particlePool)
         {
-            if (obj != null && !obj.gameObject.activeInHierarchy)
+            if (particle != null && particle.IsFree())
             {
-                return obj;
+                return particle;
             }
         }
-        return null;
-    }
+
+		// Otherwise, get the least recently used effect in the pool.
+		var result = particlePool[oldest++];
+		oldest %= poolSize;
+		result.DisableEffect();
+		return result;
+	}
 }

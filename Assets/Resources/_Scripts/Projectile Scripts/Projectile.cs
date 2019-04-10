@@ -204,7 +204,7 @@ public class Projectile : MonoBehaviour
         StopCoroutine(BeginSplit());
         foreach (var data in splitProjectiles)
         {
-            var projectile = ProjectilePool.current.GetPooledObject();
+            var projectile = ProjectilePool.current.GetPooledObject() as Projectile;
             projectile.Copy(data.projectile);
             projectile.damage = random.Next(1, this.damage);
             projectile.speed = data.projectile.speed;
@@ -302,18 +302,18 @@ public class Projectile : MonoBehaviour
         if (collided)
         {
             // Play collision particle effect.
-            ParticleManager.PlayParticle(destroyEffect, gameObject);
+            ParticleManager.PlayParticle(destroyEffect, gameObject.transform.position, gameObject.transform.rotation);
 
             // Current damage is set on collisions with entities that can take damage.
-            var popUptext = PopUpTextPool.current.GetPooledObject();
+            var popUptext = PopUpTextPool.current.GetPooledObject() as PopUpText;
             if(popUptext == null)
                 return;
 
             // Spawn popup text within a radius of 2 from the collision.
             if (!isCritical)
-                popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 8f, Color.white, radius: 1.0f, playDefaultSound: false);
+                popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.white, radius: 1.0f, playDefaultSound: false);
             else
-                popUptext.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 8f, Color.yellow, radius: 1.0f, playDefaultSound: false);
+                popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.yellow, radius: 1.0f, playDefaultSound: false);
         }
         StopCoroutine(PlayFireAnimation());
         StopCoroutine(PlayAnimation());

@@ -9,6 +9,7 @@ public class Currency : MonoBehaviour
     private const int FOLLOWSPEED = 50;
     private const float MAXDISTANCE = 10.0f;
 
+	public Sprite sprite;
     public long amount;
 
     private AudioSource audioSource;
@@ -38,6 +39,17 @@ public class Currency : MonoBehaviour
         if (distanceToPlayer <= MAXDISTANCE)
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, FOLLOWSPEED * Time.deltaTime);
     }
+
+	/// <summary>
+	/// Copy the values of the incoming currency to this one.
+	/// </summary>
+	/// <param name="other"></param>
+	public void Copy(Currency other)
+	{
+		amount = other.amount;
+		sprite = other.sprite;
+		GetComponent<SpriteRenderer>().sprite = sprite;
+	}
 
     /// <summary>
     /// Deals with object collisions.

@@ -6,20 +6,18 @@ public class ParticleEffect : MonoBehaviour
 
     public Sprite[] particleSprites;
     public float playspeed = 0.1f;
-    private float changeSprite = 0.0f;
-    private int index = 0;
-    private bool expired;
     [SerializeField]
     private AudioClip sound;
+	private AudioSource audioSource;
+	private new SpriteRenderer renderer;
+	private bool isFree;
+	private Coroutine animate;
 
-    private void OnEnable()
-    {
-        var audioSource = GetComponent<AudioSource>();
-        if (audioSource != null && sound != null)
-            audioSource.PlayOneShot(sound);
-        index = 0;
-        expired = false;
-    }
+	private void Awake()
+	{
+		audioSource = GetComponent<AudioSource>();
+		renderer = GetComponent<SpriteRenderer>();
+	}
 
     /// <summary>
     /// Get the sound associated with this particle effect.
@@ -30,44 +28,60 @@ public class ParticleEffect : MonoBehaviour
         return sound;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (!expired)
-        {
-            if (Time.time > changeSprite)
-            {
-                if (index >= particleSprites.Length)
-                {
-                    if(sound != null)
-                        StartCoroutine(WaitToDisable());
-                    else
-                        gameObject.SetActive(false);
-                }
-                else
-                {
-                    changeSprite = Time.time + playspeed;
-                    GetComponentInChildren<SpriteRenderer>().sprite = particleSprites[index];
-                    index++;
-                }
-            }
-        }
-    }
+	/// <summary>
+	/// Play the animation for the sprite. Once the animation is completed, hide the particle effect.
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator PlayEffect()
+	{
+		var index = 0;
+		while(index != particleSprites.Length)
+		{
+			renderer.sprite = particleSprites[index];
+			index++;
+			yield return new WaitForSeconds(playspeed);
+		}
 
-    /// <summary>
-    /// Wait to disable the Particle Effect until the sound finishes playing.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator WaitToDisable()
-    {
-        expired = true;
-        GetComponent<SpriteRenderer>().enabled = false;
+		DisableEffect();
+		yield return null;
+	}
 
-        yield return new WaitForSeconds(sound.length);
+	/// <summary>
+	/// Enable the effect, and allow the animation and sound to play.
+	/// </summary>
+	public void EnableEffect()
+	{
+		renderer.enabled = true;
+		isFree = false;
+		audioSource.PlayOneShot(sound);
+		if (animate != null)
+			Debug.Log("The particle effect " + this + " is already playing. The particle effect  must not have been disabled before reuse.");
+		else
+			animate = StartCoroutine(PlayEffect());
+	}
 
-        gameObject.SetActive(false);
-        GetComponent<SpriteRenderer>().enabled = true;
-    }
+	/// <summary>
+	/// This will disable the particle effect, and allow the particle effect pool to reuse it.
+	/// </summary>
+	public void DisableEffect()
+	{
+		if(animate != null)
+		{
+			StopCoroutine(animate);
+			animate = null;
+		}
+		renderer.enabled = false;
+		isFree = true;
+	}
+
+	/// <summary>
+	/// Can this particle effect be freely used by the particle effect pool?
+	/// </summary>
+	/// <returns></returns>
+	public bool IsFree()
+	{
+		return isFree;
+	}
 
     /// <summary>
     /// Copy the values of another ParticleEffect.
@@ -77,18 +91,15 @@ public class ParticleEffect : MonoBehaviour
     {
         particleSprites = other.particleSprites;
         playspeed = other.playspeed;
-        changeSprite = other.changeSprite;
-        index = other.index;
         sound = other.sound;
     }
 
     /// <summary>
-    /// Set the position and rotation of the effect, based on the target.
+    /// Set the position of the effect, based on the target.
     /// </summary>
-    public void SetTransform(GameObject target)
+    public void SetTransform(Vector2 position)
     {
-        transform.position = target.transform.position;
-        transform.rotation = target.transform.rotation;
+		SetTransform(position, Quaternion.identity);
     }
 
     /// <summary>
