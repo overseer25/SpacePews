@@ -16,7 +16,7 @@ public class PlayerHealthController : MonoBehaviour
 	public AudioClip damageSound;
 
 	private int currentHealth;
-	private PlayerActor actor;
+	private Actor actor;
 	private float healthbarLength;
 
 	private const float REGEN_WAIT_TIME = 3.0f;
@@ -26,7 +26,7 @@ public class PlayerHealthController : MonoBehaviour
 
 	private void Start()
 	{
-		actor = GetComponent<PlayerActor>();
+		actor = GetComponent<Actor>();
 		if (actor == null)
 			Debug.LogError("Failed to find player actor for " + this);
         else

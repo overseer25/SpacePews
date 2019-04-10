@@ -121,6 +121,7 @@ public class Inventory : MonoBehaviour
 		if (itemTransferPanel.activeInHierarchy)
 		{
 			StartCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
+			StartCoroutine(inventorySlots[indicesToTransfer[1]].Flash());
 		}
 
 		if (!dead && !isPaused && !itemTransferPanel.activeInHierarchy)
@@ -562,6 +563,7 @@ public class Inventory : MonoBehaviour
 		itemTransferNumber.text = "0";
 		ToggleSlotHoverEffect(true);
 		StopCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
+		StopCoroutine(inventorySlots[indicesToTransfer[1]].Flash());
 		inventorySlots[indicesToTransfer[0]].Dehighlight();
 	}
 

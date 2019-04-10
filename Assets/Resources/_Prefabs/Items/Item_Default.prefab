@@ -93,7 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c37061b8d4eb6459b99671e0ec608b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites: []
+  sprites:
+  - {fileID: 21300000, guid: ad744e160d1ccb548851d4b278f3ed9f, type: 3}
   hoverText: {fileID: 0}
   itemType: 0
   itemTier: 0
@@ -101,13 +102,12 @@ MonoBehaviour:
   quantity: 1
   value: 0
   description: Sample Text
-  pickupSound: {fileID: 0}
   stackable: 1
   stackSize: 99
   playspeed: 0.5
   changeSprite: 0
   index: 0
-  itemColor: {r: 0, g: 0, b: 0, a: 0}
+  itemColor: {r: 1, g: 1, b: 1, a: 1}
   spriteRenderer: {fileID: 0}
 --- !u!58 &8918816964331050851
 CircleCollider2D:
