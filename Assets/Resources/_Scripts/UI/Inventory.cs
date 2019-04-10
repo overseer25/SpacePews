@@ -903,10 +903,13 @@ public class Inventory : MonoBehaviour
 		else if (invSlot.IsEmpty() && !mountSlot.IsEmpty())
 		{
 			var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
-			mountSlot.ClearSlot();
 			if (mountComp.GetItemType() == ItemType.Thruster)
-				playerController.UpdateThrusterList();
+			{
+				OutputWindow.current.DisplayText("<color=\"white\">Cannot remove thruster from ship.</color>");
+				return;
+			}
 
+			mountSlot.ClearSlot();
 			invSlot.SetItem(mountItem);
 		}
 		// If mount slot is empty.
