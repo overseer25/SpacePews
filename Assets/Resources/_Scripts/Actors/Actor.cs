@@ -34,7 +34,7 @@ public class Actor : MonoBehaviour
     /// </summary>
     public bool disableHealthRegen;
 
-	private void Start()
+	private void Awake()
 	{
 		health = baseHealth;
 	}

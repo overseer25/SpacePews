@@ -3032,7 +3032,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 21.669983, y: 76.66}
+  m_AnchoredPosition: {x: 21.669922, y: 76.65997}
   m_SizeDelta: {x: 15.32, y: 7.8}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &949909273254489706
@@ -5830,7 +5830,6 @@ GameObject:
   m_Component:
   - component: {fileID: 949909273980630239}
   - component: {fileID: 949909273980630823}
-  - component: {fileID: 949909273980629606}
   - component: {fileID: 949909273980630621}
   - component: {fileID: 949909273980631005}
   - component: {fileID: 949909273980631004}
@@ -5891,23 +5890,6 @@ PolygonCollider2D:
       - {x: 0.1205099, y: -0.090757325}
       - {x: 0.11998725, y: -0.030267024}
       - {x: 0.02939601, y: 0.060587514}
---- !u!114 &949909273980629606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 949909273980630282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 043a230abe7f3e44e871b4269b1738d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shipName: Astrid
-  maxHealth: 50
-  health: 50
-  inventorySize: 10
-  turret: {fileID: 949909273980630293}
 --- !u!212 &949909273980630621
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6873,6 +6855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuOpen: 0
   inventory: {fileID: 949909273980629010}
+  turret: {fileID: 949909273980630293}
   currentComponent: {fileID: 0}
   mountController: {fileID: 949909273980629042}
 --- !u!50 &949909273980630888
@@ -9577,7 +9560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -231.15515, y: -172.45801}
+  m_AnchoredPosition: {x: -231.15518, y: -172.45801}
   m_SizeDelta: {x: -474.3809, y: -355.05493}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &949909273980630499
@@ -9711,7 +9694,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949909273980630500}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 11.26}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 949909273980629250}
@@ -11632,7 +11615,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 48.410034, y: 76.66}
+  m_AnchoredPosition: {x: 48.410156, y: 76.65997}
   m_SizeDelta: {x: 47.725006, y: 16.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949909274126666216
@@ -12116,7 +12099,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949909274225207421

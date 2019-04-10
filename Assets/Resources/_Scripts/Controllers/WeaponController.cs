@@ -7,20 +7,12 @@ public class WeaponController : MonoBehaviour
     public bool menuOpen = false;
     [Header("Inventory")]
     public Inventory inventory;
-    private Ship ship;
-
-    private GameObject turret;
+	public GameObject turret;
     [HideInInspector]
     public ShipComponentBase currentComponent;
 
     [SerializeField]
     private ShipMountController mountController;
-
-    void Start()
-    {
-        ship = GetComponentInChildren<Ship>();
-        turret = ship.turret;
-    }
 
     /// <summary>
     /// Update the turret to use the provided component.
@@ -64,14 +56,13 @@ public class WeaponController : MonoBehaviour
         if (!dead && isDead)
         {
             dead = isDead;
-            turret.gameObject.SetActive(false);
+            turret.SetActive(false);
             menuOpen = false;
         }
         else if (dead && !isDead)
         {
             dead = isDead;
-            turret.gameObject.SetActive(true);
+            turret.SetActive(true);
         }
-
     }
 }

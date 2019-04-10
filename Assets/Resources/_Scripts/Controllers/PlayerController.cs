@@ -99,20 +99,10 @@ public class PlayerController : MonoBehaviour
         SetThrusterState(false);
     }
 
-    /// <summary>
-    /// Gets the current health value of the player.
-    /// </summary>
-    /// <returns></returns>
-    public int GetHealth()
-    {
-        return 0;
-    }
-
     private void FixedUpdate()
     {
         if (!dead)
         {
-
             if (movingForward)
             {
                 movementController.MoveForward();
@@ -138,9 +128,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-
         if (healthController.IsDead() && !dead)
         {
+			Debug.Log("Dead");
             dead = true;
             Die();
         }
