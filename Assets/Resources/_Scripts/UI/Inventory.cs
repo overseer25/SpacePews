@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,12 +31,15 @@ public class Inventory : MonoBehaviour
 	[SerializeField]
 	private AudioClip hotbarSelectSound;
 	[SerializeField]
-	private AudioClip collectSound;
+	private AudioClip collectItemSound;
+    [SerializeField]
+    private AudioClip collectMoneySound;
 
 	private const int INVENTORY_SIZE = 20;
+    private const long MAX_CURRENCY = 999999999999;
 
-	// Must be greater than 0 and less than 10.
-	private const int HOTBAR_COUNT = 5;
+    // Must be greater than 0 and less than 10.
+    private const int HOTBAR_COUNT = 5;
 
 	internal AudioSource audioSource;
 	internal bool isOpen = false;
@@ -55,6 +59,8 @@ public class Inventory : MonoBehaviour
 	private GameObject mountUI;
 	[SerializeField]
 	private GameObject hotbarUI;
+    [SerializeField]
+    private TextMeshProUGUI currencyCount;
 	[SerializeField]
 	private TMPro.TextMeshProUGUI selectedTextDisplay; // Displays the name of the currently selected hotbar item.
 
@@ -66,16 +72,19 @@ public class Inventory : MonoBehaviour
 	private List<Item> itemList;
 	private int selectedHotbarSlotIndex;
 	private bool dead = false;
+    private long currency;
 
 	// Use this for initialization
 	void Awake()
 	{
+        currencyCount.text = currency.ToString();
 		itemList = new List<Item>();
 		var index = 0;
 		foreach (var obj in Resources.LoadAll("_Prefabs/Items"))
 		{
 			var item = (obj as GameObject);
-			itemList.Add(item.GetComponent<Item>());
+            if(item.GetComponent<Item>() != null)
+			    itemList.Add(item.GetComponent<Item>());
 		}
 		audioSource = GetComponent<AudioSource>();
 
@@ -112,6 +121,7 @@ public class Inventory : MonoBehaviour
 		if (itemTransferPanel.activeInHierarchy)
 		{
 			StartCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
+			StartCoroutine(inventorySlots[indicesToTransfer[1]].Flash());
 		}
 
 		if (!dead && !isPaused && !itemTransferPanel.activeInHierarchy)
@@ -391,7 +401,7 @@ public class Inventory : MonoBehaviour
 		if (item == null || !item.gameObject.activeInHierarchy)
 			return;
 
-		Item prefab = itemList.Find(x => (x.GetItemName().Equals(item.GetItemName()))); // Find element in item list with name equivalent to the parameter.
+		Item prefab = itemList.Find(x => (x.GetItemName() == item.GetItemName())); // Find element in item list with name equivalent to the parameter.
 
 		// If the item exists in the inventory and is stackable, update the quantity.
 		foreach (InventorySlot slot in inventorySlots)
@@ -405,7 +415,7 @@ public class Inventory : MonoBehaviour
 						ShowHoverTooltip(slot.GetIndex());
 
 					OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
-					audioSource.PlayOneShot(collectSound);
+					audioSource.PlayOneShot(collectItemSound);
 					return;
 				}
 			}
@@ -417,19 +427,72 @@ public class Inventory : MonoBehaviour
 			{
 				slot.SetItem(prefab, item.GetQuantity());
 				OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
-				audioSource.PlayOneShot(collectSound);
+				audioSource.PlayOneShot(collectItemSound);
 				return;
 			}
 		}
 	}
 
-	/// <summary>
-	/// The right-click functionality of dragging an item from one slot to another. If the destination slot
-	/// is empty, or contains the same item as the origin slot, then the user should be prompted to specify
-	/// how much of the incoming item's stack they wish to transfer.
-	/// </summary>
-	/// <param name="indices"></param>
-	public void PromptUserForAmountToSwap(int[] indices)
+    /// <summary>
+    /// Add currency to the player.
+    /// </summary>
+    /// <param name="amount">The amount to add.</param>
+    /// <returns>False if adding currency exceeds the max currency amount, true otherwise.</returns>
+    public bool AddCurrency(long amount)
+    {
+        if (currency + amount > MAX_CURRENCY)
+            return false;
+
+        currency += amount;
+        currencyCount.text = currency.ToString();
+        OutputWindow.current.DisplayText("Collected <color=\"white\">" + amount + " Credits</color>");
+        audioSource.PlayOneShot(collectMoneySound);
+        return true;
+    }
+
+    /// <summary>
+    /// remove currency from player.
+    /// </summary>
+    /// <param name="amount">The amount to remove.</param>
+    /// <returns>False if removing currency caused the player's currency to dip below 0, true otherwise.</returns>
+    public bool RemoveCurrency(long amount)
+    {
+        if (currency - amount < 0)
+            return false;
+
+        currency -= amount;
+        currencyCount.text = currency.ToString();
+        return true;
+    }
+
+    /// <summary>
+    /// Check if adding the given amount to the currency of the player
+    /// would cause a boundary overflow. Use negative values for subtraction.
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <returns></returns>
+    public bool CheckCurrency(long amount)
+    {
+        long result = currency + amount;
+        return (result > MAX_CURRENCY || result < 0);
+    }
+
+    /// <summary>
+    /// Get the amount currency the player possesses.
+    /// </summary>
+    /// <returns>currency of player.</returns>
+    public long GetCurrency()
+    {
+        return currency;
+    }
+
+    /// <summary>
+    /// The right-click functionality of dragging an item from one slot to another. If the destination slot
+    /// is empty, or contains the same item as the origin slot, then the user should be prompted to specify
+    /// how much of the incoming item's stack they wish to transfer.
+    /// </summary>
+    /// <param name="indices"></param>
+    public void PromptUserForAmountToSwap(int[] indices)
 	{
 		var index1 = indices[0];
 		var index2 = indices[1];
@@ -500,6 +563,7 @@ public class Inventory : MonoBehaviour
 		itemTransferNumber.text = "0";
 		ToggleSlotHoverEffect(true);
 		StopCoroutine(inventorySlots[indicesToTransfer[0]].Flash());
+		StopCoroutine(inventorySlots[indicesToTransfer[1]].Flash());
 		inventorySlots[indicesToTransfer[0]].Dehighlight();
 	}
 
@@ -841,10 +905,13 @@ public class Inventory : MonoBehaviour
 		else if (invSlot.IsEmpty() && !mountSlot.IsEmpty())
 		{
 			var mountItem = itemList.Find(x => (x.GetItemName().Equals(mountSlot.GetItem().GetItemName()))) as ShipComponentBase;
-			mountSlot.ClearSlot();
 			if (mountComp.GetItemType() == ItemType.Thruster)
-				playerController.UpdateThrusterList();
+			{
+				OutputWindow.current.DisplayText("<color=\"white\">Cannot remove thruster from ship.</color>");
+				return;
+			}
 
+			mountSlot.ClearSlot();
 			invSlot.SetItem(mountItem);
 		}
 		// If mount slot is empty.

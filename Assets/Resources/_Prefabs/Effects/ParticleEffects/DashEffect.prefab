@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4275729241763225749}
   - component: {fileID: 4275729241763225750}
   - component: {fileID: 3940098044125143557}
-  - component: {fileID: 4908040089151502289}
+  - component: {fileID: 1690256234447761594}
   m_Layer: 0
   m_Name: DashEffect
   m_TagString: Untagged
@@ -101,7 +101,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!82 &4908040089151502289
+--- !u!82 &1690256234447761594
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

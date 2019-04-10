@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4975359891462908}
   - component: {fileID: 114682673870406078}
-  - component: {fileID: 82883369333402224}
+  - component: {fileID: 8677820340215669895}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -54,7 +54,7 @@ MonoBehaviour:
   - {fileID: 21300010, guid: dcefb18f3d9268e44b2092998685075a, type: 3}
   playspeed: 0.05
   sound: {fileID: 8300000, guid: 78d88795ab1c85d49a1f4d5a48410056, type: 3}
---- !u!82 &82883369333402224
+--- !u!82 &8677820340215669895
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,7 +120,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -150,7 +150,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
 --- !u!1 &2862200662990981934
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3683350299333797035}
   - component: {fileID: 5526244137351992907}
-  - component: {fileID: 2354849351280351296}
+  - component: {fileID: 880167975230418741}
   m_Layer: 0
   m_Name: Explosion_projectile2
   m_TagString: Untagged
@@ -54,7 +54,7 @@ MonoBehaviour:
   - {fileID: 21300010, guid: dcefb18f3d9268e44b2092998685075a, type: 3}
   playspeed: 0.05
   sound: {fileID: 8300000, guid: 02978070e96865448ba5de2714f4fcce, type: 3}
---- !u!82 &2354849351280351296
+--- !u!82 &880167975230418741
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,7 +120,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -150,7 +150,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
 --- !u!1 &8044858166606971216
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4945804608315674}
   - component: {fileID: 4939218496149312530}
   - component: {fileID: 114353173892645446}
-  - component: {fileID: 82795668506079572}
+  - component: {fileID: 6059261822040840589}
   m_Layer: 0
   m_Name: PulseGatlingProjectile
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   - {fileID: 21300006, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
   playspeed: 0.05
   sound: {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
---- !u!82 &82795668506079572
+--- !u!82 &6059261822040840589
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,7 +113,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -166,7 +166,7 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -196,4 +196,4 @@ AudioSource:
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4

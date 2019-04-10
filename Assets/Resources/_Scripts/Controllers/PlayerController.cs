@@ -17,13 +17,15 @@ public class PlayerController : MonoBehaviour
     private const float CAMERA_MIN_ZOOM = -50.0f;
     private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
-    [Header("State")]
+    [Header("UI")]
     public Inventory inventory;
     public DeathScreen deathScreen;
     public PauseMenuScript pauseMenu;
     public GameObject itemTransferConfirmWindow;
     public GameObject healthUI;
     public GameObject abilityChargeBar;
+    public TextMeshProUGUI currencyCount;
+    [Header("State")]
     public GameObject respawnPoint;
     [Header("Effects/Sounds")]
     public ParticleEffect deathExplosion;
@@ -328,7 +330,7 @@ public class PlayerController : MonoBehaviour
         rotatingRight = false;
 
         //spawn explosion effect.
-        ParticleManager.PlayParticle(deathExplosion, gameObject);
+        ParticleManager.PlayParticle(deathExplosion, gameObject.transform.position);
 
         StartCoroutine(Respawn());
 
@@ -347,7 +349,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
 
             // Spawn respawn effect.
-            ParticleManager.PlayParticle(respawnEffect, respawnPoint);
+            ParticleManager.PlayParticle(respawnEffect, respawnPoint.transform.position);
 
             transform.position = respawnPoint.transform.position;
             ship.transform.rotation = respawnPoint.transform.rotation;
@@ -380,7 +382,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!engineSource.isPlaying)
             engineSource.Play();
-        engineSource.volume = (engineSource.volume < 0.5f) ? engineSource.volume + movementController.GetAcceleration() : 0.5f;
+        engineSource.volume = (engineSource.volume < 0.5f) ? engineSource.volume + 0.2f : 0.5f;
     }
 
     /// <summary>
@@ -388,7 +390,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StopEngineSound()
     {
-        engineSource.volume = (engineSource.volume > 0) ? engineSource.volume - movementController.GetDeceleration() : 0.0f;
+        engineSource.volume = (engineSource.volume > 0) ? engineSource.volume - 0.02f : 0.0f;
         if (engineSource.volume <= 0.0f)
             engineSource.Stop();
     }
@@ -409,10 +411,10 @@ public class PlayerController : MonoBehaviour
                 {
 					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
 					healthController.TakeDamage(damage);
-					var popUpText = PopUpTextPool.current.GetPooledObject();
+					var popUpText = PopUpTextPool.current.GetPooledObject() as PopUpText;
 					if(popUpText != null)
 					{
-						popUpText.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 10f, Color.red);
+						popUpText.Initialize(gameObject, damage.ToString(), 10f, Color.red);
 					}
                 }
                 direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;

@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectilePool : MonoBehaviour
+public class ProjectilePool : BasePool
 {
-
-    // The object pooled.
-    public Projectile defaultProjectile;
-    // How many of the object to pool.
-    public int amountPooled = 100;
+	[SerializeField]
+    private Projectile defaultProjectile;
 
     // The internal list of objects.
-    private List<Projectile> objectPool;
-    private static int oldestIndex = 0;
+    private List<Projectile> projectilePool;
 
     public static ProjectilePool current;
 
@@ -22,27 +18,48 @@ public class ProjectilePool : MonoBehaviour
             current = this;
     }
 
-    private void Start()
-    {
-        // If the object pool is already created, don't make it again.
-        if (objectPool != null)
-            return;
-        objectPool = new List<Projectile>();
-        for (int i = 0; i < amountPooled; i++)
-        {
-            var obj = Instantiate(defaultProjectile);
-            obj.gameObject.SetActive(false);
-            objectPool.Add(obj);
-        }
-    }
+	public override void SetPoolSize(int size)
+	{
+		if (projectilePool == null)
+			projectilePool = new List<Projectile>();
 
-    /// <summary>
-    /// Gets an unused object in the object pool, if it exists.
-    /// </summary>
-    /// <returns> Unused GameObject in object pool, or null if none exists. </returns>
-    public Projectile GetPooledObject()
+		if (size == poolSize)
+			return;
+
+		int difference = poolSize - size;
+
+		if (size > poolSize)
+		{
+			// Add on to the list.
+			for (int i = poolSize; i < size; i++)
+			{
+				var proj = Instantiate(defaultProjectile, gameObject.transform);
+				proj.gameObject.SetActive(false);
+				projectilePool.Add(proj);
+			}
+		}
+		else
+		{
+			// Subtract from the list.
+			for (int i = poolSize - 1; i >= poolSize - difference; i--)
+			{
+				Destroy(projectilePool[projectilePool.Count - 1].gameObject);
+				projectilePool.RemoveAt(projectilePool.Count - 1);
+			}
+		}
+
+		poolSize = projectilePool.Count;
+		if (oldest > poolSize)
+			oldest = 0;
+	}
+
+	/// <summary>
+	/// Gets an unused object in the object pool, if it exists.
+	/// </summary>
+	/// <returns> Unused GameObject in object pool, or null if none exists. </returns>
+	public override object GetPooledObject()
     {
-        foreach (var obj in objectPool)
+        foreach (var obj in projectilePool)
         {
             if (!obj.gameObject.activeInHierarchy)
             {
@@ -51,8 +68,8 @@ public class ProjectilePool : MonoBehaviour
         }
 
         // Otherwise, get the least recently used object in the pool.
-        var result = objectPool[oldestIndex++];
-        oldestIndex %= amountPooled - 1;
+        var result = projectilePool[oldest++];
+        oldest %= poolSize;
         return result;
     }
 }

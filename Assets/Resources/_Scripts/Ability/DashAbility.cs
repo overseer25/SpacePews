@@ -22,6 +22,6 @@ public class DashAbility : Ability
 		movementController.MoveDirection(movementController.GetShip().transform.up * speed);
 
         if(useEffect != null)
-            ParticleManager.PlayParticle(useEffect, player, movementController.GetShip().transform.rotation);
+            ParticleManager.PlayParticle(useEffect, player.transform.position, movementController.GetShip().transform.rotation);
     }
 }

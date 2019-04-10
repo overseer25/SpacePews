@@ -2,72 +2,79 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopUpTextPool : MonoBehaviour
+public class PopUpTextPool : BasePool
 {
 
     // The instance.
     public static PopUpTextPool current;
     // The object pooled.
-    public GameObject pooledObject;
-    // How many of the object to pool.
-    public int amountPooled = 20;
+    public PopUpText defaultPopUp;
 
     // The internal list of objects.
-    private List<GameObject> objectPool;
+    private List<PopUpText> popUpPool;
 
     /// <summary>
     /// Setup the instance.
     /// </summary>
     void Awake()
     {
-        current = this;
+		if(current == null)
+			current = this;
     }
 
-    /// <summary>
-    /// Instantiates the object pool.
-    /// </summary>
-    void Start()
-    {
-        objectPool = new List<GameObject>(amountPooled);
-        for (int i = 0; i < amountPooled; i++)
-        {
-            GameObject obj = Instantiate(pooledObject) as GameObject;
-            obj.SetActive(false);
-            objectPool.Add(obj);
-        }
-    }
+	public override void SetPoolSize(int size)
+	{
+		if (popUpPool == null)
+			popUpPool = new List<PopUpText>();
 
-    /// <summary>
-    /// Sets the object pool to use a new object.
-    /// </summary>
-    /// <param name="obj"></param>
-    public void SetGameObject(GameObject newObject)
-    {
-        // Clear the old list.
-        objectPool.Clear();
+		if (size == poolSize)
+			return;
 
-        for (int i = 0; i < amountPooled; i++)
-        {
-            GameObject obj = Instantiate(newObject) as GameObject;
-            obj.SetActive(false);
-            objectPool.Add(obj);
-        }
-    }
+		int difference = poolSize - size;
 
-    /// <summary>
-    /// Gets an unused object in the object pool, if it exists.
-    /// </summary>
-    /// <returns> Unused GameObject in object pool, or null if none exists. </returns>
-    public GameObject GetPooledObject()
+		if (size > poolSize)
+		{
+			// Add on to the list.
+			for (int i = poolSize; i < size; i++)
+			{
+				var proj = Instantiate(defaultPopUp, gameObject.transform);
+				proj.gameObject.SetActive(false);
+				popUpPool.Add(proj);
+			}
+		}
+		else
+		{
+			// Subtract from the list.
+			for (int i = poolSize - 1; i >= poolSize - difference; i--)
+			{
+				Destroy(popUpPool[popUpPool.Count - 1].gameObject);
+				popUpPool.RemoveAt(popUpPool.Count - 1);
+			}
+		}
+
+		poolSize = popUpPool.Count;
+		if (oldest > poolSize)
+			oldest = 0;
+	}
+
+	/// <summary>
+	/// Gets an unused object in the object pool, if it exists.
+	/// </summary>
+	/// <returns> Unused GameObject in object pool, or null if none exists. </returns>
+	public override object GetPooledObject()
     {
-        foreach (var obj in objectPool)
+        foreach (var obj in popUpPool)
         {
-            if (obj != null && !obj.activeInHierarchy)
+            if (obj != null && !obj.gameObject.activeInHierarchy)
             {
                 return obj;
             }
         }
-        return null;
-    }
+
+		// Otherwise, get the least recently used object in the pool.
+		var result = popUpPool[oldest++];
+		oldest %= poolSize;
+		return result;
+	}
 }
 

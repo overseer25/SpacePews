@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4288192087262506}
   - component: {fileID: 212013227685433304}
   - component: {fileID: 114121405114875228}
-  - component: {fileID: 58701044265976594}
+  - component: {fileID: 4180606447509673880}
   m_Layer: 9
   m_Name: Item_AsteroidChunk
   m_TagString: Item
@@ -102,16 +102,15 @@ MonoBehaviour:
   quantity: 1
   value: 1
   description: Typically harvested from Asteroids. Who knew!
-  pickupSound: {fileID: 0}
   stackable: 1
   stackSize: 999
   playspeed: 0.5
   changeSprite: 0
   index: 0
-  itemColor: {r: 0, g: 0, b: 0, a: 0}
+  itemColor: {r: 1, g: 1, b: 1, a: 1}
   spriteRenderer: {fileID: 0}
---- !u!58 &58701044265976594
-CircleCollider2D:
+--- !u!61 &4180606447509673880
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -124,5 +123,15 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.43514085
+  m_Size: {x: 1.28, y: 0.75901854}
+  m_EdgeRadius: 0

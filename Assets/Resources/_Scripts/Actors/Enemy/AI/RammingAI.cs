@@ -336,7 +336,7 @@ public class RammingAI : MonoBehaviour
         }
         if (ship.health <= 0)
         {
-            ParticleManager.PlayParticle(explosion, gameObject);
+            ParticleManager.PlayParticle(explosion, gameObject.transform.position);
             transform.parent.gameObject.SetActive(false);
         }
     }

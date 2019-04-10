@@ -8,7 +8,7 @@ public class ItemEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        var item = target as Item;
+        var item = serializedObject.targetObject as Item;
         EditorGUILayout.Space();
 
 		item.itemColor = ItemColors.colors[(int)item.itemTier];

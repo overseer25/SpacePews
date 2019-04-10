@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1472322088390081292}
   - component: {fileID: 1472322088390081295}
   - component: {fileID: 1843879347798538652}
-  - component: {fileID: 7720313536794061896}
+  - component: {fileID: 2111831853874731689}
   m_Layer: 0
   m_Name: DefaultParticleEffect
   m_TagString: Untagged
@@ -104,7 +104,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!82 &7720313536794061896
+--- !u!82 &2111831853874731689
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +117,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

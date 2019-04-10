@@ -3,45 +3,44 @@ using UnityEngine;
 
 /// <summary>
 /// This class is a pool that will manage the maximum number of items that can exist in the world.
-/// If the maximum number of items is reached, and more items are being spawned, the class will need
+/// If the maximum number of items is reached, and more items are being spawned, the pool will need
 /// to clear out the oldest items in the world, and replace them with the newly spawned ones.
 /// </summary>
-public class ItemPool : MonoBehaviour
+public class ItemPool : BasePool
 {
     public static ItemPool current;
 
     [SerializeField]
     private Item defaultItem;
 
-	private int amountPooled;
     private static List<Item> itemPool;
-    private static int oldestIndex = 0;
-
 
     private void Awake()
     {
-        current = this;    
+		if(current == null)
+			current = this;    
     }
 
 	/// <summary>
 	/// Set the size of the pool.
 	/// </summary>
-	public void SetPoolSize(int size)
+	/// <param name="size">The new size.</param>
+	public override void SetPoolSize(int size)
 	{
 		if (itemPool == null)
 			itemPool = new List<Item>();
 
-		if (size == amountPooled)
+		if (size == poolSize)
 			return;
 
-		int difference = amountPooled - size;
+		int difference = poolSize - size;
 
-		if(size > amountPooled)
+		if(size > poolSize)
 		{
 			// Add on to the list.
-			for (int i = amountPooled; i < size; i++)
+			for (int i = poolSize; i < size; i++)
 			{
-				var item = Instantiate(defaultItem);
+				var item = Instantiate(defaultItem, gameObject.transform);
 				item.gameObject.SetActive(false);
 				itemPool.Add(item);
 			}
@@ -49,21 +48,23 @@ public class ItemPool : MonoBehaviour
 		else
 		{
 			// Subtract from the list.
-			for (int i = amountPooled-1; i >= amountPooled - difference; i--)
+			for (int i = poolSize - 1; i >= poolSize - difference; i--)
 			{
 				Destroy(itemPool[itemPool.Count - 1].gameObject);
 				itemPool.RemoveAt(itemPool.Count - 1);
 			}
 		}
 
-		amountPooled = itemPool.Count;
+		poolSize = itemPool.Count;
+		if (oldest > poolSize)
+			oldest = 0;
 	}
 
     /// <summary>
     /// Gets an unused object in the object pool, if it exists.
     /// </summary>
     /// <returns> Unused GameObject in object pool, or the oldest active one (LRU). </returns>
-    public Item GetPooledObject()
+    public override object GetPooledObject()
     {
         if (itemPool == null)
             return null;
@@ -78,8 +79,8 @@ public class ItemPool : MonoBehaviour
         }
 
         // Otherwise, get the least recently used object in the pool.
-        Item result = itemPool[oldestIndex++];
-        oldestIndex %= amountPooled - 1;
+        var result = itemPool[oldest++];
+		oldest %= poolSize;
         return result;
     }
 }

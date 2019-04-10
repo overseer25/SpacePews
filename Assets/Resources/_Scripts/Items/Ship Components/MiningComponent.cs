@@ -103,10 +103,7 @@ public class MiningComponent : ShipComponentBase
     /// </summary>
     private void ShowContactSprite(Vector2 pos, Quaternion rot)
     {
-        ParticleEffect exp = ParticlePool.current.GetPooledObject();
-        exp.Copy(laserContactSprite);
-        exp.SetTransform(pos, rot);
-        exp.gameObject.SetActive(true);
+		ParticleManager.PlayParticle(laserContactSprite, pos, rot);
     }
 
     /// <summary>
