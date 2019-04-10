@@ -8,12 +8,13 @@ public class PopUpText : MonoBehaviour
 	public AudioClip defaultSound;
 	public TextMeshPro textMesh;
 
-	private float fadeTime = 0.0f;
-	private float fadeSpeed = 0.2f;
-	private int delay = 0;
+    private float timeUntilFade = 0.5f;
 	private static System.Random random;
 
-	private const float LIFT_SPEED = 30.0f;
+    // Rate at which the text lifts upward.
+	private const float LIFT_SPEED = 0.5f;
+    // Number of times to wait until fading.
+    private const int WAIT_COUNT = 50;
 
 	void Awake()
 	{
@@ -32,6 +33,8 @@ public class PopUpText : MonoBehaviour
 	/// <param name="playDefaultSound">Play the default sound of the pop up text.</param>
 	public void Initialize(GameObject target, string text, float size, Color color, AudioClip sound = null, float radius = 0.0f, bool playDefaultSound = true)
 	{
+        StopCoroutine(Fade());
+
 		textMesh.color = color;
 		textMesh.text = text;
 		textMesh.alpha = 1.0f;
@@ -60,43 +63,42 @@ public class PopUpText : MonoBehaviour
 		{
 			GetComponent<AudioSource>().PlayOneShot(defaultSound);
 		}
+
+        StartCoroutine(Fade());
 	}
 
-	/// <summary>
-	/// Deals with fading and disabling the text.
-	/// </summary>
-	void Update()
-	{
-		if (Time.time > fadeTime)
-		{
-			fadeTime = Time.deltaTime + fadeSpeed;
+    /// <summary>
+    /// Lifts the text upward and fades over time.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Fade()
+    {
+        bool beginFade = false;
+        int count = 0;
 
-			if (delay == 10)
-			{
-				textMesh.alpha -= 0.02f; // Slowly fade the sprite
+        while(true)
+        {
+            if (count == WAIT_COUNT)
+                beginFade = true;
 
-				// If the text is invisible, deactivate the PopUpText object.
-				if (textMesh.alpha <= 0)
-				{
-					gameObject.SetActive(false);
-				}
-			}
-			else { delay++; }
+            // Move the sprite upward
+            transform.position = Vector2.Lerp(transform.position, new Vector3(transform.position.x,
+                transform.position.y + (0.2f), transform.position.z), LIFT_SPEED); // Set this once
+            count++;
 
-			// Move the sprite upward
-			transform.position = Vector2.Lerp(transform.position, new Vector3(transform.position.x,
-				transform.position.y + (0.2f), transform.position.z), Time.deltaTime * LIFT_SPEED); // Set this once
+            if(beginFade)
+            {
+                textMesh.alpha -= 0.05f; // Slowly fade the sprite
+                // If the text is invisible, deactivate the PopUpText object.
+                if (textMesh.alpha <= 0.0f)
+                {
+                    gameObject.SetActive(false);
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(timeUntilFade / WAIT_COUNT);
+        }
 
-		}
-	}
-
-	/// <summary>
-	/// Called when the object is set to active.
-	/// </summary>
-	void OnEnable()
-	{
-		fadeTime = 0.0f;
-		delay = 0;
-
-	}
+        yield return null;
+    }
 }

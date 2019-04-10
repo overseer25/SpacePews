@@ -34,7 +34,7 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
-        rigidBody.AddForce(ship.transform.up * acceleration * Time.deltaTime, ForceMode2D.Impulse);
+        rigidBody.AddForce(ship.transform.up * acceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
 
 		if (rigidBody.velocity.magnitude > maxSpeed)
 			Decelerate();
@@ -72,7 +72,7 @@ public class MovementController : MonoBehaviour
     public void Decelerate()
     {
         if (rigidBody.velocity.magnitude > 0)
-            rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, Vector2.zero, Time.deltaTime * deceleration);
+            rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, Vector2.zero, Time.fixedDeltaTime * deceleration);
     }
 
     /// <summary>
@@ -83,8 +83,8 @@ public class MovementController : MonoBehaviour
     public void MoveDirection(Vector2 direction, bool clampSpeed = false)
     {
         rigidBody.velocity += direction;
-		if(clampSpeed)
-			rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
+        if (clampSpeed && rigidBody.velocity.magnitude > maxSpeed)
+            Decelerate();
 	}
 
     /// <summary>

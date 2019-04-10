@@ -15,6 +15,6 @@ MonoBehaviour:
   abilityName: Powerful Dash
   useEffect: {fileID: 4275729241763225750, guid: 3dd5608ae64d28e4b8b415c98534f216,
     type: 3}
-  cooldownTime: 7
+  cooldownTime: 4
   recharging: 1
   speed: 70

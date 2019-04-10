@@ -263,63 +263,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Fade in the engine sound.
-    /// </summary>
-    private void PlayEngineSound()
-    {
-        if (!engineSource.isPlaying)
-            engineSource.Play();
-        engineSource.volume = (engineSource.volume < 0.5f) ? engineSource.volume + movementController.GetAcceleration() : 0.5f;
-    }
-
-    /// <summary>
-    /// Fade out the engine sound, and stop it once it reaches 0.
-    /// </summary>
-    private void StopEngineSound()
-    {
-        engineSource.volume = (engineSource.volume > 0) ? engineSource.volume - movementController.GetDeceleration() : 0.0f;
-        if (engineSource.volume <= 0.0f)
-            engineSource.Stop();
-    }
-
-    /// <summary>
-    /// Deals with all collisions with the player character
-    /// </summary>
-    /// <param name="collider"></param>
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        switch (collider.gameObject.tag)
-        {
-            case "Immovable":
-            case "Asteroid":
-            case "Mineable":
-                Vector2 direction = Vector2.zero;
-                if (rigidBody.velocity.magnitude > 10)
-                {
-					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
-					healthController.TakeDamage(damage);
-					var popUpText = PopUpTextPool.current.GetPooledObject();
-					if(popUpText != null)
-					{
-						popUpText.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 12f, Color.red, radius: 2.0f);
-					}
-                }
-                direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.deltaTime * 20f;
-
-                movementController.Stop();
-                if (!healthController.IsDead())
-                {
-                    movementController.MoveDirection(direction, true);
-                }
-                break;
-
-            case "Enemy":
-                healthController.TakeDamage(5);
-                break;
-        }
-    }
-
-    /// <summary>
     /// Set the active ability of the player. Also forces the ability to initially cooldown so that it cannot be abused.
     /// </summary>
     /// <param name="ability"></param>
@@ -427,6 +370,63 @@ public class PlayerController : MonoBehaviour
 
             respawning = false;
             healthController.ResetHealth(GetComponent<Actor>().health / 2);
+        }
+    }
+
+    /// <summary>
+    /// Fade in the engine sound.
+    /// </summary>
+    private void PlayEngineSound()
+    {
+        if (!engineSource.isPlaying)
+            engineSource.Play();
+        engineSource.volume = (engineSource.volume < 0.5f) ? engineSource.volume + movementController.GetAcceleration() : 0.5f;
+    }
+
+    /// <summary>
+    /// Fade out the engine sound, and stop it once it reaches 0.
+    /// </summary>
+    private void StopEngineSound()
+    {
+        engineSource.volume = (engineSource.volume > 0) ? engineSource.volume - movementController.GetDeceleration() : 0.0f;
+        if (engineSource.volume <= 0.0f)
+            engineSource.Stop();
+    }
+
+    /// <summary>
+    /// Deals with all collisions with the player character
+    /// </summary>
+    /// <param name="collider"></param>
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        switch (collider.gameObject.tag)
+        {
+            case "Immovable":
+            case "Asteroid":
+            case "Mineable":
+                Vector2 direction = Vector2.zero;
+                if (rigidBody.velocity.magnitude > 10)
+                {
+					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
+					healthController.TakeDamage(damage);
+					var popUpText = PopUpTextPool.current.GetPooledObject();
+					if(popUpText != null)
+					{
+						popUpText.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 10f, Color.red);
+					}
+                }
+                direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;
+
+                movementController.Stop();
+                if (!healthController.IsDead())
+                {
+                    movementController.MoveDirection(direction, true);
+                }
+                break;
+
+            case "Enemy":
+                healthController.TakeDamage(5);
+                break;
         }
     }
 }

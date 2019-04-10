@@ -350,6 +350,7 @@ public class GraphicsMenu : MonoBehaviour
         {
             Screen.SetResolution(resolutions[selectedResolution].width, resolutions[selectedResolution].height, FullScreenMode.ExclusiveFullScreen, refreshRates[selectedRefreshRate]);
             Application.targetFrameRate = refreshRates[selectedRefreshRate];
+            Time.fixedDeltaTime = 1.0f / refreshRates[selectedRefreshRate];
         }
 
 		if (changedItemCount || firstLoad)
