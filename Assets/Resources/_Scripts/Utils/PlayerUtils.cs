@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Methods that are helpful for dealing with players.
+/// </summary>
 public class PlayerUtils : MonoBehaviour
 {
     /// <summary>
