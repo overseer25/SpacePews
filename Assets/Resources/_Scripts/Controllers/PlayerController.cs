@@ -130,7 +130,6 @@ public class PlayerController : MonoBehaviour
     {
         if (healthController.IsDead() && !dead)
         {
-			Debug.Log("Dead");
             dead = true;
             Die();
         }
