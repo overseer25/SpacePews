@@ -16,7 +16,6 @@ public class MovementController : MonoBehaviour
     // The ship variables.
     private SpriteRenderer shipRenderer;
     private GameObject ship;
-    private Ship _ship;
 
     void Start()
     {
@@ -27,7 +26,6 @@ public class MovementController : MonoBehaviour
         else
         {
             ship = shipRenderer.gameObject;
-            _ship = ship.GetComponent<Ship>();
         }
     }
 
@@ -36,8 +34,10 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
-        rigidBody.AddForce(ship.transform.up * acceleration * Time.deltaTime, ForceMode2D.Impulse);
-        rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxSpeed);
+        rigidBody.AddForce(ship.transform.up * acceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
+
+		if (rigidBody.velocity.magnitude > maxSpeed)
+			Decelerate();
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class MovementController : MonoBehaviour
         desiredRotation += rotationSpeed * Time.deltaTime;
         var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
         ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
-        rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
+        rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
     }
 
     /// <summary>
@@ -63,8 +63,8 @@ public class MovementController : MonoBehaviour
         desiredRotation -= rotationSpeed * Time.deltaTime;
         var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
         ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
-        rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
-    }
+		rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
+	}
 
     /// <summary>
     /// Slow down the ship when no button is being pressed.
@@ -72,17 +72,20 @@ public class MovementController : MonoBehaviour
     public void Decelerate()
     {
         if (rigidBody.velocity.magnitude > 0)
-            rigidBody.velocity *= (1 - deceleration);
+            rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, Vector2.zero, Time.fixedDeltaTime * deceleration);
     }
 
     /// <summary>
     /// Add force in the provided direction.
     /// </summary>
-    /// <param name="direction"></param>
-    public void MoveDirection(Vector2 direction)
+    /// <param name="direction">The direction to propel the ship.</param>
+	/// <param name="clampSpeed">Whether or not to clamp the speed to the max speed of the ship.</param>
+    public void MoveDirection(Vector2 direction, bool clampSpeed = false)
     {
-        rigidBody.AddForce(direction);
-    }
+        rigidBody.velocity += direction;
+        if (clampSpeed && rigidBody.velocity.magnitude > maxSpeed)
+            Decelerate();
+	}
 
     /// <summary>
     /// Stop the movement completely.
@@ -164,6 +167,15 @@ public class MovementController : MonoBehaviour
         return rotationSpeed;
     }
 
+	/// <summary>
+	/// Get the ship the movement controller moves.
+	/// </summary>
+	/// <returns></returns>
+	public GameObject GetShip()
+	{
+		return ship;
+	}
+
     /// <summary>
     /// Update the death state of the player.
     /// </summary>
@@ -172,5 +184,7 @@ public class MovementController : MonoBehaviour
     {
         dead = isDead;
         desiredRotation = 0;
+		if (dead)
+			Stop();
     }
 }

@@ -89,18 +89,11 @@ public class MountSlot : SlotBase
     /// <param name="item"></param>
     public override void SetItem(Item item)
     {
-        var component = item as ShipComponent;
+        var component = item as ShipComponentBase;
         component.mounted = true;
         inventoryItem.SetItem(component, 0);
-        component = inventoryItem.GetItem() as ShipComponent;
-        if (component is WeaponComponent)
-            mount.SetComponent(component as WeaponComponent);
-        else if (component is StorageComponent)
-            mount.SetComponent(component as StorageComponent);
-        else if (component is ThrusterComponent)
-            mount.SetComponent(component as ThrusterComponent);
-        else if (component is MiningComponent)
-            mount.SetComponent(component as MiningComponent);
+        component = item as ShipComponentBase;
+		mount.SetComponent(component);
     }
 
     /// <summary>
@@ -129,7 +122,7 @@ public class MountSlot : SlotBase
     {
         if (image != null)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 1.0f);
             if (inventoryItem != null)
                 inventoryItem.Highlight();
         }
@@ -142,7 +135,7 @@ public class MountSlot : SlotBase
     {
         if (image != null)
         {
-            image.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, 0.7f);
             if (inventoryItem != null)
                 inventoryItem.Dehighlight();
         }
@@ -171,17 +164,6 @@ public class MountSlot : SlotBase
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
         {
             SendMessageUpwards("QuickSwapWithInventorySlot", index);
-        }
-
-        // Shift clicking will clear the slot.
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
-        {
-            if(inventoryItem.GetItem() != null)
-            {
-                SendMessageUpwards("ClearSlot", index);
-                Dehighlight();
-                return;
-            }
         }
 
         if(canHighlight)

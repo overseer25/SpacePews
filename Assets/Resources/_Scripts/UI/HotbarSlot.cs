@@ -17,7 +17,7 @@ public class HotbarSlot : SlotBase
 
     internal bool current; // Is this hotbar slot the selected one?
     [Header("Starting Component")]
-    public ShipComponent startingComponent;
+    public ShipComponentBase startingComponent;
 
     protected override void Awake()
     {
@@ -117,7 +117,7 @@ public class HotbarSlot : SlotBase
     public override void SetItem(Item component)
     {
         // If it is not a weapon or mining component, do not set the component.
-        if (!(component is WeaponComponent) && !(component is MiningComponent))
+        if (!(component is WeaponComponentBase) && !(component is MiningComponent))
             return;
 
         inventoryItem.SetItem(component, 0);

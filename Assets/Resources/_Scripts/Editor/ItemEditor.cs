@@ -11,6 +11,8 @@ public class ItemEditor : Editor
         var item = target as Item;
         EditorGUILayout.Space();
 
+		item.itemColor = ItemColors.colors[(int)item.itemTier];
+
         // ----- PROPERTIES SECTION ----- //
         EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
 

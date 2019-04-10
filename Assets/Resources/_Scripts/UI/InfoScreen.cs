@@ -65,56 +65,62 @@ public class InfoScreen : MonoBehaviour
     /// </summary>
     public void SetInfo(Item item, int count)
     {
-        // Display stats different if item is a weapon component.
-        if (item is WeaponComponent)
+		Color color = ItemColors.colors[(int)item.itemTier];
+		var hex = color.ToHex();
+		displayText.text = "<color=" + hex + ">" + item.itemName + "</color>\n";
+
+
+		// Display stats different if item is a weapon component.
+		if (item is WeaponComponentBase)
         {
-            var weapComp = item as WeaponComponent;
-            displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
+            var weapComp = item as WeaponComponentBase;
+            
             displayText.text += "<style=\"Type\">" + weapComp.GetComponentClass() + " " + weapComp.GetItemType() + "</style>\n";
-            displayText.text += "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + "</style></style>)\n";
+            displayText.text += "<style=\"Damage\">Damage (<style=\"DamageNum\">" + weapComp.GetDamageString() + ")</style></style>\n";
             displayText.text += "<style=\"CritChanceText\">Crit Chance: " + weapComp.GetCriticalChanceString() + "</style>(<style=\"CritMult\">" + weapComp.GetCriticalMultiplierString() + "</style>)\n";
-            displayText.text += "<style=\"Description\">" + weapComp.description + "</style>\n";
         }
         // If the item is a thruster component.
         else if(item is ThrusterComponent)
         {
             var thrusterComp = item as ThrusterComponent;
-            displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
             displayText.text += "<style=\"Type\">" + thrusterComp.GetComponentClass() + " " + thrusterComp.GetItemType() + "</style>\n";
             displayText.text += "<style=\"Speed\">" + "Speed: <style=\"SpeedNum\">" + thrusterComp.maxSpeed + "</style> m/s" + "</style>\n";
             displayText.text += "<style=\"Acceleration\">" + "Acceleration: <style=\"AccNum\">" + thrusterComp.acceleration + "</style> m/s^2" + "</style>\n";
-            displayText.text += "<style=\"Description\">" + thrusterComp.description + "</style>\n";
         }
         else if(item is StorageComponent)
         {
             var storageComp = item as StorageComponent;
-            displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
             displayText.text += "<style=\"Type\">" + storageComp.GetComponentClass() + " " + storageComp.GetItemType() + "</style>\n";
             displayText.text += "<style=\"Speed\">" + "Size: <style=\"SpeedNum\">" + storageComp.slotCount + "</style> slots" + "</style>\n";
-            displayText.text += "<style=\"Description\">" + storageComp.description + "</style>\n";
         }
         else if(item is MiningComponent)
         {
             var miningComp = item as MiningComponent;
-            displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
             displayText.text += "<style=\"Type\">" + miningComp.GetComponentClass() + " Mining Laser</style>\n";
             displayText.text += "<style=\"Speed\">" + "Mining rate: <style=\"SpeedNum\">" + miningComp.GetMiningRate() + "%</style>" + "</style>\n";
-            displayText.text += "<style=\"Description\">" + miningComp.description + "</style>\n";
         }
+        else if(item is StatBuffUpgradeComponent)
+        {
+            var buffComp = item as StatBuffUpgradeComponent;
+            displayText.text += "<style=\"Type\">" + buffComp.GetComponentClass() + " Upgrade Component</style>\n";
+            foreach(var buff in buffComp.buffs)
+                displayText.text += "<style=\"BuffText\">" + "-" + buff.BuildInfoScreenString() + "</style>\n";
+        }
+		else if(item is ActiveAbilityComponent)
+		{
+			var activeAbilityComp = item as ActiveAbilityComponent;
+			displayText.text += "<style=\"Type\">" + activeAbilityComp.GetComponentClass() + " Upgrade Component</style>\n";
+			displayText.text += "<style=\"BuffText\">" + activeAbilityComp.BuildInfoScreenText() + "</style>\n";
+		}
         // Generic item.
         else
         {
-            displayText.text = item.itemName + "\n";
-            displayText.color = ItemColors.colors[(int)item.itemTier];
             displayText.text += "<style=\"Type\">" + item.GetItemType() + "</style>\n";
-            displayText.text += "<style=\"Description\">" + item.description + "</style>\n";
         }
 
-        value.text = "<style=\"Value\">" + item.value + ((item.value == 1) ? " Unit " : " Units ");
+		displayText.text += "\n<style=\"Description\">" + item.description + "</style>\n";
+
+		value.text = "<style=\"Value\">" + item.value + ((item.value == 1) ? " Unit " : " Units ");
         value.text += (count > 1) ? "(" + item.value * count + ")</style>" : "";
         quantity.text = (item.stackable) ? count.ToString() : " ";
 

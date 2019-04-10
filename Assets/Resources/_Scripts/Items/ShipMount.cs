@@ -19,9 +19,11 @@ public class ShipMount : MonoBehaviour {
     public float uiAngle;
     public float distanceFromShip;
 
-    public ShipComponent startingComponent;
-    private ShipComponent component;
+    public ShipComponentBase startingComponent;
+    private ShipComponentBase component;
     private bool isEmpty = false;
+	private Actor parentActor;
+	private PlayerController pController;
 
     void Start()
     {
@@ -30,6 +32,10 @@ public class ShipMount : MonoBehaviour {
             transform.GetComponent<SortingGroup>().sortingLayerName = "Ship";
             transform.GetComponent<SortingGroup>().sortingOrder = 1;
         }
+		parentActor = GetComponentInParent<Actor>();
+		pController = GetComponentInParent<PlayerController>();
+		if (parentActor == null)
+			Debug.LogError("Failed to find parent actor of " + this);
         
     }
 
@@ -59,10 +65,12 @@ public class ShipMount : MonoBehaviour {
     /// </summary>
     public void ClearMount()
     {
-        if (component is WeaponComponent)
-            (component as WeaponComponent).SetMounted(false);
-        else
-            component.SetMounted(false);
+		if (component is StatBuffUpgradeComponent)
+			(component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
+		else if (component is ActiveAbilityComponent)
+			(component as ActiveAbilityComponent).SetMounted(pController, false);
+		else
+			component.SetMounted(false);
         Destroy(component.gameObject);
         isEmpty = true;
     }
@@ -71,9 +79,8 @@ public class ShipMount : MonoBehaviour {
     /// Set the component of the mount.
     /// </summary>
     /// <param name="component"></param>
-    public void SetComponent(ShipComponent component)
+    public void SetComponent(ShipComponentBase component)
     {
-
         // If the starting component is not compatible with the ship mount.
         if (component != null && !IsComponentCompatible(component))
         {
@@ -81,27 +88,34 @@ public class ShipMount : MonoBehaviour {
             return;
         }
 
+		// Destroy the old component.
         if (this.component != null)
         {
-            if (this.component is WeaponComponent)
-                (this.component as WeaponComponent).SetMounted(false);
-            else
-                this.component.SetMounted(false);
-            Destroy(this.component.gameObject);
+			if (this.component is StatBuffUpgradeComponent)
+				(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
+			else if (this.component is ActiveAbilityComponent)
+				(this.component as ActiveAbilityComponent).SetMounted(pController, false);
+			else
+				this.component.SetMounted(false);
+			Destroy(this.component.gameObject);
         }
 
-        this.component = Instantiate(component, transform.position, transform.rotation, transform) as ShipComponent;
+        this.component = Instantiate(component, transform.position, transform.rotation, transform) as ShipComponentBase;
         this.component.gameObject.SetActive(component.IsVisible());
-        if (this.component is WeaponComponent)
-            (this.component as WeaponComponent).SetMounted(true);
-        else if (this.component is ThrusterComponent)
-        {
-            SendMessageUpwards("UpdateThrusterList");
-            this.component.SetMounted(true);
-        }
-        else
-            this.component.SetMounted(true);
-        isEmpty = false;
+
+		if (this.component is ThrusterComponent)
+		{
+			SendMessageUpwards("UpdateThrusterList");
+			this.component.SetMounted(true);
+		}
+		else if (this.component is StatBuffUpgradeComponent)
+			(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, true);
+		else if (this.component is ActiveAbilityComponent)
+			(this.component as ActiveAbilityComponent).SetMounted(pController, true);
+		else
+			this.component.SetMounted(true);
+
+		isEmpty = false;
     }
 
     /// <summary>
@@ -109,11 +123,11 @@ public class ShipMount : MonoBehaviour {
     /// </summary>
     /// <param name="component"></param>
     /// <returns></returns>
-    public bool IsComponentCompatible(ShipComponent component)
+    public bool IsComponentCompatible(ShipComponentBase component)
     {
         if (component == null)
             return false;
-        return mountType == component.GetItemType() && mountTier == component.GetComponentTier();
+        return mountType == component.GetItemType() && mountTier >= component.GetComponentTier();
     }
 
     /// <summary>
@@ -167,7 +181,7 @@ public class ShipMount : MonoBehaviour {
     /// Gets the component installed in this mount.
     /// </summary>
     /// <returns></returns>
-    public ShipComponent GetShipComponent()
+    public ShipComponentBase GetShipComponent()
     {
         return component;
     }

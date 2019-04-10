@@ -10,12 +10,16 @@ public class PauseMenuScript : MonoBehaviour
 	public OutputWindow outputWindow;
     public Texture2D menuCursor;
     public Texture2D shootCursor;
+	public GameObject healthUI;
+	public GameObject abilityBar;
 
 
     [SerializeField]
     private Inventory inventory;
     [SerializeField]
     private WeaponController weaponController;
+	[SerializeField]
+	private PlayerController playerController;
     [Header("Audio")]
     [SerializeField]
     private AudioClip buttonHoverSound;
@@ -106,10 +110,13 @@ public class PauseMenuScript : MonoBehaviour
     /// </summary>
     public void PauseGame()
     {
-        IsPaused = true;
+		healthUI.SetActive(false);
+		IsPaused = true;
         ActivatePauseMenu();
         Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
 		outputWindow.Hide();
+		if (playerController.GetAbility() != null)
+			abilityBar.SetActive(false);
         weaponController.menuOpen = true;
         inventory.UpdatePaused(true);
     }
@@ -119,12 +126,16 @@ public class PauseMenuScript : MonoBehaviour
     /// </summary>
     public void ResumeGame()
     {
-        IsPaused = false;
+		healthUI.SetActive(true);
+		IsPaused = false;
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
         optionsMenu.HideAll();
 		outputWindow.Show();
-        Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
+		
+		if (playerController.GetAbility() != null)
+			abilityBar.SetActive(true);
+		Cursor.SetCursor(shootCursor, new Vector2(32, 32), CursorMode.Auto);
         weaponController.menuOpen = false;
         inventory.UpdatePaused(false);
     }
@@ -171,7 +182,7 @@ public class PauseMenuScript : MonoBehaviour
     {
         ActivatePauseMenu();
         optionsMenu.Hide();
-    }
+	}
 
     /// <summary>
     /// Play the hover sound. Used by the Unity Event System.

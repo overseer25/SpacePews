@@ -19,7 +19,7 @@ public class PlayerHealth : MonoBehaviour {
 
     private void Start()
     {
-        heartUI.GetComponent<GridLayoutGroup>().cellSize = new Vector2(heartSize, heartSize);
+        //heartUI.GetComponent<GridLayoutGroup>().cellSize = new Vector2(heartSize, heartSize);
     }
 
     /// <summary>

@@ -77,6 +77,7 @@ public class GraphicsMenu : MonoBehaviour
         transform.position = Vector2.zero;
         confirmationWindow.transform.position = Vector2.zero;
         HideConfirmation();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void LateUpdate()
@@ -349,6 +350,7 @@ public class GraphicsMenu : MonoBehaviour
         {
             Screen.SetResolution(resolutions[selectedResolution].width, resolutions[selectedResolution].height, FullScreenMode.ExclusiveFullScreen, refreshRates[selectedRefreshRate]);
             Application.targetFrameRate = refreshRates[selectedRefreshRate];
+            Time.fixedDeltaTime = 1.0f / refreshRates[selectedRefreshRate];
         }
 
 		if (changedItemCount || firstLoad)

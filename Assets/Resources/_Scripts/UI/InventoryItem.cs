@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -30,8 +31,10 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     internal static bool rightClickDragging = false;
     // If the inventory item is not visible, it is not draggable.
     internal static bool draggable;
-    internal bool destroying = false;
     private bool highlighted = false;
+
+    protected Coroutine animate;
+    protected bool animating;
 
     void Awake()
     {
@@ -49,21 +52,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         }
     }
 
-    private void Update()
-    {
-        if (item != null && item.sprites.Length > 0)
-        {
-            // Player sprite animation
-            if (Time.time > item.changeSprite)
-            {
-                item.changeSprite = Time.time + item.playspeed;
-                animFrameIndex++;
-                if (animFrameIndex >= item.sprites.Length) { animFrameIndex = 0; } // Restart animation
-                image.sprite = item.sprites[animFrameIndex];
-            }
-        }
-    }
-
     /// <summary>
     /// Set the item.
     /// </summary>
@@ -72,7 +60,8 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void SetItem(Item incomingItem, int quantity)
     {
         this.quantity = quantity;
-
+        if (animating)
+            StopCoroutine(animate);
         // If the current item for this inventory item is not empty, destroy the old item first.
         if (item != null)
         {
@@ -98,6 +87,21 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 count.text = "";
         }
         gameObject.SetActive(true);
+        if (item.sprites.Length > 1)
+            animate = StartCoroutine(Animate());
+    }
+
+    private IEnumerator Animate()
+    {
+        var index = 0;
+        while(item != null)
+        {
+            animating = true;
+            image.sprite = item.sprites[index];
+            index = (index+1) % item.sprites.Length;
+            yield return new WaitForSeconds(item.playspeed);
+        }
+        animating = false;
     }
 
     /// <summary>
@@ -288,12 +292,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         dragging = false;
         rightClickDragging = false;
 
-        if (destroying)
-        {
-            SendMessageUpwards("DeleteSlot", positions[0]);
-            destroying = false;
-        }
-        else if (swapping || mounting)
+        if (swapping || mounting)
         {
             SendMessageUpwards("SwapSlots", positions);
             swapping = false;
@@ -341,10 +340,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 else if (rightClickDragging)
                     rightClickSwapping = true;
                 break;
-            case ("DeleteZone"):
-                collider.gameObject.GetComponent<Image>();
-                destroying = true;
-                break;
         }
     }
 
@@ -375,9 +370,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 else if (rightClickDragging)
                     rightClickSwapping = true;
                 break;
-            case ("DeleteZone"):
-                destroying = true;
-                break;
         }
     }
 
@@ -389,7 +381,6 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         swapping = false;
         rightClickSwapping = false;
-        destroying = false;
         mounting = false;
         mountSlot = null;
     }

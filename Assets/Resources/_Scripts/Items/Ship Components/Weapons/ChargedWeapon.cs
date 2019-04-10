@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ChargedWeapon : WeaponComponent
+public class ChargedWeapon : WeaponComponentBase
 {
     // Animations
     public Sprite[] chargingAnimation;
@@ -38,7 +38,7 @@ public class ChargedWeapon : WeaponComponent
 
     protected override void Update()
     {
-        if (!charging && !playingFireAnimation && !coolingDown)
+        if (!charging && !coolingDown)
             base.Update();
     }
 
@@ -95,7 +95,7 @@ public class ChargedWeapon : WeaponComponent
     {
         if (this != null)
         {
-            if (!charged)
+            if (!chargingAnimActive && !charged)
             {
                 StartCoroutine(Charge());
                 StopCoroutine(CancelCharge());
@@ -196,9 +196,6 @@ public class ChargedWeapon : WeaponComponent
     /// </summary>
     private IEnumerator Charge()
     {
-        if (chargingAnimActive || charged)
-            yield break;
-
         chargingAnimActive = true;
         spriteRenderer.sprite = chargingAnimation[chargingIndex];
         chargingIndex++;

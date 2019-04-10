@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -17,35 +18,34 @@ public class PlayerController : MonoBehaviour
     private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
     [Header("State")]
-    [SerializeField]
-    private int healthChunk = 20;
-    public int maxHealth = 200; // Max health the player can currently have.
     public Inventory inventory;
     public DeathScreen deathScreen;
     public PauseMenuScript pauseMenu;
     public GameObject itemTransferConfirmWindow;
+    public GameObject healthUI;
+    public GameObject abilityChargeBar;
     public GameObject respawnPoint;
     [Header("Effects/Sounds")]
     public ParticleEffect deathExplosion;
-    public AudioClip deathSound;
     public ParticleEffect respawnEffect;
-    public AudioClip respawnSound;
+    public AudioSource engineSource;
 
+    // The active ability the player can currently use.
+    private Ability ability;
+    private Coroutine abilityCooldown;
     private float acceleration;
     private Rigidbody2D rigidBody;
     private MovementController movementController;
     private ShipMountController mountController;
     private WeaponController weaponController;
+    private PlayerHealthController healthController;
     private List<Thruster> thrusters; // Contains the thrusters of the ship;
     private Vector2 moveInput;
     private Vector3 previousCameraPosition; // Used to create floaty camera effect.
-    private AudioSource engine;
     private AudioClip engineAudio;
 
-    private int prevHealth;
-    private float healthToDisplay;
-    private PlayerHealth healthUI;
-    private bool dead = false;
+    private bool dead;
+    private bool respawning;
 
     [HideInInspector]
     public bool rotatingLeft;
@@ -53,15 +53,11 @@ public class PlayerController : MonoBehaviour
     public bool rotatingRight;
     [HideInInspector]
     public bool movingForward;
-
-    private int health; // The amount of health the player currently has.
     private float currentCameraZoom;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
     private GameObject ship;
-    private Ship _ship;
-
     private Canvas[] canvases;
 
     /// <summary>
@@ -69,15 +65,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        health = maxHealth;
-        movementController = gameObject.GetComponent<MovementController>();
-        mountController = gameObject.GetComponent<ShipMountController>();
-        weaponController = gameObject.GetComponent<WeaponController>();
-        healthToDisplay = maxHealth / healthChunk;
-        healthUI = GetComponent<PlayerHealth>();
-        healthUI.SetupHealthSprite((int)healthToDisplay);
-        prevHealth = health;
-        engine = GetComponent<AudioSource>();
+        movementController = GetComponent<MovementController>();
+        mountController = GetComponent<ShipMountController>();
+        weaponController = GetComponent<WeaponController>();
+        healthController = GetComponent<PlayerHealthController>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         canvases = transform.parent.GetComponentsInChildren<Canvas>();
         // Initial thrusters.
@@ -91,13 +82,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             ship = shipRenderer.gameObject;
-            _ship = ship.GetComponent<Ship>();
-            //inventory.AddSlots(_ship.inventorySize);
-            //foreach (var mount in mountController.GetStorageMounts())
-            //{
-            //    if (mount.startingComponent != null)
-            //        inventory.AddSlots((mount.startingComponent as StorageComponent).slotCount);
-            //}
         }
         currentCameraZoom = CAMERA_MIN_ZOOM;
     }
@@ -119,37 +103,66 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public int GetHealth()
     {
-        return health;
+        return 0;
+    }
+
+    private void FixedUpdate()
+    {
+        if (!dead)
+        {
+
+            if (movingForward)
+            {
+                movementController.MoveForward();
+                if (thrusters.Count > 0)
+                    PlayEngineSound();
+            }
+            else
+            {
+                movementController.Decelerate();
+                if (engineSource.isPlaying)
+                    StopEngineSound();
+            }
+
+            if (rotatingRight)
+                movementController.RotateRight();
+            else if (rotatingLeft)
+                movementController.RotateLeft();
+        }
     }
 
     /// <summary>
     /// Movement stuff.
     /// </summary>
-    private void FixedUpdate()
+    private void Update()
     {
-        if (movingForward)
+
+        if (healthController.IsDead() && !dead)
         {
-            movementController.MoveForward();
-            if (thrusters.Count > 0)
-                PlayEngineSound();
+            dead = true;
+            Die();
+        }
+        if (ability != null && !PauseMenuScript.IsPaused && !dead)
+        {
+            if (!abilityChargeBar.activeInHierarchy)
+                abilityChargeBar.SetActive(true);
+            abilityChargeBar.GetComponent<ChargeBar>().SetFillPercentage(1 - ability.GetCooldownTimeRemaining());
         }
         else
         {
-            movementController.Decelerate();
-            if (engine.isPlaying)
-                StopEngineSound();
+            if (abilityChargeBar.activeInHierarchy)
+                abilityChargeBar.SetActive(false);
         }
 
-        if (rotatingRight)
-            movementController.RotateRight();
-        else if (rotatingLeft)
-            movementController.RotateLeft();
-        Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + rigidBody.velocity, Color.green);
-        Debug.DrawLine(ship.transform.position, (Vector2)ship.transform.position + ((Vector2)ship.transform.up * 5.0f), Color.white);
-
-        Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,
-                                        new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom), CAMERA_FOLLOW_SPEED * Time.deltaTime);
+        //Camera.main.transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom)
     }
+
+	private void LateUpdate()
+	{
+		var x = Mathf.Lerp(Camera.main.transform.position.x, ship.transform.position.x, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+		var y = Mathf.Lerp(Camera.main.transform.position.y, ship.transform.position.y, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+		Camera.main.transform.position = new Vector3(x, y, currentCameraZoom);
+	}
 
     /// <summary>
     /// Zoom in the player camera, by increments based on constant defined.
@@ -160,7 +173,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom += CAMERA_ZOOM_INCREMENT;
-        foreach(var canvas in canvases)
+        foreach (var canvas in canvases)
         {
             canvas.planeDistance = -currentCameraZoom;
         }
@@ -182,19 +195,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Deals with inputs.
-    /// </summary>
-    void Update()
-    {
-        if(dead)
-        {
-            if (GetThrusterState())
-                SetThrusterState(false);
-            movementController.Stop();
-        }
-    }
-
-    /// <summary>
     /// Update the list of thrusters.
     /// </summary>
     public void UpdateThrusterList()
@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
         thrusters = new List<Thruster>();
         foreach (var thrusterObj in mountController.GetThrusterMounts())
         {
-            if(!thrusterObj.IsEmpty())
+            if (!thrusterObj.IsEmpty())
             {
                 var thruster = thrusterObj.GetShipComponent().gameObject.GetComponentInChildren<Thruster>(true);
                 thrusters.Add(thruster);
@@ -229,10 +229,10 @@ public class PlayerController : MonoBehaviour
         if (thrusters.Count > 0)
         {
             engineAudio = (mountController.GetThrusterMounts().First().GetShipComponent() as ThrusterComponent).engine;
-            engine.clip = engineAudio;
-            engine.volume = 0.0f;
+            engineSource.clip = engineAudio;
+            engineSource.volume = 0.0f;
         }
-        engine.Stop();
+        engineSource.Stop();
         SetThrusterState(false);
     }
 
@@ -263,136 +263,75 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Fade in the engine sound.
+    /// Set the active ability of the player. Also forces the ability to initially cooldown so that it cannot be abused.
     /// </summary>
-    private void PlayEngineSound()
+    /// <param name="ability"></param>
+    public void SetAbility(Ability ability)
     {
-        if (!engine.isPlaying)
-            engine.Play();
-        engine.volume = (engine.volume < 1) ? engine.volume + movementController.GetAcceleration() : 1.0f;
-    }
 
-    /// <summary>
-    /// Fade out the engine sound, and stop it once it reaches 0.
-    /// </summary>
-    private void StopEngineSound()
-    {
-        engine.volume = (engine.volume > 0) ? engine.volume - movementController.GetDeceleration() : 0.0f;
-        if (engine.volume <= 0.0f)
-            engine.Stop();
-    }
+        // If the same, do nothing.
+        if (this.ability == ability)
+            return;
 
-    private void LateUpdate()
-    {
-        if (!CheckIfDead() && prevHealth != health)
+        this.ability = ability;
+        if (ability != null)
         {
-            prevHealth = health;
-            DisplayHealth();
+            abilityChargeBar.GetComponentInChildren<TextMeshProUGUI>().text = ability.abilityName;
+            if (abilityCooldown != null)
+                StopCoroutine(abilityCooldown);
+            abilityCooldown = StartCoroutine(this.ability.Cooldown());
         }
     }
 
     /// <summary>
-    /// Deals with all collisions with the player character
+    /// Get the active ability of the player.
     /// </summary>
-    /// <param name="collider"></param>
-    void OnTriggerEnter2D(Collider2D collider)
+    /// <returns></returns>
+    public Ability GetAbility()
     {
-        switch (collider.gameObject.tag)
-        {
-            case "Immovable":
-            case "Asteroid":
-            case "Mineable":
-                Vector2 direction = Vector2.zero; // Direction of the collision, with the magnitude applied being the speed of the player.
-                // If the player isn't moving, we need to move them away, as they would be able to clip into the immovable otherwise.
-                if (rigidBody.velocity == Vector2.zero)
-                {
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position) * 20;
-                }
-                // The difference here is the player has a velocity, so we will propel them away from the immovable using their velocity magnitude.
-                else
-                {
-                    if (rigidBody.velocity.magnitude > 10)
-                    {
-                        health -= (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
-                    }
-                    direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * 10f;
-                }
-                movementController.Stop();
-                movementController.MoveDirection(direction);
-                break;
-
-            case "Enemy":
-                health -= 5;
-                break;
-        }
+        return ability;
     }
 
     /// <summary>
-    /// Calculates number of hearts to draw, and transparency of last one if necessary. Sends to
-    /// UI for updating.
+    /// Start the cooldown process of the active ability.
     /// </summary>
-    private void DisplayHealth()
+    public void StartAbilityCooldown()
     {
-        healthToDisplay = (float)health / healthChunk;
-        int fullDisplayHealth = health / healthChunk;
-        float remainingHealth = healthToDisplay - fullDisplayHealth;
-        healthUI.RedrawHealthSprites(fullDisplayHealth, remainingHealth);
+        abilityCooldown = StartCoroutine(ability.Cooldown());
     }
 
     /// <summary>
-    /// Check to see if the player is dead, set some variables if he is and render them dead.
+    /// Die really hard.
     /// </summary>
-    /// <returns>Returns true if health is less than or equal to 0</returns>
-    public bool CheckIfDead()
+    public void Die()
     {
-        if (health <= 0)
-        {
-            if (!dead)
-            {
-                dead = true;
-                this.GetComponentInChildren<SpriteRenderer>().enabled = false;
-                mountController.HideMounted();
-                weaponController.UpdateDead(dead);
-                inventory.UpdateDead(dead);
-                movementController.UpdateDead(dead);
-                pauseMenu.UpdateDead(dead);
-                pauseMenu.ResumeGame();
-                this.SendMessage("UpdateDead", true);
-                healthUI.SetIsDead(true);
-                healthUI.RedrawHealthSprites(0, 0);
-                deathScreen.Display();
-                engine.Stop();
+        if (GetThrusterState())
+            SetThrusterState(false);
 
-                movingForward = false;
-                rotatingLeft = false;
-                rotatingRight = false;
-                if (GetThrusterState())
-                    SetThrusterState(false);
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        movementController.Stop();
+        mountController.HideMounted();
+        weaponController.UpdateDead(dead);
+        inventory.UpdateDead(dead);
+        movementController.UpdateDead(dead);
+        pauseMenu.UpdateDead(dead);
+        pauseMenu.ResumeGame();
+        deathScreen.Display();
+        healthUI.SetActive(false);
+        if (GetAbility() != null)
+            abilityChargeBar.SetActive(false);
 
-                //spawn explosion effect.
-                ParticleManager.PlayParticle(deathExplosion, gameObject);
+        engineSource.Stop();
 
-                StartCoroutine(Respawn());
-            }
-        }
-        return health <= 0;
-    }
+        movingForward = false;
+        rotatingLeft = false;
+        rotatingRight = false;
 
-    /// <summary>
-    /// Gives the result if the player is dead or not.
-    /// </summary>
-    /// <returns>True if player is dead, false otherwise.</returns>
-    public bool IsDead()
-    {
-        return dead;
-    }
+        //spawn explosion effect.
+        ParticleManager.PlayParticle(deathExplosion, gameObject);
 
-    /// <summary>
-    /// Kill the player. This can be called when something other than a world object kills the player (eg suicide button).
-    /// </summary>
-    public void Kill()
-    {
-        health = 0;
+        StartCoroutine(Respawn());
+
     }
 
     /// <summary>
@@ -401,31 +340,93 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Respawn()
     {
-        // Wait before beginning the respawn animation.
-        yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
+        if (!respawning)
+        {
+            respawning = true;
+            // Wait before beginning the respawn animation.
+            yield return new WaitForSeconds(RESPAWN_WAIT_TIME);
 
-        // Spawn respawn effect.
-        ParticleManager.PlayParticle(respawnEffect, respawnPoint);
+            // Spawn respawn effect.
+            ParticleManager.PlayParticle(respawnEffect, respawnPoint);
 
-        transform.position = respawnPoint.transform.position;
-        ship.transform.rotation = respawnPoint.transform.rotation;
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
-        deathScreen.Hide();
+            transform.position = respawnPoint.transform.position;
+            ship.transform.rotation = respawnPoint.transform.rotation;
+            Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
+            deathScreen.Hide();
 
-        // Wait before returning control to the player.
-        yield return new WaitForSeconds(RESPAWN_ANIMATION_TIME);
+            // Wait before returning control to the player.
+            yield return new WaitForSeconds(RESPAWN_ANIMATION_TIME);
 
-        dead = false;
-        health = maxHealth;
-        this.GetComponentInChildren<SpriteRenderer>().enabled = true;
-        mountController.ShowMounted();
-        weaponController.UpdateDead(dead);
-        inventory.UpdateDead(dead);
-        movementController.UpdateDead(dead);
-        pauseMenu.UpdateDead(dead);
-        this.SendMessage("UpdateDead", false);
-        healthUI.SetIsDead(false);
-        healthUI.ResetHealth();
+            dead = false;
+            GetComponentInChildren<SpriteRenderer>().enabled = true;
+            mountController.ShowMounted();
+            weaponController.UpdateDead(dead);
+            inventory.UpdateDead(dead);
+            movementController.UpdateDead(dead);
+            pauseMenu.UpdateDead(dead);
+            healthUI.SetActive(true);
+            if (GetAbility() != null)
+                abilityChargeBar.SetActive(true);
 
+            respawning = false;
+            healthController.ResetHealth(GetComponent<Actor>().health / 2);
+        }
+    }
+
+    /// <summary>
+    /// Fade in the engine sound.
+    /// </summary>
+    private void PlayEngineSound()
+    {
+        if (!engineSource.isPlaying)
+            engineSource.Play();
+        engineSource.volume = (engineSource.volume < 0.5f) ? engineSource.volume + movementController.GetAcceleration() : 0.5f;
+    }
+
+    /// <summary>
+    /// Fade out the engine sound, and stop it once it reaches 0.
+    /// </summary>
+    private void StopEngineSound()
+    {
+        engineSource.volume = (engineSource.volume > 0) ? engineSource.volume - movementController.GetDeceleration() : 0.0f;
+        if (engineSource.volume <= 0.0f)
+            engineSource.Stop();
+    }
+
+    /// <summary>
+    /// Deals with all collisions with the player character
+    /// </summary>
+    /// <param name="collider"></param>
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        switch (collider.gameObject.tag)
+        {
+            case "Immovable":
+            case "Asteroid":
+            case "Mineable":
+                Vector2 direction = Vector2.zero;
+                if (rigidBody.velocity.magnitude > 10)
+                {
+					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
+					healthController.TakeDamage(damage);
+					var popUpText = PopUpTextPool.current.GetPooledObject();
+					if(popUpText != null)
+					{
+						popUpText.GetComponent<PopUpText>().Initialize(gameObject, damage.ToString(), 10f, Color.red);
+					}
+                }
+                direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;
+
+                movementController.Stop();
+                if (!healthController.IsDead())
+                {
+                    movementController.MoveDirection(direction, true);
+                }
+                break;
+
+            case "Enemy":
+                healthController.TakeDamage(5);
+                break;
+        }
     }
 }
