@@ -305,15 +305,18 @@ public class Projectile : MonoBehaviour
             ParticleManager.PlayParticle(destroyEffect, gameObject.transform.position, gameObject.transform.rotation);
 
             // Current damage is set on collisions with entities that can take damage.
-            var popUptext = PopUpTextPool.current.GetPooledObject() as PopUpText;
-            if(popUptext == null)
-                return;
+			if(OptionsMenu.current.graphicsMenu.DamageNumbersEnabled())
+			{
+				var popUptext = PopUpTextPool.current.GetPooledObject() as PopUpText;
+				if (popUptext == null)
+					return;
 
-            // Spawn popup text within a radius of 2 from the collision.
-            if (!isCritical)
-                popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.white, radius: 1.0f, playDefaultSound: false);
-            else
-                popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.yellow, radius: 1.0f, playDefaultSound: false);
+				// Spawn popup text within a radius of 2 from the collision.
+				if (!isCritical)
+					popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.white, radius: 1.0f, playDefaultSound: false);
+				else
+					popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.yellow, radius: 1.0f, playDefaultSound: false);
+			}
         }
         StopCoroutine(PlayFireAnimation());
         StopCoroutine(PlayAnimation());

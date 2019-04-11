@@ -400,10 +400,13 @@ public class PlayerController : MonoBehaviour
                 {
 					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
 					healthController.TakeDamage(damage);
-					var popUpText = PopUpTextPool.current.GetPooledObject() as PopUpText;
-					if(popUpText != null)
+					if(OptionsMenu.current.graphicsMenu.DamageNumbersEnabled())
 					{
-						popUpText.Initialize(gameObject, damage.ToString(), 10f, Color.red);
+						var popUpText = PopUpTextPool.current.GetPooledObject() as PopUpText;
+						if (popUpText != null)
+						{
+							popUpText.Initialize(gameObject, damage.ToString(), 10f, Color.red);
+						}
 					}
                 }
                 direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;

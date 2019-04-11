@@ -10,6 +10,7 @@ public class OptionsMenu : MonoBehaviour
     public ControlsMenu controlsMenu;
     public AudioMenu audioMenu;
     public GraphicsMenu graphicsMenu;
+	public static OptionsMenu current;
 
     [Header("Sound")]
     public AudioClip hoverSound;
@@ -24,6 +25,8 @@ public class OptionsMenu : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         transform.position = Vector2.zero;
+		if (current == null)
+			current = this;
     }
 
     private void Update()

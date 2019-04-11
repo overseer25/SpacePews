@@ -9,11 +9,12 @@ using UnityEngine.UI;
 
 public class GraphicsMenu : MonoBehaviour
 {
-    [Header("Video Settings")]
+    [Header("Graphics Settings")]
     public Dropdown resolutionSelection;
     public Dropdown aspectSelection;
     public Dropdown refreshRateSelection;
     public Toggle vsyncToggle;
+	public Toggle damageNumbers;
     public Slider itemCountSlider;
     public TextMeshProUGUI itemCountText;
     public Slider effectCountSlider;
@@ -41,6 +42,7 @@ public class GraphicsMenu : MonoBehaviour
     private int previousItemCount;
     private int previousEffectCount;
     private bool previousVsync;
+	private bool previousDamageNumbers;
 
     private List<int> refreshRates;
     private List<string> aspectRatios;
@@ -48,6 +50,7 @@ public class GraphicsMenu : MonoBehaviour
 
     // Variables for selections.
     private bool vsyncEnabled;
+	private bool damageNumbersEnabled;
     private int selectedRefreshRate;
     private int selectedResolution;
     private int selectedAspectRatio;
@@ -64,6 +67,7 @@ public class GraphicsMenu : MonoBehaviour
     private bool changedItemCount = false;
     private bool changedEffectCount = false;
     private bool changedVsync = false;
+	private bool changedDamageNumbers = false;
 
     private void Start()
     {
@@ -249,13 +253,36 @@ public class GraphicsMenu : MonoBehaviour
         vsyncEnabled = val;
     }
 
+	/// <summary>
+	/// Toggle whether to display damage numbers or not.
+	/// </summary>
+	/// <param name="val"></param>
+	public void ToggleDamageNumbers(bool val)
+	{
+		if (val == previousDamageNumbers)
+			changedDamageNumbers = false;
+		else
+			changedDamageNumbers = true;
+
+		damageNumbersEnabled = val;
+	}
+
+	/// <summary>
+	/// Are damage numbers enabled? Useful for other classes that attempt to generate damage numbers.
+	/// </summary>
+	/// <returns></returns>
+	public bool DamageNumbersEnabled()
+	{
+		return damageNumbersEnabled;
+	}
+
     /// <summary>
     /// Have changes been made?
     /// </summary>
     /// <returns></returns>
     public bool ChangesMade()
     {
-        return changedAspectRatio || changedResolution || changedRefreshRate || changedItemCount || changedEffectCount || changedVsync;
+        return changedAspectRatio || changedResolution || changedRefreshRate || changedItemCount || changedEffectCount || changedVsync || changedDamageNumbers;
     }
 
     /// <summary>
@@ -346,6 +373,11 @@ public class GraphicsMenu : MonoBehaviour
                 QualitySettings.vSyncCount = 0;
         }
 
+		if(changedDamageNumbers || firstLoad)
+		{
+			ToggleDamageNumbers(damageNumbersEnabled);
+		}
+
         if(changedResolution || changedRefreshRate || firstLoad)
         {
             Screen.SetResolution(resolutions[selectedResolution].width, resolutions[selectedResolution].height, FullScreenMode.ExclusiveFullScreen, refreshRates[selectedRefreshRate]);
@@ -360,17 +392,14 @@ public class GraphicsMenu : MonoBehaviour
 
 		// Perhaps we include sliders for these pools?
 		ProjectilePool.current.SetPoolSize(100);
-		PopUpTextPool.current.SetPoolSize(50);
+		if (DamageNumbersEnabled())
+			PopUpTextPool.current.SetPoolSize(50);
+		else
+			PopUpTextPool.current.SetPoolSize(0);
 		CurrencyPool.current.SetPoolSize(25);
 
         firstLoad = false;
-
-        changedAspectRatio = false;
-        changedResolution = false;
-        changedRefreshRate = false;
-        changedItemCount = false;
-        changedEffectCount = false;
-        changedVsync = false;
+		ToggleChangeFlags(false);
     }
 
     /// <summary>
@@ -378,13 +407,7 @@ public class GraphicsMenu : MonoBehaviour
     /// </summary>
     public void CancelChanges()
     {
-        changedAspectRatio = false;
-        changedResolution = false;
-        changedRefreshRate = false;
-        changedItemCount = false;
-        changedEffectCount = false;
-        changedVsync = false;
-
+		ToggleChangeFlags(false);
         LoadFromFile();
     }
 
@@ -394,65 +417,30 @@ public class GraphicsMenu : MonoBehaviour
     /// <returns></returns>
     public GraphicsData ResetToDefault()
     {
-        vsyncEnabled = false;
-        selectedAspectRatio = 0;
-        selectedResolution = 0;
-        selectedRefreshRate = 0;
-        itemCount = 64;
-        effectCount = 64;
-
-        var data = new GraphicsData()
-        {
-            vsync = vsyncEnabled,
-            aspectRatio = selectedAspectRatio,
-            resolution = selectedResolution,
-            framerate = selectedRefreshRate,
-            itemCount = itemCount,
-            effectCount = effectCount
-        };
-
-        SaveToFile();
+		var data = new GraphicsData();
+        SaveToFile(data);
         return data;
     }
 
-    /// <summary>
-    /// Saves the settings to file.
-    /// </summary>
-    public void SaveToFile()
-    {
-        var data = new GraphicsData()
-        {
-            vsync = vsyncEnabled,
-            aspectRatio = selectedAspectRatio,
-            resolution = selectedResolution,
-            framerate = selectedRefreshRate,
-            itemCount = itemCount,
-            effectCount = effectCount
-        };
+	/// <summary>
+	/// Public method called by external classes/objects on the graphics menu which takes the settings the user
+	/// specified and saves them.
+	/// </summary>
+	public void SaveToFile()
+	{
+		var data = new GraphicsData()
+		{
+			aspectRatio = selectedAspectRatio,
+			resolution = selectedResolution,
+			framerate = selectedRefreshRate,
+			itemCount = itemCount,
+			effectCount = effectCount,
+			vsync = vsyncEnabled,
+			damageNumbers = damageNumbersEnabled
+		};
 
-        var json = JsonUtility.ToJson(data);
-
-        try
-        {
-            using (FileStream stream = File.Create(fileLocation))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    writer.WriteLine(json);
-                }
-            }
-        }
-        catch (Exception)
-        {
-            Debug.Log("Failed to save graphics file " + fileLocation + ", reverting to previously saved values.");
-            LoadFromFile();
-        }
-        finally
-        {
-            UpdateSettings(data);
-            ApplyChanges();
-        }
-    }
+		SaveToFile(data);
+	}
 
     /// <summary>
     /// Loads the settings from file.
@@ -476,7 +464,7 @@ public class GraphicsMenu : MonoBehaviour
             else
             {
                 data = ResetToDefault();
-                SaveToFile();
+                SaveToFile(data);
             }
         }
         catch (Exception)
@@ -491,9 +479,102 @@ public class GraphicsMenu : MonoBehaviour
         }
     }
 
-    private void UpdateSettings(GraphicsData data)
+	public void Show()
+	{
+		for (int i = 0; i < this.transform.childCount; i++)
+		{
+			this.transform.GetChild(i).gameObject.SetActive(true);
+		}
+		isOpen = true;
+	}
+
+	public void Hide()
+	{
+		for (int i = 0; i < this.transform.childCount; i++)
+		{
+			this.transform.GetChild(i).gameObject.SetActive(false);
+		}
+		isOpen = false;
+	}
+
+	/// <summary>
+	/// Plays the control menu click sound.
+	/// </summary>
+	public void PlayClickSound()
+	{
+		audioSource.PlayOneShot(clickSound);
+	}
+
+	/// <summary>
+	/// Plays the hover sound.
+	/// </summary>
+	public void PlayHoverSound()
+	{
+		audioSource.PlayOneShot(hoverSound);
+	}
+
+	/// <summary>
+	/// Plays the pop up sound for the save changes window.
+	/// </summary>
+	public void PlayPopUpSound()
+	{
+		audioSource.PlayOneShot(saveChangesPopUpSound);
+	}
+
+	/// <summary>
+	/// Handles the event that the input hovers over the apply button.
+	/// </summary>
+	public void ApplyButtonHoverEvent()
+	{
+		if (applyButton.interactable)
+			PlayHoverSound();
+	}
+
+	/// <summary>
+	/// Handles the event that the input hovers over the apply button.
+	/// </summary>
+	public void ApplyButtonClickEvent()
+	{
+		if (applyButton.interactable)
+			PlayClickSound();
+	}
+
+	/// <summary>
+	/// Saves the data to file.
+	/// </summary>
+	private void SaveToFile(GraphicsData data)
+	{
+		var json = JsonUtility.ToJson(data);
+		try
+		{
+			using (FileStream stream = File.Create(fileLocation))
+			{
+				using (StreamWriter writer = new StreamWriter(stream))
+				{
+					writer.WriteLine(json);
+				}
+			}
+		}
+		catch (Exception)
+		{
+			Debug.Log("Failed to save graphics file " + fileLocation + ", reverting to previously saved values.");
+			LoadFromFile();
+		}
+		finally
+		{
+			UpdateSettings(data);
+			ApplyChanges();
+		}
+	}
+
+	/// <summary>
+	/// Updates the settings based on the incoming data. This doesn't apply the changes, but updates the UI.
+	/// </summary>
+	/// <param name="data"></param>
+	private void UpdateSettings(GraphicsData data)
     {
         vsyncEnabled = data.vsync;
+		damageNumbersEnabled = data.damageNumbers;
         selectedAspectRatio = data.aspectRatio;
         selectedResolution = data.resolution;
         selectedRefreshRate = data.framerate;
@@ -506,6 +587,7 @@ public class GraphicsMenu : MonoBehaviour
         previousItemCount = itemCount;
         previousEffectCount = effectCount;
         previousVsync = vsyncEnabled;
+		previousDamageNumbers = damageNumbersEnabled;
 
         UpdateAspectRatioDropdown();
 
@@ -514,68 +596,29 @@ public class GraphicsMenu : MonoBehaviour
         effectCountSlider.value = effectCount;
         effectCountText.text = effectCount.ToString();
         vsyncToggle.isOn = vsyncEnabled;
+		damageNumbers.isOn = damageNumbersEnabled;
     }
 
-    public void Show()
-    {
-        for (int i = 0; i < this.transform.childCount; i++)
-        {
-            this.transform.GetChild(i).gameObject.SetActive(true);
-        }
-        isOpen = true;
-    }
+	/// <summary>
+	/// Toggle all the "changed" flags.
+	/// </summary>
+	/// <param name="val">State of bools.</param>
+	private void ToggleChangeFlags(bool val)
+	{
+		changedAspectRatio = val;
+		changedResolution = val;
+		changedRefreshRate = val;
+		changedItemCount = val;
+		changedEffectCount = val;
+		changedVsync = val;
+		changedDamageNumbers = val;
+	}
 
-    public void Hide()
-    {
-        for (int i = 0; i < this.transform.childCount; i++)
-        {
-            this.transform.GetChild(i).gameObject.SetActive(false);
-        }
-        isOpen = false;
-    }
-
-    /// <summary>
-    /// Plays the control menu click sound.
-    /// </summary>
-    public void PlayClickSound()
-    {
-        audioSource.PlayOneShot(clickSound);
-    }
-
-    /// <summary>
-    /// Plays the hover sound.
-    /// </summary>
-    public void PlayHoverSound()
-    {
-        audioSource.PlayOneShot(hoverSound);
-    }
-
-    /// <summary>
-    /// Plays the pop up sound for the save changes window.
-    /// </summary>
-    public void PlayPopUpSound()
-    {
-        audioSource.PlayOneShot(saveChangesPopUpSound);
-    }
-
-    /// <summary>
-    /// Handles the event that the input hovers over the apply button.
-    /// </summary>
-    public void ApplyButtonHoverEvent()
-    {
-        if (applyButton.interactable)
-            PlayHoverSound();
-    }
-
-    /// <summary>
-    /// Handles the event that the input hovers over the apply button.
-    /// </summary>
-    public void ApplyButtonClickEvent()
-    {
-        if (applyButton.interactable)
-            PlayClickSound();
-    }
-
+	/// <summary>
+	/// Returns a aspect ratio string representation of the incoming float.
+	/// </summary>
+	/// <param name="val"></param>
+	/// <returns></returns>
     private string GetAspectRatio(float val)
     {
         if (val >= 3.5f)
