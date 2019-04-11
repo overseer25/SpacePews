@@ -7,7 +7,7 @@ public class ActiveAbilityComponent : UpgradeComponentBase
 	/// <summary>
 	/// The ability this component gives.
 	/// </summary>
-	public Ability ability;
+	public AbilityBase ability;
 
 	/// <summary>
 	/// Given the player, sets the ability of the player, or removes it.

@@ -6,7 +6,7 @@ using UnityEngine;
 /// Represents a dash ability, which accelerates the player forward at a high speed.
 /// </summary>
 [CreateAssetMenu(menuName = "Abilities/Dash Ability")]
-public class DashAbility : Ability
+public class DashAbility : AbilityBase
 {
     /// <summary>
     /// The speed the dash maxes out to.

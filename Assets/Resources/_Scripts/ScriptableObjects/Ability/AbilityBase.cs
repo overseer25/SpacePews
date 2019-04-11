@@ -7,7 +7,7 @@ using UnityEngine;
 /// Generic class used for designing a player's active ability. Upgrade components that the player collects can give them
 /// an active ability.
 /// </summary>
-public abstract class Ability : ScriptableObject, IEquatable<Ability>
+public abstract class AbilityBase : ScriptableObject, IEquatable<AbilityBase>
 {
 	public string abilityName;
     public ParticleEffect useEffect;
@@ -51,7 +51,7 @@ public abstract class Ability : ScriptableObject, IEquatable<Ability>
 	/// </summary>
 	/// <param name="other"></param>
 	/// <returns></returns>
-	public bool Equals(Ability other)
+	public bool Equals(AbilityBase other)
 	{
 		return this == other;
 	}
@@ -62,7 +62,7 @@ public abstract class Ability : ScriptableObject, IEquatable<Ability>
 	/// <param name="a1"></param>
 	/// <param name="a2"></param>
 	/// <returns></returns>
-	public static bool operator ==(Ability a1, Ability a2)
+	public static bool operator ==(AbilityBase a1, AbilityBase a2)
 	{
 		if (ReferenceEquals(a1, a2))
 			return true;
@@ -80,7 +80,7 @@ public abstract class Ability : ScriptableObject, IEquatable<Ability>
 	/// <param name="a1"></param>
 	/// <param name="a2"></param>
 	/// <returns></returns>
-	public static bool operator !=(Ability a1, Ability a2)
+	public static bool operator !=(AbilityBase a1, AbilityBase a2)
 	{
 		return !(a1 == a2);
 	}
