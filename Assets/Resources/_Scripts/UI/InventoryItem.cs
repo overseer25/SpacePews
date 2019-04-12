@@ -71,12 +71,13 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         else if (incomingItem != null)
             item = Instantiate(incomingItem, transform.position, Quaternion.identity, transform) as Item;
         else
-            Clear();
+		{
+			Clear();
+			return;
+		}
 
         // Hide the item so that it isn't displayed in the game world.
         item.gameObject.SetActive(false);
-
-        image.sprite = (item != null) ? item.sprites[0] : null;
         image.color = (item != null) ? new Color(1.0f, 1.0f, 1.0f, 0.7f) : new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
         if (count != null)
@@ -87,19 +88,19 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 count.text = "";
         }
         gameObject.SetActive(true);
-        if (item.sprites.Length > 1)
-            animate = StartCoroutine(Animate());
+		if (item.animated)
+			animate = StartCoroutine(Animate());
+		else
+			image.sprite = item.itemSprite;
     }
 
     private IEnumerator Animate()
     {
-        var index = 0;
         while(item != null)
         {
             animating = true;
-            image.sprite = item.sprites[index];
-            index = (index+1) % item.sprites.Length;
-            yield return new WaitForSeconds(item.playspeed);
+            image.sprite = item.idleAnimation.GetNextFrame();
+            yield return new WaitForSeconds(item.idleAnimation.playSpeed);
         }
         animating = false;
     }
@@ -221,6 +222,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         image.sprite = null;
         quantity = 0;
         Destroy(item.gameObject);
+		item = null;
         gameObject.SetActive(false);
     }
 

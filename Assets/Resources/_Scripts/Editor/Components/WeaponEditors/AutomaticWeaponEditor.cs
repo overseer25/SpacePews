@@ -8,16 +8,23 @@ public class AutomaticWeaponEditor: BaseWeaponEditor
 {
     public override void OnInspectorGUI()
     {
-        var automaticWeapon = target as AutomaticWeapon;
+        var automaticWeapon = serializedObject.targetObject as AutomaticWeapon;
         EditorGUILayout.Space();
 
 		// ----- PROPERTIES SECTION ----- //
-		DisplayPropertySection(automaticWeapon);
+		DisplayItemProperties(false);
+		automaticWeapon.itemType = ItemType.Turret;
+		automaticWeapon.visible = true;
 
-        // ----- WEAPON STATS SECTION ----- //
-        DisplayWeaponStatsSection();
+		// ----- WEAPON STATS SECTION ----- //
+		EditorGUILayout.LabelField("Weapon Stats", EditorStyles.boldLabel);
+		DisplayProjectile();
+		DisplayFirerate();
+		DisplayShotspread();
 
-        // ----- AUDIO/VISUAL SECTION ----- //
-        DisplayAudioVisualSection(automaticWeapon);
-    }
+		// ----- AUDIO/VISUAL SECTION ----- //
+		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
+		DisplayAnimation();
+		DisplayFireAnimation();
+	}
 }

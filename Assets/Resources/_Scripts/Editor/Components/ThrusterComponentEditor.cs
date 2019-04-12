@@ -4,15 +4,15 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(ThrusterComponent))]
-public class ThrusterComponentEditor : ComponentBaseEditor
+public class ThrusterComponentEditor : BaseItemEditor
 {
     public override void OnInspectorGUI()
     {
-        var thrusterComponent = target as ThrusterComponent;
+        var thrusterComponent = serializedObject.targetObject as ThrusterComponent;
         EditorGUILayout.Space();
 
 		// ----- PROPERTIES SECTION ----- //
-		DisplayPropertiesSection();
+		DisplayItemProperties(false);
 		thrusterComponent.itemType = ItemType.Thruster;
 		thrusterComponent.visible = true;
 
@@ -48,9 +48,10 @@ public class ThrusterComponentEditor : ComponentBaseEditor
         EditorGUILayout.EndHorizontal();
 
 		// ----- AUDIO/VISUAL SECTION ----- //
-		DisplayAudioVisualSection(thrusterComponent);
+		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
+		DisplayAnimation();
 
-        EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("engine"), true, GUILayout.MaxWidth(500f));

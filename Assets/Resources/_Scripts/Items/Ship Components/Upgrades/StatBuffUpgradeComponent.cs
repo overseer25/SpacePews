@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// A stat buff upgrade component. These kinds of components can apply several buffs to the player.
 /// </summary>
-public class StatBuffUpgradeComponent : UpgradeComponentBase
+public class StatBuffUpgradeComponent : ShipComponentBase
 {
 	/// <summary>
 	/// The buffs that will be applied to the player.

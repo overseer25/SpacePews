@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveAbilityComponent : UpgradeComponentBase
+public class ActiveAbilityComponent : ShipComponentBase
 {
 	/// <summary>
 	/// The ability this component gives.

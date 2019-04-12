@@ -4,15 +4,15 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(StorageComponent))]
-public class StorageComponentEditor : ComponentBaseEditor
+public class StorageComponentEditor : BaseItemEditor
 {
     public override void OnInspectorGUI()
     {
-        var storageComponent = target as StorageComponent;
+        var storageComponent = serializedObject.targetObject as StorageComponent;
         EditorGUILayout.Space();
 
 		// ----- PROPERTIES SECTION ----- //
-		DisplayPropertiesSection();
+		DisplayItemProperties(false);
 		storageComponent.itemType = ItemType.Storage;
 		storageComponent.visible = false;
 
@@ -24,6 +24,7 @@ public class StorageComponentEditor : ComponentBaseEditor
 		EditorGUILayout.EndHorizontal();
 
 		// ----- AUDIO/VISUAL SECTION ----- //
-		DisplayAudioVisualSection(storageComponent);
-    }
+		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
+		DisplayAnimation();
+	}
 }

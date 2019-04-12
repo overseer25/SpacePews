@@ -4,8 +4,7 @@ using UnityEngine;
 public class ParticleEffect : MonoBehaviour
 {
 
-    public Sprite[] particleSprites;
-    public float playspeed = 0.1f;
+    public SpriteAnimation particleSprites;
     [SerializeField]
     private AudioClip sound;
 	private AudioSource audioSource;
@@ -34,13 +33,14 @@ public class ParticleEffect : MonoBehaviour
 	/// <returns></returns>
 	private IEnumerator PlayEffect()
 	{
-		var index = 0;
-		while(index != particleSprites.Length)
+		Sprite frame;
+		do
 		{
-			renderer.sprite = particleSprites[index];
-			index++;
-			yield return new WaitForSeconds(playspeed);
-		}
+			frame = particleSprites.GetNextFrame();
+			renderer.sprite = frame;
+			yield return new WaitForSeconds(particleSprites.playSpeed);
+
+		} while (frame != null);
 
 		DisableEffect();
 		yield return null;
@@ -53,7 +53,9 @@ public class ParticleEffect : MonoBehaviour
 	{
 		renderer.enabled = true;
 		isFree = false;
-		audioSource.PlayOneShot(sound);
+		if(sound != null)
+			audioSource.PlayOneShot(sound);
+		particleSprites.ResetAnimation();
 		if (animate != null)
 			Debug.Log("The particle effect " + this + " is already playing. The particle effect  must not have been disabled before reuse.");
 		else
@@ -90,7 +92,6 @@ public class ParticleEffect : MonoBehaviour
     public void Copy(ParticleEffect other)
     {
         particleSprites = other.particleSprites;
-        playspeed = other.playspeed;
         sound = other.sound;
     }
 

@@ -1129,6 +1129,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 212255090437182456, guid: 42de4011d8374b246a429f26f336c559,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300002, guid: 45a440c91ea86e24f877e7843efc4644,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42de4011d8374b246a429f26f336c559, type: 3}
 --- !u!4 &598166525 stripped
@@ -2404,6 +2410,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114576092819483036, guid: 81dbb57f685d7fc46bd1dab3690a1ee0,
+        type: 3}
+      propertyPath: stackable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114576092819483036, guid: 81dbb57f685d7fc46bd1dab3690a1ee0,
+        type: 3}
+      propertyPath: stackSize
+      value: 999
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81dbb57f685d7fc46bd1dab3690a1ee0, type: 3}
 --- !u!1001 &1399471875
@@ -2828,7 +2844,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 153, guid: 2d09ea29d6860b342a42f2644c87efda, type: 3}
       propertyPath: m_Name
-      value: MiningLaser2
+      value: MiningLaser
       objectReference: {fileID: 0}
     - target: {fileID: 300, guid: 2d09ea29d6860b342a42f2644c87efda, type: 3}
       propertyPath: m_LocalPosition.x

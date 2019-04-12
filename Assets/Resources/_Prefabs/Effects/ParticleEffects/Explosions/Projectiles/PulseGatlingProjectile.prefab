@@ -93,12 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73dcea4224278b48a8c0fd754ed92ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSprites:
-  - {fileID: 21300000, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
-  - {fileID: 21300002, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
-  - {fileID: 21300004, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
-  - {fileID: 21300006, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
-  playspeed: 0.05
+  particleSprites: {fileID: 11400000, guid: 5447dfc5f7f2bae439675f1dd8b07357, type: 2}
   sound: {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
 --- !u!82 &6059261822040840589
 AudioSource:

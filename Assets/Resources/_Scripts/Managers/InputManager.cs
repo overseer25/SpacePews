@@ -187,7 +187,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleWeaponControls()
     {
-        if (!hController.IsDead() && !PauseMenuScript.IsPaused)
+        if (!hController.IsDead())
         {
             if (wController.currentComponent is ChargedWeapon)
             {
