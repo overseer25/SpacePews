@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(ParticleEffect))]
+[CanEditMultipleObjects]
 public class ParticleEffectEditor : Editor
 {
 	private double changeSprite = 0;

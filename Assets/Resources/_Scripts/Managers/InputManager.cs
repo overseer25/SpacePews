@@ -220,7 +220,7 @@ public class InputManager : MonoBehaviour
             else
                 weapon.CancelFire();
         }
-        else if (Input.GetKeyUp(controls.fire) && !weapon.IsCoolingDown() && !weapon.IsDecharging())
+        else if (Input.GetKeyUp(controls.fire))
         {
             if (weapon.IsCharged())
             {

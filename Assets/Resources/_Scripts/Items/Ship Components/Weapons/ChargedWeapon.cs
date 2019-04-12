@@ -207,26 +207,30 @@ public class ChargedWeapon : WeaponComponentBase
 	/// </summary>
 	private IEnumerator Charge()
 	{
+		if (chargingAnimActive)
+			yield return null;
+
 		chargingAnimActive = true;
+		chargingAnimation.ResetAnimation();
+		PlayChargeSound();
 		var sprite = chargingAnimation.GetNextFrame();
 		// Once the animation finishes, exit.
-		if (sprite == null)
+		while (true)
 		{
-			charged = true;
-			chargingAnimation.ResetAnimation();
-			yield break;
+			spriteRenderer.sprite = sprite;
+			sprite = chargingAnimation.GetNextFrame();
+			if (sprite == null)
+				break;
+			yield return new WaitForSeconds(chargeSound.length / chargingAnimation.frames.Length);
 		}
-		spriteRenderer.sprite = sprite;
-		playChargeSound();
-		yield return new WaitForSeconds(chargeSound.length / chargingAnimation.frames.Length);
-
+		charged = true;
 		chargingAnimActive = false;
 	}
 
 	/// <summary>
 	/// Play the charge sound once, and begins the delay for the charged sound.
 	/// </summary>
-	private void playChargeSound()
+	private void PlayChargeSound()
 	{
 		if (!audioSource.isPlaying)
 		{

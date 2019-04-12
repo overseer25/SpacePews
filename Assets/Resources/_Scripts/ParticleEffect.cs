@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ParticleEffect : MonoBehaviour
 {
-
     public SpriteAnimation particleSprites;
     [SerializeField]
     private AudioClip sound;
@@ -11,9 +10,13 @@ public class ParticleEffect : MonoBehaviour
 	private new SpriteRenderer renderer;
 	private bool isFree;
 	private Coroutine animate;
+	private static SpriteAnimation defaultAnimation;
 
 	private void Awake()
 	{
+		defaultAnimation = Resources.Load("_ScriptableObjects/SpriteAnimations/ParticleAnimations/DefaultParticleAnim") as SpriteAnimation;
+		if (defaultAnimation == null)
+			Debug.LogError("Default particle effect could not be found");
 		audioSource = GetComponent<AudioSource>();
 		renderer = GetComponent<SpriteRenderer>();
 	}
@@ -91,7 +94,10 @@ public class ParticleEffect : MonoBehaviour
     /// <param name="other"></param>
     public void Copy(ParticleEffect other)
     {
-        particleSprites = other.particleSprites;
+		if (other.particleSprites == null)
+			particleSprites = defaultAnimation;
+		else
+			particleSprites = other.particleSprites;
         sound = other.sound;
     }
 

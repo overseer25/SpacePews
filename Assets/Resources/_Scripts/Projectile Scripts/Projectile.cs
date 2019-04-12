@@ -71,28 +71,29 @@ public class Projectile : MonoBehaviour
     /// </summary>
     private bool waitForSplit;
 
-
-    [HideInInspector]
     public AudioClip fireSound;
-    [HideInInspector]
     public ParticleEffect destroyEffect;
-    [HideInInspector]
     public int lifetime;
-    [HideInInspector]
-    public float playspeed;
-    public float fireSpritesPlayspeed;
+
+	/// <summary>
+	/// Is the projectile animated when traveling?
+	/// </summary>
+	public bool animated;
+
+	/// <summary>
+	/// Static sprite when not animated.
+	/// </summary>
+	public Sprite sprite;
 
     /// <summary>
-    /// The sprites of the projectile. Only animates if there is more than one sprite, otherwise is static.
+    /// The sprites of the projectile if animated.
     /// </summary>
-    [SerializeField]
-    public Sprite[] sprites;
+    public SpriteAnimation sprites;
 
     /// <summary>
     /// The sprite animation that plays when the projectile is fired. Does not loop.
     /// </summary>
-    [SerializeField]
-    public Sprite[] fireSprites;
+    public SpriteAnimation fireSprites;
 
     internal Rigidbody2D rigidBody;
     internal SpriteRenderer spriteRenderer;
@@ -102,10 +103,7 @@ public class Projectile : MonoBehaviour
 
     
     private int damage;
-    private int fireSpritesIndex;
-
-    private bool fireAnimPlaying;
-    private bool animPlaying;
+	private Coroutine animate;
 
     protected virtual void Awake()
     {
@@ -113,13 +111,23 @@ public class Projectile : MonoBehaviour
         random.Next();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidBody = GetComponent<Rigidbody2D>();
-        if (spriteRenderer == null)
-            Debug.LogError("WARNING: Projectile " + this + " does not contain a sprite renderer. This will cause problems with rendering.");
-        else if (sprites.Length == 0)
-            Debug.LogError("WARNING: Projectile " + this + " does not contain any sprites in the sprite list. This will cause problems with rendering.");
-        else
-            spriteRenderer.sprite = sprites[0];
+		if (spriteRenderer == null)
+			Debug.LogError("WARNING: Projectile " + this + " does not contain a sprite renderer. This will cause problems with rendering.");
     }
+
+	/// <summary>
+	/// Coroutine for the traveling animation.
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator Animate()
+	{
+		while (gameObject.activeInHierarchy)
+		{
+			var sprite = sprites.GetNextFrame();
+			spriteRenderer.sprite = sprite;
+			yield return new WaitForSeconds(sprites.playSpeed);
+		}
+	}
 
     protected virtual void Update()
     {
@@ -136,16 +144,6 @@ public class Projectile : MonoBehaviour
         {
             StartCoroutine(BeginSplit());
         }
-
-        if(fireSpritesIndex != fireSprites.Length && !fireAnimPlaying)
-        {
-            StartCoroutine(PlayFireAnimation());
-        }
-        else if(fireSpritesIndex == fireSprites.Length && sprites.Length > 1 && !animPlaying)
-        {
-            StartCoroutine(PlayAnimation());
-        }
-
     }
 
     /// <summary>
@@ -154,31 +152,18 @@ public class Projectile : MonoBehaviour
     /// <returns></returns>
     private IEnumerator PlayFireAnimation()
     {
-        while (fireSpritesIndex != fireSprites.Length)
+		Sprite frame = fireSprites.GetNextFrame();
+        while (frame != null)
         {
-            fireAnimPlaying = true;
-            spriteRenderer.sprite = fireSprites[fireSpritesIndex];
-            fireSpritesIndex++;
-            yield return new WaitForSeconds(fireSpritesPlayspeed);
-        }
-        fireAnimPlaying = false;
-    }
+			spriteRenderer.sprite = frame;
+            yield return new WaitForSeconds(fireSprites.playSpeed);
+			frame = fireSprites.GetNextFrame();
+		}
 
-    /// <summary>
-    /// Play the standard traveling animation.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator PlayAnimation()
-    {
-        var index = 0;
-        while(gameObject.activeInHierarchy)
-        {
-            animPlaying = true;
-            spriteRenderer.sprite = sprites[index];
-            index = (index + 1) % sprites.Length;
-            yield return new WaitForSeconds(playspeed);
-        }
-        animPlaying = false;
+		if (animated)
+			animate = StartCoroutine(Animate());
+		else
+			spriteRenderer.sprite = sprite;
     }
 
     /// <summary>
@@ -265,10 +250,10 @@ public class Projectile : MonoBehaviour
         fireSound = other.fireSound;
         destroyEffect = other.destroyEffect;
         lifetime = other.lifetime;
-        playspeed = other.playspeed;
+		animated = other.animated;
+		sprite = other.sprite;
         sprites = other.sprites;
         fireSprites = other.fireSprites;
-        fireSpritesPlayspeed = other.fireSpritesPlayspeed;
     }
 
     /// <summary>
@@ -285,14 +270,25 @@ public class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void OnEnable()
     {
-        fireSpritesIndex = 0;
         damage = ComputeDamage();
         waitForSplit = false;
         rigidBody.velocity = transform.up * speed;
         // Start the clock to disabling again.
         StartCoroutine(RemoveAfterSeconds(lifetime));
-        spriteRenderer.sprite = sprites[0];
-    }
+
+		if (fireSprites != null)
+		{
+			fireSprites.ResetAnimation();
+			StartCoroutine(PlayFireAnimation());
+		}
+		else
+		{
+			if (animated)
+				animate = StartCoroutine(Animate());
+			else
+				spriteRenderer.sprite = sprite;
+		}
+	}
 
     /// <summary>
     /// When the projectile collides with an object, play the explosion animation
@@ -319,10 +315,12 @@ public class Projectile : MonoBehaviour
 			}
         }
         StopCoroutine(PlayFireAnimation());
-        StopCoroutine(PlayAnimation());
-        fireAnimPlaying = false;
-        animPlaying = false;
-    }
+		if(animate != null)
+		{
+			StopCoroutine(animate);
+			animate = null;
+		}
+	}
 
     /// <summary>
     /// Disables the projectile after a set time has passed.

@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2355d88ea6ee49b4488ce0d6ba31f11c, type: 3}
-  m_Name: DefaultParticleAnim
+  m_Name: OmegaCannonTravel
   m_EditorClassIdentifier: 
   frames:
-  - {fileID: 21300000, guid: ed6c1f3cd763e484195d59fda55256cf, type: 3}
-  - {fileID: 21300002, guid: ed6c1f3cd763e484195d59fda55256cf, type: 3}
-  - {fileID: 21300004, guid: ed6c1f3cd763e484195d59fda55256cf, type: 3}
-  - {fileID: 21300006, guid: ed6c1f3cd763e484195d59fda55256cf, type: 3}
-  - {fileID: 21300008, guid: ed6c1f3cd763e484195d59fda55256cf, type: 3}
+  - {fileID: 21300000, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
+  - {fileID: 21300002, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
+  - {fileID: 21300004, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
+  - {fileID: 21300006, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
   playSpeed: 0.1
   reversePlaySpeed: 0
-  looping: 0
+  looping: 1
