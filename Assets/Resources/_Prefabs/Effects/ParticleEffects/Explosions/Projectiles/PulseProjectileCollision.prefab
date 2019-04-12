@@ -75,7 +75,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.36, y: 0.26}
+  m_Size: {x: 0.25, y: 0.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSprites: {fileID: 11400000, guid: c036d67734113f844ac12aa5eecc2fca, type: 2}
-  sound: {fileID: 8300000, guid: ce7866fece183a8488531eba635861a6, type: 3}
+  sound: {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
 --- !u!82 &7123827540994617552
 AudioSource:
   m_ObjectHideFlags: 0
