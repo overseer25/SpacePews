@@ -8,12 +8,28 @@ using UnityEngine;
 [CustomEditor(typeof(Projectile))]
 public class ProjectileEditor : Editor
 {
+	private double changeSprite = 0;
+	private int index = 0;
+	private int fireIndex = 0;
+	private int collisionIndex = 0;
+	private int loopTravelAnim = 0;
+	private bool startAnimation = false;
+	private bool playTravelAnim = false;
+	private bool playFireAnim = true;
+	private bool playCollisionAnim = false;
+	private double animationStartTime;
 
-    public override void OnInspectorGUI()
+	public override void OnInspectorGUI()
     {
 		string tooltip;
         var projectile = serializedObject.targetObject as Projectile;
         EditorGUILayout.Space();
+		if(!startAnimation)
+		{
+			animationStartTime = EditorApplication.timeSinceStartup;
+			EditorApplication.update += Animate;
+			startAnimation = true;
+		}
 
         // ----- STATS Section ----- //
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -179,7 +195,116 @@ public class ProjectileEditor : Editor
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.EndHorizontal();
 		}
-
-
     }
+
+	/// <summary>
+	/// Plays the fire animation (if it exists), then plays the travel animation 3 times, then plays the collision effect.
+	/// If the fire and collision animations don't exist, then the travel animation just loops.
+	/// </summary>
+	private void Animate()
+	{
+		var projectile = serializedObject.targetObject as Projectile;
+		if (projectile == null)
+			return;
+		var rend = projectile.GetComponent<SpriteRenderer>();
+		if(playFireAnim)
+		{
+			if(projectile.fireSprites != null)
+			{
+				if (EditorApplication.timeSinceStartup > changeSprite + animationStartTime)
+				{
+					rend.sprite = projectile.fireSprites.GetFrame(fireIndex);
+					fireIndex++;
+					if (fireIndex == projectile.fireSprites.frames.Length)
+					{
+						fireIndex = 0;
+						playFireAnim = false;
+						playTravelAnim = true;
+					}
+					else
+						changeSprite += projectile.fireSprites.playSpeed;
+				}
+			}
+			else
+			{
+				playFireAnim = false;
+				playTravelAnim = true;
+			}
+		}
+		else if(playTravelAnim)
+		{
+			if(projectile.animated && projectile.sprites != null)
+			{
+				if (EditorApplication.timeSinceStartup > changeSprite + animationStartTime)
+				{
+					rend.sprite = projectile.sprites.GetFrame(index);
+					index++;
+					if (index == projectile.sprites.frames.Length)
+					{
+						index = 0;
+						if (loopTravelAnim == 3)
+						{
+							loopTravelAnim = 0;
+							playTravelAnim = false;
+							playCollisionAnim = true;
+						}
+						else
+							loopTravelAnim++;
+					}
+					else
+						changeSprite += projectile.sprites.playSpeed;
+				}
+			}
+			else if(!projectile.animated && projectile.sprite != null)
+			{
+				rend.sprite = projectile.sprite;
+				if (EditorApplication.timeSinceStartup > changeSprite + 2.0f + animationStartTime)
+				{
+					playTravelAnim = false;
+					playCollisionAnim = true;
+					changeSprite += 2.0f;
+				}
+			}
+			else
+			{
+				playTravelAnim = false;
+				playCollisionAnim = true;
+			}
+		}
+		else if (playCollisionAnim)
+		{
+			if (projectile.destroyEffect != null)
+			{
+				if (EditorApplication.timeSinceStartup > changeSprite + animationStartTime)
+				{
+					rend.sprite = projectile.destroyEffect.particleSprites.GetFrame(collisionIndex);
+					collisionIndex++;
+					if (collisionIndex == projectile.destroyEffect.particleSprites.frames.Length)
+					{
+						collisionIndex = 0;
+						playCollisionAnim = false;
+					}
+					else
+						changeSprite += projectile.destroyEffect.particleSprites.playSpeed;
+				}
+			}
+			else
+				playCollisionAnim = false;
+
+		}
+		else
+		{
+			playFireAnim = true;
+
+		}
+	}
+
+	void OnDisable()
+	{
+		if (startAnimation)
+		{
+			startAnimation = false;
+			EditorApplication.update -= Animate;
+		}
+	}
 }
