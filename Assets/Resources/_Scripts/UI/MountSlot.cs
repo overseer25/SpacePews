@@ -89,12 +89,11 @@ public class MountSlot : SlotBase
     /// <param name="item"></param>
     public override void SetItem(Item item)
     {
-        var component = item as ShipComponentBase;
-        component.mounted = true;
-        inventoryItem.SetItem(component, 0);
-        component = item as ShipComponentBase;
+		var component = item as ShipComponentBase;
+		component.mounted = true;
 		mount.SetComponent(component);
-    }
+		inventoryItem.SetItem(mount.GetShipComponent(), 0, false);
+	}
 
     /// <summary>
     /// "Empty" the slot.

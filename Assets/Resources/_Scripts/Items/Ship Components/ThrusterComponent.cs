@@ -10,7 +10,7 @@ public class ThrusterComponent : ShipComponentBase
     public AudioClip engine;
 
     public Thruster thruster;
-    public new ParticleSystem particleSystem;
+    private new ParticleSystem particleSystem;
 
     protected override void Awake()
     {
@@ -26,7 +26,6 @@ public class ThrusterComponent : ShipComponentBase
 
         if (thruster != null && particleSystem != null && !mounted)
         {
-            thruster.gameObject.SetActive(false);
             particleSystem.gameObject.SetActive(false);
         }
     }
@@ -38,7 +37,9 @@ public class ThrusterComponent : ShipComponentBase
     public override void SetMounted(bool val)
     {
         base.SetMounted(val);
-        if(mounted)
-            particleSystem.gameObject.SetActive(true);
+		if (mounted)
+			particleSystem.gameObject.SetActive(true);
+		else
+			thruster.Deactivate();
     }
 }

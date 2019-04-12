@@ -42,7 +42,7 @@ public class Item : MonoBehaviour
         itemColor = ItemColors.colors[(int)itemTier];
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-		if (idleAnimation != null && !animating)
+		if (idleAnimation != null && animate == null)
 		{
 			animate = StartCoroutine(Animate());
 		}

@@ -56,12 +56,12 @@ public class ParticleEffectEditor : Editor
 				if (index == 0 && !effect.particleSprites.looping)
 				{
 					pause = true;
-					effect.GetComponent<SpriteRenderer>().sprite = null;
+					effect.GetComponentInChildren<SpriteRenderer>().sprite = null;
 					changeSprite += 1.0f;
 				}
 				else
 				{
-					effect.GetComponent<SpriteRenderer>().sprite = sprite;
+					effect.GetComponentInChildren<SpriteRenderer>().sprite = sprite;
 					changeSprite += effect.particleSprites.playSpeed;
 				}
 			}				

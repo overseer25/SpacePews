@@ -65,6 +65,8 @@ public class ShipMount : MonoBehaviour {
     /// </summary>
     public void ClearMount()
     {
+		if (component is ThrusterComponent)
+			(component as ThrusterComponent).SetMounted(false);
 		if (component is StatBuffUpgradeComponent)
 			(component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
 		else if (component is ActiveAbilityComponent)
@@ -78,42 +80,42 @@ public class ShipMount : MonoBehaviour {
     /// <summary>
     /// Set the component of the mount.
     /// </summary>
-    /// <param name="component"></param>
-    public void SetComponent(ShipComponentBase component)
+    /// <param name="incomingComponent"></param>
+    public void SetComponent(ShipComponentBase incomingComponent)
     {
         // If the starting component is not compatible with the ship mount.
-        if (component != null && !IsComponentCompatible(component))
+        if (incomingComponent != null && !IsComponentCompatible(incomingComponent))
         {
-            Debug.LogError("Component: " + component.itemName + " is not compatible with mount: " + this.name);
+            Debug.LogError("Component: " + incomingComponent.itemName + " is not compatible with mount: " + this.name);
             return;
         }
 
 		// Destroy the old component.
-        if (this.component != null)
+        if (component != null)
         {
-			if (this.component is StatBuffUpgradeComponent)
-				(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
-			else if (this.component is ActiveAbilityComponent)
-				(this.component as ActiveAbilityComponent).SetMounted(pController, false);
+			if (component is StatBuffUpgradeComponent)
+				(component as StatBuffUpgradeComponent).SetMounted(parentActor, false);
+			else if (component is ActiveAbilityComponent)
+				(component as ActiveAbilityComponent).SetMounted(pController, false);
 			else
-				this.component.SetMounted(false);
-			Destroy(this.component.gameObject);
+				component.SetMounted(false);
+			Destroy(component.gameObject);
         }
 
-        this.component = Instantiate(component, transform.position, transform.rotation, transform) as ShipComponentBase;
-        this.component.gameObject.SetActive(component.IsVisible());
+        component = Instantiate(incomingComponent, transform.position, transform.rotation, transform) as ShipComponentBase;
+        component.gameObject.SetActive(incomingComponent.IsVisible());
 
-		if (this.component is ThrusterComponent)
+		if (component is ThrusterComponent)
 		{
 			SendMessageUpwards("UpdateThrusterList");
-			this.component.SetMounted(true);
+			component.SetMounted(true);
 		}
-		else if (this.component is StatBuffUpgradeComponent)
-			(this.component as StatBuffUpgradeComponent).SetMounted(parentActor, true);
-		else if (this.component is ActiveAbilityComponent)
-			(this.component as ActiveAbilityComponent).SetMounted(pController, true);
+		else if (component is StatBuffUpgradeComponent)
+			(component as StatBuffUpgradeComponent).SetMounted(parentActor, true);
+		else if (component is ActiveAbilityComponent)
+			(component as ActiveAbilityComponent).SetMounted(pController, true);
 		else
-			this.component.SetMounted(true);
+			component.SetMounted(true);
 
 		isEmpty = false;
     }

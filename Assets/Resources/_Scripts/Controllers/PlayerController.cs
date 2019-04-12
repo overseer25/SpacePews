@@ -237,7 +237,10 @@ public class PlayerController : MonoBehaviour
             return;
         foreach (var thruster in thrusters)
         {
-            thruster.gameObject.SetActive(state);
+			if (state)
+				thruster.Activate();
+			else
+				thruster.Deactivate();
         }
     }
 
@@ -250,7 +253,7 @@ public class PlayerController : MonoBehaviour
     {
         if (thrusters.FirstOrDefault() == null)
             return false;
-        return thrusters.FirstOrDefault().gameObject.activeSelf;
+        return thrusters.FirstOrDefault().isActive;
     }
 
     /// <summary>
