@@ -72,14 +72,12 @@ public class ParticlePool : BasePool
         {
             if (particle != null && particle.IsFree())
             {
-                return particle;
+				return particle;
             }
         }
-
 		// Otherwise, get the least recently used effect in the pool.
 		var result = particlePool[oldest++];
 		oldest %= poolSize;
-		result.DisableEffect();
 		return result;
 	}
 }

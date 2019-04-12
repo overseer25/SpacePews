@@ -9,8 +9,8 @@ public class ParticleEffect : MonoBehaviour
 	private AudioSource audioSource;
 	private new SpriteRenderer renderer;
 	private bool isFree;
-	private Coroutine animate;
 	private static SpriteAnimation defaultAnimation;
+	private Coroutine animate;
 
 	private void Awake()
 	{
@@ -36,15 +36,14 @@ public class ParticleEffect : MonoBehaviour
 	/// <returns></returns>
 	private IEnumerator PlayEffect()
 	{
-		Sprite frame;
-		do
+		particleSprites.ResetAnimation();
+		Sprite frame = particleSprites.GetNextFrame();
+		while (frame != null) 
 		{
-			frame = particleSprites.GetNextFrame();
 			renderer.sprite = frame;
 			yield return new WaitForSeconds(particleSprites.playSpeed);
-
-		} while (frame != null);
-
+			frame = particleSprites.GetNextFrame();
+		}
 		DisableEffect();
 		yield return null;
 	}
@@ -58,11 +57,7 @@ public class ParticleEffect : MonoBehaviour
 		isFree = false;
 		if(sound != null)
 			audioSource.PlayOneShot(sound);
-		particleSprites.ResetAnimation();
-		if (animate != null)
-			Debug.Log("The particle effect " + this + " is already playing. The particle effect  must not have been disabled before reuse.");
-		else
-			animate = StartCoroutine(PlayEffect());
+		animate = StartCoroutine(PlayEffect());
 	}
 
 	/// <summary>
@@ -70,11 +65,6 @@ public class ParticleEffect : MonoBehaviour
 	/// </summary>
 	public void DisableEffect()
 	{
-		if(animate != null)
-		{
-			StopCoroutine(animate);
-			animate = null;
-		}
 		renderer.enabled = false;
 		isFree = true;
 	}
@@ -95,10 +85,11 @@ public class ParticleEffect : MonoBehaviour
     public void Copy(ParticleEffect other)
     {
 		if (other.particleSprites == null)
-			particleSprites = defaultAnimation;
+			particleSprites = Instantiate(defaultAnimation);
 		else
-			particleSprites = other.particleSprites;
+			particleSprites = Instantiate(other.particleSprites);
         sound = other.sound;
+		isFree = other.isFree;
     }
 
     /// <summary>

@@ -41,7 +41,10 @@ public class Item : MonoBehaviour
         random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+	}
 
+	private void OnEnable()
+	{
 		if (idleAnimation != null && animate == null)
 		{
 			animate = StartCoroutine(Animate());

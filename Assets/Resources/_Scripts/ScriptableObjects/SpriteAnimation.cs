@@ -24,7 +24,6 @@ public class SpriteAnimation : ScriptableObject
 	public Sprite GetNextFrame()
 	{
 		Sprite result;
-
 		if (index >= frames.Length)
 		{
 			if (looping)
@@ -37,6 +36,11 @@ public class SpriteAnimation : ScriptableObject
 
 		result = frames[index++];
 		return result;
+	}
+
+	public int GetIndex()
+	{
+		return index;
 	}
 
 	/// <summary>

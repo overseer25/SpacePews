@@ -252,8 +252,10 @@ public class Projectile : MonoBehaviour
         lifetime = other.lifetime;
 		animated = other.animated;
 		sprite = other.sprite;
-        sprites = other.sprites;
-        fireSprites = other.fireSprites;
+		if(other.sprites != null)
+			sprites = Instantiate(other.sprites);
+		if(fireSprites != null)
+			fireSprites = Instantiate(other.fireSprites);
     }
 
     /// <summary>

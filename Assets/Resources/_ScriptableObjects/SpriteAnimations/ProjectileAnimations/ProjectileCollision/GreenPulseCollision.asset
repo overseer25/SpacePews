@@ -17,5 +17,6 @@ MonoBehaviour:
   - {fileID: 21300002, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
   - {fileID: 21300004, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
   - {fileID: 21300006, guid: e1aed9ff96f933249b8d67e8c6cc7337, type: 3}
-  playSpeed: 0.1
+  playSpeed: 0.07
+  reversePlaySpeed: 0
   looping: 0
