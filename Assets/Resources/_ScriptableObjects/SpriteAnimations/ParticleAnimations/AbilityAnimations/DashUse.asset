@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2355d88ea6ee49b4488ce0d6ba31f11c, type: 3}
+  m_Name: DashUse
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: 3760483791991784046, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
+  - {fileID: 7582837563032652303, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
+  - {fileID: -1848200201802067185, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
+  - {fileID: 1518253264582047175, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
+  - {fileID: -6325337767919636016, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
+  playSpeed: 0.1
+  looping: 0

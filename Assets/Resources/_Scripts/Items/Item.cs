@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour
 {
-    public Sprite[] sprites; // If more than one sprite, this will animate using the playspeed variable.
+	public SpriteAnimation idleAnimation;
+	public Sprite itemSprite;
     public GameObject hoverText;
 
     public ItemType itemType;
@@ -16,16 +17,11 @@ public class Item : MonoBehaviour
     public int value;
     [TextArea(1, 5)]
     public string description;
-
     public bool stackable;
     public int stackSize;
-
-    // For playing a sprite animation, if it exists.
-    public float playspeed = 0.5f;
-    public float changeSprite = 0.0f;
-    public int index = 0;
     public Color itemColor;
     public SpriteRenderer spriteRenderer;
+	public bool animated;
 
     private const int FOLLOWSPEED = 50;
     private const int FOLLOWANGLEMAX = 10;
@@ -45,12 +41,21 @@ public class Item : MonoBehaviour
         random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+	}
 
-        if (sprites.Length > 1 && !animating)
-        {
-            StartCoroutine(Animate());
-        }
-    }
+	private void OnEnable()
+	{
+		if (idleAnimation != null && animate == null)
+		{
+			animate = StartCoroutine(Animate());
+		}
+		else if (itemSprite != null)
+		{
+			spriteRenderer.sprite = itemSprite;
+		}
+		else
+			Debug.LogError("Item " + this + " has no sprites!");
+	}
 
     // Update is called once per frame
     protected virtual void Update()
@@ -68,13 +73,11 @@ public class Item : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator Animate()
     {
-        var index = 0;
         while(gameObject.activeInHierarchy)
         {
-            animating = true;
-            spriteRenderer.sprite = sprites[index];
-            index = (index + 1) % sprites.Length;
-            yield return new WaitForSeconds(playspeed);
+			var sprite = idleAnimation.GetNextFrame();
+			spriteRenderer.sprite = sprite;
+            yield return new WaitForSeconds(idleAnimation.playSpeed);
         }
         animating = false;
     }
@@ -233,19 +236,16 @@ public class Item : MonoBehaviour
     /// </summary>
     public void Copy(Item other)
     {
-
-        sprites = other.sprites;
-        GetComponent<SpriteRenderer>().sprite = sprites[0];
-        itemType = other.itemType;
+		animated = other.animated;
+		idleAnimation = other.idleAnimation;
+		itemSprite = other.itemSprite;
+		itemType = other.itemType;
         itemTier = other.itemTier;
         itemName = other.itemName;
         value = other.value;
         description = other.description;
         stackable = other.stackable;
         stackSize = other.stackSize;
-        playspeed = other.playspeed;
-        changeSprite = other.changeSprite;
-        index = other.index;
         itemColor = ItemColors.colors[(int)other.itemTier];
         mined = other.mined;
         targetPlayer = other.targetPlayer;

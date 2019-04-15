@@ -44,17 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73dcea4224278b48a8c0fd754ed92ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSprites:
-  - {fileID: 21300000, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300002, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300004, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300006, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300008, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300010, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300012, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300014, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300016, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  playspeed: 0.05
+  particleSprites: {fileID: 11400000, guid: 87566386feab61f489292a357000b0cc, type: 2}
   sound: {fileID: 0}
 --- !u!1 &1803654884353752
 GameObject:

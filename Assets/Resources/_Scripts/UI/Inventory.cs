@@ -37,7 +37,6 @@ public class Inventory : MonoBehaviour
 
 	private const int INVENTORY_SIZE = 20;
     private const long MAX_CURRENCY = 999999999999;
-
     // Must be greater than 0 and less than 10.
     private const int HOTBAR_COUNT = 5;
 

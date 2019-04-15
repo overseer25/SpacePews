@@ -12,7 +12,7 @@ public abstract class WeaponComponentBase : ShipComponentBase
     public float firerate;
     public float shotSpread;
     public Projectile projectile;
-    public Sprite[] fireAnimation;
+    public SpriteAnimation fireAnimation;
     internal List<GameObject> shotSpawns;
 
     internal static System.Random random;
@@ -87,24 +87,6 @@ public abstract class WeaponComponentBase : ShipComponentBase
     public string GetCriticalMultiplierString()
     {
         return projectile.critMultiplier + "x";
-    }
-
-    /// <summary>
-    /// Play the weapons fire animation, if it exists.
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator PlayFireAnimation()
-    {
-        playingFireAnimation = true;
-        foreach(var frame in fireAnimation)
-        {
-            spriteRenderer.sprite = frame;
-            yield return new WaitForSeconds(firerate / fireAnimation.Length);
-        }
-        spriteRenderer.sprite = sprites[index];
-
-        playingFireAnimation = false;
-        yield break;
     }
 
     /// <summary>

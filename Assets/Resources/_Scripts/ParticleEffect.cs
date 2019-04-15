@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class ParticleEffect : MonoBehaviour
 {
-
-    public Sprite[] particleSprites;
-    public float playspeed = 0.1f;
+    public SpriteAnimation particleSprites;
     [SerializeField]
     private AudioClip sound;
 	private AudioSource audioSource;
 	private new SpriteRenderer renderer;
 	private bool isFree;
+	private static SpriteAnimation defaultAnimation;
 	private Coroutine animate;
 
 	private void Awake()
 	{
+		defaultAnimation = Resources.Load("_ScriptableObjects/SpriteAnimations/ParticleAnimations/DefaultParticleAnim") as SpriteAnimation;
+		if (defaultAnimation == null)
+			Debug.LogError("Default particle effect could not be found");
 		audioSource = GetComponent<AudioSource>();
 		renderer = GetComponent<SpriteRenderer>();
 	}
@@ -34,14 +36,14 @@ public class ParticleEffect : MonoBehaviour
 	/// <returns></returns>
 	private IEnumerator PlayEffect()
 	{
-		var index = 0;
-		while(index != particleSprites.Length)
+		particleSprites.ResetAnimation();
+		Sprite frame = particleSprites.GetNextFrame();
+		while (frame != null) 
 		{
-			renderer.sprite = particleSprites[index];
-			index++;
-			yield return new WaitForSeconds(playspeed);
+			renderer.sprite = frame;
+			yield return new WaitForSeconds(particleSprites.playSpeed);
+			frame = particleSprites.GetNextFrame();
 		}
-
 		DisableEffect();
 		yield return null;
 	}
@@ -53,11 +55,9 @@ public class ParticleEffect : MonoBehaviour
 	{
 		renderer.enabled = true;
 		isFree = false;
-		audioSource.PlayOneShot(sound);
-		if (animate != null)
-			Debug.Log("The particle effect " + this + " is already playing. The particle effect  must not have been disabled before reuse.");
-		else
-			animate = StartCoroutine(PlayEffect());
+		if(sound != null)
+			audioSource.PlayOneShot(sound);
+		animate = StartCoroutine(PlayEffect());
 	}
 
 	/// <summary>
@@ -65,11 +65,6 @@ public class ParticleEffect : MonoBehaviour
 	/// </summary>
 	public void DisableEffect()
 	{
-		if(animate != null)
-		{
-			StopCoroutine(animate);
-			animate = null;
-		}
 		renderer.enabled = false;
 		isFree = true;
 	}
@@ -89,9 +84,12 @@ public class ParticleEffect : MonoBehaviour
     /// <param name="other"></param>
     public void Copy(ParticleEffect other)
     {
-        particleSprites = other.particleSprites;
-        playspeed = other.playspeed;
+		if (other.particleSprites == null)
+			particleSprites = Instantiate(defaultAnimation);
+		else
+			particleSprites = Instantiate(other.particleSprites);
         sound = other.sound;
+		isFree = other.isFree;
     }
 
     /// <summary>

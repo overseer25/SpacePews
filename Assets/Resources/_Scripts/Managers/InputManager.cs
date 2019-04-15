@@ -187,7 +187,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleWeaponControls()
     {
-        if (!hController.IsDead() && !PauseMenuScript.IsPaused)
+        if (!hController.IsDead())
         {
             if (wController.currentComponent is ChargedWeapon)
             {
@@ -220,7 +220,7 @@ public class InputManager : MonoBehaviour
             else
                 weapon.CancelFire();
         }
-        else if (Input.GetKeyUp(controls.fire) && !weapon.IsCoolingDown() && !weapon.IsDecharging())
+        else if (Input.GetKeyUp(controls.fire))
         {
             if (weapon.IsCharged())
             {

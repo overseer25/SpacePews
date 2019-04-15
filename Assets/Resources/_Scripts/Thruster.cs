@@ -4,22 +4,40 @@ using UnityEngine;
 
 public class Thruster : MonoBehaviour {
 
-    public Sprite[] thrusterAnim;
+    public SpriteAnimation thrusterAnim;
+	public bool isActive;
+	private Coroutine animate;
 
-    public float playspeed = 0.1f;
-    private float changeSprite = 0.0f;
-    private int index = 0;
+	/// <summary>
+	/// Activate the thruster. This enables the animation.
+	/// </summary>
+	public void Activate()
+	{
+		thrusterAnim.ResetAnimation();
+		isActive = true;
+		animate = StartCoroutine(Animate());
+	}
 
+	public void Deactivate()
+	{
+		isActive = false;
+		if(animate != null)
+		{
+			StopCoroutine(animate);
+			animate = null;
+		}
+		GetComponent<SpriteRenderer>().sprite = null;
+	}
 
-    // Update is called once per frame
-    void Update()
-    { 
-        if (Time.time > changeSprite)
-        {
-            changeSprite = Time.time + playspeed;
-            index++;
-            if (index >= thrusterAnim.Length) { index = 0; } // Restart animation
-            GetComponent<SpriteRenderer>().sprite = thrusterAnim[index];
-        }
-    }
+	/// <summary>
+	/// Animate the thruster.
+	/// </summary>
+	/// <returns></returns>
+    public IEnumerator Animate()
+	{
+		var sprite = thrusterAnim.GetNextFrame();
+		GetComponent<SpriteRenderer>().sprite = sprite;
+		yield return new WaitForSeconds(thrusterAnim.playSpeed);
+		animate = StartCoroutine(Animate());
+	}
 }

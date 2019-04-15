@@ -164,13 +164,7 @@ MonoBehaviour:
   destroyEffect: {fileID: 114353173892645446, guid: 39fffa447ffea104d902c5285d13f3d2,
     type: 3}
   lifetime: 5
-  playspeed: 0.1
-  fireSpritesPlayspeed: 0
-  sprites:
-  - {fileID: 21300000, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
-  - {fileID: 21300002, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
-  - {fileID: 21300004, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
-  - {fileID: 21300006, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
-  - {fileID: 21300008, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
-  - {fileID: 21300010, guid: ba9ef5096688da64d880ead122f75fa1, type: 3}
-  fireSprites: []
+  animated: 1
+  sprite: {fileID: 0}
+  sprites: {fileID: 11400000, guid: aaa7b113e13e9a5498aa14b6ada9748f, type: 2}
+  fireSprites: {fileID: 0}

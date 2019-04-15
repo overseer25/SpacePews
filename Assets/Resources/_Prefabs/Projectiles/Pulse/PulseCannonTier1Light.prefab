@@ -157,15 +157,14 @@ MonoBehaviour:
   - projectile: {fileID: 114765949970268536, guid: 489198a139ac2284fab60c5e49798453,
       type: 3}
     angle: 5
-  splitOnCollision: 1
+  splitOnCollision: 0
   destroyOnSplit: 1
-  splitAfterTime: 0.2
+  splitAfterTime: 0.9
   fireSound: {fileID: 8300000, guid: 14be63b2bfeff474ca311449410bedd3, type: 3}
   destroyEffect: {fileID: 2448474026819181268, guid: f8975ca729e0560429747e3ed9f63f7f,
     type: 3}
-  lifetime: 5
-  playspeed: 0.15
-  fireSpritesPlayspeed: 0
-  sprites:
-  - {fileID: 21300000, guid: 9d5fa822983c3304ea4251a1633531dd, type: 3}
-  fireSprites: []
+  lifetime: 2
+  animated: 0
+  sprite: {fileID: 21300000, guid: 9d5fa822983c3304ea4251a1633531dd, type: 3}
+  sprites: {fileID: 0}
+  fireSprites: {fileID: 0}

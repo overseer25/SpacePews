@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(MiningComponent))]
-public class MiningComponentEditor : ComponentBaseEditor
+public class MiningComponentEditor : BaseItemEditor
 {
     public override void OnInspectorGUI()
     {
@@ -12,7 +12,8 @@ public class MiningComponentEditor : ComponentBaseEditor
         EditorGUILayout.Space();
 
 		// ----- PROPERTIES SECTION ----- //
-		DisplayPropertiesSection();
+		EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
+		DisplayItemProperties(false);
 		miningComponent.itemType = ItemType.Turret;
 		miningComponent.visible = true;
 
@@ -41,7 +42,7 @@ public class MiningComponentEditor : ComponentBaseEditor
         EditorGUILayout.EndHorizontal();
 
 		// ----- AUDIO/VISUAL SECTION ----- //
-		DisplayAudioVisualSection(miningComponent);
+		DisplayAnimation();
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));

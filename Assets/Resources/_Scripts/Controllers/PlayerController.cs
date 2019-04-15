@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource engineSource;
 
     // The active ability the player can currently use.
-    private Ability ability;
+    private AbilityBase ability;
     private Coroutine abilityCooldown;
     private float acceleration;
     private Rigidbody2D rigidBody;
@@ -237,7 +237,10 @@ public class PlayerController : MonoBehaviour
             return;
         foreach (var thruster in thrusters)
         {
-            thruster.gameObject.SetActive(state);
+			if (state)
+				thruster.Activate();
+			else
+				thruster.Deactivate();
         }
     }
 
@@ -250,14 +253,14 @@ public class PlayerController : MonoBehaviour
     {
         if (thrusters.FirstOrDefault() == null)
             return false;
-        return thrusters.FirstOrDefault().gameObject.activeSelf;
+        return thrusters.FirstOrDefault().isActive;
     }
 
     /// <summary>
     /// Set the active ability of the player. Also forces the ability to initially cooldown so that it cannot be abused.
     /// </summary>
     /// <param name="ability"></param>
-    public void SetAbility(Ability ability)
+    public void SetAbility(AbilityBase ability)
     {
 
         // If the same, do nothing.
@@ -278,7 +281,7 @@ public class PlayerController : MonoBehaviour
     /// Get the active ability of the player.
     /// </summary>
     /// <returns></returns>
-    public Ability GetAbility()
+    public AbilityBase GetAbility()
     {
         return ability;
     }

@@ -45,13 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73dcea4224278b48a8c0fd754ed92ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSprites:
-  - {fileID: 3760483791991784046, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
-  - {fileID: 7582837563032652303, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
-  - {fileID: -1848200201802067185, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
-  - {fileID: 1518253264582047175, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
-  - {fileID: -6325337767919636016, guid: 7a54623d006edff49b2e437a8d234eda, type: 3}
-  playspeed: 0.1
+  particleSprites: {fileID: 11400000, guid: 8d616fb77bd7f3245b478a01db490777, type: 2}
   sound: {fileID: 8300000, guid: b9d692862754eea4e802413117b4dfa8, type: 3}
 --- !u!212 &3940098044125143557
 SpriteRenderer:

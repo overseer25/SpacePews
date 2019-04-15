@@ -18,19 +18,19 @@ public class AutomaticWeapon : WeaponComponentBase
         }
     }
 
-    private IEnumerator WaitForFire()
-    {
-        waitingForFire = true;
-        yield return new WaitForSeconds(firerate);
-        waitingForFire = false;
-    }
-
     /// <summary>
     /// Fire the weapon.
     /// </summary>
     public override void Fire()
     {
-        foreach (var shotSpawn in shotSpawns)
+		if (animating)
+		{
+			animating = false;
+			StopCoroutine(animate);
+			animate = null;
+		}
+
+		foreach (var shotSpawn in shotSpawns)
         {
             var projectile = ProjectilePool.current.GetPooledObject() as Projectile;
             if (projectile == null)
@@ -46,6 +46,44 @@ public class AutomaticWeapon : WeaponComponentBase
             audioSource.Play();
             projectile.gameObject.SetActive(true);
         }
-        StartCoroutine(PlayFireAnimation());
+		if(fireAnimation != null)
+			StartCoroutine(PlayFireAnimation());
     }
+
+	/// <summary>
+	/// Play the weapons fire animation, if it exists.
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator PlayFireAnimation()
+	{
+		playingFireAnimation = true;
+
+		var frame = fireAnimation.GetNextFrame();
+		while (frame != null)
+		{
+			yield return new WaitForSeconds(fireAnimation.playSpeed);
+			frame = fireAnimation.GetNextFrame();
+			spriteRenderer.sprite = frame;
+		}
+
+		playingFireAnimation = false;
+
+		if (idleAnimation != null && !animating)
+		{
+			animate = StartCoroutine(Animate());
+		}
+		else if (itemSprite != null)
+		{
+			spriteRenderer.sprite = itemSprite;
+		}
+		fireAnimation.ResetAnimation();
+		yield break;
+	}
+
+	private IEnumerator WaitForFire()
+	{
+		waitingForFire = true;
+		yield return new WaitForSeconds(firerate);
+		waitingForFire = false;
+	}
 }

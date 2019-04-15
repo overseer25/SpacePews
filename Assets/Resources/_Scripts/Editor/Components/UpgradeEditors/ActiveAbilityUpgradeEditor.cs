@@ -4,16 +4,14 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(ActiveAbilityComponent))]
-public class ActiveAbilityUpgradeEditor : UpgradeBaseEditor
+public class ActiveAbilityUpgradeEditor : BaseItemEditor
 {
 	private string tip;
 
 	public override void OnInspectorGUI()
 	{
-		ActiveAbilityComponent component = target as ActiveAbilityComponent;
-
 		// ----- PROPERTIES SECTION ----- //
-		DisplayPropertiesSection(component);
+		DisplayItemProperties(false);
 
 		// ----- ACTIVE ABILITY SECTION ----- //
 		EditorGUILayout.LabelField("Active Ability", EditorStyles.boldLabel);
@@ -24,7 +22,8 @@ public class ActiveAbilityUpgradeEditor : UpgradeBaseEditor
 		serializedObject.ApplyModifiedProperties();
 		EditorGUILayout.EndHorizontal();
 
-        // ----- AUDIO/VISUAL SECTION ----- //
-        DisplayAudioVisualSection(component);
+		// ----- AUDIO/VISUAL SECTION ----- //
+		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
+		DisplayAnimation();
 	}
 }

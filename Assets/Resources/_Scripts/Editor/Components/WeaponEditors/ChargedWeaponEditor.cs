@@ -7,15 +7,21 @@ public class ChargedWeaponEditor : BaseWeaponEditor
 
     public override void OnInspectorGUI()
     {
-        var chargedWeapon = target as ChargedWeapon;
+		string tooltip;
+        var chargedWeapon = serializedObject.targetObject as ChargedWeapon;
         EditorGUILayout.Space();
 
-        DisplayPropertySection(chargedWeapon);
+		// ----- PROPERTIES SECTION ----- //
+		DisplayItemProperties(false);
+		chargedWeapon.itemType = ItemType.Turret;
+		chargedWeapon.visible = true;
 
-        // ----- WEAPON STATS SECTION ----- //
-        DisplayWeaponStatsSection(false, false);
+		// ----- WEAPON STATS SECTION ----- //
+		EditorGUILayout.LabelField("Weapon Stats", EditorStyles.boldLabel);
+		DisplayProjectile();
+		DisplayShotspread();
 
-        EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.BeginHorizontal();
         tooltip = "The amount of time it takes for the weapon to cooldown before being able to fire again. The speed of the cooldown animation is determined by this value.";
         serializedObject.Update();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("timeToCooldown"), new GUIContent("    Cooldown Time", tooltip), true, GUILayout.MaxWidth(500f));
@@ -30,8 +36,9 @@ public class ChargedWeaponEditor : BaseWeaponEditor
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
-        // ----- AUDIO/VISUAL SECTION ----- //
-        DisplayAudioVisualSection(chargedWeapon, false);
+		// ----- AUDIO/VISUAL SECTION ----- //
+		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
+		DisplayAnimation();
 
         EditorGUILayout.BeginHorizontal();
         serializedObject.Update();
@@ -41,23 +48,7 @@ public class ChargedWeaponEditor : BaseWeaponEditor
 
         EditorGUILayout.BeginHorizontal();
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("chargedAnimationLoop"), new GUIContent("    Charged Animation (Looped)"), true, GUILayout.MaxWidth(500f));
-        serializedObject.ApplyModifiedProperties();
-        EditorGUILayout.EndHorizontal();
-        if (chargedWeapon.chargedAnimationLoop.Length > 0)
-        {
-            EditorGUILayout.BeginHorizontal();
-            tooltip = "The play speed of the charged animation loop.";
-            serializedObject.Update();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("chargedLoopPlayspeed"), new GUIContent("       Charged Anim Play Speed", tooltip), true, GUILayout.MaxWidth(500f));
-            serializedObject.ApplyModifiedProperties();
-            EditorGUILayout.EndHorizontal();
-        }
-
-        EditorGUILayout.BeginHorizontal();
-        tooltip = "If a decharging animation is not specified, then the charging animation will just be played in reverse.";
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("dechargeAnimation"), new GUIContent("    Decharge Animation"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("chargedAnimationLoop"), new GUIContent("    Charged Animation"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 

@@ -4,16 +4,14 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(StatBuffUpgradeComponent))]
-public class StatBuffUpgradeEditor : UpgradeBaseEditor
+public class StatBuffUpgradeEditor : BaseItemEditor
 {
 	private string tip;
 
 	public override void OnInspectorGUI()
 	{
-		StatBuffUpgradeComponent component = target as StatBuffUpgradeComponent;
-
 		// ----- PROPERTIES SECTION ----- //
-		DisplayPropertiesSection(component);
+		DisplayItemProperties(false);
 
 		// ----- BUFF SECTION ----- //
 		EditorGUILayout.LabelField("Buffs", EditorStyles.boldLabel);
@@ -25,6 +23,7 @@ public class StatBuffUpgradeEditor : UpgradeBaseEditor
 		EditorGUILayout.EndHorizontal();
 
 		// ----- AUDIO/VISUAL SECTION ----- //
-		DisplayAudioVisualSection(component);
+		EditorGUILayout.LabelField("Audio/Visual", EditorStyles.boldLabel);
+		DisplayAnimation();
 	}
 }

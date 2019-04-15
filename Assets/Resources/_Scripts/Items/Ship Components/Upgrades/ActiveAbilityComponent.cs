@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveAbilityComponent : UpgradeComponentBase
+public class ActiveAbilityComponent : ShipComponentBase
 {
 	/// <summary>
 	/// The ability this component gives.
 	/// </summary>
-	public Ability ability;
+	public AbilityBase ability;
 
 	/// <summary>
 	/// Given the player, sets the ability of the player, or removes it.
