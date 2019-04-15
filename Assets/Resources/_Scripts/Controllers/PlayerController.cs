@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public PauseMenuScript pauseMenu;
     public GameObject itemTransferConfirmWindow;
     public GameObject healthUI;
+	public GameObject buffGrid;
     public GameObject abilityChargeBar;
     public TextMeshProUGUI currencyCount;
     [Header("State")]
@@ -312,6 +313,7 @@ public class PlayerController : MonoBehaviour
         pauseMenu.ResumeGame();
         deathScreen.Display();
         healthUI.SetActive(false);
+		buffGrid.SetActive(false);
         if (GetAbility() != null)
             abilityChargeBar.SetActive(false);
 
@@ -359,6 +361,7 @@ public class PlayerController : MonoBehaviour
             movementController.UpdateDead(dead);
             pauseMenu.UpdateDead(dead);
             healthUI.SetActive(true);
+			buffGrid.SetActive(true);
             if (GetAbility() != null)
                 abilityChargeBar.SetActive(true);
 

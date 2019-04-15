@@ -15,8 +15,6 @@ public class HealthRegenBuffEditor : BuffBaseEditor
 	{
         var buff = target as HealthRegenBuff;
 
-        DisplayDescription(buff);
-
         EditorGUILayout.BeginHorizontal();
         tooltip = "Does this disable regen?";
         serializedObject.Update();
@@ -42,5 +40,6 @@ public class HealthRegenBuffEditor : BuffBaseEditor
         }
 		DisplayTime();
 		DisplayIcon();
+		DisplayDescriptions();
 	}
 }

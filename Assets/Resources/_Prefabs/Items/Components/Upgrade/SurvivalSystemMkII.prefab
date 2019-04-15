@@ -113,7 +113,7 @@ MonoBehaviour:
   visible: 0
   mounted: 1
   buffs:
-  - {fileID: 11400000, guid: 47efb216b223ac94098d79eb40043696, type: 2}
+  - {fileID: 11400000, guid: 5d5ba9ab9ca8d4c4c8e46d8327510d5b, type: 2}
   - {fileID: 11400000, guid: fd07b808ff913d844ad9e479b2735221, type: 2}
 --- !u!61 &1459281989605587665
 BoxCollider2D:

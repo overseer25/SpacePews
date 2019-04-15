@@ -15,8 +15,6 @@ public class HealthBuffEditor : BuffBaseEditor
 	{
 		HealthBuff buff = serializedObject.targetObject as HealthBuff;
 
-        DisplayDescription(buff);
-
 		EditorGUILayout.BeginHorizontal();
 		tooltip = "Is this a static value or a multiplier?";
 		serializedObject.Update();
@@ -52,5 +50,6 @@ public class HealthBuffEditor : BuffBaseEditor
 
 		DisplayTime();
 		DisplayIcon();
+		DisplayDescriptions();
 	}
 }

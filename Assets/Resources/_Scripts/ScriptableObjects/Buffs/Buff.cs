@@ -21,6 +21,15 @@ public abstract class Buff : ScriptableObject
 	/// </summary>
 	public Sprite icon;
 
+	[TextArea(1,5)]
+	public string infoScreenText;
+
+	[TextArea(1, 5)]
+	public string plainText;
+
+	[TextArea(1, 5)]
+	public string buffIconText;
+
 	/// <summary>
 	/// Apply the effect of the buff/debuff to the actor.
 	/// </summary>
@@ -31,23 +40,5 @@ public abstract class Buff : ScriptableObject
 	/// </summary>
 	/// <param name="actor"></param>
 	public abstract void Remove(Actor actor);
-
-	/// <summary>
-	/// Build the description of the buff based on the settings.
-	/// </summary>
-	/// <returns></returns>
-	public abstract string BuildDescription();
-
-	/// <summary>
-	/// Build string to be display when hovering over the buff icon.
-	/// </summary>
-	/// <returns></returns>
-	public abstract string BuildBuffIconString();
-
-    /// <summary>
-    /// The text to be display in the info screen.
-    /// </summary>
-    /// <returns></returns>
-    public abstract string BuildInfoScreenString();
 
 }

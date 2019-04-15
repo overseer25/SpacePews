@@ -11,9 +11,10 @@ public class InfoScreen : MonoBehaviour
     public TextMeshProUGUI displayText;
     public TextMeshProUGUI value;
     public TextMeshProUGUI quantity;
+	public Image panelSprite;
 
-    //Enabling/disabling this hides the screen.
-    private CanvasGroup cg;
+	//Enabling/disabling this hides the screen.
+	private CanvasGroup cg;
 	private bool isDead;
 
 	private float yPad;
@@ -88,10 +89,15 @@ public class InfoScreen : MonoBehaviour
 		Color color = ItemColors.colors[(int)item.itemTier];
 		var hex = color.ToHex();
 		displayText.text = "<color=" + hex + ">" + item.itemName + "</color>\n";
+		panelSprite.enabled = true;
 
-
+		if(item is Consumable)
+		{
+			var consumable = item as Consumable;
+			displayText.text += "<style=\"Type\">Consumable</style>\n";
+		}
 		// Display stats different if item is a weapon component.
-		if (item is WeaponComponentBase)
+		else if (item is WeaponComponentBase)
         {
             var weapComp = item as WeaponComponentBase;
             
@@ -124,7 +130,7 @@ public class InfoScreen : MonoBehaviour
             var buffComp = item as StatBuffUpgradeComponent;
             displayText.text += "<style=\"Type\">" + buffComp.GetComponentClass() + " Upgrade Component</style>\n";
             foreach(var buff in buffComp.buffs)
-                displayText.text += "<style=\"BuffText\">" + "-" + buff.BuildInfoScreenString() + "</style>\n";
+                displayText.text += "<style=\"BuffText\">" + "-" + buff.infoScreenText + "</style>\n";
         }
 		else if(item is ActiveAbilityComponent)
 		{
@@ -156,7 +162,8 @@ public class InfoScreen : MonoBehaviour
 	/// <param name="buff"></param>
 	public void SetInfo(Buff buff)
 	{
-		displayText.text = "<style=\"BuffIconText\">" + buff.BuildBuffIconString() + "</style>";
+		panelSprite.enabled = false;
+		displayText.text = "<style=\"BuffIconText\">" + buff.buffIconText + "</style>";
 		quantity.text = "";
 		value.text = "";
 		ResizeWindow();

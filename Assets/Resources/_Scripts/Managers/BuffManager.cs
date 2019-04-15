@@ -15,8 +15,7 @@ public class BuffManager : MonoBehaviour
 	public BuffIcon defaultIcon;
 	public Actor playerActor;
 
-	// A data structure associating the buff to an index in the buff grid.
-	private List<Buff> appliedBuffs;
+	// A data structure associating the buff to a buff icon.
 	private List<BuffIcon> buffIcons;
 
 	// Start is called before the first frame update
@@ -25,7 +24,6 @@ public class BuffManager : MonoBehaviour
 		if (current == null)
 		{
 			current = this;
-			appliedBuffs = new List<Buff>();
 			buffIcons = new List<BuffIcon>();
 		}
 	}
@@ -37,10 +35,18 @@ public class BuffManager : MonoBehaviour
 	{
 		if(buff.icon != null)
 		{
+			// If the buff is already applied to the player, just reset it's clock.
+			foreach(var buffIcon in buffIcons)
+			{
+				if(buffIcon.buff == buff)
+				{
+					buffIcon.ResetClock();
+					return;
+				}
+			}
 			var icon = Instantiate(defaultIcon, buffGrid.transform);
 			icon.Initialize(buff);
 			buffIcons.Add(icon);
-			appliedBuffs.Add(icon.buff);
 			icon.buff.Apply(playerActor);
 		}
 	}
@@ -56,7 +62,6 @@ public class BuffManager : MonoBehaviour
 			if(icon.buff == buff)
 			{
 				icon.buff.Remove(playerActor);
-				appliedBuffs.Remove(icon.buff);
 				buffIcons.Remove(icon);
 				if(icon.gameObject != null)
 					Destroy(icon.gameObject);
@@ -71,9 +76,9 @@ public class BuffManager : MonoBehaviour
 	public void RemoveAllBuffs()
 	{
 		StopAllCoroutines();
-		foreach(var buff in appliedBuffs)
+		foreach(var buffIcon in buffIcons)
 		{
-			RemoveBuff(buff);
+			RemoveBuff(buffIcon.buff);
 		}
 	}
 }

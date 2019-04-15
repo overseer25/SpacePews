@@ -68,7 +68,6 @@ public class InventorySlot : SlotBase
                     SendMessageUpwards("QuickSwapWithMountSlot", index);
             }
         }
-
         // Shift clicking will clear the slot.
         else if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
@@ -79,6 +78,19 @@ public class InventorySlot : SlotBase
                 return;
             }
         }
+		else if(Input.GetMouseButtonDown(1))
+		{
+			var item = inventoryItem.GetItem();
+			if(item is Consumable)
+			{
+				(item as Consumable).Consume();
+				var quantity = GetQuantity() - 1;
+				if (quantity == 0)
+					ClearSlot();
+				else
+					SetQuantity(quantity);
+			}
+		}
 
         if(canHighlight)
         {

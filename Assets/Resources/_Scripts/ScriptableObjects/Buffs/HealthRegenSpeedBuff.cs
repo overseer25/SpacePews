@@ -34,45 +34,4 @@ public class HealthRegenSpeedBuff : Buff
 		else
 			actor.healthRegenSpeed += regenSpeed;
 	}
-
-	/// <summary>
-	/// Build description of buff.
-	/// </summary>
-	/// <returns></returns>
-	public override string BuildDescription()
-	{
-		string result;
-		if (debuff)
-			result = "Lengthens health regen delay by " + regenSpeed + " seconds";
-		else
-			result = "Reduces health regen delay by " + regenSpeed + " seconds";
-
-		return result;
-	}
-
-	/// <summary>
-	/// String for hovering over buff icon.
-	/// </summary>
-	/// <returns></returns>
-	public override string BuildBuffIconString()
-	{
-		if (debuff)
-			return "Decreased health regen speed";
-		return "Increased health regen speed";
-	}
-
-	/// <summary>
-	/// Build the screen to be used by the info screen.
-	/// </summary>
-	/// <returns></returns>
-	public override string BuildInfoScreenString()
-    {
-        string result;
-        if (debuff)
-            result = "Lengthens health regen delay by <color=\"red\">" + regenSpeed + "</color> seconds";
-        else
-            result = "Reduces health regen delay by <color=\"green\">" + regenSpeed + "</color> seconds";
-
-        return result;
-    }
 }

@@ -14,7 +14,6 @@ public class HealthRegenSpeedBuffEditor : BuffBaseEditor
 	public override void OnInspectorGUI()
 	{
         var buff = target as HealthRegenSpeedBuff;
-        DisplayDescription(buff);
 
         EditorGUILayout.BeginHorizontal();
 		tooltip = "Is this a buff or a debuff?";
@@ -32,5 +31,6 @@ public class HealthRegenSpeedBuffEditor : BuffBaseEditor
 
 		DisplayTime();
 		DisplayIcon();
+		DisplayDescriptions();
 	}
 }

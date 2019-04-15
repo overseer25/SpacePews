@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class PauseMenuScript : MonoBehaviour
     public Texture2D menuCursor;
     public Texture2D shootCursor;
 	public GameObject healthUI;
+	public GameObject buffGrid;
 	public GameObject abilityBar;
 
 
@@ -111,6 +113,10 @@ public class PauseMenuScript : MonoBehaviour
     public void PauseGame()
     {
 		healthUI.SetActive(false);
+
+		foreach (var buffIcon in buffGrid.GetComponentsInChildren<BuffIcon>())
+			buffIcon.Hide();
+
 		IsPaused = true;
         ActivatePauseMenu();
         Cursor.SetCursor(menuCursor, Vector2.zero, CursorMode.Auto);
@@ -127,6 +133,10 @@ public class PauseMenuScript : MonoBehaviour
     public void ResumeGame()
     {
 		healthUI.SetActive(true);
+
+		foreach (var buffIcon in buffGrid.GetComponentsInChildren<BuffIcon>())
+			buffIcon.Show();
+
 		IsPaused = false;
         ChangeQuitDialogueState(false);
         DeactivatePauseMenu();
