@@ -192,6 +192,7 @@ public class GraphicsMenu : MonoBehaviour
         if(previousAspectRatio != selectedAspectRatio)
         {
             selectedResolution = 0;
+            changedResolution = true;
         }
         resolutionSelection.value = selectedResolution;
         resolutionSelection.captionText.text = resolutionStrings[selectedResolution];

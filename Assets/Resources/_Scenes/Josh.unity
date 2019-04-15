@@ -250,12 +250,21 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1106872748}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &60199549 stripped
+--- !u!4 &60199549
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 300, guid: 2d09ea29d6860b342a42f2644c87efda,
     type: 3}
   m_PrefabInstance: {fileID: 1617534947}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835895459}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1617534948}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &63069341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,6 +1799,22 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 992598911}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1027127714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1617534947}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1617534948}
+  m_Layer: 0
+  m_Name: MiningLaser (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!224 &1045652379 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 145276430843108408, guid: 5b930b6fe85a7e146ac4dcb3334e1866,
@@ -2279,7 +2304,7 @@ Transform:
   - {fileID: 1814630355}
   - {fileID: 414465705}
   - {fileID: 1695666808}
-  - {fileID: 60199549}
+  - {fileID: 1617534948}
   - {fileID: 4743501439746272}
   - {fileID: 520096280}
   - {fileID: 9140163826084848787}
@@ -2853,10 +2878,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1343323047}
     m_Modifications:
-    - target: {fileID: 153, guid: 2d09ea29d6860b342a42f2644c87efda, type: 3}
-      propertyPath: m_Name
-      value: MiningLaser
-      objectReference: {fileID: 0}
     - target: {fileID: 300, guid: 2d09ea29d6860b342a42f2644c87efda, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.6045475
@@ -2901,8 +2922,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 153, guid: 2d09ea29d6860b342a42f2644c87efda, type: 3}
+      propertyPath: m_Name
+      value: MiningLaser
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d09ea29d6860b342a42f2644c87efda, type: 3}
+--- !u!4 &1617534948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1617534947}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027127714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 60199549}
+  m_Father: {fileID: 1343323047}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1639014691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8890621848326453822, guid: 6ec9ff96891d1a24bbae4c464efd9832,
@@ -3233,6 +3273,22 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1814630354}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1835895459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 1617534947}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 60199549}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1001 &1844127827
 PrefabInstance:
   m_ObjectHideFlags: 0
