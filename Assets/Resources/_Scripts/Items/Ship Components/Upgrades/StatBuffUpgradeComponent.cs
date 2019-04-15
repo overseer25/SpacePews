@@ -20,7 +20,7 @@ public class StatBuffUpgradeComponent : ShipComponentBase
 	{
 		foreach(var buff in buffs)
 		{
-			buff.Apply(actor);
+			BuffManager.current.AddBuff(buff);
 		}
 	}
 
@@ -32,7 +32,7 @@ public class StatBuffUpgradeComponent : ShipComponentBase
 	{
 		foreach (var buff in buffs)
 		{
-			buff.Remove(actor);
+			BuffManager.current.RemoveBuff(buff);
 		}
 	}
 

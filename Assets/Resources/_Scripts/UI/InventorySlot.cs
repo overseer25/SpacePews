@@ -85,12 +85,13 @@ public class InventorySlot : SlotBase
             if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 Highlight();
-                SendMessageUpwards("ShowHoverTooltip", index);
+				InfoScreen.current.SetInfo(GetItem(), GetQuantity());
+				InfoScreen.current.Show();
             }
             else if (IsEmpty())
             {
                 Dehighlight();
-                SendMessageUpwards("HideHoverTooltip", index);
+				InfoScreen.current.Hide();
             }
         }
     }
@@ -101,8 +102,8 @@ public class InventorySlot : SlotBase
         Dehighlight();
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
-            SendMessageUpwards("HideHoverTooltip");
-            if (exitSound != null)
+			InfoScreen.current.Hide();
+			if (exitSound != null)
             {
                 audioSource.clip = exitSound;
                 audioSource.Play();

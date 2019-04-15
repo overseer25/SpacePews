@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class InfoScreen : MonoBehaviour
 {
 
+	public static InfoScreen current;
+
     [Header("Displays")]
     public TextMeshProUGUI displayText;
     public TextMeshProUGUI value;
@@ -12,22 +14,37 @@ public class InfoScreen : MonoBehaviour
 
     //Enabling/disabling this hides the screen.
     private CanvasGroup cg;
+	private bool isDead;
+
+	private float yPad;
+	private float xPad;
 
     private void Awake()
     {
         cg = GetComponent<CanvasGroup>();
+		if (current == null)
+			current = this;
     }
 
     void Update()
     {
+		if (PauseMenuScript.IsPaused)
+			Hide();
+
         var mousePos = Input.mousePosition;
-        mousePos.y = Input.mousePosition.y + 30.0f;
+		mousePos.x += xPad;
+		mousePos.y += yPad;
         mousePos.z = transform.position.z - Camera.main.transform.position.z;
 
         var pos = Camera.main.ScreenToWorldPoint(mousePos);
         pos.z = transform.parent.transform.position.z;
         transform.position = Vector3.Slerp(transform.position, pos, Time.deltaTime * 10.0f);
     }
+
+	public void UpdateDead(bool dead)
+	{
+		isDead = dead;
+	}
 
     /// <summary>
     /// Is the panel currently visible?
@@ -43,6 +60,9 @@ public class InfoScreen : MonoBehaviour
     /// </summary>
     public void Show()
     {
+		if (isDead || PauseMenuScript.IsPaused)
+			return;
+
         if (cg.alpha == 0)
         {
             cg.alpha = 1;
@@ -61,9 +81,9 @@ public class InfoScreen : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the information to display to the user.
+    /// Sets the item information to display to the user.
     /// </summary>
-    public void SetInfo(Item item, int count)
+    public void SetInfo(Item item, int count = 0)
     {
 		Color color = ItemColors.colors[(int)item.itemTier];
 		var hex = color.ToHex();
@@ -126,7 +146,23 @@ public class InfoScreen : MonoBehaviour
 
         // Resize the window to accomodate the new text.
         ResizeWindow();
+		xPad = 0f;
+		yPad = 30f;
     }
+
+	/// <summary>
+	/// Sets the buff information to display to the user.
+	/// </summary>
+	/// <param name="buff"></param>
+	public void SetInfo(Buff buff)
+	{
+		displayText.text = "<style=\"BuffIconText\">" + buff.BuildBuffIconString() + "</style>";
+		quantity.text = "";
+		value.text = "";
+		ResizeWindow();
+		xPad = 0f;
+		yPad = -GetComponent<RectTransform>().sizeDelta.y;
+	}
 
     /// <summary>
     /// Resize the info screen height depending on the size of the contents.

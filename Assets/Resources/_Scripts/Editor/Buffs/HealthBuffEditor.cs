@@ -13,7 +13,7 @@ public class HealthBuffEditor : BuffBaseEditor
 
 	public override void OnInspectorGUI()
 	{
-		HealthBuff buff = target as HealthBuff;
+		HealthBuff buff = serializedObject.targetObject as HealthBuff;
 
         DisplayDescription(buff);
 
@@ -49,5 +49,8 @@ public class HealthBuffEditor : BuffBaseEditor
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.EndHorizontal();
 		}
+
+		DisplayTime();
+		DisplayIcon();
 	}
 }

@@ -267,7 +267,7 @@ public class InputManager : MonoBehaviour
         {
             wController.menuOpen = !wController.menuOpen;
             pController.inventory.Toggle();
-            pController.inventory.infoScreen.Hide();
+			InfoScreen.current.Hide();
         }
 
         if (Input.GetKeyDown(controls.cameraZoomIn))

@@ -67,11 +67,22 @@ public class HealthBuff : Buff
 		return result;
 	}
 
-    /// <summary>
-    /// Build the screen to be used by the info screen.
-    /// </summary>
-    /// <returns></returns>
-    public override string BuildInfoScreenString()
+	/// <summary>
+	/// String for hovering over buff icon.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildBuffIconString()
+	{
+		if (debuff)
+			return "Decreased max health";
+		return "Increased max health";
+	}
+
+	/// <summary>
+	/// Build the screen to be used by the info screen.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildInfoScreenString()
     {
         string result;
         if (isMultiplier)

@@ -40,5 +40,7 @@ public class HealthRegenBuffEditor : BuffBaseEditor
             serializedObject.ApplyModifiedProperties();
             EditorGUILayout.EndHorizontal();
         }
+		DisplayTime();
+		DisplayIcon();
 	}
 }

@@ -257,14 +257,14 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 			if (GetComponentInParent<SlotBase>() != null)
 				positions[0] = GetComponentInParent<SlotBase>().GetIndex();
 			dragging = true;
-			SendMessageUpwards("HideHoverTooltip");
+			InfoScreen.current.Hide();
 		}
 		else if (eventData.button == PointerEventData.InputButton.Right && draggable && item != null && !dragging)
 		{
 			if (GetComponentInParent<SlotBase>() != null)
 				positions[0] = GetComponentInParent<SlotBase>().GetIndex();
 			rightClickDragging = true;
-			SendMessageUpwards("HideHoverTooltip");
+			InfoScreen.current.Hide();
 		}
 	}
 

@@ -10,9 +10,6 @@ using UnityEngine.UI;
 /// </summary>
 public class Inventory : MonoBehaviour
 {
-	[Header("Tool Tip")]
-	public InfoScreen infoScreen;
-
 	[Header("Item Transfer Confirm Window")]
 	public GameObject itemTransferPanel;
 	public Button itemTransferConfirmButton;
@@ -203,7 +200,6 @@ public class Inventory : MonoBehaviour
 		isPaused = paused;
 		if (isPaused)
 		{
-			HideHoverTooltip();
 			HideHotbar();
 			CloseInventory(false);
 			selectedTextDisplay.enabled = false;
@@ -225,7 +221,6 @@ public class Inventory : MonoBehaviour
 		if (dead)
 		{
 			CloseInventory(false);
-			HideHoverTooltip();
 			HideHotbar();
 			selectedTextDisplay.enabled = false;
 		}
@@ -286,72 +281,6 @@ public class Inventory : MonoBehaviour
 		ToggleSlotHoverEffect(false);
 	}
 
-
-	/// <summary>
-	/// Populates the tooltip with the information of the item in the inventory slot at the given index
-	/// and displays the tooltip.
-	/// </summary>
-	/// <param name="index"></param>
-	public virtual void ShowHoverTooltip(int index)
-	{
-		if (isOpen && !itemTransferPanel.activeInHierarchy)
-		{
-			ToggleSlotHoverEffect(true);
-			// If the provided index is greater than the number of inventory slots, then it is a mount slot.
-			if (index >= inventorySlots.Count() + mountSlots.Count())
-			{
-				index -= (inventorySlots.Count() + mountSlots.Count());
-				if (hotbarSlots[index].IsEmpty())
-				{
-					infoScreen.Hide();
-				}
-				else if (!infoScreen.IsVisible())
-				{
-					var item = hotbarSlots[index].GetItem();
-
-					infoScreen.SetInfo(item, 0);
-					infoScreen.Show();
-				}
-			}
-			else if (index >= inventorySlots.Count())
-			{
-				index -= inventorySlots.Count();
-				if (mountSlots[index].IsEmpty())
-				{
-					infoScreen.Hide();
-				}
-				else if (!infoScreen.IsVisible())
-				{
-					var item = mountSlots[index].GetItem();
-
-					infoScreen.SetInfo(item, 0);
-					infoScreen.Show();
-				}
-			}
-			else
-			{
-				if (inventorySlots[index].IsEmpty())
-				{
-					infoScreen.Hide();
-				}
-				var item = inventorySlots[index].GetItem();
-
-				infoScreen.SetInfo(item, inventorySlots[index].GetQuantity());
-				infoScreen.Show();
-			}
-		}
-		else
-			ToggleSlotHoverEffect(false);
-	}
-
-	/// <summary>
-	/// Hide the slot tooltip.
-	/// </summary>
-	public void HideHoverTooltip()
-	{
-		infoScreen.Hide();
-	}
-
 	/// <summary>
 	/// Show the hotbar.
 	/// </summary>
@@ -388,7 +317,7 @@ public class Inventory : MonoBehaviour
 		audioSource.Stop();
 		audioSource.clip = clearSlotSound;
 		audioSource.Play();
-		infoScreen.Hide();
+		InfoScreen.current.Hide();
 	}
 
 	/// <summary>
@@ -410,9 +339,6 @@ public class Inventory : MonoBehaviour
 				if (slot.GetItem().IsStackable() && slot.GetQuantity() < slot.GetItem().GetStackSize())
 				{
 					slot.GetInventoryItem().AddQuantity(item.GetQuantity());
-					if (infoScreen.IsVisible())
-						ShowHoverTooltip(slot.GetIndex());
-
 					OutputWindow.current.DisplayText("Collected <color=" + item.itemColor.ToHex() + ">" + item.itemName + "</color>");
 					audioSource.PlayOneShot(collectItemSound);
 					return;
@@ -658,7 +584,6 @@ public class Inventory : MonoBehaviour
 		}
 		HidePromptWindow();
 		audioSource.PlayOneShot(swapSound);
-		HideHoverTooltip();
 	}
 
 	/// <summary>
@@ -777,7 +702,6 @@ public class Inventory : MonoBehaviour
 			return;
 
 		audioSource.PlayOneShot(swapSound);
-		HideHoverTooltip();
 	}
 
 	/// <summary>
@@ -830,7 +754,6 @@ public class Inventory : MonoBehaviour
 
 
 		audioSource.PlayOneShot(swapSound);
-		HideHoverTooltip();
 	}
 
 	/// <summary>
@@ -865,7 +788,6 @@ public class Inventory : MonoBehaviour
 			weaponController.UpdateTurret(hotbarSlot2.GetItem() as ShipComponentBase);
 
 		audioSource.PlayOneShot(swapSound);
-		HideHoverTooltip();
 	}
 
 	/// <summary>
@@ -943,7 +865,6 @@ public class Inventory : MonoBehaviour
 			return;
 
 		audioSource.PlayOneShot(swapSound);
-		HideHoverTooltip();
 	}
 
 	/// <summary>
@@ -978,7 +899,6 @@ public class Inventory : MonoBehaviour
 		}
 
 		audioSource.PlayOneShot(swapSound);
-		HideHoverTooltip();
 	}
 
 	/// <summary>

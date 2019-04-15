@@ -56,11 +56,24 @@ public class HealthRegenBuff : Buff
 		return result;
 	}
 
-    /// <summary>
-    /// Build the screen to be used by the info screen.
-    /// </summary>
-    /// <returns></returns>
-    public override string BuildInfoScreenString()
+	/// <summary>
+	/// String for hovering over buff icon.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildBuffIconString()
+	{
+		if (disableRegen)
+			return "Life regen is disabled";
+		if (debuff)
+			return "Decreased health regen";
+		return "Increased health regen";
+	}
+
+	/// <summary>
+	/// Build the screen to be used by the info screen.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildInfoScreenString()
     {
         string result;
         if (disableRegen)

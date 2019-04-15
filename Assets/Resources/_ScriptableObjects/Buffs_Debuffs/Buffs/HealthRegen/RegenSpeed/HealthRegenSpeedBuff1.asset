@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: HealthRegenSpeedBuff1
   m_EditorClassIdentifier: 
   debuff: 0
+  timeInSeconds: 0
+  icon: {fileID: 21300000, guid: b39da5bc8790f4e4489050b0b7042a01, type: 3}
   regenSpeed: 0.5

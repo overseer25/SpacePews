@@ -29,5 +29,8 @@ public class HealthRegenSpeedBuffEditor : BuffBaseEditor
 		EditorGUILayout.PropertyField(serializedObject.FindProperty("regenSpeed"), new GUIContent("    Regen Speed", tooltip), true, GUILayout.MaxWidth(500f));
 		serializedObject.ApplyModifiedProperties();
 		EditorGUILayout.EndHorizontal();
+
+		DisplayTime();
+		DisplayIcon();
 	}
 }

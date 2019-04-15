@@ -170,12 +170,13 @@ public class MountSlot : SlotBase
             if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 Highlight();
-                SendMessageUpwards("ShowHoverTooltip", index);
-            }
+				InfoScreen.current.SetInfo(GetItem());
+				InfoScreen.current.Show();
+			}
             else if (IsEmpty())
             {
                 Dehighlight();
-                SendMessageUpwards("HideHoverTooltip", index);
+				InfoScreen.current.Hide();
             }
         }
     }
@@ -187,7 +188,7 @@ public class MountSlot : SlotBase
 
         if (inventoryItem.gameObject.activeSelf && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
         {
-            SendMessageUpwards("HideHoverTooltip");
+			InfoScreen.current.Hide();
             if (exitSound != null)
             {
                 audioSource.clip = exitSound;

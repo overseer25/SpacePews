@@ -50,11 +50,22 @@ public class HealthRegenSpeedBuff : Buff
 		return result;
 	}
 
-    /// <summary>
-    /// Build the screen to be used by the info screen.
-    /// </summary>
-    /// <returns></returns>
-    public override string BuildInfoScreenString()
+	/// <summary>
+	/// String for hovering over buff icon.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildBuffIconString()
+	{
+		if (debuff)
+			return "Decreased health regen speed";
+		return "Increased health regen speed";
+	}
+
+	/// <summary>
+	/// Build the screen to be used by the info screen.
+	/// </summary>
+	/// <returns></returns>
+	public override string BuildInfoScreenString()
     {
         string result;
         if (debuff)

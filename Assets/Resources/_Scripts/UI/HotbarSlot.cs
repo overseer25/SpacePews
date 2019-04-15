@@ -162,12 +162,13 @@ public class HotbarSlot : SlotBase
             if (!IsEmpty() && !InventoryItem.dragging && !InventoryItem.rightClickDragging)
             {
                 Highlight();
-                SendMessageUpwards("ShowHoverTooltip", index);
-            }
+				InfoScreen.current.SetInfo(GetItem());
+				InfoScreen.current.Show();
+			}
             else if (IsEmpty())
             {
                 Dehighlight();
-                SendMessageUpwards("HideHoverTooltip");
+				InfoScreen.current.Hide();
             }
         }
         else
@@ -189,7 +190,7 @@ public class HotbarSlot : SlotBase
                     if (exitSound != null)
                         audioSource.PlayOneShot(exitSound);
                 }
-                SendMessageUpwards("HideHoverTooltip");
+				InfoScreen.current.Hide();
             }
         }
     }

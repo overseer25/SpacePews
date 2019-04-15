@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: HealthDebuff50
   m_EditorClassIdentifier: 
   debuff: 1
+  timeInSeconds: 0
+  icon: {fileID: 21300000, guid: fe7ec20c17ab92e48a2a46bf13c792bd, type: 3}
   isMultiplier: 0
   healthAmount: 50
   multiplier: 0

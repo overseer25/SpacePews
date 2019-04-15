@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: HealthBuffMult1
   m_EditorClassIdentifier: 
   debuff: 0
+  timeInSeconds: 0
+  icon: {fileID: 21300000, guid: ce1f83262895fbc4caa4281c5c88a21d, type: 3}
   isMultiplier: 1
   healthAmount: 100
   multiplier: 0.5
