@@ -316,7 +316,7 @@ public class PlayerController : MonoBehaviour
 		buffGrid.SetActive(false);
         if (GetAbility() != null)
             abilityChargeBar.SetActive(false);
-
+        BuffManager.current.RemoveAllTimedBuffs();
         engineSource.Stop();
 
         movingForward = false;

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class InventorySlot : SlotBase
 {
+    public AudioClip useEffect; 
 
     // Use this for initialization
     protected override void Awake()
@@ -57,19 +58,8 @@ public class InventorySlot : SlotBase
     /// </summary>
     void OnMouseOver()
     {
-        // Shift right-clicking will swap slots.
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
-        {
-            if(inventoryItem.GetItem() != null)
-            {
-                if (inventoryItem.GetItemType() == ItemType.Turret)
-                    SendMessageUpwards("QuickSwapWithHotbarSlot", index);
-                else if (inventoryItem.GetItemType() != ItemType.Item)
-                    SendMessageUpwards("QuickSwapWithMountSlot", index);
-            }
-        }
         // Shift clicking will clear the slot.
-        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
         {
             if(inventoryItem.GetItem() != null)
             {
@@ -80,16 +70,25 @@ public class InventorySlot : SlotBase
         }
 		else if(Input.GetMouseButtonDown(1))
 		{
-			var item = inventoryItem.GetItem();
-			if(item is Consumable)
-			{
-				(item as Consumable).Consume();
-				var quantity = GetQuantity() - 1;
-				if (quantity == 0)
-					ClearSlot();
-				else
-					SetQuantity(quantity);
-			}
+            if (inventoryItem.GetItem() != null)
+            {
+                var item = inventoryItem.GetItem();
+
+                if (inventoryItem.GetItemType() == ItemType.Turret)
+                    SendMessageUpwards("QuickSwapWithHotbarSlot", index);
+                else if (inventoryItem.GetItemType() != ItemType.Item)
+                    SendMessageUpwards("QuickSwapWithMountSlot", index);
+                else if (item is Consumable)
+                {
+                    (item as Consumable).Consume();
+                    audioSource.PlayOneShot(useEffect);
+                    var quantity = GetQuantity() - 1;
+                    if (quantity == 0)
+                        ClearSlot();
+                    else
+                        SetQuantity(quantity);
+                }
+            }
 		}
 
         if(canHighlight)

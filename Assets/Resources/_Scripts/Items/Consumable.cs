@@ -9,10 +9,10 @@ public class Consumable : Item
 {
 	public Buff[] Buffs;
 
-	/// <summary>
-	/// Use the item.
-	/// </summary>
-	public void Consume()
+    /// <summary>
+    /// Use the item.
+    /// </summary>
+    public void Consume()
 	{
 		foreach(var buff in Buffs)
 		{

@@ -304,6 +304,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterSound: {fileID: 8300000, guid: c738ad39450278c44a791b7fab97de4d, type: 3}
   exitSound: {fileID: 0}
+  useEffect: {fileID: 8300000, guid: 4473816f2fec36e45bee4e51b16a3cf2, type: 3}
 --- !u!114 &114278537410034768
 MonoBehaviour:
   m_ObjectHideFlags: 0

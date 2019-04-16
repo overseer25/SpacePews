@@ -75,10 +75,21 @@ public class BuffManager : MonoBehaviour
 	/// </summary>
 	public void RemoveAllBuffs()
 	{
-		StopAllCoroutines();
-		foreach(var buffIcon in buffIcons)
-		{
-			RemoveBuff(buffIcon.buff);
-		}
+        for(int i = 0; i < buffIcons.Count; i++)
+        {
+            RemoveBuff(buffIcons[i].buff);
+        }
 	}
+
+    /// <summary>
+    /// Remove all temporary buffs.
+    /// </summary>
+    public void RemoveAllTimedBuffs()
+    {
+        for(int i = 0; i < buffIcons.Count; i++)
+        {
+            if (buffIcons[i].buff.timeInSeconds > 0)
+                RemoveBuff(buffIcons[i].buff);
+        }
+    }
 }
