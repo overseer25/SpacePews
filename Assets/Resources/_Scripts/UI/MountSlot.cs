@@ -159,8 +159,8 @@ public class MountSlot : SlotBase
     void OnMouseOver()
     {
 
-        // Shift right-clicking will swap slots.
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
+        // Right-clicking will swap slots.
+        if (Input.GetMouseButtonDown(1))
         {
             SendMessageUpwards("QuickSwapWithInventorySlot", index);
         }

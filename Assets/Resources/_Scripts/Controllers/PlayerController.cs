@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public ParticleEffect deathExplosion;
     public ParticleEffect respawnEffect;
     public AudioSource engineSource;
+    public FadeEffect ghostEffect;
 
     // The active ability the player can currently use.
     private AbilityBase ability;
@@ -293,6 +294,24 @@ public class PlayerController : MonoBehaviour
     public void StartAbilityCooldown()
     {
         abilityCooldown = StartCoroutine(ability.Cooldown());
+    }
+
+    /// <summary>
+    /// Apply a ghost effect to the player.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Ghost(float rateToGenerate, float fadeRate, float fadeAmount, int numOfGhosts)
+    {
+        var count = 0;
+        while(count != numOfGhosts)
+        {
+            var ghost = Instantiate(ghostEffect);
+            ghost.Initialize(shipRenderer.sprite, ship.transform.position, ship.transform.rotation, fadeRate, fadeAmount, ship.gameObject.transform.localScale);
+            count++;
+            yield return new WaitForSeconds(rateToGenerate);
+        }
+
+        yield return null;
     }
 
     /// <summary>

@@ -7345,6 +7345,8 @@ MonoBehaviour:
   respawnEffect: {fileID: 2507454449156312789, guid: e811f9b8fdd3c1b47af37e5d606e2b3e,
     type: 3}
   engineSource: {fileID: 949909273980631007}
+  ghostEffect: {fileID: 6564076730835812928, guid: 5906bd238a3953e4490bace24141a397,
+    type: 3}
   rotatingLeft: 0
   rotatingRight: 0
   movingForward: 0

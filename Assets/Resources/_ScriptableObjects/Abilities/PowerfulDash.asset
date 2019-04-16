@@ -18,3 +18,7 @@ MonoBehaviour:
   cooldownTime: 4
   recharging: 1
   speed: 70
+  ghostCount: 20
+  ghostRate: 0.02
+  ghostFadeAmount: 0.04
+  ghostFadeRate: 0.01

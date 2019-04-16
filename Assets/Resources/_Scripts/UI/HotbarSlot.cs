@@ -153,8 +153,8 @@ public class HotbarSlot : SlotBase
         // If the slot can be highlighted.
         if (canHighlight)
         {
-            // Shift right-clicking will swap slots.
-            if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
+            // Right-clicking will swap slots.
+            if (Input.GetMouseButtonDown(1))
             {
                 SendMessageUpwards("QuickSwapWithInventorySlot", index);
             }

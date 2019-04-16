@@ -13,6 +13,11 @@ public class DashAbility : AbilityBase
     /// </summary>
     public float speed;
 
+    public int ghostCount;
+    public float ghostRate;
+    public float ghostFadeAmount;
+    public float ghostFadeRate;
+
     /// <summary>
     /// Activates the dash ability.
     /// </summary>
@@ -23,5 +28,6 @@ public class DashAbility : AbilityBase
 
         if(useEffect != null)
             ParticleManager.PlayParticle(useEffect, player.transform.position, movementController.GetShip().transform.rotation);
+
     }
 }
