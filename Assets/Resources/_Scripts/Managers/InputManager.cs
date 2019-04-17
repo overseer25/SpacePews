@@ -68,13 +68,7 @@ public class InputManager : MonoBehaviour
 				}
 			}
 
-			var ability = pController.GetAbility();
-			// Handle abilities.
-			if(Input.GetKeyDown(controls.ability) && ability != null && !ability.recharging)
-			{
-				ability.Activate(pController.gameObject);
-				pController.StartAbilityCooldown();
-			}
+            HandleAbilityControls();
 		}
         else
         {
@@ -179,6 +173,25 @@ public class InputManager : MonoBehaviour
         else if (Input.GetKeyUp(controls.left))
         {
             pController.rotatingLeft = false;
+        }
+    }
+
+    /// <summary>
+    /// Handles controls and effects for abilities
+    /// </summary>
+    private void HandleAbilityControls()
+    {
+        var ability = pController.GetAbility();
+        // Handle abilities.
+        if (Input.GetKeyDown(controls.ability) && ability != null && !ability.recharging)
+        {
+            ability.Activate(pController.gameObject);
+            if(ability is DashAbility)
+            {
+                var dash = ability as DashAbility;
+                StartCoroutine(pController.Ghost(dash.ghostRate, dash.ghostFadeRate, dash.ghostFadeAmount, dash.ghostCount));
+            }
+            pController.StartAbilityCooldown();
         }
     }
 

@@ -34,33 +34,25 @@ public class MountSlot : SlotBase
     private void OnEnable()
     {
         if(mount != null)
-            transform.position = mount.transform.position;
-    }
-
-    /// <summary>
-    /// Smooth movement.
-    /// </summary>
-    void FixedUpdate()
-    {
-        if (mount != null)
-        {
-            var parentZ = mount.transform.parent.transform.rotation.eulerAngles.z;
-            var x = mount.transform.position.x + distanceFromMount * Math.Cos(Math.PI / 180 * (angleFromMount + parentZ));
-            var y = mount.transform.position.y + distanceFromMount * Math.Sin(Math.PI / 180 * (angleFromMount + parentZ));
-            var vect = new Vector3((float)x, (float)y, gameObject.transform.parent.transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, vect, Time.deltaTime * speed);
-        }
+            transform.position = new Vector3(mount.transform.position.x, mount.transform.position.y, transform.position.z);
     }
 
     private void LateUpdate()
     {
-        Vector3 v = transform.position - mount.transform.position;
-        Vector3 startPos = transform.position - (v / 3);
-        Vector3 endPos = mount.transform.position + (v / 5);
-
         if (mount != null)
         {
-            line.SetPositions(new Vector3[] { startPos, endPos });
+            // Slot position
+            var parentZ = mount.transform.rotation.eulerAngles.z;
+            var x = mount.transform.position.x + distanceFromMount * Math.Cos(Math.PI / 180 * (angleFromMount + parentZ));
+            var y = mount.transform.position.y + distanceFromMount * Math.Sin(Math.PI / 180 * (angleFromMount + parentZ));
+            var vect = new Vector3((float)x, (float)y, gameObject.transform.parent.transform.position.z);
+            transform.position = Vector3.Lerp(transform.position, vect, Time.deltaTime * speed);
+
+            // Line position
+            Vector3 v = transform.position - mount.transform.position;
+            Vector3 startPos = (transform.position) - (v / 3);
+            Vector3 endPos = mount.transform.position + (v / 5);
+            line.SetPositions(new Vector3[] { startPos, new Vector3(endPos.x, endPos.y, transform.position.z) });
         }
     }
 
@@ -159,8 +151,8 @@ public class MountSlot : SlotBase
     void OnMouseOver()
     {
 
-        // Shift right-clicking will swap slots.
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(1))
+        // Right-clicking will swap slots.
+        if (Input.GetMouseButtonDown(1))
         {
             SendMessageUpwards("QuickSwapWithInventorySlot", index);
         }

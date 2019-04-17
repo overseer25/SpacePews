@@ -8,23 +8,39 @@ using UnityEngine;
 /// </summary>
 public abstract class BuffBaseEditor : Editor
 {
-
-    /// <summary>
-    /// Display the description.
-    /// </summary>
-    /// <param name="buff"></param>
-    public void DisplayDescription(Buff buff)
-    {
-        string tip = "A general overview of what the buff does.";
-        EditorGUILayout.LabelField(new GUIContent(buff.BuildDescription(), tip), EditorStyles.boldLabel);
-    }
-
 	public void DisplayTime()
 	{
 		EditorGUILayout.BeginHorizontal();
 		string tooltip = "The time the buff will be applied before being removed.";
 		serializedObject.Update();
 		EditorGUILayout.PropertyField(serializedObject.FindProperty("timeInSeconds"), new GUIContent("    Time Applied (in seconds)", tooltip), true, GUILayout.MaxWidth(500f));
+		serializedObject.ApplyModifiedProperties();
+		EditorGUILayout.EndHorizontal();
+	}
+
+	/// <summary>
+	/// Display description texts.
+	/// </summary>
+	public void DisplayDescriptions()
+	{
+		EditorGUILayout.BeginHorizontal();
+		string tooltip = "Pretty text for the info screen.";
+		serializedObject.Update();
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("infoScreenText"), new GUIContent("    Pretty Text", tooltip), true, GUILayout.MaxWidth(500f));
+		serializedObject.ApplyModifiedProperties();
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal();
+		tooltip = "Plain text version of the pretty text.";
+		serializedObject.Update();
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("plainText"), new GUIContent("    Plain Text", tooltip), true, GUILayout.MaxWidth(500f));
+		serializedObject.ApplyModifiedProperties();
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal();
+		tooltip = "Text displayed when hovering over the buff icon.";
+		serializedObject.Update();
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("buffIconText"), new GUIContent("    Buff Icon Text", tooltip), true, GUILayout.MaxWidth(500f));
 		serializedObject.ApplyModifiedProperties();
 		EditorGUILayout.EndHorizontal();
 	}

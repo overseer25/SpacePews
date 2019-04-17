@@ -24,8 +24,11 @@ public class OptionsMenu : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        transform.position = Vector2.zero;
-		if (current == null)
+        transform.localPosition = new Vector3(0.0f, 0.0f, transform.position.z);
+        controlsMenu.transform.localPosition = new Vector3(0.0f, 0.0f, transform.position.z);
+        audioMenu.transform.localPosition = new Vector3(0.0f, 0.0f, transform.position.z);
+        graphicsMenu.transform.localPosition = new Vector3(0.0f, 0.0f, transform.position.z);
+        if (current == null)
 			current = this;
     }
 

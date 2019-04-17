@@ -31,7 +31,6 @@ public class ControlsMenu : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        transform.position = Vector2.zero;
     }
 
     private void LateUpdate()

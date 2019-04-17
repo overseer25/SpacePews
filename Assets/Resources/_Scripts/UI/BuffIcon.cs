@@ -13,6 +13,8 @@ public class BuffIcon : MonoBehaviour
 	[HideInInspector]
 	public TextMeshProUGUI timer;
 
+	private Coroutine countdown;
+
 	public void Initialize(Buff buff)
 	{
 		icon = GetComponent<Image>();
@@ -20,9 +22,40 @@ public class BuffIcon : MonoBehaviour
 		this.buff = buff;
 		icon.sprite = buff.icon;
 		if (buff.timeInSeconds > 0)
-		{
-			StartCoroutine(BeginCountdown(buff.timeInSeconds));
-		}
+			countdown = StartCoroutine(BeginCountdown(buff.timeInSeconds));
+		else
+			timer.enabled = false;
+	}
+
+	/// <summary>
+	/// Reset the clock of the countdown. This occurs when a player attempts to apply the
+	/// same buff twice.
+	/// </summary>
+	public void ResetClock()
+	{
+		if(countdown != null)
+			StopCoroutine(countdown);
+
+		countdown = StartCoroutine(BeginCountdown(buff.timeInSeconds));
+	}
+
+	/// <summary>
+	/// Display the buff icon.
+	/// </summary>
+	public void Show()
+	{
+		icon.enabled = true;
+		if (buff.timeInSeconds > 0)
+			timer.enabled = true;
+	}
+
+	/// <summary>
+	/// Hide the buff icon.
+	/// </summary>
+	public void Hide()
+	{
+		icon.enabled = false;
+		timer.enabled = false;
 	}
 
 	/// <summary>

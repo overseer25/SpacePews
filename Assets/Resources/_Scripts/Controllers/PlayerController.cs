@@ -13,8 +13,8 @@ public class PlayerController : MonoBehaviour
     private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
     private const float CAMERA_ZOOM_INCREMENT = 10.0f;
-    private const float CAMERA_MAX_ZOOM = -20.0f;
-    private const float CAMERA_MIN_ZOOM = -50.0f;
+    private const float CAMERA_MAX_ZOOM = -40.0f;
+    private const float CAMERA_MIN_ZOOM = -60.0f;
     private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
     [Header("UI")]
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public PauseMenuScript pauseMenu;
     public GameObject itemTransferConfirmWindow;
     public GameObject healthUI;
+	public GameObject buffGrid;
     public GameObject abilityChargeBar;
     public TextMeshProUGUI currencyCount;
     [Header("State")]
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public ParticleEffect deathExplosion;
     public ParticleEffect respawnEffect;
     public AudioSource engineSource;
+    public FadeEffect ghostEffect;
 
     // The active ability the player can currently use.
     private AbilityBase ability;
@@ -164,10 +166,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom += CAMERA_ZOOM_INCREMENT;
-        foreach (var canvas in canvases)
-        {
-            canvas.planeDistance = -currentCameraZoom;
-        }
     }
 
     /// <summary>
@@ -179,10 +177,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom -= CAMERA_ZOOM_INCREMENT;
-        foreach (var canvas in canvases)
-        {
-            canvas.planeDistance = -currentCameraZoom;
-        }
     }
 
     /// <summary>
@@ -295,6 +289,24 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Apply a ghost effect to the player.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Ghost(float rateToGenerate, float fadeRate, float fadeAmount, int numOfGhosts)
+    {
+        var count = 0;
+        while(count != numOfGhosts)
+        {
+            var ghost = Instantiate(ghostEffect);
+            ghost.Initialize(shipRenderer.sprite, ship.transform.position, ship.transform.rotation, fadeRate, fadeAmount, ship.gameObject.transform.localScale);
+            count++;
+            yield return new WaitForSeconds(rateToGenerate);
+        }
+
+        yield return null;
+    }
+
+    /// <summary>
     /// Die really hard.
     /// </summary>
     public void Die()
@@ -312,9 +324,10 @@ public class PlayerController : MonoBehaviour
         pauseMenu.ResumeGame();
         deathScreen.Display();
         healthUI.SetActive(false);
+		buffGrid.SetActive(false);
         if (GetAbility() != null)
             abilityChargeBar.SetActive(false);
-
+        BuffManager.current.RemoveAllTimedBuffs();
         engineSource.Stop();
 
         movingForward = false;
@@ -359,6 +372,7 @@ public class PlayerController : MonoBehaviour
             movementController.UpdateDead(dead);
             pauseMenu.UpdateDead(dead);
             healthUI.SetActive(true);
+			buffGrid.SetActive(true);
             if (GetAbility() != null)
                 abilityChargeBar.SetActive(true);
 

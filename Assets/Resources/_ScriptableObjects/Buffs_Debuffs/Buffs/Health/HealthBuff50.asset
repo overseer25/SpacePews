@@ -15,6 +15,10 @@ MonoBehaviour:
   debuff: 0
   timeInSeconds: 0
   icon: {fileID: 21300000, guid: 4d7ea1303b7950f41aec32d5c3ef741e, type: 3}
+  infoScreenText: <style=BuffText>Increases maximum health by <color="green">50</color>
+    points.</style>
+  plainText: Increases maximum health by 50 points.
+  buffIconText: Maximum life increased by 50 points.
   isMultiplier: 0
   healthAmount: 50
   multiplier: 0.75

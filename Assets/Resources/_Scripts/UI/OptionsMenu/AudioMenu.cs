@@ -35,7 +35,6 @@ public class AudioMenu : MonoBehaviour
     {
         masterSource = GetComponent<AudioSource>();
         fileLocation = Application.persistentDataPath + "/audio.json";
-        transform.position = Vector2.zero;
     }
 
     private void LateUpdate()
