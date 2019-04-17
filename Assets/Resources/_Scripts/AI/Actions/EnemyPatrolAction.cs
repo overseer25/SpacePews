@@ -19,8 +19,10 @@ public class EnemyPatrolAction : ActionBase
 	/// <param name="controller"></param>
 	private void Patrol(StateController controller)
 	{
-		GameObject waypoint;
-		var remainingDistance = (controller.gameObject.transform.position - controller.GetCurrentWaypoint().transform.position).sqrMagnitude;
+		GameObject waypoint = controller.GetCurrentWaypoint();
+		if (waypoint == null)
+			return;
+		var remainingDistance = (controller.gameObject.transform.position - waypoint.transform.position).sqrMagnitude;
 
 		if (remainingDistance > 0.2f)
 			waypoint = controller.GetCurrentWaypoint();
