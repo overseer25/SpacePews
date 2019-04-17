@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e06adcb86f0efe43919d67d0be5bd94, type: 3}
+  m_Name: EnemyChaser
+  m_EditorClassIdentifier: 
+  actorName: 
+  health: 10
+  physicalResistance: 0
+  detectionRange: 15
+  detectionDistance: 20
+  attackRange: 1
+  attackDistance: 10
+  maxSpeed: 20
+  acceleration: 0.4
+  minRotationSpeed: 2
+  maxRotationSpeed: 15
+  minDistance: 2
+  maxDistance: 20
+  dashSpeed: 50
+  dashCooldown: 0.2

@@ -6364,7 +6364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 949909273980630239}
-  - component: {fileID: 949909273980630823}
+  - component: {fileID: 2623894997678101909}
   - component: {fileID: 949909273980630621}
   - component: {fileID: 949909273980631005}
   - component: {fileID: 949909273980631004}
@@ -6372,8 +6372,8 @@ GameObject:
   - component: {fileID: 949909273980630994}
   - component: {fileID: 949909273980630993}
   m_Layer: 8
-  m_Name: Astrid
-  m_TagString: Ship
+  m_Name: Ship
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6394,8 +6394,8 @@ Transform:
   m_Father: {fileID: 949909273980630182}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &949909273980630823
-PolygonCollider2D:
+--- !u!61 &2623894997678101909
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6407,7 +6407,7 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0056609362}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -6417,14 +6417,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.029592765, y: 0.06013416}
-      - {x: -0.12064848, y: -0.030803606}
-      - {x: -0.1209738, y: -0.09187192}
-      - {x: 0.1205099, y: -0.090757325}
-      - {x: 0.11998725, y: -0.030267024}
-      - {x: 0.02939601, y: 0.060587514}
+  serializedVersion: 2
+  m_Size: {x: 0.27332917, y: 0.19545874}
+  m_EdgeRadius: 0
 --- !u!212 &949909273980630621
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6462,7 +6457,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 58e7c6062cba6424384ae2fdebf8d44e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f87bfe5977a329e4eae66595b2e8f5b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7094,7 +7089,7 @@ MonoBehaviour:
   mountTier: 0
   isGimbal: 0
   uiAngle: 270
-  distanceFromShip: 1
+  distanceFromShip: 10
   startingComponent: {fileID: 114298200944217438, guid: 42e8c05440db7084e89bde0f6154b9be,
     type: 3}
 --- !u!1 &949909273980630289
@@ -7863,7 +7858,7 @@ MonoBehaviour:
   mountTier: 0
   isGimbal: 0
   uiAngle: 225
-  distanceFromShip: 1
+  distanceFromShip: 10
   startingComponent: {fileID: 0}
 --- !u!1 &949909273980630293
 GameObject:
@@ -9858,7 +9853,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: cbe4a24e63c172a46bacabda9b544311, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -10040,6 +10035,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 949909273980629305}
+  - component: {fileID: 1488502330}
   m_Layer: 5
   m_Name: MountSlots
   m_TagString: Untagged
@@ -10063,9 +10059,17 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -231.15515, y: -172.45801}
+  m_AnchoredPosition: {x: -231.15515, y: -172.45802}
   m_SizeDelta: {x: -474.3809, y: -355.05493}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1488502330
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949909273980630498}
+  m_CullTransparentMesh: 0
 --- !u!1 &949909273980630499
 GameObject:
   m_ObjectHideFlags: 0
@@ -10124,7 +10128,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 949909273980630882}
-  m_PlaneDistance: 20
+  m_PlaneDistance: 90
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -10695,7 +10699,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 949909273980630882}
-  m_PlaneDistance: 20
+  m_PlaneDistance: 90
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -30126,7 +30130,7 @@ MonoBehaviour:
   mountTier: 0
   isGimbal: 0
   uiAngle: 315
-  distanceFromShip: 1
+  distanceFromShip: 10
   startingComponent: {fileID: 0}
 --- !u!1 &4744612098684149200
 GameObject:
@@ -46835,7 +46839,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -317.11987, y: -31.230011}
+  m_AnchoredPosition: {x: -317.11987, y: -31.22998}
   m_SizeDelta: {x: -644.85, y: 43.98}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2175724597733240863

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99772bd617ae9c147b9674b57c8574b4, type: 3}
+  m_Name: FollowChaser
+  m_EditorClassIdentifier: 
+  actions:
+  - {fileID: 11400000, guid: 3a9e190b7179def4ea7a2f7ce6655cac, type: 2}
+  - {fileID: 11400000, guid: 4bd49dc8d6c59524fa3aa08c0bd5cff3, type: 2}
+  transitions:
+  - decision: {fileID: 11400000, guid: 486ffb6abad8792428dc5a19b84cd44f, type: 2}
+    trueState: {fileID: 11400000, guid: fc75003cc6813d54390e07aec2047b54, type: 2}
+    falseState: {fileID: 11400000, guid: ac00f9bf94e6e124eb7d99302c04aebd, type: 2}
+  gizmoColor: {r: 0.7767124, g: 0, b: 1, a: 1}
