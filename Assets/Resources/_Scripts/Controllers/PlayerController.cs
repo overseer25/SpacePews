@@ -13,8 +13,8 @@ public class PlayerController : MonoBehaviour
     private const float RESPAWN_WAIT_TIME = 5.0f;
     private const float RESPAWN_ANIMATION_TIME = 0.5f;
     private const float CAMERA_ZOOM_INCREMENT = 10.0f;
-    private const float CAMERA_MAX_ZOOM = -20.0f;
-    private const float CAMERA_MIN_ZOOM = -50.0f;
+    private const float CAMERA_MAX_ZOOM = -40.0f;
+    private const float CAMERA_MIN_ZOOM = -60.0f;
     private const float CAMERA_FOLLOW_SPEED = 10.0f;
 
     [Header("UI")]
@@ -166,10 +166,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom += CAMERA_ZOOM_INCREMENT;
-        foreach (var canvas in canvases)
-        {
-            canvas.planeDistance = -currentCameraZoom;
-        }
     }
 
     /// <summary>
@@ -181,10 +177,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom -= CAMERA_ZOOM_INCREMENT;
-        foreach (var canvas in canvases)
-        {
-            canvas.planeDistance = -currentCameraZoom;
-        }
     }
 
     /// <summary>

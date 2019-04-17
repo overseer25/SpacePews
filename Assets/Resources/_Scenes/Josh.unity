@@ -2128,6 +2128,52 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 951945723391550229, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -31.22998
+      objectReference: {fileID: 0}
+    - target: {fileID: 949909273980629305, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -172.45802
+      objectReference: {fileID: 0}
+    - target: {fileID: 949909273980630621, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f87bfe5977a329e4eae66595b2e8f5b4,
+        type: 3}
+    - target: {fileID: 949909273980630565, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 949909273980629288, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_PlaneDistance
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 949909273980629295, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_PlaneDistance
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 949909273980629041, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: distanceFromShip
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 949909273980629055, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: distanceFromShip
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744612098684147753, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: distanceFromShip
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d23582f2dd340bb49ad08c784c0e5364, type: 3}
 --- !u!1001 &654973262
@@ -3598,7 +3644,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1737855592854374, guid: 31583c333a19753468653c9ad4fa473d, type: 3}
       propertyPath: m_Name
-      value: GatlingPulseCannonTier1Light
+      value: GatlingPulseCannon
       objectReference: {fileID: 0}
     - target: {fileID: 4689762219206790, guid: 31583c333a19753468653c9ad4fa473d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3793,6 +3839,20 @@ Transform:
   m_Father: {fileID: 1961957398}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1488502328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 949909273980630498, guid: d23582f2dd340bb49ad08c784c0e5364,
+    type: 3}
+  m_PrefabInstance: {fileID: 640485086}
+  m_PrefabAsset: {fileID: 0}
+--- !u!222 &1488502330
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488502328}
+  m_CullTransparentMesh: 0
 --- !u!1 &1491917681
 GameObject:
   m_ObjectHideFlags: 0

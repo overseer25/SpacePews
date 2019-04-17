@@ -7094,7 +7094,7 @@ MonoBehaviour:
   mountTier: 0
   isGimbal: 0
   uiAngle: 270
-  distanceFromShip: 5
+  distanceFromShip: 1
   startingComponent: {fileID: 114298200944217438, guid: 42e8c05440db7084e89bde0f6154b9be,
     type: 3}
 --- !u!1 &949909273980630289
@@ -7863,7 +7863,7 @@ MonoBehaviour:
   mountTier: 0
   isGimbal: 0
   uiAngle: 225
-  distanceFromShip: 5
+  distanceFromShip: 1
   startingComponent: {fileID: 0}
 --- !u!1 &949909273980630293
 GameObject:
@@ -8486,7 +8486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949909273980630299}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -50}
+  m_LocalPosition: {x: 0, y: 0, z: -90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 949909273980630235}
@@ -10063,7 +10063,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -231.15518, y: -172.45801}
+  m_AnchoredPosition: {x: -231.15515, y: -172.45801}
   m_SizeDelta: {x: -474.3809, y: -355.05493}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &949909273980630499
@@ -10124,7 +10124,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 949909273980630882}
-  m_PlaneDistance: 50
+  m_PlaneDistance: 20
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -10695,7 +10695,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 949909273980630882}
-  m_PlaneDistance: 50
+  m_PlaneDistance: 20
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -30123,10 +30123,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mountType: 6
   mountClass: 0
-  mountTier: 2
+  mountTier: 0
   isGimbal: 0
   uiAngle: 315
-  distanceFromShip: 5
+  distanceFromShip: 1
   startingComponent: {fileID: 0}
 --- !u!1 &4744612098684149200
 GameObject:
@@ -46835,7 +46835,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -317.12, y: -31.23}
+  m_AnchoredPosition: {x: -317.11987, y: -31.230011}
   m_SizeDelta: {x: -644.85, y: 43.98}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2175724597733240863

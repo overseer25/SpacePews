@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 8930113383929831393}
-  - {fileID: 5349771145739046019}
+  - {fileID: 5349771145739046257}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48,7 +48,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0005110651, y: 0.060681388}
+  m_Offset: {x: 0.0005110651, y: 0.059415907}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.48244524, y: 0.29863682}
@@ -59,7 +59,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.11113384, y: 0.26253897}
+  m_Size: {x: 0.11113384, y: 0.25151354}
   m_EdgeRadius: 0
 --- !u!114 &114464189067452994
 MonoBehaviour:
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleAnimation: {fileID: 0}
-  itemSprite: {fileID: 21300000, guid: cc73c023c6537b044b6f7609c5ae5763, type: 3}
+  itemSprite: {fileID: 21300000, guid: 1b0f2397031f43749afb139c11f3e103, type: 3}
   hoverText: {fileID: 0}
   itemType: 1
   itemTier: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   shotSpread: 10
   projectile: {fileID: 114122166460085274, guid: 654889b205a763c4e89008781d43fabf,
     type: 3}
-  fireAnimation: {fileID: 11400000, guid: 779ffbc06c3ad2645843fdd51db766e0, type: 2}
+  fireAnimation: {fileID: 0}
 --- !u!82 &82163975959380344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -218,7 +218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3393762223869785308}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0621, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4689762219206790}
@@ -261,7 +261,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cc73c023c6537b044b6f7609c5ae5763, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b0f2397031f43749afb139c11f3e103, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -352,7 +352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 938628e9d0c1b45478924a16813bb742, type: 3}
---- !u!4 &5349771145739046019 stripped
+--- !u!4 &5349771145739046257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5346026360990980074, guid: 938628e9d0c1b45478924a16813bb742,
     type: 3}
