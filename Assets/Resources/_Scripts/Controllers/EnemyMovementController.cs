@@ -75,4 +75,21 @@ public class EnemyMovementController : MonoBehaviour
 		dashing = true;
 	}
 
+	public void MoveDirection(Vector2 direction)
+	{
+		body.MovePosition(direction);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collider)
+	{
+		Debug.Log("Collided");
+		switch(collider.gameObject.tag)
+		{
+			default:
+				var direction = (body.position - (Vector2)collider.transform.position).normalized * enemyStats.maxSpeed;
+				MoveDirection(direction);
+				break;
+		}
+	}
+
 }
