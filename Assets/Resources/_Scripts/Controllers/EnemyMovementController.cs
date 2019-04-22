@@ -25,23 +25,23 @@ public class EnemyMovementController : MonoBehaviour
 	/// </summary>
 	public void MoveForward()
 	{
-		if (currentSpeed <= enemyStats.maxSpeed)
-		{
-			dashing = false;
-			currentSpeed += enemyStats.acceleration;
-		}
-		else
-			currentSpeed -= enemyStats.acceleration;
-
-		var pos = body.position + (Vector2)transform.up * currentSpeed * Time.deltaTime;
-		body.MovePosition(pos);
+		var pos = transform.up * enemyStats.acceleration * Time.deltaTime;
+		body.AddForce(pos);
+        if (body.velocity.magnitude > enemyStats.maxSpeed)
+            Decelerate();
 	}
 
-	/// <summary>
-	/// Move the enemy toward a point.
-	/// </summary>
-	/// <param name="point"></param>
-	public void MoveTowardPoint(Vector2 point)
+    public void Decelerate()
+    {
+        if(body.velocity.magnitude > 0)
+            body.velocity = Vector2.Lerp(body.velocity, Vector2.zero, Time.deltaTime * enemyStats.acceleration);
+    }
+
+    /// <summary>
+    /// Move the enemy toward a point.
+    /// </summary>
+    /// <param name="point"></param>
+    public void MoveTowardPoint(Vector2 point)
 	{
 		if(!dashing)
 		{
@@ -71,14 +71,16 @@ public class EnemyMovementController : MonoBehaviour
 	{
 		currentSpeed = enemyStats.dashSpeed;
 		var newPos = body.position + (Vector2)transform.up * currentSpeed * Time.deltaTime;
-		body.MovePosition(newPos);
+		MoveDirection(newPos);
 		dashing = true;
 	}
 
 	public void MoveDirection(Vector2 direction)
 	{
-		body.MovePosition(direction);
-	}
+        body.velocity += direction;
+        if (body.velocity.magnitude > enemyStats.maxSpeed)
+            Decelerate();
+    }
 
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
