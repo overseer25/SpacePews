@@ -27,7 +27,7 @@ public class World : MonoBehaviour
 			grid = new WorldTile[worldMaxX - worldMinX, worldMaxY - worldMinY];
 			current = this;
 		}
-		GenerateAsteroids();
+		//GenerateAsteroids();
 	}
 
 	public void GenerateAsteroids()
