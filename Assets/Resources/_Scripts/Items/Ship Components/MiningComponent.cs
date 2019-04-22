@@ -21,6 +21,8 @@ public class MiningComponent : ShipComponentBase
     private LineRenderer line;
     private bool playingContactAudio;
     private bool playingContactAudioMineable;
+	private Coroutine minedBlockTimer;
+	private WorldTile targetTile;
 
     protected override void Awake()
     {
@@ -60,16 +62,7 @@ public class MiningComponent : ShipComponentBase
                 case "Enemy":
                 case "Immovable":
                 case "Shop":
-                case "Asteroid":
-                    UpdateLinePosition(lineSpawner.transform.up * Vector3.Distance(lineSpawner.transform.position, hit.point));
-                    if (Time.time > timePassed)
-                    {
-                        timePassed = Time.time + contactSpriteFrequency;
-                        ShowContactSprite(hit.point, lineSpawner.transform.rotation);
-                    }
-                    PlayContactAudio();
-                    break;
-                case "Mineable": // This should only do something special for mining lasers
+                case "Tile": // This should only do something special for mining lasers
 
                     UpdateLinePosition(lineSpawner.transform.up * Vector3.Distance(lineSpawner.transform.position, hit.point));
                     if (Time.time > timePassed)
@@ -79,8 +72,11 @@ public class MiningComponent : ShipComponentBase
                     }
                     PlayContactAudio();
 
-                    Mineable objectHit = hit.transform.gameObject.GetComponent<Mineable>();
-                    MineResource(objectHit); // Mine the resource.
+                    var objectHit = hit.transform.gameObject.GetComponent<WorldTile>();
+					if (targetTile != null && targetTile != objectHit)
+						targetTile.StopMining();
+					targetTile = objectHit;
+					targetTile.StartMining(miningRate);
                     break;
                 default:
                     UpdateLinePosition(lineSpawner.transform.up * laserLength);
@@ -93,7 +89,12 @@ public class MiningComponent : ShipComponentBase
         // Laser is not contacting anything
         else
         {
-            StopContactAudio();
+			if(targetTile != null)
+			{
+				targetTile.StopMining();
+				targetTile = null;
+			}
+			StopContactAudio();
             UpdateLinePosition(lineSpawner.transform.up * laserLength);
         }
     }
@@ -111,7 +112,13 @@ public class MiningComponent : ShipComponentBase
     /// </summary>
     public void StopFire()
     {
-        if(line != null)
+		if (targetTile != null)
+		{
+			targetTile.StopMining();
+			targetTile = null;
+		}
+
+		if (line != null)
         {
             line.enabled = false;
             if (baseAudioSource.isPlaying)

@@ -149,6 +149,15 @@ public class MovementController : MonoBehaviour
         return maxSpeed;
     }
 
+	/// <summary>
+	/// Get the magnitude of the ship's movement vector.
+	/// </summary>
+	/// <returns></returns>
+	public float GetVelocity()
+	{
+		return rigidBody.velocity.magnitude;
+	}
+
     /// <summary>
     /// Update the rotation speed of the player ship.
     /// </summary>

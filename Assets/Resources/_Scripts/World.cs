@@ -5,20 +5,22 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public static World current;
+	public WorldTile defaultTile;
 	public int worldMinX = -100;
 	public int worldMaxX = 100;
 	public int worldMinY = -100;
 	public int worldMaxY = 100;
 	public Vector3 gridOffset = new Vector3(0.5f, 0.5f, 0);
 	public float gridScale = 1.0f;
-	public float tileScale = 3.0f;
+	public float tileScale = 6.25f;
 	public Color gridColor = Color.grey;
 	public Color gridCenterColor = Color.white;
 	public bool visualize = true;
 
-	private WorldTile[,] grid;
-	private const int ASTEROID_MAX_RADIUS = 25;
-	private const int ASTEROID_MIN_RADIUS = 6;
+	[HideInInspector]
+	public WorldTile[,] grid;
+	private const int ASTEROID_MAX_RADIUS = 20;
+	private const int ASTEROID_MIN_RADIUS = 4;
 
 	void Start()
 	{
@@ -27,7 +29,7 @@ public class World : MonoBehaviour
 			grid = new WorldTile[worldMaxX - worldMinX, worldMaxY - worldMinY];
 			current = this;
 		}
-		//GenerateAsteroids();
+		GenerateAsteroids();
 	}
 
 	public void GenerateAsteroids()
@@ -41,8 +43,6 @@ public class World : MonoBehaviour
 			var points = CheckAsteroidPosition(x, y, radius);
 			if (points != null)
 				GenerateAsteroid(points);
-			else
-				i--; // try again.
 		}
 	}
 
@@ -55,6 +55,7 @@ public class World : MonoBehaviour
 	/// <returns></returns>
 	public List<Vector2> CheckAsteroidPosition(int x, int y, int radius)
 	{
+		int boundarySize = 5;
 		var result = new List<Vector2>();
 		for (int i = -radius; i <= radius; i++)
 		{
@@ -62,6 +63,11 @@ public class World : MonoBehaviour
 			{
 				if (i * i + j * j <= radius * radius)
 				{
+					// For checking boundaries.
+					int boundaryX = i * boundarySize + x + worldMaxX;
+					int boundaryY = j * boundarySize + y + worldMaxY;
+
+					// Where the tiles get placed.
 					int xCoord = i + x;
 					int yCoord = j + y;
 					int gridX = xCoord + worldMaxX;
@@ -70,53 +76,48 @@ public class World : MonoBehaviour
 						return null;
 
 					// If the area contains a non-null space, then it is not safe to place this asteroid.
-					if (grid[gridX, gridY] != null)
+					if (!OutsideBounds(boundaryX, boundaryY) && grid[boundaryX, boundaryY] != null)
 					{
 						return null;
 					}
 					else
-						result.Add(new Vector2(xCoord, yCoord));
+						result.Add(new Vector2(gridX, gridY));
 				}
 			}
 		}
-		// Area is completely empty.
 		return result;
 	}
 
 	/// <summary>
-	/// Generate an asteroid at the given location.
+	/// Check if the given position is within the bounds of the map or not.
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
+	public static bool OutsideBounds(int x, int y)
+	{
+		var result = (x >= current.worldMaxX - current.worldMinX) || x < 0 || (y >= current.worldMaxY - current.worldMinY) || y < 0;
+		return result;
+	}
+
+	/// <summary>
+	/// Generate an asteroid at the given location. This method also determines which sprite to use for
+	/// any given block. At this point, it is guaranteed that each position is free.
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
 	private void GenerateAsteroid(List<Vector2> positions)
 	{
-		var obj = Resources.Load("_Prefabs/World/Tiles/StoneTile") as GameObject;
-
-		foreach(var position in positions)
+		var stoneTiles = TileSetCollection.current.stone;
+		foreach (var position in positions)
 		{
-			int gridX = (int)position.x + worldMaxX;
-			int gridY = (int)position.y + worldMaxY;
-			grid[gridX, gridY] = Instantiate(obj, new Vector2(position.x * gridScale, position.y * gridScale), Quaternion.identity, transform).GetComponent<WorldTile>();
+			WorldTile tile = Instantiate(defaultTile, new Vector2(position.x * gridScale, position.y * gridScale), Quaternion.identity, transform) as WorldTile;
+			tile.Initialize(stoneTiles, (int)position.x, (int)position.y);
+			grid[(int)position.x, (int)position.y] = tile;
 		}
-		//for (int i = -radius; i <= radius; i++)
-		//{
-		//	for (int j = -radius; j <= radius; j++)
-		//	{
-		//		if (i * i + j * j <= radius * radius)
-		//		{
-		//			int xCoord = i + x;
-		//			int yCoord = j + y;
-		//			int gridX = xCoord + worldMaxX;
-		//			int gridY = yCoord + worldMaxY;
-		//			if (gridX < 0 || gridY < 0 || gridX >= worldMaxX - worldMinX || gridY >= worldMaxY - worldMinY)
-		//				continue;
-		//			if (grid[gridX, gridY] == null)
-		//			{
-		//				grid[gridX, gridY] = Instantiate(obj, new Vector2(xCoord * gridScale, yCoord * gridScale), Quaternion.identity, transform).GetComponent<WorldTile>();
-		//			}
-		//		}
-		//	}
-		//}
+
+		foreach (var position in positions)
+			grid[(int)position.x, (int)position.y].UpdateTile();
 	}
 
 	void OnDrawGizmos()

@@ -410,7 +410,7 @@ public class PlayerController : MonoBehaviour
         switch (collider.gameObject.tag)
         {
             case "Immovable":
-            case "Asteroid":
+            case "Tile":
             case "Mineable":
                 Vector2 direction = Vector2.zero;
                 if (rigidBody.velocity.magnitude > 10)
@@ -426,7 +426,10 @@ public class PlayerController : MonoBehaviour
 						}
 					}
                 }
-                direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;
+				float magnitude = movementController.GetVelocity();
+				magnitude = Mathf.Clamp(magnitude, 0.0f, 5.0f);
+
+				direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * magnitude;
 
                 movementController.Stop();
                 if (!healthController.IsDead())

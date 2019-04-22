@@ -356,7 +356,7 @@ public class Projectile : MonoBehaviour
                 if (splitting && splitOnCollision)
                     Split();
                 break;
-            case "Asteroid":
+            case "Tile":
             case "Mineable":
             case "Mine":
                 collided = true;

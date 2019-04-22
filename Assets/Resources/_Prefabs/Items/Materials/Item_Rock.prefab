@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 114121405114875228}
   - component: {fileID: 4180606447509673880}
   m_Layer: 9
-  m_Name: Item_AsteroidChunk
+  m_Name: Item_Rock
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   hoverText: {fileID: 0}
   itemType: 0
   itemTier: 0
-  itemName: Asteroid Chunk
+  itemName: Rock
   quantity: 1
   value: 1
   description: Typically harvested from Asteroids. Who knew!

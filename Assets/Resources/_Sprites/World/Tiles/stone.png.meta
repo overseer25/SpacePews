@@ -4,64 +4,124 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5725184139431673129
-    second: stone_0
+    second: stone_FullBorder
   - first:
       213: 368061591710823274
-    second: stone_1
+    second: stone_NoRight
   - first:
       213: 1558969575930012938
-    second: stone_2
+    second: stone_NoBottom
   - first:
       213: 6987565861948811832
-    second: stone_3
+    second: stone_NoLeft
   - first:
       213: 1399644128389539700
-    second: stone_4
+    second: stone_NoTop
   - first:
       213: -4660949383730851615
-    second: stone_5
+    second: stone_NoVertical
   - first:
       213: 4040428987299356377
-    second: stone_6
+    second: stone_NoHorizontal
   - first:
       213: -7086568337515498561
-    second: stone_7
+    second: stone_BottomRightCorner1
   - first:
       213: 5315769673457585129
-    second: stone_8
+    second: stone_BottomLeftCorner1
   - first:
       213: -4800598732438411990
-    second: stone_9
+    second: stone_TopLeftCorner1
   - first:
       213: -8136339027945497331
-    second: stone_10
+    second: stone_TopRightCorner1
   - first:
       213: 7562442944734413614
-    second: stone_11
+    second: stone_noBorder1
   - first:
       213: 2710078293165906632
-    second: stone_12
+    second: stone_TopLeftDot
   - first:
       213: 7178026093468616010
-    second: stone_13
+    second: stone_TopRightDot
   - first:
       213: 8425871793177363195
-    second: stone_14
+    second: stone_BottomRightDot
   - first:
       213: -4952614045622104652
-    second: stone_15
+    second: stone_BottomLeftDot
   - first:
       213: 8111886648500310435
-    second: stone_16
+    second: stone_TopBorder
   - first:
       213: -379076669887070875
-    second: stone_17
+    second: stone_RightBorder
   - first:
       213: -2746848386996855258
-    second: stone_18
+    second: stone_BottomBorder
   - first:
       213: 437490424809040451
-    second: stone_19
+    second: stone_LeftBorder
+  - first:
+      213: 6325478891585015172
+    second: fullBorder
+  - first:
+      213: -4623622098951065714
+    second: noRightBorder
+  - first:
+      213: -8225346569948942395
+    second: noBottomBorder
+  - first:
+      213: 4995024547130570323
+    second: noLeftBorder
+  - first:
+      213: 6396938955953857770
+    second: noTopBorder
+  - first:
+      213: 8552374907279677308
+    second: noVerticalBorders
+  - first:
+      213: 6958005802050943486
+    second: noHorizontalBorders
+  - first:
+      213: 3444877207970411749
+    second: bottomRightCorner1
+  - first:
+      213: 1121625004348600533
+    second: bottomLeftCorner1
+  - first:
+      213: -8797316533600132806
+    second: topLeftCorner1
+  - first:
+      213: -3607458768479672924
+    second: topRightCorner1
+  - first:
+      213: 1210524040061077239
+    second: noBorder
+  - first:
+      213: -8202610087284726537
+    second: topLeftDot
+  - first:
+      213: 3557654132618454683
+    second: topRightDot
+  - first:
+      213: 5148341270248191584
+    second: bottomRightDot
+  - first:
+      213: 8448581880714150360
+    second: bottomLeftDot
+  - first:
+      213: 183750267915266390
+    second: topBorder
+  - first:
+      213: -1847749571572691366
+    second: rightBorder
+  - first:
+      213: 2773983450611457820
+    second: bottomBorder
+  - first:
+      213: 3806516506551589196
+    second: leftBorder
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -144,7 +204,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: stone_0
+      name: fullBorder
       rect:
         serializedVersion: 2
         x: 1
@@ -152,20 +212,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7f5d3a5c1a85ad40a27fc8fb886f142
-      internalID: 5725184139431673129
+      spriteID: c8d972ece3850be41ac01be6e37a63f2
+      internalID: 6325478891585015172
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_1
+      name: noRightBorder
       rect:
         serializedVersion: 2
         x: 1
@@ -173,20 +233,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02fb0ac27fae6f649875364b86b20fb9
-      internalID: 368061591710823274
+      spriteID: c36fa1e09e32e114bbcc4560089331d0
+      internalID: -4623622098951065714
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_2
+      name: noBottomBorder
       rect:
         serializedVersion: 2
         x: 10
@@ -194,20 +254,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ffb5140125ea324a9ea237c1c6daab2
-      internalID: 1558969575930012938
+      spriteID: 26b8c6e85d1235b47a6d8938350bda68
+      internalID: -8225346569948942395
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_3
+      name: noLeftBorder
       rect:
         serializedVersion: 2
         x: 19
@@ -215,20 +275,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd2c3ea4f1bdf0a42b514fb528228737
-      internalID: 6987565861948811832
+      spriteID: 933581986d7fe684183b78e101197823
+      internalID: 4995024547130570323
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_4
+      name: noTopBorder
       rect:
         serializedVersion: 2
         x: 28
@@ -236,20 +296,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4fdfedbdffa180b4fb74ee476670cafe
-      internalID: 1399644128389539700
+      spriteID: f324cc5a138fbb24d838d97ac0e559d5
+      internalID: 6396938955953857770
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_5
+      name: noVerticalBorders
       rect:
         serializedVersion: 2
         x: 1
@@ -257,20 +317,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6933a570a7597eb458bc0751dc8be39b
-      internalID: -4660949383730851615
+      spriteID: 4d2a07803bc680045970ccce64d89621
+      internalID: 8552374907279677308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_6
+      name: noHorizontalBorders
       rect:
         serializedVersion: 2
         x: 10
@@ -278,20 +338,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d58af56f59dfaf40bc845e126501642
-      internalID: 4040428987299356377
+      spriteID: 6f1e679e1c7ae794fa57d46b7bf296ab
+      internalID: 6958005802050943486
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_7
+      name: bottomRightCorner1
       rect:
         serializedVersion: 2
         x: 1
@@ -299,20 +359,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9da3bfe99acba6443a07669568d0c80e
-      internalID: -7086568337515498561
+      spriteID: bb1bbfa244a0b034a8470fb76bb148fd
+      internalID: 3444877207970411749
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_8
+      name: bottomLeftCorner1
       rect:
         serializedVersion: 2
         x: 10
@@ -320,20 +380,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa57919ddd869224f8fca4c51e8eedad
-      internalID: 5315769673457585129
+      spriteID: 8984673f5f08dda4d80c80157bfe13aa
+      internalID: 1121625004348600533
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_9
+      name: topLeftCorner1
       rect:
         serializedVersion: 2
         x: 19
@@ -341,20 +401,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b5fad8d27464564c8d771781c01a4ec
-      internalID: -4800598732438411990
+      spriteID: ffcf7eb6af99fd941a658bf263766536
+      internalID: -8797316533600132806
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_10
+      name: topRightCorner1
       rect:
         serializedVersion: 2
         x: 28
@@ -362,20 +422,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d7520f2f43386345ac749f67f0a86fc
-      internalID: -8136339027945497331
+      spriteID: 111a7217643f9f54b84f8f9e74435688
+      internalID: -3607458768479672924
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_11
+      name: noBorder
       rect:
         serializedVersion: 2
         x: 1
@@ -383,20 +443,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 114b86b69050aaa42a43c3fd8f67a0cc
-      internalID: 7562442944734413614
+      spriteID: e9695cc4c7014fc47be98ffc7a896fc0
+      internalID: 1210524040061077239
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_12
+      name: topLeftDot
       rect:
         serializedVersion: 2
         x: 1
@@ -404,20 +464,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b48939d79d4c1c149b1a01f340c7b649
-      internalID: 2710078293165906632
+      spriteID: b0037abdb30b97445b4c1ffe0c41abf6
+      internalID: -8202610087284726537
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_13
+      name: topRightDot
       rect:
         serializedVersion: 2
         x: 10
@@ -425,20 +485,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 45ed85fdd302df841bb608c1aaa0454a
-      internalID: 7178026093468616010
+      spriteID: 3ab0ddd5b342e7347a3fb78afb7d2766
+      internalID: 3557654132618454683
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_14
+      name: bottomRightDot
       rect:
         serializedVersion: 2
         x: 19
@@ -446,20 +506,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 521aeac4be2e1b8409b8555ccf4eb641
-      internalID: 8425871793177363195
+      spriteID: 2076ba08985ca33479a17c1944097aed
+      internalID: 5148341270248191584
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_15
+      name: bottomLeftDot
       rect:
         serializedVersion: 2
         x: 28
@@ -467,20 +527,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e19924a7f5d41bf4695ee09924bc7c71
-      internalID: -4952614045622104652
+      spriteID: 23140f085b142724f82981a8be9c46a9
+      internalID: 8448581880714150360
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_16
+      name: topBorder
       rect:
         serializedVersion: 2
         x: 1
@@ -488,20 +548,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54ce570ad0d32214d91fe0051fc0e292
-      internalID: 8111886648500310435
+      spriteID: 1bc067dc7e22e8a438dd93a61ba3902b
+      internalID: 183750267915266390
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_17
+      name: rightBorder
       rect:
         serializedVersion: 2
         x: 10
@@ -509,20 +569,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0bb625682d4fd364eb609f0f5166ae3c
-      internalID: -379076669887070875
+      spriteID: 297de3f9783485f4a98239353b242486
+      internalID: -1847749571572691366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_18
+      name: bottomBorder
       rect:
         serializedVersion: 2
         x: 19
@@ -530,20 +590,20 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4ee0bdd61cc77b418535e64cb105350
-      internalID: -2746848386996855258
+      spriteID: ab3b0bde5a7796741a480e02d54127f1
+      internalID: 2773983450611457820
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stone_19
+      name: leftBorder
       rect:
         serializedVersion: 2
         x: 28
@@ -551,14 +611,14 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3babdb7bd19dfc644837ee31a9163ecd
-      internalID: 437490424809040451
+      spriteID: 38fbbf99c9a3d4048a0b5d0fe143c818
+      internalID: 3806516506551589196
       vertices: []
       indices: 
       edges: []

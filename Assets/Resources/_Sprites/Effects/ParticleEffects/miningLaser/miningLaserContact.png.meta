@@ -1,20 +1,36 @@
 fileFormatVersion: 2
 guid: 88b62e580453d3a4fb5544eacc936b67
-timeCreated: 1520218547
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: miningLaserContact_0
-    21300002: miningLaserContact_1
-    21300004: miningLaserContact_2
-    21300006: miningLaserContact_3
-    21300008: miningLaserContact_4
-    21300010: miningLaserContact_5
-    21300012: miningLaserContact_6
-    21300014: miningLaserContact_7
-    21300016: miningLaserContact_8
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: miningLaserContact_0
+  - first:
+      213: 21300002
+    second: miningLaserContact_1
+  - first:
+      213: 21300004
+    second: miningLaserContact_2
+  - first:
+      213: 21300006
+    second: miningLaserContact_3
+  - first:
+      213: 21300008
+    second: miningLaserContact_4
+  - first:
+      213: 21300010
+    second: miningLaserContact_5
+  - first:
+      213: 21300012
+    second: miningLaserContact_6
+  - first:
+      213: 21300014
+    second: miningLaserContact_7
+  - first:
+      213: 21300016
+    second: miningLaserContact_8
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -32,6 +48,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -42,7 +60,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: -1
@@ -54,18 +72,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -74,7 +95,9 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -83,6 +106,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -100,6 +124,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: fd38d135ccba5e14895e70f7992f89bf
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_1
       rect:
@@ -114,6 +145,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c1280776087e14742be3ec28561f70f9
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_2
       rect:
@@ -128,6 +166,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c0363a3fe0ef7aa4a9ac2e51440b722c
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_3
       rect:
@@ -142,6 +187,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 11c499e2f2165ce4fb0afc811e8c8c3f
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_4
       rect:
@@ -156,6 +208,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ac00f7804c6e7d44f8861a3b1ed43608
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_5
       rect:
@@ -170,6 +229,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 969191cac9d03d84f9b4e4339a6623d4
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_6
       rect:
@@ -184,6 +250,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a93efe006b5b8674baeca715b2c11d9c
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_7
       rect:
@@ -198,6 +271,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 5e3ecc5937bc7404c8f87f2dda9e79ad
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: miningLaserContact_8
       rect:
@@ -212,9 +292,26 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a1bedaa5f89bfc04bb91e955c64c8ed6
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
