@@ -13,6 +13,7 @@ public class WorldTile : MonoBehaviour
 	private bool beingMined;
 	private float miningSpeedModifier;
 	private SpriteRenderer spriteRenderer;
+    private float lightLevel = 1.0f;
 
 	// this tile's position on the grid.
 	private int gridx, gridy;
@@ -39,10 +40,8 @@ public class WorldTile : MonoBehaviour
 	public void UpdateTile()
 	{
 		var newSprite = GetSpriteForTile();
-		if (spriteRenderer.sprite == newSprite)
-			return;
-
 		spriteRenderer.sprite = newSprite;
+        spriteRenderer.color = new Color(lightLevel, lightLevel, lightLevel);
 	}
 
 	/// <summary>
@@ -145,7 +144,7 @@ public class WorldTile : MonoBehaviour
 	{
 		bool topBorder = false, topRightCorner = false, rightBorder = false, bottomRightCorner = false, bottomBorder = false,
 								bottomLeftCorner = false, leftBorder = false, topLeftCorner = false;
-
+        
 		// Check the 8 grid positions around the current position to determine the sprite to use.
 		if (World.OutsideBounds(gridx, gridy + 1) || World.current.grid[gridx, gridy + 1] == null)
 			topBorder = true;
@@ -166,7 +165,9 @@ public class WorldTile : MonoBehaviour
 
 		// Now, determine which tile to use.
 		if (topBorder && rightBorder && bottomBorder && leftBorder)
-			return data.fullBorder;
+        {
+            return data.fullBorder;
+        }
 
 		if (topBorder && rightBorder && bottomBorder)
 			return data.noLeft;

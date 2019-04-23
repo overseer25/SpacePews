@@ -35,7 +35,7 @@ public class World : MonoBehaviour
 	public void GenerateAsteroids()
 	{
 		System.Random rand = new System.Random();
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			int x = rand.Next(worldMinX, worldMaxX);
 			int y = rand.Next(worldMinY, worldMaxY);
