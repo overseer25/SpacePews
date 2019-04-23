@@ -19,6 +19,8 @@ public class World : MonoBehaviour
 
 	[HideInInspector]
 	public WorldTile[,] grid;
+    private List<WorldTile> tiles;
+
 	private const int ASTEROID_MAX_RADIUS = 20;
 	private const int ASTEROID_MIN_RADIUS = 4;
 
@@ -26,13 +28,19 @@ public class World : MonoBehaviour
 	{
 		if (current == null)
 		{
+            tiles = new List<WorldTile>();
 			grid = new WorldTile[worldMaxX - worldMinX, worldMaxY - worldMinY];
 			current = this;
 		}
 		GenerateAsteroids();
 	}
 
-	public void GenerateAsteroids()
+    public void Update()
+    {
+        UpdateLighting();
+    }
+
+    public void GenerateAsteroids()
 	{
 		System.Random rand = new System.Random();
 		for (int i = 0; i < 20; i++)
@@ -100,20 +108,56 @@ public class World : MonoBehaviour
 		return result;
 	}
 
-	/// <summary>
-	/// Generate an asteroid at the given location. This method also determines which sprite to use for
-	/// any given block. At this point, it is guaranteed that each position is free.
-	/// </summary>
-	/// <param name="x"></param>
-	/// <param name="y"></param>
-	private void GenerateAsteroid(List<Vector2> positions)
+    /// <summary>
+    /// Remove a tile from the world.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void RemoveTile(int x, int y)
+    {
+        if (grid[x,y] == null)
+            return;
+
+        tiles.Remove(grid[x, y]);
+        Destroy(grid[x, y].gameObject);
+        grid[x, y] = null;
+    }
+
+    /// <summary>
+    /// Spawn a tile to the world.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void AddTile(TileData data, int x, int y)
+    {
+        WorldTile tile = Instantiate(defaultTile, new Vector2(x * gridScale, y * gridScale), Quaternion.identity, transform) as WorldTile;
+        tile.Initialize(data, x, y);
+        grid[x, y] = tile;
+        tiles.Add(tile);
+    }
+
+    /// <summary>
+    /// Update the lighting of the blocks on the screen.
+    /// </summary>
+    private void UpdateLighting()
+    {
+        foreach (var tile in tiles)
+            tile.UpdateLightLevel();
+    }
+
+    /// <summary>
+    /// Generate an asteroid at the given location. This method also determines which sprite to use for
+    /// any given block. At this point, it is guaranteed that each position is free.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    private void GenerateAsteroid(List<Vector2> positions)
 	{
 		var stoneTiles = TileSetCollection.current.stone;
 		foreach (var position in positions)
 		{
-			WorldTile tile = Instantiate(defaultTile, new Vector2(position.x * gridScale, position.y * gridScale), Quaternion.identity, transform) as WorldTile;
-			tile.Initialize(stoneTiles, (int)position.x, (int)position.y);
-			grid[(int)position.x, (int)position.y] = tile;
+            AddTile(stoneTiles, (int)position.x, (int)position.y);
 		}
 
 		foreach (var position in positions)

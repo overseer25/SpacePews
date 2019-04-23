@@ -41,33 +41,6 @@ public class WorldTile : MonoBehaviour
 	{
 		var newSprite = GetSpriteForTile();
 		spriteRenderer.sprite = newSprite;
-        spriteRenderer.color = new Color(lightLevel, lightLevel, lightLevel);
-	}
-
-	/// <summary>
-	/// Update the sprites of the nearby neighbors.
-	/// 
-	/// There is going to be a lot of duplicates hit during this computation, so this could do
-	/// with a lot of optimization.
-	/// </summary>
-	public void UpdateNeighbors()
-	{
-		if (!World.OutsideBounds(gridx - 1, gridy + 1) && World.current.grid[gridx - 1, gridy + 1] != null)
-			World.current.grid[gridx - 1, gridy + 1].UpdateTile();
-		if (!World.OutsideBounds(gridx, gridy + 1) && World.current.grid[gridx, gridy + 1] != null)
-			World.current.grid[gridx, gridy + 1].UpdateTile();
-		if (!World.OutsideBounds(gridx + 1, gridy + 1) && World.current.grid[gridx + 1, gridy + 1] != null)
-			World.current.grid[gridx + 1, gridy + 1].UpdateTile();
-		if (!World.OutsideBounds(gridx - 1, gridy) && World.current.grid[gridx - 1, gridy] != null)
-			World.current.grid[gridx - 1, gridy].UpdateTile();
-		if (!World.OutsideBounds(gridx + 1, gridy) && World.current.grid[gridx + 1, gridy] != null)
-			World.current.grid[gridx + 1, gridy].UpdateTile();
-		if (!World.OutsideBounds(gridx - 1, gridy - 1) && World.current.grid[gridx - 1, gridy - 1] != null)
-			World.current.grid[gridx - 1, gridy - 1].UpdateTile();
-		if (!World.OutsideBounds(gridx, gridy - 1) && World.current.grid[gridx, gridy - 1] != null)
-			World.current.grid[gridx, gridy - 1].UpdateTile();
-		if (!World.OutsideBounds(gridx + 1, gridy - 1) && World.current.grid[gridx + 1, gridy - 1] != null)
-			World.current.grid[gridx + 1, gridy - 1].UpdateTile();
 	}
 
 	/// <summary>
@@ -89,6 +62,34 @@ public class WorldTile : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Get the list of this tile's neighboring tiles.
+    /// </summary>
+    /// <returns></returns>
+    public List<WorldTile> GetNeighbors()
+    {
+        var result = new List<WorldTile>();
+
+        if (!World.OutsideBounds(gridx - 1, gridy + 1) && World.current.grid[gridx - 1, gridy + 1] != null)
+            result.Add(World.current.grid[gridx - 1, gridy + 1]);
+        if (!World.OutsideBounds(gridx, gridy + 1) && World.current.grid[gridx, gridy + 1] != null)
+            result.Add(World.current.grid[gridx, gridy + 1]);
+        if (!World.OutsideBounds(gridx + 1, gridy + 1) && World.current.grid[gridx + 1, gridy + 1] != null)
+            result.Add(World.current.grid[gridx + 1, gridy + 1]);
+        if (!World.OutsideBounds(gridx - 1, gridy) && World.current.grid[gridx - 1, gridy] != null)
+            result.Add(World.current.grid[gridx - 1, gridy]);
+        if (!World.OutsideBounds(gridx + 1, gridy) && World.current.grid[gridx + 1, gridy] != null)
+            result.Add(World.current.grid[gridx + 1, gridy]);
+        if (!World.OutsideBounds(gridx - 1, gridy - 1) && World.current.grid[gridx - 1, gridy - 1] != null)
+            result.Add(World.current.grid[gridx - 1, gridy - 1]);
+        if (!World.OutsideBounds(gridx, gridy - 1) && World.current.grid[gridx, gridy - 1] != null)
+            result.Add(World.current.grid[gridx, gridy - 1]);
+        if (!World.OutsideBounds(gridx + 1, gridy - 1) && World.current.grid[gridx + 1, gridy - 1] != null)
+            result.Add(World.current.grid[gridx + 1, gridy - 1]);
+
+        return result;
+    }
+
 	public void StopMining()
 	{
 		if (miningCoroutine != null)
@@ -100,11 +101,46 @@ public class WorldTile : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// Mine the tile.
+    /// <summary>
+    /// Update the light level of the tile.
+    /// </summary>
+    public void UpdateLightLevel()
+    {
+        var neighbors = GetNeighbors();
+
+        if (neighbors.Count == 8)
+        {
+            foreach (var neighbor in neighbors)
+            {
+                if (neighbor != null)
+                    if (neighbor.lightLevel > lightLevel)
+                        lightLevel = neighbor.lightLevel;
+            }
+            lightLevel -= 0.2f;
+        }
+        else
+            lightLevel = 1.0f;
+
+        spriteRenderer.color = new Color(lightLevel, lightLevel, lightLevel);
+    }
+
+    /// <summary>
+	/// Update the sprites of the nearby neighbors.
+	/// 
+	/// There is going to be a lot of duplicates hit during this computation, so this could do
+	/// with a lot of optimization.
 	/// </summary>
-	/// <returns></returns>
-	private IEnumerator Mine()
+	private void UpdateNeighbors()
+    {
+        foreach (var neighbor in GetNeighbors())
+            neighbor.UpdateTile();
+    }
+
+    /// <summary>
+    /// Mine the tile.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Mine()
 	{
 		if(!beingMined)
 		{
@@ -129,9 +165,8 @@ public class WorldTile : MonoBehaviour
 		item.Initialize(gameObject, data.loot);
 
 		// Set this tile's world position to null so that other tiles update accordingly.
-		World.current.grid[gridx, gridy] = null;
 		UpdateNeighbors();
-		Destroy(gameObject);
+        World.current.RemoveTile(gridx, gridy);
 	}
 
 	/// <summary>
