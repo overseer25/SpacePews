@@ -21,10 +21,12 @@ public class World : MonoBehaviour
 	public WorldTile[,] grid;
     private List<WorldTile> tiles;
 
-	private const int ASTEROID_MAX_RADIUS = 20;
-	private const int ASTEROID_MIN_RADIUS = 4;
+	private const int ASTEROID_MAX_WIDTH = 60;
+	private const int ASTEROID_MIN_WIDTH = 30;
+    private const int ASTEROID_MAX_HEIGHT = 30;
+    private const int ASTEROID_MIN_HEIGHT = 10;
 
-	void Start()
+    void Start()
 	{
 		if (current == null)
 		{
@@ -43,16 +45,19 @@ public class World : MonoBehaviour
     public void GenerateAsteroids()
 	{
 		System.Random rand = new System.Random();
-		for (int i = 0; i < 20; i++)
-		{
-			int x = rand.Next(worldMinX, worldMaxX);
-			int y = rand.Next(worldMinY, worldMaxY);
-			int radius = rand.Next(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS);
-			var points = CheckAsteroidPosition(x, y, radius);
-			if (points != null)
-				GenerateAsteroid(points);
-		}
-	}
+
+        for (int i = 0; i < 20; i++)
+        {
+            int x = rand.Next(0, worldMaxX - worldMinX);
+            int y = rand.Next(0, worldMaxY - worldMinY);
+            int width = rand.Next(ASTEROID_MIN_WIDTH, ASTEROID_MAX_WIDTH);
+            int height = rand.Next(ASTEROID_MIN_HEIGHT, ASTEROID_MAX_HEIGHT);
+
+            var points = CheckAsteroidPosition(x, y, width, height);
+            if (points != null)
+                GenerateAsteroid(points);
+        }
+    }
 
 	/// <summary>
 	/// Check that the position in the world grid is safe to place the asteroid.
@@ -61,39 +66,79 @@ public class World : MonoBehaviour
 	/// <param name="y"></param>
 	/// <param name="radius"></param>
 	/// <returns></returns>
-	public List<Vector2> CheckAsteroidPosition(int x, int y, int radius)
+	public List<Vector2> CheckAsteroidPosition(int x, int y, int width, int height)
 	{
-		int boundarySize = 5;
-		var result = new List<Vector2>();
-		for (int i = -radius; i <= radius; i++)
-		{
-			for (int j = -radius; j <= radius; j++)
-			{
-				if (i * i + j * j <= radius * radius)
-				{
-					// For checking boundaries.
-					int boundaryX = i * boundarySize + x + worldMaxX;
-					int boundaryY = j * boundarySize + y + worldMaxY;
+        // For circles.
 
-					// Where the tiles get placed.
-					int xCoord = i + x;
-					int yCoord = j + y;
-					int gridX = xCoord + worldMaxX;
-					int gridY = yCoord + worldMaxY;
-					if (gridX < 0 || gridY < 0 || gridX >= worldMaxX - worldMinX || gridY >= worldMaxY - worldMinY)
-						return null;
+        //int boundarySize = 5;
+        //var result = new List<Vector2>();
+        //for (int i = -radius; i <= radius; i++)
+        //{
+        //	for (int j = -radius; j <= radius; j++)
+        //	{
+        //		if (i * i + j * j <= radius * radius)
+        //		{
+        //			// For checking boundaries.
+        //			int boundaryX = i * boundarySize + x + worldMaxX;
+        //			int boundaryY = j * boundarySize + y + worldMaxY;
 
-					// If the area contains a non-null space, then it is not safe to place this asteroid.
-					if (!OutsideBounds(boundaryX, boundaryY) && grid[boundaryX, boundaryY] != null)
-					{
-						return null;
-					}
-					else
-						result.Add(new Vector2(gridX, gridY));
-				}
-			}
-		}
-		return result;
+        //			// Where the tiles get placed.
+        //			int xCoord = i + x;
+        //			int yCoord = j + y;
+        //			int gridX = xCoord + worldMaxX;
+        //			int gridY = yCoord + worldMaxY;
+        //			if (gridX < 0 || gridY < 0 || gridX >= worldMaxX - worldMinX || gridY >= worldMaxY - worldMinY)
+        //				return null;
+
+        //			// If the area contains a non-null space, then it is not safe to place this asteroid.
+        //			if (!OutsideBounds(boundaryX, boundaryY) && grid[boundaryX, boundaryY] != null)
+        //			{
+        //				return null;
+        //			}
+        //			else
+        //				result.Add(new Vector2(gridX, gridY));
+        //		}
+        //	}
+        //}
+        //return result;
+
+        // For perlin noise.
+
+        var result = new List<Vector2>();
+        int amplitude = 1;
+        bool reverseAmplitude = false;
+        for(int i = 0; i < width; i++)
+        {
+            // Top of the asteroid.
+            int xCoord = x + i;
+            float noise = Mathf.PerlinNoise((float)i / height, x) * amplitude;
+            int yCoord = y + (int)noise;
+
+            // If the position is outside the map, ignore this asteroid.
+            if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
+                return null;
+            result.Add(new Vector2(xCoord, yCoord));
+
+            float lowerNoise = Mathf.PerlinNoise((float)i / height, y) * amplitude;
+
+            // We need to fill the inside.
+            while (yCoord > y - (int)lowerNoise)
+            {
+                yCoord--;
+                if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
+                    return null;
+                result.Add(new Vector2(xCoord, yCoord));
+            }
+            if (amplitude >= width / 2)
+                reverseAmplitude = true;
+
+            if (!reverseAmplitude)
+                amplitude++;
+            else
+                amplitude--;
+        }
+
+        return result;
 	}
 
 	/// <summary>
@@ -131,7 +176,9 @@ public class World : MonoBehaviour
     /// <param name="y"></param>
     public void AddTile(TileData data, int x, int y)
     {
-        WorldTile tile = Instantiate(defaultTile, new Vector2(x * gridScale, y * gridScale), Quaternion.identity, transform) as WorldTile;
+        int worldX = x + worldMinX;
+        int worldY = y + worldMinY;
+        WorldTile tile = Instantiate(defaultTile, new Vector2(worldX * gridScale, worldY * gridScale), Quaternion.identity, transform) as WorldTile;
         tile.Initialize(data, x, y);
         grid[x, y] = tile;
         tiles.Add(tile);

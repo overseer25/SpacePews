@@ -12,6 +12,7 @@ public class MovementController : MonoBehaviour
     private float maxSpeed;
     private float rotationSpeed;
     private bool dead = false;
+    private PlayerController pController;
 
     // The ship variables.
     private SpriteRenderer shipRenderer;
@@ -20,7 +21,8 @@ public class MovementController : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponentInChildren<Rigidbody2D>();
-        mountController = gameObject.GetComponent<ShipMountController>();
+        mountController = GetComponent<ShipMountController>();
+        pController = GetComponent<PlayerController>();
         if ((shipRenderer = GetComponentInChildren<SpriteRenderer>()) == null)
             Debug.LogError("Ship contains no Sprite Renderer D:");
         else
@@ -34,7 +36,8 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
-        rigidBody.AddForce(ship.transform.up * acceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        if(!pController.IsColliding())
+            rigidBody.AddForce(ship.transform.up * acceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
 
 		if (rigidBody.velocity.magnitude > maxSpeed)
 			Decelerate();
@@ -82,10 +85,12 @@ public class MovementController : MonoBehaviour
 	/// <param name="clampSpeed">Whether or not to clamp the speed to the max speed of the ship.</param>
     public void MoveDirection(Vector2 direction, bool clampSpeed = false)
     {
-        rigidBody.velocity += direction;
+        if(!pController.IsColliding())
+            rigidBody.velocity += direction;
+
         if (clampSpeed && rigidBody.velocity.magnitude > maxSpeed)
             Decelerate();
-	}
+    }
 
     /// <summary>
     /// Stop the movement completely.

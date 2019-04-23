@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     private bool dead;
     private bool respawning;
+    private bool colliding;
 
     [HideInInspector]
     public bool rotatingLeft;
@@ -166,6 +167,15 @@ public class PlayerController : MonoBehaviour
             return;
 
         currentCameraZoom += CAMERA_ZOOM_INCREMENT;
+    }
+
+    /// <summary>
+    /// Is the player colliding with anything?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsColliding()
+    {
+        return colliding;
     }
 
     /// <summary>
@@ -427,10 +437,9 @@ public class PlayerController : MonoBehaviour
 					}
                 }
 				float magnitude = movementController.GetVelocity();
-				magnitude = Mathf.Clamp(magnitude, 0.0f, 5.0f);
+				magnitude = Mathf.Clamp(magnitude, 2.0f, movementController.GetMaxSpeed());
 
-				direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * magnitude;
-
+				direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * magnitude/2;
                 movementController.Stop();
                 if (!healthController.IsDead())
                 {
@@ -442,5 +451,10 @@ public class PlayerController : MonoBehaviour
                 healthController.TakeDamage(5);
                 break;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        colliding = false;
     }
 }
