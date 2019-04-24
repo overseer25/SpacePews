@@ -12,22 +12,24 @@ public class World : MonoBehaviour
 	public int worldMaxY = 100;
 	public Vector3 gridOffset = new Vector3(0.5f, 0.5f, 0);
 	public float gridScale = 1.0f;
-	public float tileScale = 6.25f;
 	public Color gridColor = Color.grey;
 	public Color gridCenterColor = Color.white;
 	public bool visualize = true;
 
 	[HideInInspector]
 	public WorldTile[,] grid;
+	private Camera playerCamera;
     private List<WorldTile> tiles;
 
-	private const int ASTEROID_MAX_WIDTH = 60;
+	private const float tileScale = 6.4f;
+	private const int ASTEROID_MAX_WIDTH = 100;
 	private const int ASTEROID_MIN_WIDTH = 30;
     private const int ASTEROID_MAX_HEIGHT = 30;
     private const int ASTEROID_MIN_HEIGHT = 10;
 
     void Start()
 	{
+		playerCamera = Camera.main;
 		if (current == null)
 		{
             tiles = new List<WorldTile>();
@@ -39,8 +41,36 @@ public class World : MonoBehaviour
 
     public void Update()
     {
-        UpdateLighting();
+		UpdateTiles();
     }
+
+	/// <summary>
+	/// Updates all the tiles visible to the player. All other tiles are disabled.
+	/// </summary>
+	public void UpdateTiles()
+	{
+		var width = Screen.width;
+		var height = Screen.height;
+
+		foreach(var tile in tiles)
+		{
+			var tilePos = playerCamera.WorldToViewportPoint(tile.transform.position);
+
+			// Does the tile exist within the screen space?
+			if ((tilePos.x >= 0 && tilePos.x <= 1f) && (tilePos.y >= 0 && tilePos.y <= 1f))
+			{
+				if(!tile.IsActive())
+					tile.Activate();
+				tile.UpdateLightLevel();
+			}
+			else
+			{
+				if(tile.IsActive())
+					tile.Deactivate();
+			}
+		}
+
+	}
 
     public void GenerateAsteroids()
 	{
@@ -68,77 +98,82 @@ public class World : MonoBehaviour
 	/// <returns></returns>
 	public List<Vector2> CheckAsteroidPosition(int x, int y, int width, int height)
 	{
-        // For circles.
+		// For circles.
 
-        //int boundarySize = 5;
-        //var result = new List<Vector2>();
-        //for (int i = -radius; i <= radius; i++)
-        //{
-        //	for (int j = -radius; j <= radius; j++)
-        //	{
-        //		if (i * i + j * j <= radius * radius)
-        //		{
-        //			// For checking boundaries.
-        //			int boundaryX = i * boundarySize + x + worldMaxX;
-        //			int boundaryY = j * boundarySize + y + worldMaxY;
+		//int boundarySize = 5;
+		//var result = new List<Vector2>();
+		//for (int i = -radius; i <= radius; i++)
+		//{
+		//	for (int j = -radius; j <= radius; j++)
+		//	{
+		//		if (i * i + j * j <= radius * radius)
+		//		{
+		//			// For checking boundaries.
+		//			int boundaryX = i * boundarySize + x + worldMaxX;
+		//			int boundaryY = j * boundarySize + y + worldMaxY;
 
-        //			// Where the tiles get placed.
-        //			int xCoord = i + x;
-        //			int yCoord = j + y;
-        //			int gridX = xCoord + worldMaxX;
-        //			int gridY = yCoord + worldMaxY;
-        //			if (gridX < 0 || gridY < 0 || gridX >= worldMaxX - worldMinX || gridY >= worldMaxY - worldMinY)
-        //				return null;
+		//			// Where the tiles get placed.
+		//			int xCoord = i + x;
+		//			int yCoord = j + y;
+		//			int gridX = xCoord + worldMaxX;
+		//			int gridY = yCoord + worldMaxY;
+		//			if (gridX < 0 || gridY < 0 || gridX >= worldMaxX - worldMinX || gridY >= worldMaxY - worldMinY)
+		//				return null;
 
-        //			// If the area contains a non-null space, then it is not safe to place this asteroid.
-        //			if (!OutsideBounds(boundaryX, boundaryY) && grid[boundaryX, boundaryY] != null)
-        //			{
-        //				return null;
-        //			}
-        //			else
-        //				result.Add(new Vector2(gridX, gridY));
-        //		}
-        //	}
-        //}
-        //return result;
+		//			// If the area contains a non-null space, then it is not safe to place this asteroid.
+		//			if (!OutsideBounds(boundaryX, boundaryY) && grid[boundaryX, boundaryY] != null)
+		//			{
+		//				return null;
+		//			}
+		//			else
+		//				result.Add(new Vector2(gridX, gridY));
+		//		}
+		//	}
+		//}
+		//return result;
 
-        // For perlin noise.
+		// For perlin noise.
 
-        var result = new List<Vector2>();
-        int amplitude = 1;
-        bool reverseAmplitude = false;
-        for(int i = 0; i < width; i++)
-        {
-            // Top of the asteroid.
-            int xCoord = x + i;
-            float noise = Mathf.PerlinNoise((float)i / height, x) * amplitude;
-            int yCoord = y + (int)noise;
+		return GetPositionsFlat(x, y, width, height);
+	}
 
-            // If the position is outside the map, ignore this asteroid.
-            if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
-                return null;
-            result.Add(new Vector2(xCoord, yCoord));
+	private List<Vector2> GetPositionsFlat(int x, int y, int width, int height)
+	{
+		var result = new List<Vector2>();
+		int amplitude = 3;
+		bool reverseAmplitude = false;
+		for (int i = 0; i < width; i++)
+		{
+			// Top of the asteroid.
+			int xCoord = x + i;
+			float noise = Mathf.PerlinNoise((float)i / height, x) * amplitude;
+			int yCoord = y + (int)noise;
 
-            float lowerNoise = Mathf.PerlinNoise((float)i / height, y) * amplitude;
+			// If the position is outside the map, ignore this asteroid.
+			if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
+				return null;
+			result.Add(new Vector2(xCoord, yCoord));
 
-            // We need to fill the inside.
-            while (yCoord > y - (int)lowerNoise)
-            {
-                yCoord--;
-                if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
-                    return null;
-                result.Add(new Vector2(xCoord, yCoord));
-            }
-            if (amplitude >= width / 2)
-                reverseAmplitude = true;
+			float lowerNoise = Mathf.PerlinNoise((float)i / height, y) * amplitude;
 
-            if (!reverseAmplitude)
-                amplitude++;
-            else
-                amplitude--;
-        }
+			// We need to fill the inside.
+			while (yCoord > y - (int)lowerNoise)
+			{
+				yCoord--;
+				if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
+					return null;
+				result.Add(new Vector2(xCoord, yCoord));
+			}
+			if (amplitude >= width / 2 + 3)
+				reverseAmplitude = true;
 
-        return result;
+			if (!reverseAmplitude)
+				amplitude++;
+			else
+				amplitude--;
+		}
+
+		return result;
 	}
 
 	/// <summary>
@@ -179,18 +214,10 @@ public class World : MonoBehaviour
         int worldX = x + worldMinX;
         int worldY = y + worldMinY;
         WorldTile tile = Instantiate(defaultTile, new Vector2(worldX * gridScale, worldY * gridScale), Quaternion.identity, transform) as WorldTile;
+		tile.transform.localScale = new Vector2(tileScale, tileScale);
         tile.Initialize(data, x, y);
         grid[x, y] = tile;
         tiles.Add(tile);
-    }
-
-    /// <summary>
-    /// Update the lighting of the blocks on the screen.
-    /// </summary>
-    private void UpdateLighting()
-    {
-        foreach (var tile in tiles)
-            tile.UpdateLightLevel();
     }
 
     /// <summary>

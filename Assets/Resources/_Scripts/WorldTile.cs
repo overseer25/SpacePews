@@ -14,13 +14,48 @@ public class WorldTile : MonoBehaviour
 	private float miningSpeedModifier;
 	private SpriteRenderer spriteRenderer;
     private float lightLevel = 1.0f;
+	private new Collider2D collider;
 
 	// this tile's position on the grid.
-	private int gridx, gridy;
+	public int gridx, gridy;
+	private bool isActive;
+	public bool isEdgeTile;
 
 	private void Awake()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		collider = GetComponent<Collider2D>();
+	}
+
+	/// <summary>
+	/// Is the tile active in the scene?
+	/// </summary>
+	/// <returns></returns>
+	public bool IsActive()
+	{
+		return isActive;
+	}
+
+	/// <summary>
+	/// Deactivate the tile.
+	/// </summary>
+	public void Deactivate()
+	{
+		if(isEdgeTile)
+			collider.enabled = false;
+		spriteRenderer.enabled = false;
+		isActive = false;
+	}
+
+	/// <summary>
+	/// Activate the tile.
+	/// </summary>
+	public void Activate()
+	{
+		if(isEdgeTile)
+			collider.enabled = true;
+		spriteRenderer.enabled = true;
+		isActive = true;
 	}
 
 	/// <summary>
@@ -32,6 +67,7 @@ public class WorldTile : MonoBehaviour
 		this.data = data;
 		gridx = x;
 		gridy = y;
+		isActive = true;
 	}
 
 	/// <summary>
@@ -40,6 +76,8 @@ public class WorldTile : MonoBehaviour
 	public void UpdateTile()
 	{
 		var newSprite = GetSpriteForTile();
+		if (isEdgeTile)
+			collider.enabled = true;
 		spriteRenderer.sprite = newSprite;
 	}
 
@@ -189,9 +227,12 @@ public class WorldTile : MonoBehaviour
 		if (World.OutsideBounds(gridx - 1, gridy) || World.current.grid[gridx - 1, gridy] == null)
 			leftBorder = true;
 
+		//If the tile has a border, then it is an edge tile.
+		isEdgeTile = true;
+
 		// Now, determine which tile to use.
 		if (topBorder && rightBorder && bottomBorder && leftBorder)
-            return data.fullBorder;
+			return data.fullBorder;
 
 		if (topBorder && rightBorder && bottomBorder)
 			return data.noLeft;
@@ -235,6 +276,7 @@ public class WorldTile : MonoBehaviour
 		if (leftBorder)
 			return data.leftBorder;
 
+		isEdgeTile = false;
 		return data.noBorder;
 	}
 
