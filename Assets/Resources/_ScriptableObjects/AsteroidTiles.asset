@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6e4e4fc705376343a3e65b25d94f0e2, type: 3}
+  m_Name: AsteroidTiles
+  m_EditorClassIdentifier: 
+  m_Sprites:
+  - {fileID: 6325478891585015172, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 4995024547130570323, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 3444877207970411749, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 3444877207970411749, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 6958005802050943486, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 3806516506551589196, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 3806516506551589196, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 3806516506551589196, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 3806516506551589196, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 1210524040061077239, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 1210524040061077239, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 1210524040061077239, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 1210524040061077239, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 1210524040061077239, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}
+  - {fileID: 1210524040061077239, guid: 201da8c5ab6faa94caf66d3e83a1fafa, type: 3}

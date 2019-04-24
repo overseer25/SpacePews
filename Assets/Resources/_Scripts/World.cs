@@ -1,272 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class World : MonoBehaviour
 {
-	public static World current;
-	public WorldTile defaultTile;
-	public int worldMinX = -100;
-	public int worldMaxX = 100;
-	public int worldMinY = -100;
-	public int worldMaxY = 100;
-	public Vector3 gridOffset = new Vector3(0.5f, 0.5f, 0);
-	public float gridScale = 1.0f;
-	public Color gridColor = Color.grey;
-	public Color gridCenterColor = Color.white;
-	public bool visualize = true;
+	private Tilemap grid;
+	public TerrainTile asteroidTileSet;
 
-	[HideInInspector]
-	public WorldTile[,] grid;
-	private Camera playerCamera;
-    private List<WorldTile> tiles;
+	private const int ASTEROID_MAXHEIGHT = 50;
+	private const int ASTEROID_MINHEIGHT = 10;
+	private const int ASTEROID_MAXWIDTH = 100;
+	private const int ASTEROID_MINWIDTH = 20;
+	private const int gridX = 100;
+	private const int gridY = 100;
 
-	private const float tileScale = 6.4f;
-	private const int ASTEROID_MAX_WIDTH = 100;
-	private const int ASTEROID_MIN_WIDTH = 30;
-    private const int ASTEROID_MAX_HEIGHT = 30;
-    private const int ASTEROID_MIN_HEIGHT = 10;
-
-    void Start()
+	private void Start()
 	{
-		playerCamera = Camera.main;
-		if (current == null)
-		{
-            tiles = new List<WorldTile>();
-			grid = new WorldTile[worldMaxX - worldMinX, worldMaxY - worldMinY];
-			current = this;
-		}
-		GenerateAsteroids();
+		grid = GetComponentInChildren<Tilemap>();
+		GenerateAsteroids(1);
 	}
 
-    public void Update()
-    {
-		UpdateTiles();
-    }
-
-	/// <summary>
-	/// Updates all the tiles visible to the player. All other tiles are disabled.
-	/// </summary>
-	public void UpdateTiles()
+	public void GenerateAsteroids(int amount)
 	{
-		var width = Screen.width;
-		var height = Screen.height;
-
-		foreach(var tile in tiles)
+		for(int i = 0; i < amount; i++)
 		{
-			var tilePos = playerCamera.WorldToViewportPoint(tile.transform.position);
+			int x = Random.Range(0, gridX);
+			int y = Random.Range(0, gridY);
+			int width = Random.Range(ASTEROID_MINWIDTH, ASTEROID_MAXWIDTH);
+			int height = Random.Range(ASTEROID_MINHEIGHT, ASTEROID_MAXHEIGHT);
+			GenerateAsteroid(x, y, width, height);
+		}
+	}
 
-			// Does the tile exist within the screen space?
-			if ((tilePos.x >= 0 && tilePos.x <= 1f) && (tilePos.y >= 0 && tilePos.y <= 1f))
+	public void GenerateAsteroid(int x, int y, int width, int height)
+	{
+		var positions = new List<Vector3Int>();
+		var position = Vector3Int.zero;
+		for (int i = x - width/2; i <= x + width/2; i++)
+		{
+			for(int j = y - height/2; j <= y + height/2; j++)
 			{
-				if(!tile.IsActive())
-					tile.Activate();
-				tile.UpdateLightLevel();
-			}
-			else
-			{
-				if(tile.IsActive())
-					tile.Deactivate();
+				position.Set(i, j, 0);
+				if (grid.GetTile(position) != null)
+					return;
+				else
+					positions.Add(position);
 			}
 		}
 
-	}
+		foreach(var pos in positions)
+			grid.SetTile(pos, asteroidTileSet);
 
-    public void GenerateAsteroids()
-	{
-		System.Random rand = new System.Random();
-
-        for (int i = 0; i < 20; i++)
-        {
-            int x = rand.Next(0, worldMaxX - worldMinX);
-            int y = rand.Next(0, worldMaxY - worldMinY);
-            int width = rand.Next(ASTEROID_MIN_WIDTH, ASTEROID_MAX_WIDTH);
-            int height = rand.Next(ASTEROID_MIN_HEIGHT, ASTEROID_MAX_HEIGHT);
-
-            var points = CheckAsteroidPosition(x, y, width, height);
-            if (points != null)
-                GenerateAsteroid(points);
-        }
-    }
-
-	/// <summary>
-	/// Check that the position in the world grid is safe to place the asteroid.
-	/// </summary>
-	/// <param name="x"></param>
-	/// <param name="y"></param>
-	/// <param name="radius"></param>
-	/// <returns></returns>
-	public List<Vector2> CheckAsteroidPosition(int x, int y, int width, int height)
-	{
-		// For circles.
-
-		//int boundarySize = 5;
-		//var result = new List<Vector2>();
-		//for (int i = -radius; i <= radius; i++)
-		//{
-		//	for (int j = -radius; j <= radius; j++)
-		//	{
-		//		if (i * i + j * j <= radius * radius)
-		//		{
-		//			// For checking boundaries.
-		//			int boundaryX = i * boundarySize + x + worldMaxX;
-		//			int boundaryY = j * boundarySize + y + worldMaxY;
-
-		//			// Where the tiles get placed.
-		//			int xCoord = i + x;
-		//			int yCoord = j + y;
-		//			int gridX = xCoord + worldMaxX;
-		//			int gridY = yCoord + worldMaxY;
-		//			if (gridX < 0 || gridY < 0 || gridX >= worldMaxX - worldMinX || gridY >= worldMaxY - worldMinY)
-		//				return null;
-
-		//			// If the area contains a non-null space, then it is not safe to place this asteroid.
-		//			if (!OutsideBounds(boundaryX, boundaryY) && grid[boundaryX, boundaryY] != null)
-		//			{
-		//				return null;
-		//			}
-		//			else
-		//				result.Add(new Vector2(gridX, gridY));
-		//		}
-		//	}
-		//}
-		//return result;
-
-		// For perlin noise.
-
-		return GetPositionsFlat(x, y, width, height);
-	}
-
-	private List<Vector2> GetPositionsFlat(int x, int y, int width, int height)
-	{
-		var result = new List<Vector2>();
-		int amplitude = 3;
-		bool reverseAmplitude = false;
-		for (int i = 0; i < width; i++)
-		{
-			// Top of the asteroid.
-			int xCoord = x + i;
-			float noise = Mathf.PerlinNoise((float)i / height, x) * amplitude;
-			int yCoord = y + (int)noise;
-
-			// If the position is outside the map, ignore this asteroid.
-			if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
-				return null;
-			result.Add(new Vector2(xCoord, yCoord));
-
-			float lowerNoise = Mathf.PerlinNoise((float)i / height, y) * amplitude;
-
-			// We need to fill the inside.
-			while (yCoord > y - (int)lowerNoise)
-			{
-				yCoord--;
-				if (OutsideBounds(xCoord, yCoord) || grid[xCoord, yCoord] != null)
-					return null;
-				result.Add(new Vector2(xCoord, yCoord));
-			}
-			if (amplitude >= width / 2 + 3)
-				reverseAmplitude = true;
-
-			if (!reverseAmplitude)
-				amplitude++;
-			else
-				amplitude--;
-		}
-
-		return result;
-	}
-
-	/// <summary>
-	/// Check if the given position is within the bounds of the map or not.
-	/// </summary>
-	/// <param name="x"></param>
-	/// <param name="y"></param>
-	/// <returns></returns>
-	public static bool OutsideBounds(int x, int y)
-	{
-		var result = (x >= current.worldMaxX - current.worldMinX) || x < 0 || (y >= current.worldMaxY - current.worldMinY) || y < 0;
-		return result;
-	}
-
-    /// <summary>
-    /// Remove a tile from the world.
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    public void RemoveTile(int x, int y)
-    {
-        if (grid[x,y] == null)
-            return;
-
-        tiles.Remove(grid[x, y]);
-        Destroy(grid[x, y].gameObject);
-        grid[x, y] = null;
-    }
-
-    /// <summary>
-    /// Spawn a tile to the world.
-    /// </summary>
-    /// <param name="data"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    public void AddTile(TileData data, int x, int y)
-    {
-        int worldX = x + worldMinX;
-        int worldY = y + worldMinY;
-        WorldTile tile = Instantiate(defaultTile, new Vector2(worldX * gridScale, worldY * gridScale), Quaternion.identity, transform) as WorldTile;
-		tile.transform.localScale = new Vector2(tileScale, tileScale);
-        tile.Initialize(data, x, y);
-        grid[x, y] = tile;
-        tiles.Add(tile);
-    }
-
-    /// <summary>
-    /// Generate an asteroid at the given location. This method also determines which sprite to use for
-    /// any given block. At this point, it is guaranteed that each position is free.
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    private void GenerateAsteroid(List<Vector2> positions)
-	{
-		var stoneTiles = TileSetCollection.current.stone;
-		foreach (var position in positions)
-		{
-            AddTile(stoneTiles, (int)position.x, (int)position.y);
-		}
-
-		foreach (var position in positions)
-			grid[(int)position.x, (int)position.y].UpdateTile();
-	}
-
-	void OnDrawGizmos()
-	{
-		if (!visualize)
-			return;
-
-		// Draw vertical.
-		for (int i = worldMinX; i < worldMaxX; i++)
-		{
-			if (i == 0 || i == -1)
-				Gizmos.color = gridCenterColor;
-			else
-				Gizmos.color = gridColor;
-
-			var linePos1 = new Vector3(i, worldMinY, 0) * gridScale;
-			var linePos2 = new Vector3(i, worldMaxY, 0) * gridScale;
-			Gizmos.DrawLine(linePos1 + gridOffset, linePos2 + gridOffset);
-		}
-
-		// Draw horizontal
-		for (int i = worldMinY; i < worldMaxY; i++)
-		{
-			if (i == 0 || i == -1)
-				Gizmos.color = gridCenterColor;
-			else
-				Gizmos.color = gridColor;
-
-			var linePos1 = new Vector3(worldMinX, i, 0) * gridScale;
-			var linePos2 = new Vector3(worldMaxX, i, 0) * gridScale;
-			Gizmos.DrawLine(linePos1 + gridOffset, linePos2 + gridOffset);
-		}
 	}
 }

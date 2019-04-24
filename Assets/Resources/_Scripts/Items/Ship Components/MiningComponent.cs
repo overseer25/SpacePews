@@ -22,7 +22,6 @@ public class MiningComponent : ShipComponentBase
     private bool playingContactAudio;
     private bool playingContactAudioMineable;
 	private Coroutine minedBlockTimer;
-	private WorldTile targetTile;
 
     protected override void Awake()
     {
@@ -72,11 +71,11 @@ public class MiningComponent : ShipComponentBase
                     }
                     PlayContactAudio();
 
-                    var objectHit = hit.transform.gameObject.GetComponent<WorldTile>();
-					if (targetTile != null && targetTile != objectHit)
-						targetTile.StopMining();
-					targetTile = objectHit;
-					targetTile.StartMining(miningRate);
+     //               var objectHit = hit.transform.gameObject.GetComponent<WorldTile>();
+					//if (targetTile != null && targetTile != objectHit)
+					//	targetTile.StopMining();
+					//targetTile = objectHit;
+					//targetTile.StartMining(miningRate);
                     break;
                 default:
                     UpdateLinePosition(lineSpawner.transform.up * laserLength);
@@ -89,11 +88,11 @@ public class MiningComponent : ShipComponentBase
         // Laser is not contacting anything
         else
         {
-			if(targetTile != null)
-			{
-				targetTile.StopMining();
-				targetTile = null;
-			}
+			//if(targetTile != null)
+			//{
+			//	targetTile.StopMining();
+			//	targetTile = null;
+			//}
 			StopContactAudio();
             UpdateLinePosition(lineSpawner.transform.up * laserLength);
         }
@@ -112,11 +111,11 @@ public class MiningComponent : ShipComponentBase
     /// </summary>
     public void StopFire()
     {
-		if (targetTile != null)
-		{
-			targetTile.StopMining();
-			targetTile = null;
-		}
+		//if (targetTile != null)
+		//{
+		//	targetTile.StopMining();
+		//	targetTile = null;
+		//}
 
 		if (line != null)
         {
