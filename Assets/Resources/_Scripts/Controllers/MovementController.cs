@@ -36,8 +36,7 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void MoveForward()
     {
-        if(!pController.IsColliding())
-            rigidBody.AddForce(ship.transform.up * acceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        rigidBody.AddForce(ship.transform.up * acceleration * Time.fixedDeltaTime, ForceMode2D.Impulse);
 
 		if (rigidBody.velocity.magnitude > maxSpeed)
 			Decelerate();
@@ -53,6 +52,7 @@ public class MovementController : MonoBehaviour
 		desiredRotation = Mathf.Lerp(currentRotation, currentRotation + rotationSpeed, Time.deltaTime);
 		rigidBody.MoveRotation(desiredRotation);
 		rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
+		rigidBody.angularVelocity = 0;
     }
 
     /// <summary>
@@ -65,6 +65,7 @@ public class MovementController : MonoBehaviour
 		desiredRotation = Mathf.Lerp(currentRotation, currentRotation - rotationSpeed, Time.deltaTime);
 		rigidBody.MoveRotation(desiredRotation);
 		rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
+		rigidBody.angularVelocity = 0;
 	}
 
     /// <summary>
@@ -83,8 +84,7 @@ public class MovementController : MonoBehaviour
 	/// <param name="clampSpeed">Whether or not to clamp the speed to the max speed of the ship.</param>
     public void MoveDirection(Vector2 direction, bool clampSpeed = false)
     {
-        if(!pController.IsColliding())
-            rigidBody.velocity += direction;
+        rigidBody.velocity += direction;
 
         if (clampSpeed && rigidBody.velocity.magnitude > maxSpeed)
             Decelerate();

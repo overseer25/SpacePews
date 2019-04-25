@@ -2050,6 +2050,11 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 949909273980630888, guid: d23582f2dd340bb49ad08c784c0e5364,
+        type: 3}
+      propertyPath: m_LinearDrag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2623894997678101909, guid: d23582f2dd340bb49ad08c784c0e5364,
         type: 3}
       propertyPath: m_IsTrigger
