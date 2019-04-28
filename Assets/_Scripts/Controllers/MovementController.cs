@@ -5,7 +5,6 @@ public class MovementController : MonoBehaviour
 {
 
     private Rigidbody2D rigidBody;
-    private float desiredRotation;
     private ShipMountController mountController;
     private float acceleration;
     private float deceleration;
@@ -45,11 +44,9 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void RotateLeft()
     {
-        if (ship == null) { return; }
-        var currentRotation = ship.transform.rotation.eulerAngles.z;
-        desiredRotation += rotationSpeed * Time.deltaTime;
-        var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
+        var currentRotation = rigidBody.rotation;
+        var desiredRotation = currentRotation + rotationSpeed * Time.deltaTime;
+        rigidBody.MoveRotation(desiredRotation);
         rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
     }
 
@@ -58,13 +55,11 @@ public class MovementController : MonoBehaviour
     /// </summary>
     public void RotateRight()
     {
-        if (ship == null) { return; }
-        var currentRotation = ship.transform.rotation.eulerAngles.z;
-        desiredRotation -= rotationSpeed * Time.deltaTime;
-        var rotationQuaternion = Quaternion.Euler(ship.transform.eulerAngles.x, ship.transform.eulerAngles.y, desiredRotation);
-        ship.transform.rotation = Quaternion.Lerp(ship.transform.rotation, rotationQuaternion, rotationSpeed * Time.deltaTime);
-		rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
-	}
+        var currentRotation = rigidBody.rotation;
+        var desiredRotation = currentRotation - rotationSpeed * Time.deltaTime;
+        rigidBody.MoveRotation(desiredRotation);
+        rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
+    }
 
     /// <summary>
     /// Slow down the ship when no button is being pressed.
@@ -183,7 +178,6 @@ public class MovementController : MonoBehaviour
     public void UpdateDead(bool isDead)
     {
         dead = isDead;
-        desiredRotation = 0;
 		if (dead)
 			Stop();
     }

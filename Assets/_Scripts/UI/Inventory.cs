@@ -16,6 +16,11 @@ public class Inventory : MonoBehaviour
 	public InputField itemTransferNumber;
 	private int[] indicesToTransfer;
 
+    [SerializeField]
+    private GameObject hotbarSlot;
+    [SerializeField]
+    private GameObject mountSlot;
+
 	[Header("Sounds")]
 	[SerializeField]
 	private AudioClip openSound;
@@ -76,7 +81,7 @@ public class Inventory : MonoBehaviour
         currencyCount.text = currency.ToString();
 		itemList = new List<Item>();
 		var index = 0;
-		foreach (var obj in Resources.LoadAll("_Prefabs/Items"))
+		foreach (var obj in Resources.LoadAll("Items"))
 		{
 			var item = (obj as GameObject);
             if(item.GetComponent<Item>() != null)
@@ -91,7 +96,7 @@ public class Inventory : MonoBehaviour
 		mountSlots = new List<MountSlot>();
 		foreach (var mount in mountController.GetAllMounts())
 		{
-			var slot = Instantiate(Resources.Load("_Prefabs/UI/MountingSystem/MountSlot"), mount.transform.position, mount.transform.rotation, mountUI.transform) as GameObject;
+			var slot = Instantiate(mountSlot, mount.transform.position, mount.transform.rotation, mountUI.transform) as GameObject;
 			slot.GetComponent<MountSlot>().Initialize(mount, mount.GetMountType(), mount.GetMountTier(), mount.GetMountClass(), index++);
 			mountSlots.Add(slot.GetComponent<MountSlot>());
 		}
@@ -99,7 +104,7 @@ public class Inventory : MonoBehaviour
 		hotbarSlots = new List<HotbarSlot>();
 		for (int i = 1; i <= HOTBAR_COUNT; i++)
 		{
-			var slot = Instantiate(Resources.Load("_Prefabs/UI/Hotbar/HotbarSlot"), hotbarUI.transform) as GameObject;
+			var slot = Instantiate(hotbarSlot, hotbarUI.transform) as GameObject;
 			slot.GetComponent<HotbarSlot>().Initialize(index++, i);
 			hotbarSlots.Add(slot.GetComponent<HotbarSlot>());
 		}

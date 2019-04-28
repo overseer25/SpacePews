@@ -9,7 +9,14 @@ using UnityEngine.Audio;
 /// </summary>
 public class ParticleManager : MonoBehaviour
 {
-	private static ParticleManager current;
+    public SpriteAnimation defaultParticle;
+	public static ParticleManager current;
+
+    private void Start()
+    {
+        if (current == null)
+            current = this;
+    }
 
     /// <summary>
     /// Allocates and plays the specified particle effect.

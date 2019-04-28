@@ -405,17 +405,15 @@ public class PlayerController : MonoBehaviour
     /// Deals with all collisions with the player character
     /// </summary>
     /// <param name="collider"></param>
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnCollisionEnter2D(Collision2D collider)
     {
         switch (collider.gameObject.tag)
         {
             case "Immovable":
             case "Asteroid":
-            case "Mineable":
-                Vector2 direction = Vector2.zero;
-                if (rigidBody.velocity.magnitude > 10)
+                if (collider.relativeVelocity.magnitude > 5)
                 {
-					var damage = (int)System.Math.Floor(rigidBody.velocity.magnitude / 3);
+					var damage = (int)System.Math.Ceiling(rigidBody.velocity.magnitude);
 					healthController.TakeDamage(damage);
 					if(OptionsMenu.current.graphicsMenu.DamageNumbersEnabled())
 					{
@@ -425,13 +423,7 @@ public class PlayerController : MonoBehaviour
 							popUpText.Initialize(gameObject, damage.ToString(), 10f, Color.red);
 						}
 					}
-                }
-                direction = (gameObject.transform.position - collider.gameObject.transform.position).normalized * movementController.GetMaxSpeed() * Time.fixedDeltaTime * 20f;
-
-                movementController.Stop();
-                if (!healthController.IsDead())
-                {
-                    movementController.MoveDirection(direction, true);
+                    movementController.MoveDirection(-collider.relativeVelocity);
                 }
                 break;
 

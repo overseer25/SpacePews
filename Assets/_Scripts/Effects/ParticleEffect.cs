@@ -9,14 +9,12 @@ public class ParticleEffect : MonoBehaviour
 	private AudioSource audioSource;
 	private new SpriteRenderer renderer;
 	private bool isFree;
-	private static SpriteAnimation defaultAnimation;
 	private Coroutine animate;
 
 	private void Awake()
 	{
-		defaultAnimation = Resources.Load("_ScriptableObjects/SpriteAnimations/ParticleAnimations/DefaultParticleAnim") as SpriteAnimation;
-		if (defaultAnimation == null)
-			Debug.LogError("Default particle effect could not be found");
+        if (particleSprites == null)
+            particleSprites = ParticleManager.current.defaultParticle;
 		audioSource = GetComponent<AudioSource>();
 		renderer = GetComponent<SpriteRenderer>();
 	}
@@ -85,7 +83,7 @@ public class ParticleEffect : MonoBehaviour
     public void Copy(ParticleEffect other)
     {
 		if (other.particleSprites == null)
-			particleSprites = Instantiate(defaultAnimation);
+			particleSprites = Instantiate(ParticleManager.current.defaultParticle);
 		else
 			particleSprites = Instantiate(other.particleSprites);
         sound = other.sound;
