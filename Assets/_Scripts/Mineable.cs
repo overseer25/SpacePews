@@ -100,7 +100,7 @@ public class Mineable : MonoBehaviour
                 Item loot = lootPossible[i].GetComponent<Item>();
                 Item pooledItem = ItemPool.current.GetPooledObject() as Item;
                 loot.SetWasMined(true, miner);
-                pooledItem.Initialize(gameObject, loot);
+                pooledItem.Initialize(transform.position, other: loot);
                 break;
             }
             chanceThusFar += spawnChance[i];

@@ -21,6 +21,7 @@ public class MiningComponent : ShipComponentBase
     private LineRenderer line;
     private bool playingContactAudio;
     private bool playingContactAudioMineable;
+    private HarvestableObject currentTarget;
 
     protected override void Awake()
     {
@@ -78,9 +79,13 @@ public class MiningComponent : ShipComponentBase
                         ShowContactSprite(hit.point, lineSpawner.transform.rotation);
                     }
                     PlayContactAudio();
-
-                    Mineable objectHit = hit.transform.gameObject.GetComponent<Mineable>();
-                    MineResource(objectHit); // Mine the resource.
+                    var objectHit = hit.collider.GetComponent<HarvestableObject>();
+                    if(currentTarget != objectHit)
+                    {
+                        currentTarget = objectHit;
+                        currentTarget.CancelMining();
+                    }
+                    currentTarget.Mine(miningRate);
                     break;
                 default:
                     UpdateLinePosition(lineSpawner.transform.up * laserLength);
@@ -93,6 +98,7 @@ public class MiningComponent : ShipComponentBase
         // Laser is not contacting anything
         else
         {
+            ResetCurrentTarget();
             StopContactAudio();
             UpdateLinePosition(lineSpawner.transform.up * laserLength);
         }
@@ -106,11 +112,21 @@ public class MiningComponent : ShipComponentBase
 		ParticleManager.PlayParticle(laserContactSprite, pos, rot);
     }
 
+    private void ResetCurrentTarget()
+    {
+        if (currentTarget != null)
+        {
+            currentTarget.CancelMining();
+            currentTarget = null;
+        }
+    }
+
     /// <summary>
     /// Deactivate the laser.
     /// </summary>
     public void StopFire()
     {
+        ResetCurrentTarget();
         if(line != null)
         {
             line.enabled = false;
@@ -181,24 +197,5 @@ public class MiningComponent : ShipComponentBase
         contactAudioSource.Stop();
         playingContactAudio = false;
         playingContactAudioMineable = false;
-    }
-
-    /// <summary>
-    /// Mines the resource.
-    /// </summary>
-    /// <param name="objectHit"></param>
-    void MineResource(Mineable objectHit)
-    {
-        //All out of resources, return
-        if (objectHit.depleted)
-        {
-            return;
-        }
-        //otherwise still resources to be had, spawn us some if we are over the time of being able to
-        float currentMineTime = objectHit.AddTimeMined(Time.deltaTime * miningRate);
-        if (currentMineTime >= objectHit.mineRate)
-        {
-            objectHit.SpawnLoot(GetComponentInParent<MovementController>().gameObject);
-        }
     }
 }

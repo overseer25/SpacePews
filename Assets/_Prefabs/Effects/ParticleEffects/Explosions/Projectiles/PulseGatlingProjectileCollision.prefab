@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 114353173892645446}
   - component: {fileID: 6059261822040840589}
   m_Layer: 0
-  m_Name: PulseGatlingProjectile
+  m_Name: PulseGatlingProjectileCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1570939830461566}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.614, y: 0.16, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -94,7 +94,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSprites: {fileID: 11400000, guid: 5447dfc5f7f2bae439675f1dd8b07357, type: 2}
-  sound: {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
+  possibleSoundEffects:
+  - {fileID: 8300000, guid: cd18084cfd80dea49b4f70d55e2b79b6, type: 3}
 --- !u!82 &6059261822040840589
 AudioSource:
   m_ObjectHideFlags: 0

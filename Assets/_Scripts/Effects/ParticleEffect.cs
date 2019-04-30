@@ -5,7 +5,8 @@ public class ParticleEffect : MonoBehaviour
 {
     public SpriteAnimation particleSprites;
     [SerializeField]
-    private AudioClip sound;
+    private AudioClip[] possibleSoundEffects;
+
 	private AudioSource audioSource;
 	private new SpriteRenderer renderer;
 	private bool isFree;
@@ -18,15 +19,6 @@ public class ParticleEffect : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		renderer = GetComponent<SpriteRenderer>();
 	}
-
-    /// <summary>
-    /// Get the sound associated with this particle effect.
-    /// </summary>
-    /// <returns></returns>
-    public AudioClip GetSound()
-    {
-        return sound;
-    }
 
 	/// <summary>
 	/// Play the animation for the sprite. Once the animation is completed, hide the particle effect.
@@ -51,10 +43,14 @@ public class ParticleEffect : MonoBehaviour
 	/// </summary>
 	public void EnableEffect()
 	{
-		renderer.enabled = true;
+        renderer.enabled = true;
 		isFree = false;
-		if(sound != null)
-			audioSource.PlayOneShot(sound);
+        if(possibleSoundEffects != null && possibleSoundEffects.Length > 0)
+        {
+            var sound = possibleSoundEffects[Random.Range(0, possibleSoundEffects.Length - 1)];
+            if (sound != null)
+                audioSource.PlayOneShot(sound);
+        }
 		animate = StartCoroutine(PlayEffect());
 	}
 
@@ -86,22 +82,23 @@ public class ParticleEffect : MonoBehaviour
 			particleSprites = Instantiate(ParticleManager.current.defaultParticle);
 		else
 			particleSprites = Instantiate(other.particleSprites);
-        sound = other.sound;
+        possibleSoundEffects = other.possibleSoundEffects;
+        transform.localScale = other.transform.localScale;
 		isFree = other.isFree;
     }
 
     /// <summary>
     /// Set the position of the effect, based on the target.
     /// </summary>
-    public void SetTransform(Vector2 position)
+    public void SetPosition(Vector2 position)
     {
-		SetTransform(position, Quaternion.identity);
+		SetPosition(position, Quaternion.identity);
     }
 
     /// <summary>
     /// Set the position and rotation of the effect, based on the given position and rotation.
     /// </summary>
-    public void SetTransform(Vector2 position, Quaternion rotation)
+    public void SetPosition(Vector2 position, Quaternion rotation)
     {
         transform.position = position;
         transform.rotation = rotation;

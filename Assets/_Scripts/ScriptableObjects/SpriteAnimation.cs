@@ -6,7 +6,7 @@ using UnityEngine;
 /// An animation containing a sprite list, play speed, and allows the user to specify whether or not this animation
 /// loops.
 /// </summary>
-[CreateAssetMenu(menuName = "Sprite Animation")]
+[CreateAssetMenu(menuName = "New Sprite Animation")]
 public class SpriteAnimation : ScriptableObject
 {
 	public Sprite[] frames;

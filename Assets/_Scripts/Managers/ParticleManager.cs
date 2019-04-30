@@ -29,9 +29,9 @@ public class ParticleManager : MonoBehaviour
 
         part.Copy(particle);
         if (rotation == null)
-            part.SetTransform(position);
+            part.SetPosition(position);
         else
-            part.SetTransform(position, (Quaternion)rotation);
+            part.SetPosition(position, (Quaternion)rotation);
 		part.EnableEffect();
 
     }

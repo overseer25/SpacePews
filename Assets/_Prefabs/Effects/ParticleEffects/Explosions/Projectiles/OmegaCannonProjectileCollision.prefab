@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5772928558452342615}
   - component: {fileID: 272163542112230744}
   m_Layer: 0
-  m_Name: OmegaCannonProjectile_Collision
+  m_Name: OmegaCannonProjectileCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSprites: {fileID: 11400000, guid: b4a121024176ecb44a21428c0e92e1e5, type: 2}
-  sound: {fileID: 8300000, guid: 434dec2ab8639cb4c89f6b271ecb7acc, type: 3}
+  possibleSoundEffects:
+  - {fileID: 8300000, guid: 434dec2ab8639cb4c89f6b271ecb7acc, type: 3}
 --- !u!212 &5772928558452342615
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -84,15 +85,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300002, guid: e7d7a70774f76d340a924727c2ca35c3, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.48, y: 6.8}
+  m_Size: {x: 0.6, y: 0.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!82 &272163542112230744

@@ -432,4 +432,28 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// Handles picking up items from the game world, and other such triggers.
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch(collision.gameObject.tag)
+        {
+            case "Item":
+                Item item = collision.gameObject.GetComponent<Item>();
+                if (inventory.ContainsEmptySlot() || inventory.ContainsItem(item))
+                {
+                    inventory.AddItem(item);
+                    item.Deactivate();
+                }
+                break;
+            case "Currency":
+                Currency currency = collision.gameObject.GetComponent<Currency>();
+                inventory.AddCurrency(currency.amount);
+                currency.Deactivate();
+                break;
+        }
+    }
 }

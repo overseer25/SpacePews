@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 495}
   - component: {fileID: 474}
   m_Layer: 11
-  m_Name: MiningLaser2
+  m_Name: MiningLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   componentClass: 0
   visible: 1
   mounted: 0
-  miningRate: 20
+  miningRate: 1
   laserWidth: 0.1
   laserLength: 8
   lineSpawner: {fileID: 203}

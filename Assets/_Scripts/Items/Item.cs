@@ -25,22 +25,18 @@ public class Item : MonoBehaviour
 
     private const int FOLLOWSPEED = 50;
     private const int FOLLOWANGLEMAX = 10;
-    private const float MAXDISTANCE = 5.0f;
-    private bool mined = false;
-    private float minedFollowSpeed = FOLLOWSPEED; // Speed at which a mined item follows the player.
-    private float minedFollowAngle; // Angle of descrepancy so that the items don't come out in a straight line.
-    private Vector2 startingPos;
+    private float distance = 5.0f;
     private GameObject targetPlayer;
-    private static System.Random random;
+    private Vector2 movementVec;
 
     protected Coroutine animate;
     protected bool animating;
 
     protected virtual void Awake()
     {
-        random = new System.Random();
         itemColor = ItemColors.colors[(int)itemTier];
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        gameObject.tag = "Item";
 	}
 
 	private void OnEnable()
@@ -63,6 +59,11 @@ public class Item : MonoBehaviour
         // If the item is hidden, it should not hover toward the player or animate.
         if(spriteRenderer != null && spriteRenderer.enabled)
         {
+            if(movementVec != Vector2.zero)
+            {
+                transform.position += (Vector3)movementVec;
+                movementVec *= 0.9f;
+            }
             HoverTowardPlayer(targetPlayer);
         }
     }
@@ -96,34 +97,39 @@ public class Item : MonoBehaviour
                 return;
 
             var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-            if (distanceToPlayer <= MAXDISTANCE)
+            if (distanceToPlayer <= distance)
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, FOLLOWSPEED * Time.deltaTime);
         }
         else
         {
             var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-            // If the player's inventory is full, don't hover toward them.
-            if ((!player.GetComponent<PlayerController>().inventory.ContainsEmptySlot() && !player.GetComponent<PlayerController>().inventory.ContainsItem(this))
-                    || distanceToPlayer > MAXDISTANCE)
-            {
-                // If the player mining cannot collect the items, make it fair game to any nearby player.
-                if (minedFollowSpeed != 0.0f)
-                {
-                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, minedFollowSpeed * Time.deltaTime);
-                    minedFollowSpeed *= 0.9f * (1 - Time.deltaTime);
-                }
-                else
-                    player = null;
-            }
-            else if(distanceToPlayer <= MAXDISTANCE)
+            if(distanceToPlayer <= distance)
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, FOLLOWSPEED * Time.deltaTime);
         }
     }
 
+    /// <summary>
+    /// Activates the item. Can provide a movement vector where the item will float and decrease speed in that direction.
+    /// </summary>
+    /// <param name="movementVector"></param>
+    public void Activate(Vector2? movementVector = null)
+    {
+        if (movementVector != null)
+            movementVec = (Vector2)movementVector;
+        gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Deactivate the item. Relinquishes the item back to the item pool.
+    /// </summary>
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void SetWasMined(bool mined, GameObject target = null)
     {
-        this.mined = mined;
         if(target != null)
         {
             targetPlayer = target;
@@ -207,31 +213,6 @@ public class Item : MonoBehaviour
     }
 
     /// <summary>
-    /// Deals with object collisions.
-    /// </summary>
-    /// <param name="collider"></param>
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        var obj = collider.GetComponentInParent<Rigidbody2D>();
-
-        if (obj == null)
-            return;
-        switch (obj.gameObject.tag)
-        {
-            case "Player":
-                // If the player's inventory is full, don't add to their inventory.
-                if(obj.GetComponent<PlayerController>().inventory.ContainsEmptySlot() || obj.GetComponent<PlayerController>().inventory.ContainsItem(this))
-                {
-                    obj.GetComponent<PlayerController>().inventory.AddItem(this);
-                    gameObject.SetActive(false);
-                }
-                break;
-            default:
-                return;
-        }
-    }
-
-    /// <summary>
     /// Copy the display values and attributes of one item to this one.
     /// </summary>
     public void Copy(Item other)
@@ -247,23 +228,24 @@ public class Item : MonoBehaviour
         stackable = other.stackable;
         stackSize = other.stackSize;
         itemColor = ItemColors.colors[(int)other.itemTier];
-        mined = other.mined;
+        distance = other.distance;
         targetPlayer = other.targetPlayer;
     }
 
     /// <summary>
-    /// Initialize the item's position.
+    /// Initialize the item with some data.
     /// </summary>
-    public void Initialize(GameObject target, Item other = null)
+    /// <param name="position">The target position.</param>
+    /// <param name="distance">The item will hover toward the player if the player is within this distance.</param>
+    /// <param name="other">If this is not null, this item will copy the data of the other.</param>
+    public void Initialize(Vector2 position, float distance = 5.0f, Item other = null)
     {
         // Copy the details of the incoming object, if one was provided.
         if (other != null)
             Copy(other);
 
-        minedFollowSpeed = FOLLOWSPEED;
-        minedFollowAngle = random.Next(-FOLLOWANGLEMAX, FOLLOWANGLEMAX);
-        transform.position = target.transform.position;
-        startingPos = transform.position;
+        this.distance = distance;
+        transform.position = position;
         gameObject.SetActive(true);
     }
 }

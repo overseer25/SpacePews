@@ -93,10 +93,10 @@ TextureImporter:
       name: asteroids_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 7
-        width: 47
-        height: 47
+        x: 4
+        y: 8
+        width: 51
+        height: 51
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -104,7 +104,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6aabca1553f314d4fac0206658dea027
+      spriteID: 51f2b70223d559b458b83d936625f495
       internalID: -5766033097715662417
       vertices: []
       indices: 
@@ -114,10 +114,10 @@ TextureImporter:
       name: asteroids_1
       rect:
         serializedVersion: 2
-        x: 69
-        y: 2
-        width: 56
-        height: 56
+        x: 58
+        y: 18
+        width: 51
+        height: 51
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,7 +125,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e30ad67b6c1340d4584589293d65d5b1
+      spriteID: 5f3d089bc49671141b5254f75c671018
       internalID: 3577993227607710454
       vertices: []
       indices: 
@@ -134,7 +134,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 0bff73148c7d7f24899f027dbbdaf7b7
+    spriteID: 19fff8b25f62e4546bf397a2b796395c
     internalID: 0
     vertices: []
     indices: 

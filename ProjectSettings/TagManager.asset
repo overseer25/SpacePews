@@ -18,10 +18,10 @@ TagManager:
   - Ship
   - InventorySlot
   - InventoryItem
-  - DeleteZone
   - MountSlot
   - HotbarSlot
   - shotspawn
+  - Currency
   layers:
   - Default
   - TransparentFX
@@ -64,4 +64,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 280818743
+    locked: 0
+  - name: Particles
+    uniqueID: 1204880539
     locked: 0

@@ -14,14 +14,31 @@ public class Currency : MonoBehaviour
 
     private AudioSource audioSource;
 
-    private void Start()
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        gameObject.tag = "Currency";
     }
 
     private void Update()
     {
         HoverTowardPlayer();
+    }
+
+    /// <summary>
+    /// Deactivate the currency object.
+    /// </summary>
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Activate the currency object.
+    /// </summary>
+    public void Activate()
+    {
+        gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -50,25 +67,4 @@ public class Currency : MonoBehaviour
 		sprite = other.sprite;
 		GetComponent<SpriteRenderer>().sprite = sprite;
 	}
-
-    /// <summary>
-    /// Deals with object collisions.
-    /// </summary>
-    /// <param name="collider"></param>
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        var obj = collider.GetComponentInParent<Rigidbody2D>();
-
-        if (obj == null || !gameObject.activeInHierarchy)
-            return;
-        switch (obj.gameObject.tag)
-        {
-            case "Player":
-                if(obj.GetComponent<PlayerController>().inventory.AddCurrency(amount))
-                    gameObject.SetActive(false);
-                break;
-            default:
-                return;
-        }
-    }
 }

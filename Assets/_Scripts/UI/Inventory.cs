@@ -1055,6 +1055,9 @@ public class Inventory : MonoBehaviour
 	/// <returns> False if the inventory contains the item, but the item is at max stack. </returns>
 	public bool ContainsItem(Item item)
 	{
+        if (item == null)
+            return false;
+
 		// Find element in item list equivalent to the parameter.
 		foreach (InventorySlot slot in inventorySlots)
 		{
