@@ -13,15 +13,10 @@ MonoBehaviour:
   m_Name: MiningLaserContact
   m_EditorClassIdentifier: 
   frames:
-  - {fileID: 21300000, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300002, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300004, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300006, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300008, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300010, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300012, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300014, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
-  - {fileID: 21300016, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
+  - {fileID: 3492854574165815339, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
+  - {fileID: 3409287021732733652, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
+  - {fileID: -4966273613034116593, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
+  - {fileID: -6822280878142371424, guid: 88b62e580453d3a4fb5544eacc936b67, type: 3}
   playSpeed: 0.05
   reversePlaySpeed: 0
   looping: 0

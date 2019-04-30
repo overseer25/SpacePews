@@ -20,6 +20,9 @@ public class DynamicParticle : MonoBehaviour
     public void Play()
     {
         emitter = GetComponent<ParticleSystem>();
+        if (emitter.isPlaying)
+            return;
+
         audioSource = GetComponent<AudioSource>();
         if (emitter == null || audioSource == null)
         {
@@ -30,7 +33,10 @@ public class DynamicParticle : MonoBehaviour
         var clip = possibleSoundEffects[Random.Range(0, possibleSoundEffects.Length - 1)];
         audioSource.PlayOneShot(clip);
         emitter.Play();
-        StartCoroutine(StopAfterTime(emitter.main.duration));
+
+        // If it is not a looping particle effect, destroy it after time.
+        if(!emitter.main.loop)
+            StartCoroutine(DestroyAfterTime(emitter.main.duration));
     }
 
     /// <summary>
@@ -39,10 +45,21 @@ public class DynamicParticle : MonoBehaviour
     public void Stop()
     {
         emitter.Stop();
-        Destroy(gameObject);
+        StartCoroutine(DestroyAfterTime(emitter.main.startLifetime.constantMax)); // Let the particles finish their lifespan before destroying.
     }
 
-    private IEnumerator StopAfterTime(float time)
+    /// <summary>
+    /// Move the particle to a new position and rotation.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
+    public void Move(Vector2 position, float rotation)
+    {
+        transform.position = position;
+        transform.rotation = Quaternion.Euler(0f, 0f, rotation);
+    }
+
+    private IEnumerator DestroyAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
         Destroy(gameObject);

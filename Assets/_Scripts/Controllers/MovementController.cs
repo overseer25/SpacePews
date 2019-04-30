@@ -45,9 +45,9 @@ public class MovementController : MonoBehaviour
     public void RotateLeft()
     {
         var currentRotation = rigidBody.rotation;
-        var desiredRotation = currentRotation + rotationSpeed * Time.deltaTime;
+        var desiredRotation = currentRotation + rotationSpeed * Time.fixedDeltaTime;
         rigidBody.MoveRotation(desiredRotation);
-        rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
+        rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
     }
 
     /// <summary>
@@ -56,9 +56,9 @@ public class MovementController : MonoBehaviour
     public void RotateRight()
     {
         var currentRotation = rigidBody.rotation;
-        var desiredRotation = currentRotation - rotationSpeed * Time.deltaTime;
+        var desiredRotation = currentRotation - rotationSpeed * Time.fixedDeltaTime;
         rigidBody.MoveRotation(desiredRotation);
-        rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, rigidBody.velocity.Rotate(desiredRotation - currentRotation), Time.deltaTime * rotationSpeed);
+        rigidBody.velocity = rigidBody.velocity.Rotate(desiredRotation - currentRotation);
     }
 
     /// <summary>

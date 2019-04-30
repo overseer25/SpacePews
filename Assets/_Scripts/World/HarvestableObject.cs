@@ -24,6 +24,10 @@ public class HarvestableObject : Lootable
     /// Use this for a <see cref="ParticleEffect"/> effect.
     /// </summary>
     public ParticleEffect destroyParticle;
+    /// <summary>
+    /// Particle that plays when player is mining this object.
+    /// </summary>
+    public DynamicParticle miningParticle;
 
     /// <summary>
     /// The states of the object change the appearance of the object as it is harvested. Transitions to

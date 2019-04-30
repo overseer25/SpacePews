@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: 88b62e580453d3a4fb5544eacc936b67
+guid: 7fac74e9b4e048a419e618777cc9dfdd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3492854574165815339
-    second: miningLaserContact_0
+      213: 9020325110992574413
+    second: AsteroidMedium2_0
   - first:
-      213: 3409287021732733652
-    second: miningLaserContact_1
+      213: 3571850141958598963
+    second: AsteroidMedium2_1
   - first:
-      213: -4966273613034116593
-    second: miningLaserContact_2
+      213: -8006173130577568075
+    second: AsteroidMedium2_2
   - first:
-      213: -6822280878142371424
-    second: miningLaserContact_3
+      213: -5059104760528088
+    second: AsteroidMedium2_3
+  - first:
+      213: -6303372574035845285
+    second: AsteroidMedium2_4
+  - first:
+      213: 4099977479945329210
+    second: AsteroidMedium2_5
+  - first:
+      213: 5078932701308729828
+    second: AsteroidMedium2_6
+  - first:
+      213: 798705377444368851
+    second: AsteroidMedium2_7
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -96,13 +108,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: miningLaserContact_0
+      name: AsteroidMedium2_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 39
-        width: 15
-        height: 15
+        x: 1
+        y: 129
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -110,20 +122,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4182d2a378a502b4ea0c288b5f1f289c
-      internalID: 3492854574165815339
+      spriteID: fd791cb835628054fa66f6e1310b6108
+      internalID: 9020325110992574413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: miningLaserContact_1
+      name: AsteroidMedium2_1
       rect:
         serializedVersion: 2
-        x: 41
-        y: 39
-        width: 15
-        height: 15
+        x: 65
+        y: 129
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52d515bcae0b22d47937d78d70031fcd
-      internalID: 3409287021732733652
+      spriteID: d54bc3fd6da90814ab4aeef6f84e86f1
+      internalID: 3571850141958598963
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: miningLaserContact_2
+      name: AsteroidMedium2_2
       rect:
         serializedVersion: 2
-        x: 9
-        y: 7
-        width: 15
-        height: 15
+        x: 129
+        y: 129
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +164,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f8f405e6487e5547bedfc11fe811317
-      internalID: -4966273613034116593
+      spriteID: 6d9d5663d0b4a314583781e2ef961f9d
+      internalID: -8006173130577568075
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: miningLaserContact_3
+      name: AsteroidMedium2_3
       rect:
         serializedVersion: 2
-        x: 41
-        y: 7
-        width: 15
-        height: 15
+        x: 1
+        y: 65
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +185,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c1d384e4d8b46a4e809aaf2d7d21b62
-      internalID: -6822280878142371424
+      spriteID: e6dba2c7b4344c3438d09c7031a85641
+      internalID: -5059104760528088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AsteroidMedium2_4
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 65
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c0f9c917478cd043bf97dbfa2cba82e
+      internalID: -6303372574035845285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AsteroidMedium2_5
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 65
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1976a6776b1eabb4391676af6f94b684
+      internalID: 4099977479945329210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AsteroidMedium2_6
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a0c8a5e859d5b04e8fe39ee3e6952ff
+      internalID: 5078932701308729828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AsteroidMedium2_7
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 1
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03978367feea20c44833a2b1471669f1
+      internalID: 798705377444368851
       vertices: []
       indices: 
       edges: []
@@ -182,7 +278,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 463953f3fa8d2d34e92ef330d91f3053
+    spriteID: 33473e96b7d9a4745ad6974e695c67d4
     internalID: 0
     vertices: []
     indices: 

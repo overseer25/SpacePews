@@ -13,7 +13,7 @@ public class MiningComponent : ShipComponentBase
     public AudioClip contactMineable;
     public AudioSource contactAudioSource;
     public AudioSource baseAudioSource;
-    public ParticleEffect laserContactSprite;
+    public ParticleEffect laserContactParticle;
 
     private float contactSpriteFrequency = 0.2f; // The frequency at which the contact sprite animation is allowed to play.
     private float timePassed = 0.0f; // Used in conjunction with contactSpriteFrequency to delay sprite spawning.
@@ -22,6 +22,7 @@ public class MiningComponent : ShipComponentBase
     private bool playingContactAudio;
     private bool playingContactAudioMineable;
     private HarvestableObject currentTarget;
+    private DynamicParticle currentMiningParticle;
 
     protected override void Awake()
     {
@@ -44,7 +45,7 @@ public class MiningComponent : ShipComponentBase
         // Raycast for detecting collision/ "~(1 << 5) is a LayerMask. Layer 5 is the UI layer, and we don't want the raycast detecting the UI."
         int mask = 1 << LayerMask.NameToLayer("UI");
         mask |= 1 << LayerMask.NameToLayer("Item");
-        mask |= 1 << LayerMask.NameToLayer("ShipComponentBase");
+        mask |= 1 << LayerMask.NameToLayer("ShipComponent");
         mask = ~mask;
         RaycastHit2D hit = Physics2D.Raycast(lineSpawner.transform.position, lineSpawner.transform.up, laserLength, mask);
 
@@ -82,10 +83,18 @@ public class MiningComponent : ShipComponentBase
                     var objectHit = hit.collider.GetComponent<HarvestableObject>();
                     if(currentTarget != objectHit)
                     {
+                        if(currentMiningParticle != null)
+                            currentMiningParticle.Stop();
                         currentTarget = objectHit;
                         currentTarget.CancelMining();
+                        currentMiningParticle = Instantiate(objectHit.miningParticle);
+                        currentMiningParticle.Play();
                     }
                     currentTarget.Mine(miningRate);
+                    if (currentMiningParticle != null)
+                    {
+                        currentMiningParticle.Move(hit.point, transform.rotation.eulerAngles.z);
+                    }
                     break;
                 default:
                     UpdateLinePosition(lineSpawner.transform.up * laserLength);
@@ -109,7 +118,7 @@ public class MiningComponent : ShipComponentBase
     /// </summary>
     private void ShowContactSprite(Vector2 pos, Quaternion rot)
     {
-		ParticleManager.PlayParticle(laserContactSprite, pos, rot);
+		ParticleManager.PlayParticle(laserContactParticle, pos, rot);
     }
 
     private void ResetCurrentTarget()
@@ -119,6 +128,9 @@ public class MiningComponent : ShipComponentBase
             currentTarget.CancelMining();
             currentTarget = null;
         }
+
+        if (currentMiningParticle != null)
+            currentMiningParticle.Stop();
     }
 
     /// <summary>

@@ -82,7 +82,7 @@ public class MiningComponentEditor : BaseItemEditor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("", GUILayout.MaxWidth(10f));
         serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("laserContactSprite"), true, GUILayout.MaxWidth(500f));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("laserContactParticle"), true, GUILayout.MaxWidth(500f));
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
     }
