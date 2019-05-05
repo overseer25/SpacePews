@@ -16,7 +16,7 @@ public class MovementController : MonoBehaviour
     private SpriteRenderer shipRenderer;
     private GameObject ship;
 
-    void Start()
+    void Awake()
     {
         rigidBody = GetComponentInChildren<Rigidbody2D>();
         mountController = gameObject.GetComponent<ShipMountController>();

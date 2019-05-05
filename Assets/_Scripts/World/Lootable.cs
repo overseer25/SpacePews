@@ -31,7 +31,8 @@ public abstract class Lootable : MonoBehaviour
                     Item pooledItem = ItemPool.current.GetPooledObject() as Item;
                     pooledItem.Initialize(transform.position, other:loot.item);
                     int angle = Random.Range(0, 360);
-                    Vector2 movementVector = ((Vector2)transform.up).Rotate(angle) * 0.25f;
+                    float randomSpeed = Random.Range(0.05f, 0.25f);
+                    Vector2 movementVector = ((Vector2)transform.up).Rotate(angle) * randomSpeed;
                     pooledItem.Activate(movementVector);
                 }
             }

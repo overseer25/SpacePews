@@ -35,7 +35,7 @@ public class ControlsMenu : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(!inputIsSelected && Input.GetKeyDown(InputManager.current.controls.pause) && isOpen)
+        if(!inputIsSelected && Input.GetKeyDown(InputManager.controls.pause) && isOpen)
         {
             PlayClickSound();
             optionsMenu.HideControls();
@@ -100,32 +100,32 @@ public class ControlsMenu : MonoBehaviour
     public void UpdateControlWindow()
     {
         string result;
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.fire, out result);
-        fire.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.fire.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.fire, out result);
+        fire.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.fire.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.forward, out result);
-        forward.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.forward.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.forward, out result);
+        forward.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.forward.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.left, out result);
-        left.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.left.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.left, out result);
+        left.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.left.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.right, out result);
-        right.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.right.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.right, out result);
+        right.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.right.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.inventory, out result);
-        inventory.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.inventory.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.inventory, out result);
+        inventory.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.inventory.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.ability, out result);
-        ability.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.ability.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.ability, out result);
+        ability.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.ability.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.cameraZoomIn, out result);
-        cameraZoomIn.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomIn.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.cameraZoomIn, out result);
+        cameraZoomIn.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.cameraZoomIn.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.cameraZoomOut, out result);
-        cameraZoomOut.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.cameraZoomOut.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.cameraZoomOut, out result);
+        cameraZoomOut.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.cameraZoomOut.ToString() : result;
 
-        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.current.controls.suicide, out result);
-        suicide.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.current.controls.suicide.ToString() : result;
+        KeyCodeExtensions.keyCodeNames.TryGetValue(InputManager.controls.suicide, out result);
+        suicide.GetComponentInChildren<TextMeshProUGUI>().text = (result == default(string)) ? InputManager.controls.suicide.ToString() : result;
     }
 
     /// <summary>
@@ -143,24 +143,24 @@ public class ControlsMenu : MonoBehaviour
     /// </summary>
     private void EmptyControl(KeyCode value)
     {
-        if (InputManager.current.controls.fire == value)
-            InputManager.current.controls.fire = KeyCode.None;
-        else if (InputManager.current.controls.forward == value)
-            InputManager.current.controls.forward = KeyCode.None;
-        else if (InputManager.current.controls.left == value)
-            InputManager.current.controls.left = KeyCode.None;
-        else if (InputManager.current.controls.right == value)
-            InputManager.current.controls.right = KeyCode.None;
-        else if (InputManager.current.controls.inventory == value)
-            InputManager.current.controls.inventory = KeyCode.None;
-        else if (InputManager.current.controls.ability == value)
-            InputManager.current.controls.ability = KeyCode.None;
-        else if (InputManager.current.controls.cameraZoomIn == value)
-            InputManager.current.controls.cameraZoomIn = KeyCode.None;
-        else if (InputManager.current.controls.cameraZoomOut == value)
-            InputManager.current.controls.cameraZoomOut = KeyCode.None;
-        else if (InputManager.current.controls.suicide == value)
-            InputManager.current.controls.suicide = KeyCode.None;
+        if (InputManager.controls.fire == value)
+            InputManager.controls.fire = KeyCode.None;
+        else if (InputManager.controls.forward == value)
+            InputManager.controls.forward = KeyCode.None;
+        else if (InputManager.controls.left == value)
+            InputManager.controls.left = KeyCode.None;
+        else if (InputManager.controls.right == value)
+            InputManager.controls.right = KeyCode.None;
+        else if (InputManager.controls.inventory == value)
+            InputManager.controls.inventory = KeyCode.None;
+        else if (InputManager.controls.ability == value)
+            InputManager.controls.ability = KeyCode.None;
+        else if (InputManager.controls.cameraZoomIn == value)
+            InputManager.controls.cameraZoomIn = KeyCode.None;
+        else if (InputManager.controls.cameraZoomOut == value)
+            InputManager.controls.cameraZoomOut = KeyCode.None;
+        else if (InputManager.controls.suicide == value)
+            InputManager.controls.suicide = KeyCode.None;
     }
 
     /// <summary>
@@ -174,39 +174,39 @@ public class ControlsMenu : MonoBehaviour
         switch (keyName)
         {
             case "fire":
-                InputManager.current.controls.fire = value;
+                InputManager.controls.fire = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "forward":
-                InputManager.current.controls.forward = value;
+                InputManager.controls.forward = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "left":
-                InputManager.current.controls.left = value;
+                InputManager.controls.left = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "right":
-                InputManager.current.controls.right = value;
+                InputManager.controls.right = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "inventory":
-                InputManager.current.controls.inventory = value;
+                InputManager.controls.inventory = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "ability":
-                InputManager.current.controls.ability = value;
+                InputManager.controls.ability = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "camerazoomin":
-                InputManager.current.controls.cameraZoomIn = value;
+                InputManager.controls.cameraZoomIn = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "camerazoomout":
-                InputManager.current.controls.cameraZoomOut = value;
+                InputManager.controls.cameraZoomOut = value;
                 optionsMenu.PlayClickSound();
                 break;
             case "suicide":
-                InputManager.current.controls.suicide = value;
+                InputManager.controls.suicide = value;
                 optionsMenu.PlayClickSound();
                 break;
         }

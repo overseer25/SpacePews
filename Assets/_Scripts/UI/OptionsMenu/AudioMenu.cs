@@ -29,6 +29,7 @@ public class AudioMenu : MonoBehaviour
     public OptionsMenu optionsMenu;
     public bool isOpen;
 
+    private static AudioData data;
     private string fileLocation;
 
     private void Awake()
@@ -39,7 +40,7 @@ public class AudioMenu : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!Input.GetMouseButton(0) && Input.GetKeyDown(InputManager.current.controls.pause) && isOpen)
+        if (!Input.GetMouseButton(0) && Input.GetKeyDown(InputManager.controls.pause) && isOpen)
         {
             PlayClickSound();
             optionsMenu.HideAudio();
@@ -128,9 +129,9 @@ public class AudioMenu : MonoBehaviour
     /// <summary>
     /// Resets the audio settings to their default values.
     /// </summary>
-    public AudioData ResetToDefault()
+    public void ResetToDefault()
     {
-        var data = new AudioData()
+        data = new AudioData()
         {
             master = 0,
             sfx = -20,
@@ -143,14 +144,15 @@ public class AudioMenu : MonoBehaviour
         interfaceSlider.value = data.ui;
 
         UpdateAudio();
-        return data;
     }
 
     /// <summary>
     /// Update the values of the sliders. Usually occurs when the saved audio data is loaded.
     /// </summary>
-    private void UpdateSliders(AudioData data)
+    public void UpdateSliders()
     {
+        if (data == null)
+            return;
         masterSlider.value = data.master;
         soundEffectsSlider.value = data.sfx;
         musicSlider.value = data.music;
@@ -163,7 +165,7 @@ public class AudioMenu : MonoBehaviour
     /// <returns></returns>
     public void SaveToFile()
     {
-        var data = new AudioData()
+        data = new AudioData()
         {
             master = masterSlider.value,
             sfx = soundEffectsSlider.value,
@@ -194,8 +196,6 @@ public class AudioMenu : MonoBehaviour
     /// </summary>
     public void LoadFromFile()
     {
-        AudioData data = null;
-
         try
         {
             if (File.Exists(fileLocation))
@@ -210,16 +210,16 @@ public class AudioMenu : MonoBehaviour
                 }
             }
             else
-                data = ResetToDefault();
+                ResetToDefault();
         }
         catch (Exception)
         {
             Debug.Log("Failed to load audio file " + fileLocation + ", using default values instead.");
-            data = ResetToDefault();
+            ResetToDefault();
         }
         finally
         {
-            UpdateSliders(data);
+            UpdateSliders();
             UpdateAudio();
         }
     }

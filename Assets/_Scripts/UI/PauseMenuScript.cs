@@ -40,7 +40,6 @@ public class PauseMenuScript : MonoBehaviour
     private void Start()
     {
         source = GetComponent<AudioSource>();
-        optionsMenu.Initialize();
         ResumeGame();
     }
 
@@ -166,14 +165,6 @@ public class PauseMenuScript : MonoBehaviour
     {
         ChangeQuitDialogueState(false);
         ActivatePauseMenu();
-    }
-
-    /// <summary>
-    /// Actually quit the game.
-    /// </summary>
-    public void QuitGame()
-    {
-        Application.Quit();
     }
 
     /// <summary>

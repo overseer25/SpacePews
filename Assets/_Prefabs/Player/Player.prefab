@@ -7340,13 +7340,17 @@ MonoBehaviour:
   abilityChargeBar: {fileID: 949909274923326890}
   currencyCount: {fileID: 949909274126666223}
   respawnPoint: {fileID: 0}
+  playerCamera: {fileID: 949909273980630882}
+  minimapCamera: {fileID: 949909273980630883}
   deathExplosion: {fileID: 2260596981083897227, guid: 32f52ac3d7949d94fb4d32e9b7870494,
     type: 3}
   respawnEffect: {fileID: 2507454449156312789, guid: e811f9b8fdd3c1b47af37e5d606e2b3e,
     type: 3}
   engineSource: {fileID: 949909273980631007}
+  audioSource: {fileID: 949909275029614895}
   ghostEffect: {fileID: 6564076730835812928, guid: 5906bd238a3953e4490bace24141a397,
     type: 3}
+  warpSound: {fileID: 8300000, guid: 9f13d9fbf2735fe4880cd7fcc1c9abec, type: 3}
   rotatingLeft: 0
   rotatingRight: 0
   movingForward: 0
@@ -7637,7 +7641,7 @@ GameObject:
   - component: {fileID: 949909273980629003}
   - component: {fileID: 949909273980629043}
   m_Layer: 5
-  m_Name: ConfirmQuitButton
+  m_Name: ConfirmExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7744,15 +7748,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 949909273980629017}
-        m_MethodName: QuitGame
-        m_Mode: 1
+      - m_Target: {fileID: 0}
+        m_MethodName: LoadWorld
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: MainMenu
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -8278,7 +8282,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 88.36, y: 18.29}
+  m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949909273980630550
 CanvasRenderer:
@@ -8565,7 +8569,7 @@ GameObject:
   - component: {fileID: 949909273980629230}
   - component: {fileID: 949909273980628996}
   m_Layer: 5
-  m_Name: QuitButton
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8590,7 +8594,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 88.43, y: 17.02}
+  m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949909273980630538
 CanvasRenderer:
@@ -8783,7 +8787,7 @@ GameObject:
   - component: {fileID: 949909273980630546}
   - component: {fileID: 949909273980628993}
   m_Layer: 5
-  m_Name: ConfirmQuit
+  m_Name: ConfirmExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8862,7 +8866,7 @@ GameObject:
   - component: {fileID: 949909273980629219}
   - component: {fileID: 949909273980629040}
   m_Layer: 5
-  m_Name: CancelQuitButton
+  m_Name: CancelExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9935,7 +9939,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Are you sure you want to quit?
+  m_text: Return to main menu?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4b5d56a84051896428a157c2fd97a7e4, type: 2}
   m_sharedMaterial: {fileID: 5360974472824516084, guid: 4b5d56a84051896428a157c2fd97a7e4,
@@ -10005,10 +10009,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 0}
-    characterCount: 30
+    characterCount: 20
     spriteCount: 0
-    spaceCount: 6
-    wordCount: 7
+    spaceCount: 3
+    wordCount: 4
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -10424,8 +10428,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -73.83984, y: 66.03003}
-  m_SizeDelta: {x: 147.67, y: 132.08}
+  m_AnchoredPosition: {x: -73.83984, y: 44.49}
+  m_SizeDelta: {x: 147.67, y: 89.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949909273980630557
 CanvasRenderer:
@@ -10478,14 +10482,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
-    m_Right: 0
+    m_Right: 15
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 0
+  m_Spacing: 15
+  m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -10659,9 +10663,11 @@ GameObject:
   - component: {fileID: 949909273980629309}
   - component: {fileID: 949909273980629295}
   - component: {fileID: 949909273980629225}
+  - component: {fileID: 5318879398513039117}
   - component: {fileID: 949909273980629223}
   - component: {fileID: 949909273980629010}
   - component: {fileID: 949909273980631000}
+  - component: {fileID: 8034170761269291774}
   m_Layer: 5
   m_Name: InventoryHUD
   m_TagString: Untagged
@@ -10736,6 +10742,35 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &5318879398513039117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949909273980630509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!114 &949909273980629223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10882,6 +10917,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!222 &8034170761269291774
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949909273980630509}
+  m_CullTransparentMesh: 0
 --- !u!1 &949909273980630511
 GameObject:
   m_ObjectHideFlags: 0
@@ -11256,7 +11299,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 88.21, y: 16.56}
+  m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &949909273980630542
 CanvasRenderer:
@@ -22708,7 +22751,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -30256,7 +30299,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -37.400005, y: -0.10000038}
+  m_AnchoredPosition: {x: -54.4, y: -0.10000038}
   m_SizeDelta: {x: 33.56801, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &4744612098684149363
@@ -44663,7 +44706,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Quit
+  m_text: Exit to menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4b5d56a84051896428a157c2fd97a7e4, type: 2}
   m_sharedMaterial: {fileID: 5360974472824516084, guid: 4b5d56a84051896428a157c2fd97a7e4,
@@ -44710,7 +44753,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -44733,10 +44776,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 7899959840570932750}
-    characterCount: 4
+    characterCount: 12
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 1
+    spaceCount: 2
+    wordCount: 3
     linkCount: 0
     lineCount: 1
     pageCount: 1

@@ -11,6 +11,7 @@ public class OptionsMenu : MonoBehaviour
     public AudioMenu audioMenu;
     public GraphicsMenu graphicsMenu;
 	public static OptionsMenu current;
+    public static bool firstLoad = true;
 
     [Header("Sound")]
     public AudioClip hoverSound;
@@ -18,10 +19,11 @@ public class OptionsMenu : MonoBehaviour
 
     [Header("Other")]
     public PauseMenuScript pauseMenu;
+    public GameObject mainMenuButtons;
     public bool isOpen;
     private AudioSource audioSource;
 
-    private void Awake()
+    private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         transform.localPosition = new Vector3(0.0f, 0.0f, transform.position.z);
@@ -30,15 +32,19 @@ public class OptionsMenu : MonoBehaviour
         graphicsMenu.transform.localPosition = new Vector3(0.0f, 0.0f, transform.position.z);
         if (current == null)
 			current = this;
+        Initialize();
     }
 
     private void Update()
     {
-        if (isOpen && !SubmenuIsOpen() && Input.GetKeyDown(InputManager.current.controls.pause))
+        if (isOpen && !SubmenuIsOpen() && Input.GetKeyDown(InputManager.controls.pause))
         {
             PlayClickSound();
             Hide();
-            pauseMenu.ActivatePauseMenu();
+            if (pauseMenu != null)
+                pauseMenu.ActivatePauseMenu();
+            else if (mainMenuButtons != null)
+                mainMenuButtons.SetActive(true);
         }
     }
 
@@ -47,8 +53,22 @@ public class OptionsMenu : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        InputManager.current.LoadFromFile();
-        audioMenu.LoadFromFile();
+        if(firstLoad)
+        {
+            InputManager.current.LoadFromFile();
+            audioMenu.LoadFromFile();
+            graphicsMenu.LoadFromFile();
+            HideAll();
+            firstLoad = false;
+        }
+        else
+        {
+            controlsMenu.UpdateControlWindow();
+            audioMenu.UpdateSliders();
+            graphicsMenu.UpdateSettings();
+            graphicsMenu.UpdateObjectPools();
+            HideAll();
+        }
     }
 
     /// <summary>

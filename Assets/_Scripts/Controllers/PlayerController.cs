@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Converts inputs given by the player into actions and movements of the player character.
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private const float CAMERA_ZOOM_INCREMENT = 10.0f;
     private const float CAMERA_MAX_ZOOM = -40.0f;
     private const float CAMERA_MIN_ZOOM = -60.0f;
-    private const float CAMERA_FOLLOW_SPEED = 10.0f;
+    private const float CAMERA_FOLLOW_SPEED = 5.0f;
 
     [Header("UI")]
     public Inventory inventory;
@@ -28,11 +29,15 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI currencyCount;
     [Header("State")]
     public GameObject respawnPoint;
+    public Camera playerCamera;
+    public Camera minimapCamera;
     [Header("Effects/Sounds")]
     public ParticleEffect deathExplosion;
     public ParticleEffect respawnEffect;
     public AudioSource engineSource;
+    public AudioSource audioSource;
     public FadeEffect ghostEffect;
+    public AudioClip warpSound;
 
     // The active ability the player can currently use.
     private AbilityBase ability;
@@ -50,6 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private bool dead;
     private bool respawning;
+    private bool warping = true;
 
     [HideInInspector]
     public bool rotatingLeft;
@@ -88,6 +94,48 @@ public class PlayerController : MonoBehaviour
             ship = shipRenderer.gameObject;
         }
         currentCameraZoom = CAMERA_MIN_ZOOM;
+
+        if(warping)
+            WarpIntoScene();
+    }
+
+    /// <summary>
+    /// Handles the effects of traveling to a new world. This also occurs during a player's initial start.
+    /// </summary>
+    public void WarpIntoScene()
+    {
+        // Place the character off screen.
+        transform.position = new Vector3(0, -50f, 0);
+        playerCamera.transform.position = new Vector3(0, 0, currentCameraZoom);
+        movementController.MoveDirection(transform.up * 100f, true);
+        StartCoroutine(FlashScreen());
+        StartCoroutine(WaitToFinishWarp());
+        SetThrusterState(true);
+        audioSource.PlayOneShot(warpSound);
+        
+    }
+
+    private IEnumerator FlashScreen()
+    {
+        var image = inventory.GetComponent<Image>();
+        while(image.color.a < 1.0f)
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + 0.1f);
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        while (image.color.a > 0f)
+        {
+            image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - 0.1f);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    private IEnumerator WaitToFinishWarp()
+    {
+        yield return new WaitForSeconds(2.0f);
+        warping = false;
+        SetThrusterState(false);
     }
 
     /// <summary>
@@ -105,7 +153,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!dead)
         {
-            if (movingForward)
+            if (!warping && movingForward)
             {
                 movementController.MoveForward();
                 if (thrusters.Count > 0)
@@ -118,9 +166,9 @@ public class PlayerController : MonoBehaviour
                     StopEngineSound();
             }
 
-            if (rotatingRight)
+            if (!warping && rotatingRight)
                 movementController.RotateRight();
-            else if (rotatingLeft)
+            else if (!warping && rotatingLeft)
                 movementController.RotateLeft();
         }
     }
@@ -146,15 +194,17 @@ public class PlayerController : MonoBehaviour
             if (abilityChargeBar.activeInHierarchy)
                 abilityChargeBar.SetActive(false);
         }
-
-        //Camera.main.transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, currentCameraZoom)
     }
 
 	private void LateUpdate()
 	{
-		var x = Mathf.Lerp(Camera.main.transform.position.x, ship.transform.position.x, CAMERA_FOLLOW_SPEED * Time.deltaTime);
-		var y = Mathf.Lerp(Camera.main.transform.position.y, ship.transform.position.y, CAMERA_FOLLOW_SPEED * Time.deltaTime);
-		Camera.main.transform.position = new Vector3(x, y, currentCameraZoom);
+        if(!warping)
+        {
+            var x = Mathf.Lerp(playerCamera.transform.position.x, ship.transform.position.x, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+            var y = Mathf.Lerp(playerCamera.transform.position.y, ship.transform.position.y, CAMERA_FOLLOW_SPEED * Time.deltaTime);
+            playerCamera.transform.position = new Vector3(x, y, currentCameraZoom);
+            minimapCamera.transform.rotation = Quaternion.identity;
+        }
 	}
 
     /// <summary>
@@ -358,7 +408,7 @@ public class PlayerController : MonoBehaviour
 
             transform.position = respawnPoint.transform.position;
             ship.transform.rotation = respawnPoint.transform.rotation;
-            Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
+            playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
             deathScreen.Hide();
 
             // Wait before returning control to the player.

@@ -8,8 +8,7 @@ using UnityEngine;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
-	[Header("Controls")]
-    public Controls controls;
+    public static Controls controls;
 
     [Header("Other")]
     // Contains all of the controllers needed.
@@ -21,6 +20,8 @@ public class InputManager : MonoBehaviour
     /// This is a static class, so it must be referenced by this variable.
     /// </summary>
     public static InputManager current;
+
+    public bool inMainMenu = false;
 
     private string fileLocation;
 
@@ -36,44 +37,50 @@ public class InputManager : MonoBehaviour
         else
             Debug.Log("An Input Manager already exists. Please check that only one Input Manager script exists in the scene.");
 
-        pController = playerShip.GetComponent<PlayerController>();
-		hController = playerShip.GetComponent<PlayerHealthController>();
-        mController = playerShip.GetComponent<MovementController>();
-		wController = playerShip.GetComponent<WeaponController>();
+        if(!inMainMenu)
+        {
+            pController = playerShip.GetComponent<PlayerController>();
+            hController = playerShip.GetComponent<PlayerHealthController>();
+            mController = playerShip.GetComponent<MovementController>();
+            wController = playerShip.GetComponent<WeaponController>();
+        }
         fileLocation = Application.persistentDataPath + "/controls.json";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!optionsMenu.isOpen && !optionsMenu.SubmenuIsOpen() && !hController.IsDead())
+        if(!inMainMenu)
         {
-            HandleMovementControls();
-			HandleWeaponControls();
+            if (!optionsMenu.isOpen && !optionsMenu.SubmenuIsOpen() && !hController.IsDead())
+            {
+                HandleMovementControls();
+                HandleWeaponControls();
 
-			if (!PauseMenuScript.IsPaused)
-			{
-				// Suicide button.
-				if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
-					hController.Kill();
-			}
-			HandleUIControls();
+                if (!PauseMenuScript.IsPaused)
+                {
+                    // Suicide button.
+                    if (Input.GetKeyDown(controls.suicide) && !pController.itemTransferConfirmWindow.activeInHierarchy)
+                        hController.Kill();
+                }
+                HandleUIControls();
 
-			// Handle pause menu.
-			if(!pController.inventory.itemTransferPanel.activeInHierarchy)
-			{
-				if (Input.GetKeyDown(controls.pause))
-				{
-					pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
-				}
-			}
+                // Handle pause menu.
+                if (!pController.inventory.itemTransferPanel.activeInHierarchy)
+                {
+                    if (Input.GetKeyDown(controls.pause))
+                    {
+                        pController.pauseMenu.PauseGame(!PauseMenuScript.IsPaused);
+                    }
+                }
 
-            HandleAbilityControls();
-		}
-        else
-        {
-			pController.StopAllMovement();
-        }
+                HandleAbilityControls();
+            }
+            else
+            {
+                pController.StopAllMovement();
+            }
+        }   
     }
 
     /// <summary>
@@ -208,7 +215,7 @@ public class InputManager : MonoBehaviour
             }
             else if (wController.currentComponent is AutomaticWeapon)
             {
-                if (Input.GetKey(current.controls.fire) && !wController.menuOpen && wController.currentComponent != null)
+                if (Input.GetKey(controls.fire) && !wController.menuOpen && wController.currentComponent != null)
                 {
                     (wController.currentComponent as AutomaticWeapon).CheckFire();
                 }

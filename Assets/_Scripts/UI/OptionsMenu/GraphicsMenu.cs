@@ -29,10 +29,11 @@ public class GraphicsMenu : MonoBehaviour
     public OptionsMenu optionsMenu;
     public GameObject confirmationWindow;
     public Button applyButton;
+    public bool inMainMenu = false;
 
     private bool isOpen;
     private bool isConfirmationOpen;
-
+    private static GraphicsData data;
     private AudioSource audioSource;
 
     // These are the selections that are stored in the file.
@@ -69,7 +70,7 @@ public class GraphicsMenu : MonoBehaviour
     private bool changedVsync = false;
 	private bool changedDamageNumbers = false;
 
-    private void Start()
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         if (vsyncToggle.isOn)
@@ -77,7 +78,6 @@ public class GraphicsMenu : MonoBehaviour
 
 
         fileLocation = Application.persistentDataPath + "/graphics.json";
-        LoadFromFile();
         confirmationWindow.transform.position = Vector2.zero;
         HideConfirmation();
         Cursor.lockState = CursorLockMode.Confined;
@@ -85,7 +85,7 @@ public class GraphicsMenu : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!Input.GetMouseButton(0) && Input.GetKeyDown(InputManager.current.controls.pause) && isOpen)
+        if (!Input.GetMouseButton(0) && Input.GetKeyDown(InputManager.controls.pause) && isOpen)
         {
             if(ChangesMade())
             {
@@ -385,21 +385,28 @@ public class GraphicsMenu : MonoBehaviour
             Time.fixedDeltaTime = 1.0f / refreshRates[selectedRefreshRate];
         }
 
-		if (changedItemCount || firstLoad)
-			ItemPool.current.SetPoolSize(itemCount);
-		if (changedEffectCount || firstLoad)
-			ParticlePool.current.SetPoolSize(effectCount);
-
-		// Perhaps we include sliders for these pools?
-		ProjectilePool.current.SetPoolSize(100);
-		if (DamageNumbersEnabled())
-			PopUpTextPool.current.SetPoolSize(50);
-		else
-			PopUpTextPool.current.SetPoolSize(0);
-		CurrencyPool.current.SetPoolSize(25);
-
+        UpdateObjectPools();
         firstLoad = false;
 		ToggleChangeFlags(false);
+    }
+
+    /// <summary>
+    /// Update the sizes of all the item pools.
+    /// </summary>
+    public void UpdateObjectPools()
+    {
+        if (!inMainMenu)
+        {
+            ItemPool.current.SetPoolSize(itemCount);
+            ParticlePool.current.SetPoolSize(effectCount);
+            // Perhaps we include sliders for these pools?
+            ProjectilePool.current.SetPoolSize(100);
+            if (DamageNumbersEnabled())
+                PopUpTextPool.current.SetPoolSize(50);
+            else
+                PopUpTextPool.current.SetPoolSize(0);
+            CurrencyPool.current.SetPoolSize(25);
+        }
     }
 
     /// <summary>
@@ -415,11 +422,10 @@ public class GraphicsMenu : MonoBehaviour
     /// Reset the graphics settings to their default values.
     /// </summary>
     /// <returns></returns>
-    public GraphicsData ResetToDefault()
+    public void ResetToDefault()
     {
-		var data = new GraphicsData();
-        SaveToFile(data);
-        return data;
+		data = new GraphicsData();
+        SaveToFile();
     }
 
 	/// <summary>
@@ -428,7 +434,7 @@ public class GraphicsMenu : MonoBehaviour
 	/// </summary>
 	public void SaveToFile()
 	{
-		var data = new GraphicsData()
+		data = new GraphicsData()
 		{
 			aspectRatio = selectedAspectRatio,
 			resolution = selectedResolution,
@@ -439,7 +445,27 @@ public class GraphicsMenu : MonoBehaviour
 			damageNumbers = damageNumbersEnabled
 		};
 
-		SaveToFile(data);
+        var json = JsonUtility.ToJson(data);
+		try
+		{
+			using (FileStream stream = File.Create(fileLocation))
+			{
+				using (StreamWriter writer = new StreamWriter(stream))
+				{
+					writer.WriteLine(json);
+				}
+			}
+		}
+		catch (Exception)
+		{
+			Debug.Log("Failed to save graphics file " + fileLocation + ", reverting to previously saved values.");
+			LoadFromFile();
+		}
+		finally
+		{
+			UpdateSettings();
+			ApplyChanges();
+		}
 	}
 
     /// <summary>
@@ -447,7 +473,6 @@ public class GraphicsMenu : MonoBehaviour
     /// </summary>
     public void LoadFromFile()
     {
-        GraphicsData data = null;
         try
         {
             if (File.Exists(fileLocation))
@@ -463,18 +488,18 @@ public class GraphicsMenu : MonoBehaviour
             }
             else
             {
-                data = ResetToDefault();
-                SaveToFile(data);
+                ResetToDefault();
+                SaveToFile();
             }
         }
         catch (Exception)
         {
             Debug.Log("Failed to load graphics file " + fileLocation + ", using default values instead.");
-            data = ResetToDefault();
+            ResetToDefault();
         }
         finally
         {
-            UpdateSettings(data);
+            UpdateSettings();
             ApplyChanges();
         }
     }
@@ -539,42 +564,17 @@ public class GraphicsMenu : MonoBehaviour
 			PlayClickSound();
 	}
 
-	/// <summary>
-	/// Saves the data to file.
-	/// </summary>
-	private void SaveToFile(GraphicsData data)
-	{
-		var json = JsonUtility.ToJson(data);
-		try
-		{
-			using (FileStream stream = File.Create(fileLocation))
-			{
-				using (StreamWriter writer = new StreamWriter(stream))
-				{
-					writer.WriteLine(json);
-				}
-			}
-		}
-		catch (Exception)
-		{
-			Debug.Log("Failed to save graphics file " + fileLocation + ", reverting to previously saved values.");
-			LoadFromFile();
-		}
-		finally
-		{
-			UpdateSettings(data);
-			ApplyChanges();
-		}
-	}
-
-	/// <summary>
-	/// Updates the settings based on the incoming data. This doesn't apply the changes, but updates the UI.
-	/// </summary>
-	/// <param name="data"></param>
-	private void UpdateSettings(GraphicsData data)
+    /// <summary>
+    /// Updates the settings based on the incoming data. This doesn't apply the changes, but updates the UI.
+    /// </summary>
+    /// <param name="data"></param>
+    public void UpdateSettings()
     {
+        if (data == null)
+            return;
+
         vsyncEnabled = data.vsync;
-		damageNumbersEnabled = data.damageNumbers;
+        damageNumbersEnabled = data.damageNumbers;
         selectedAspectRatio = data.aspectRatio;
         selectedResolution = data.resolution;
         selectedRefreshRate = data.framerate;
@@ -587,7 +587,7 @@ public class GraphicsMenu : MonoBehaviour
         previousItemCount = itemCount;
         previousEffectCount = effectCount;
         previousVsync = vsyncEnabled;
-		previousDamageNumbers = damageNumbersEnabled;
+        previousDamageNumbers = damageNumbersEnabled;
 
         UpdateAspectRatioDropdown();
 
@@ -596,7 +596,7 @@ public class GraphicsMenu : MonoBehaviour
         effectCountSlider.value = effectCount;
         effectCountText.text = effectCount.ToString();
         vsyncToggle.isOn = vsyncEnabled;
-		damageNumbers.isOn = damageNumbersEnabled;
+        damageNumbers.isOn = damageNumbersEnabled;
     }
 
 	/// <summary>
