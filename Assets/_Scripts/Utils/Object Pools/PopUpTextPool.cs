@@ -18,6 +18,7 @@ public class PopUpTextPool : BasePool
     /// </summary>
     void Awake()
     {
+        popUpPool = new List<PopUpText>();
 		if(current == null)
 			current = this;
     }

@@ -29,6 +29,8 @@ public abstract class Lootable : MonoBehaviour
                 if (loot.chance >= percentage)
                 {
                     Item pooledItem = ItemPool.current.GetPooledObject() as Item;
+                    if (pooledItem == null)
+                        return;
                     pooledItem.Initialize(transform.position, other:loot.item);
                     int angle = Random.Range(0, 360);
                     float randomSpeed = Random.Range(0.05f, 0.25f);

@@ -14,6 +14,7 @@ public class CurrencyPool : BasePool
 
 	private void Awake()
 	{
+        currencyPool = new List<Currency>();
 		if (current == null)
 			current = this;
 	}

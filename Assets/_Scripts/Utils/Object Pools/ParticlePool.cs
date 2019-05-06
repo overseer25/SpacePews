@@ -20,6 +20,7 @@ public class ParticlePool : BasePool
 
     private void Awake()
     {
+        particlePool = new List<ParticleEffect>();
         current = this;
     }
 

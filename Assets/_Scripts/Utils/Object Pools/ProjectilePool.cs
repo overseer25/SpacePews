@@ -14,6 +14,7 @@ public class ProjectilePool : BasePool
 
     private void Awake()
     {
+        projectilePool = new List<Projectile>();
         if (current == null)
             current = this;
     }

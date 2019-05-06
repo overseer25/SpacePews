@@ -17,6 +17,7 @@ public class ItemPool : BasePool
 
     private void Awake()
     {
+        itemPool = new List<Item>();
 		if(current == null)
 			current = this;    
     }

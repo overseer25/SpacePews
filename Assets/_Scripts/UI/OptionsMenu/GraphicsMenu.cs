@@ -78,7 +78,7 @@ public class GraphicsMenu : MonoBehaviour
 
 
         fileLocation = Application.persistentDataPath + "/graphics.json";
-        confirmationWindow.transform.position = Vector2.zero;
+        confirmationWindow.transform.position = new Vector3(0, 0, confirmationWindow.transform.position.z);
         HideConfirmation();
         Cursor.lockState = CursorLockMode.Confined;
     }
