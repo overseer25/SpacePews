@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159604069221603806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.052, z: 0}
+  m_LocalPosition: {x: 0, y: 0.044, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 252475637435270597}
@@ -69,12 +69,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 30274fd3c507b744da7a967442a42893, type: 3}
+  m_Sprite: {fileID: -1778291288110906734, guid: 30274fd3c507b744da7a967442a42893,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.4, y: 0.41}
+  m_Size: {x: 0.3, y: 0.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -244,7 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleAnimation: {fileID: 0}
-  itemSprite: {fileID: 21300000, guid: 30274fd3c507b744da7a967442a42893, type: 3}
+  itemSprite: {fileID: -1778291288110906734, guid: 30274fd3c507b744da7a967442a42893,
+    type: 3}
   hoverText: {fileID: 0}
   itemType: 1
   itemTier: 1
@@ -269,9 +271,9 @@ MonoBehaviour:
   chargedAnimationLoop: {fileID: 11400000, guid: 755c36ba49a20074f996e55f0eff2365,
     type: 2}
   cooldownAnimation: {fileID: 11400000, guid: 61c190be3c70a894e875a4e05871ddb4, type: 2}
-  chargeSound: {fileID: 8300000, guid: b5c5f2b95d946e447b3bd606a338788a, type: 3}
+  chargeSound: {fileID: 8300000, guid: 292e567ebfd6f7d4baa7d9cd7904740e, type: 3}
   chargedSound: {fileID: 8300000, guid: 8820d18bec89205458e05821446e7b88, type: 3}
-  timeToCooldown: 1
+  timeToCooldown: 0.5
   timeToDecharge: 0.5
 --- !u!82 &194701115731323963
 AudioSource:

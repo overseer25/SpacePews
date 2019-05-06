@@ -1,13 +1,30 @@
 fileFormatVersion: 2
-guid: 80b6d0d5789ab384981c7ae86252b7d3
+guid: d26697d879b25af42897bc90bafc8469
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: OmegaCannon_ChargedAnim_0
-    21300002: OmegaCannon_ChargedAnim_1
-    21300004: OmegaCannon_ChargedAnim_2
-    21300006: OmegaCannon_ChargedAnim_3
+  internalIDToNameTable:
+  - first:
+      213: 4643853807017545256
+    second: OmegaCannon_Fire_0
+  - first:
+      213: 8389027302746599667
+    second: OmegaCannon_Fire_1
+  - first:
+      213: 1701326637129113433
+    second: OmegaCannon_Fire_2
+  - first:
+      213: 6785294570148838903
+    second: OmegaCannon_Fire_3
+  - first:
+      213: -2084404112010629054
+    second: OmegaCannon_Fire_4
+  - first:
+      213: 6531368745554722012
+    second: OmegaCannon_Fire_5
+  - first:
+      213: -8201518927521460397
+    second: OmegaCannon_Fire_6
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -88,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnim_0
+      name: OmegaCannon_Fire_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 67
-        width: 58
-        height: 58
+        x: 1
+        y: 65
+        width: 30
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -102,19 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e46cb15c3150fff45bcd36eaa37e848d
+      spriteID: 50218fb0e512b744cae156e2e1821d36
+      internalID: 4643853807017545256
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnim_1
+      name: OmegaCannon_Fire_1
       rect:
         serializedVersion: 2
-        x: 67
-        y: 67
-        width: 58
-        height: 58
+        x: 33
+        y: 65
+        width: 30
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -122,19 +140,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34a6bd690e3fe6d4c86be207fda09d8c
+      spriteID: 02609cbcf9ccb58498c0042ae7d65bbf
+      internalID: 8389027302746599667
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnim_2
+      name: OmegaCannon_Fire_2
       rect:
         serializedVersion: 2
-        x: 3
-        y: 3
-        width: 58
-        height: 58
+        x: 65
+        y: 65
+        width: 30
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,19 +161,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5830fae0900a13c49bc12a3ac8ebe685
+      spriteID: 924a46d9353203d46a36ea1b1f2ef5e3
+      internalID: 1701326637129113433
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_ChargedAnim_3
+      name: OmegaCannon_Fire_3
       rect:
         serializedVersion: 2
-        x: 67
-        y: 3
-        width: 58
-        height: 58
+        x: 1
+        y: 33
+        width: 30
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,7 +182,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce4cc7251a72c804aa5d66cde78b5dbd
+      spriteID: 4bdda1239ac38f44e96205f26f51cb84
+      internalID: 6785294570148838903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_Fire_4
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 33
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c76aeb1cfa6f2a4469d52a529ac53f2f
+      internalID: -2084404112010629054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_Fire_5
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 33
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eec88959f0fecf941a07ad54b7649a81
+      internalID: 6531368745554722012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OmegaCannon_Fire_6
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19b33f7d82493e34592840fd9e1b8edc
+      internalID: -8201518927521460397
       vertices: []
       indices: 
       edges: []
@@ -170,11 +254,13 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 4c35f7fa3b02c934fb4d5a4bca19c584
+    spriteID: d8e89e4f0d24ecc4aba54c1c667ff167
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

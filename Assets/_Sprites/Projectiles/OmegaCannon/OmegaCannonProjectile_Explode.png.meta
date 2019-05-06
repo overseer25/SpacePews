@@ -1,20 +1,27 @@
 fileFormatVersion: 2
-guid: f9bfb161cbf9a6549b713ca7e64f54c5
+guid: 12935f0eb49366a498c8348804521ffc
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: OmegaCannon_CooldownAnim_0
-    21300002: OmegaCannon_CooldownAnim_1
-    21300004: OmegaCannon_CooldownAnim_2
-    21300006: OmegaCannon_CooldownAnim_3
-    21300008: OmegaCannon_CooldownAnim_4
-    21300010: OmegaCannon_CooldownAnim_5
-    21300012: OmegaCannon_CooldownAnim_6
-    21300014: OmegaCannon_CooldownAnim_7
-    21300016: OmegaCannon_CooldownAnim_8
-    21300018: OmegaCannon_CooldownAnim_9
-    21300020: OmegaCannon_CooldownAnim_10
+  internalIDToNameTable:
+  - first:
+      213: -6828214317963115859
+    second: OmegaCannonProjectile_Explode_0
+  - first:
+      213: -2288852354630267707
+    second: OmegaCannonProjectile_Explode_1
+  - first:
+      213: -647337675627987879
+    second: OmegaCannonProjectile_Explode_2
+  - first:
+      213: 388565121238496934
+    second: OmegaCannonProjectile_Explode_3
+  - first:
+      213: 1906333975401955747
+    second: OmegaCannonProjectile_Explode_4
+  - first:
+      213: -5988863532509727204
+    second: OmegaCannonProjectile_Explode_5
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -95,13 +102,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_0
+      name: OmegaCannonProjectile_Explode_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 131
-        width: 58
-        height: 58
+        x: 1
+        y: 65
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -109,19 +116,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1a901c3c16a5034baa1b0052ba03861
+      spriteID: e21adfa47dc60a646b63115df78b2699
+      internalID: -6828214317963115859
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_1
+      name: OmegaCannonProjectile_Explode_1
       rect:
         serializedVersion: 2
-        x: 67
-        y: 131
-        width: 58
-        height: 58
+        x: 65
+        y: 65
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,19 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aea04778d6e8b09408242146f3ab1f3a
+      spriteID: ef13bf3ba340daa418448135e365d785
+      internalID: -2288852354630267707
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_2
+      name: OmegaCannonProjectile_Explode_2
       rect:
         serializedVersion: 2
-        x: 131
-        y: 131
-        width: 58
-        height: 58
+        x: 129
+        y: 65
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,19 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 481e0ac51a3690049949a464f0a6f027
+      spriteID: f03ed03753b15674ca2866ed80182753
+      internalID: -647337675627987879
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_3
+      name: OmegaCannonProjectile_Explode_3
       rect:
         serializedVersion: 2
-        x: 195
-        y: 131
-        width: 58
-        height: 58
+        x: 1
+        y: 1
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,19 +179,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39db039f0e89589488e165f3ae6a2e05
+      spriteID: 160c0979b3123144287765c6d3680c16
+      internalID: 388565121238496934
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_4
+      name: OmegaCannonProjectile_Explode_4
       rect:
         serializedVersion: 2
-        x: 3
-        y: 67
-        width: 58
-        height: 58
+        x: 65
+        y: 1
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,19 +200,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89423430eb926a24faac87b114ae49db
+      spriteID: 10841bd423cc69e48b0be1cc22d13530
+      internalID: 1906333975401955747
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_5
+      name: OmegaCannonProjectile_Explode_5
       rect:
         serializedVersion: 2
-        x: 67
-        y: 67
-        width: 58
-        height: 58
+        x: 129
+        y: 1
+        width: 62
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -209,107 +221,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 154aa3a94d0eaad4b880bfed320f5bcc
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_6
-      rect:
-        serializedVersion: 2
-        x: 131
-        y: 67
-        width: 58
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 44a752fb61dd7454b92617f463a4dff7
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_7
-      rect:
-        serializedVersion: 2
-        x: 195
-        y: 67
-        width: 58
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e354dab525e6b694eab93b477d2f32dd
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_8
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 3
-        width: 58
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1453ee22270f49548b42e44677037da9
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_9
-      rect:
-        serializedVersion: 2
-        x: 67
-        y: 3
-        width: 58
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9efe47cf436f1b747acafa27250f66ba
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: OmegaCannon_CooldownAnim_10
-      rect:
-        serializedVersion: 2
-        x: 131
-        y: 3
-        width: 58
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05eefa7bb3fc8c74f955d19d7014aed9
+      spriteID: 46da232840b23664daacd1febead6986
+      internalID: -5988863532509727204
       vertices: []
       indices: 
       edges: []
@@ -317,11 +230,13 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: a3e47290f72c71343b3ed3922f977479
+    spriteID: 96a35121c1c66174bb263d79eb47d88b
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

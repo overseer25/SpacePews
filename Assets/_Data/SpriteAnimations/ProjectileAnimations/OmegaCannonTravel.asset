@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: OmegaCannonTravel
   m_EditorClassIdentifier: 
   frames:
-  - {fileID: 21300000, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
-  - {fileID: 21300002, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
-  - {fileID: 21300004, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
-  - {fileID: 21300006, guid: 0c5a09655e88b014fa3a2b83184618fc, type: 3}
+  - {fileID: -939543942888134366, guid: 4e1713bed542882408d02f5b31626785, type: 3}
+  - {fileID: -265830267517432322, guid: 4e1713bed542882408d02f5b31626785, type: 3}
+  - {fileID: -2426514461243389913, guid: 4e1713bed542882408d02f5b31626785, type: 3}
+  - {fileID: -3717084505460080775, guid: 4e1713bed542882408d02f5b31626785, type: 3}
   playSpeed: 0.1
   reversePlaySpeed: 0
   looping: 1

@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: OmegaCannonCharged
   m_EditorClassIdentifier: 
   frames:
-  - {fileID: 21300000, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
-  - {fileID: 21300002, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
-  - {fileID: 21300004, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
-  - {fileID: 21300006, guid: 80b6d0d5789ab384981c7ae86252b7d3, type: 3}
+  - {fileID: -1659197512414884045, guid: d26c31100c8d47344abeaf7b0fa21fe8, type: 3}
+  - {fileID: 4741454425590953749, guid: d26c31100c8d47344abeaf7b0fa21fe8, type: 3}
+  - {fileID: -5930292990607364595, guid: d26c31100c8d47344abeaf7b0fa21fe8, type: 3}
   playSpeed: 0.1
   reversePlaySpeed: 0.1
   looping: 1

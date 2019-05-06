@@ -4,15 +4,31 @@ using UnityEngine;
 [CustomEditor(typeof(ChargedWeapon))]
 public class ChargedWeaponEditor : BaseWeaponEditor
 {
+    private double changeSprite = 0;
+    private int index = 0;
+    private int chargeIndex = 0;
+    private int collisionIndex = 0;
+    private int loopChargedAnim = 0;
+    private bool startAnimation = false;
+    private bool playChargedAnimation = false;
+    private bool playChargeAnimation = true;
+    private bool playFireAnimation = false;
+    private double animationStartTime;
 
     public override void OnInspectorGUI()
     {
 		string tooltip;
         var chargedWeapon = serializedObject.targetObject as ChargedWeapon;
         EditorGUILayout.Space();
+        if (!startAnimation)
+        {
+            animationStartTime = EditorApplication.timeSinceStartup;
+            EditorApplication.update += Animate;
+            startAnimation = true;
+        }
 
-		// ----- PROPERTIES SECTION ----- //
-		DisplayItemProperties(false);
+        // ----- PROPERTIES SECTION ----- //
+        DisplayItemProperties(false);
 		chargedWeapon.itemType = ItemType.Turret;
 		chargedWeapon.visible = true;
 
@@ -71,6 +87,117 @@ public class ChargedWeaponEditor : BaseWeaponEditor
         serializedObject.ApplyModifiedProperties();
         EditorGUILayout.EndHorizontal();
 
+    }
+
+    /// <summary>
+	/// Plays the fire animation (if it exists), then plays the travel animation 3 times, then plays the collision effect.
+	/// If the fire and collision animations don't exist, then the travel animation just loops.
+	/// </summary>
+	private void Animate()
+    {
+        var weapon = serializedObject.targetObject as ChargedWeapon;
+        if (weapon == null)
+            return;
+        var rend = weapon.GetComponentInChildren<SpriteRenderer>();
+        if (playChargeAnimation)
+        {
+            if (weapon.chargingAnimation != null)
+            {
+                if (EditorApplication.timeSinceStartup > changeSprite + animationStartTime)
+                {
+                    rend.sprite = weapon.chargingAnimation.GetFrame(chargeIndex);
+                    chargeIndex++;
+                    if (chargeIndex == weapon.chargingAnimation.frames.Length)
+                    {
+                        chargeIndex = 0;
+                        playChargeAnimation = false;
+                        playChargedAnimation = true;
+                    }
+                    else
+                        changeSprite += weapon.chargeSound.length / weapon.chargingAnimation.frames.Length;
+                }
+            }
+            else
+            {
+                playChargeAnimation = false;
+                playChargedAnimation = true;
+            }
+        }
+        else if (playChargedAnimation)
+        {
+            if (weapon.chargedAnimationLoop != null)
+            {
+                if (EditorApplication.timeSinceStartup > changeSprite + animationStartTime)
+                {
+                    rend.sprite = weapon.chargedAnimationLoop.GetFrame(index);
+                    index++;
+                    if (index == weapon.chargedAnimationLoop.frames.Length)
+                    {
+                        index = 0;
+                        if (loopChargedAnim == 3)
+                        {
+                            loopChargedAnim = 0;
+                            playChargedAnimation = false;
+                            playFireAnimation = true;
+                        }
+                        else
+                            loopChargedAnim++;
+                    }
+                    else
+                        changeSprite += weapon.chargedAnimationLoop.playSpeed;
+                }
+            }
+            else if (!weapon.animated && weapon.itemSprite != null)
+            {
+                rend.sprite = weapon.itemSprite;
+                if (EditorApplication.timeSinceStartup > changeSprite + 2.0f + animationStartTime)
+                {
+                    playChargedAnimation = false;
+                    playFireAnimation = true;
+                    changeSprite += 2.0f;
+                }
+            }
+            else
+            {
+                playChargedAnimation = false;
+                playFireAnimation = true;
+            }
+        }
+        else if (playFireAnimation)
+        {
+            if (weapon.cooldownAnimation != null)
+            {
+                if (EditorApplication.timeSinceStartup > changeSprite + animationStartTime)
+                {
+                    rend.sprite = weapon.cooldownAnimation.GetFrame(collisionIndex);
+                    collisionIndex++;
+                    if (collisionIndex == weapon.cooldownAnimation.frames.Length)
+                    {
+                        collisionIndex = 0;
+                        playFireAnimation = false;
+                    }
+                    else
+                        changeSprite += weapon.timeToCooldown / weapon.cooldownAnimation.frames.Length;
+                }
+            }
+            else
+                playFireAnimation = false;
+
+        }
+        else
+        {
+            playChargeAnimation = true;
+
+        }
+    }
+
+    void OnDisable()
+    {
+        if (startAnimation)
+        {
+            startAnimation = false;
+            EditorApplication.update -= Animate;
+        }
     }
 
 }

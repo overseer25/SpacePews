@@ -235,9 +235,6 @@ public class ChargedWeapon : WeaponComponentBase
 		if (!audioSource.isPlaying)
 		{
 			audioSource.PlayOneShot(chargeSound);
-			audioSource.clip = chargedSound;
-			audioSource.loop = true;
-			audioSource.PlayDelayed(chargeSound.length);
 		}
 	}
 

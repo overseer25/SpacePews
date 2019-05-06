@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2355d88ea6ee49b4488ce0d6ba31f11c, type: 3}
+  m_Name: OmegaCannonFire
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: 4643853807017545256, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  - {fileID: 8389027302746599667, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  - {fileID: 1701326637129113433, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  - {fileID: 6785294570148838903, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  - {fileID: -2084404112010629054, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  - {fileID: 6531368745554722012, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  - {fileID: -8201518927521460397, guid: d26697d879b25af42897bc90bafc8469, type: 3}
+  playSpeed: 0
+  reversePlaySpeed: 0
+  looping: 0
