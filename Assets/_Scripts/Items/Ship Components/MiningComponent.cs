@@ -59,18 +59,6 @@ public class MiningComponent : ShipComponentBase
         {
             switch (hit.collider.tag)
             {
-                case "Enemy":
-                case "Immovable":
-                case "Shop":
-                case "Asteroid":
-                    UpdateLinePosition(lineSpawner.transform.up * Vector3.Distance(lineSpawner.transform.position, hit.point));
-                    if (Time.time > timePassed)
-                    {
-                        timePassed = Time.time + contactSpriteFrequency;
-                        ShowContactSprite(hit.point, lineSpawner.transform.rotation);
-                    }
-                    PlayContactAudio();
-                    break;
                 case "Mineable": // This should only do something special for mining lasers
 
                     UpdateLinePosition(lineSpawner.transform.up * Vector3.Distance(lineSpawner.transform.position, hit.point));
@@ -97,9 +85,13 @@ public class MiningComponent : ShipComponentBase
                     }
                     break;
                 default:
-                    UpdateLinePosition(lineSpawner.transform.up * laserLength);
-                    // Stop contact sound
-                    StopContactAudio();
+                    UpdateLinePosition(lineSpawner.transform.up * Vector3.Distance(lineSpawner.transform.position, hit.point));
+                    if (Time.time > timePassed)
+                    {
+                        timePassed = Time.time + contactSpriteFrequency;
+                        ShowContactSprite(hit.point, lineSpawner.transform.rotation);
+                    }
+                    PlayContactAudio();
                     break;
             }
 

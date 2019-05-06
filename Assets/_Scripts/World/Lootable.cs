@@ -14,6 +14,32 @@ public abstract class Lootable : MonoBehaviour
     public int minResourceCount;
 
     /// <summary>
+    /// Use this for a <see cref="DynamicParticle"/> effect.
+    /// </summary>
+    public DynamicParticle destroyParticleDynamic;
+    /// <summary>
+    /// Use this for a <see cref="ParticleEffect"/> effect.
+    /// </summary>
+    public ParticleEffect destroyParticle;
+
+    /// <summary>
+    /// Play the destroy effect(s). Can play both if they are each not null.
+    /// </summary>
+    protected void PlayDestroyEffect()
+    {
+        if (destroyParticle != null)
+        {
+            ParticleManager.PlayParticle(destroyParticle, transform.position);
+        }
+
+        if (destroyParticleDynamic != null)
+        {
+            var effect = Instantiate(destroyParticleDynamic, transform.position, destroyParticleDynamic.transform.rotation);
+            effect.Play();
+        }
+    }
+
+    /// <summary>
     /// Spawns loot at the lootable object's location.
     /// </summary>
     public void SpawnLoot()

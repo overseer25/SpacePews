@@ -17,14 +17,6 @@ public class HarvestableObject : Lootable
     /// </summary>
     public float resetSpeed;
     /// <summary>
-    /// Use this for a <see cref="DynamicParticle"/> effect.
-    /// </summary>
-    public DynamicParticle destroyParticleDynamic;
-    /// <summary>
-    /// Use this for a <see cref="ParticleEffect"/> effect.
-    /// </summary>
-    public ParticleEffect destroyParticle;
-    /// <summary>
     /// Particle that plays when player is mining this object.
     /// </summary>
     public DynamicParticle miningParticle;
@@ -77,23 +69,6 @@ public class HarvestableObject : Lootable
             StopCoroutine(mining);
             mining = null;
             reset = StartCoroutine(ResetToInitialState());
-        }
-    }
-
-    /// <summary>
-    /// Play the destroy effect(s). Can play both if they are each not null.
-    /// </summary>
-    private void PlayDestroyEffect()
-    {
-        if(destroyParticle != null)
-        {
-            ParticleManager.PlayParticle(destroyParticle, transform.position);
-        }
-
-        if(destroyParticleDynamic != null)
-        {
-            var effect = Instantiate(destroyParticleDynamic, transform.position, destroyParticleDynamic.transform.rotation);
-            effect.Play();
         }
     }
 

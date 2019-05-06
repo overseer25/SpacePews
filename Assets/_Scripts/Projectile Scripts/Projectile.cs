@@ -229,6 +229,15 @@ public class Projectile : MonoBehaviour
     }
 
     /// <summary>
+    /// Get the computed damage for the projectile.
+    /// </summary>
+    /// <returns></returns>
+    public int GetDamage()
+    {
+        return damage;
+    }
+
+    /// <summary>
     /// Copy data from one projectile to another.
     /// </summary>
     /// <param name="other"></param>
@@ -301,20 +310,6 @@ public class Projectile : MonoBehaviour
         {
             // Play collision particle effect.
             ParticleManager.PlayParticle(destroyEffect, gameObject.transform.position, gameObject.transform.rotation);
-
-            // Current damage is set on collisions with entities that can take damage.
-			if(OptionsMenu.current.graphicsMenu.DamageNumbersEnabled())
-			{
-				var popUptext = PopUpTextPool.current.GetPooledObject() as PopUpText;
-				if (popUptext == null)
-					return;
-
-				// Spawn popup text within a radius of 2 from the collision.
-				if (!isCritical)
-					popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.white, radius: 1.0f, playDefaultSound: false);
-				else
-					popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.yellow, radius: 1.0f, playDefaultSound: false);
-			}
         }
         StopCoroutine(PlayFireAnimation());
 		if(animate != null)
@@ -336,6 +331,23 @@ public class Projectile : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void DisplayDamageValue()
+    {
+        // Current damage is set on collisions with entities that can take damage.
+        if (OptionsMenu.current.graphicsMenu.DamageNumbersEnabled())
+        {
+            var popUptext = PopUpTextPool.current.GetPooledObject() as PopUpText;
+            if (popUptext == null)
+                return;
+
+            // Spawn popup text within a radius of 2 from the collision.
+            if (!isCritical)
+                popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.white, radius: 1.0f, playDefaultSound: false);
+            else
+                popUptext.Initialize(gameObject, damage.ToString(), 8f, Color.yellow, radius: 1.0f, playDefaultSound: false);
+        }
+    }
+
     /// <summary>
     /// Handles collisions.
     /// </summary>
@@ -353,10 +365,18 @@ public class Projectile : MonoBehaviour
                 collision.GetComponentInChildren<Ship>().health -= damage;
                 collided = true;
                 gameObject.SetActive(false);
+                DisplayDamageValue();
                 if (splitting && splitOnCollision)
                     Split();
                 break;
-            case "Asteroid":
+            case "Destroyable":
+                collided = true;
+                gameObject.SetActive(false);
+                DisplayDamageValue();
+                if (splitting && splitOnCollision)
+                    Split();
+                break;
+            case "Immovable":
             case "Mineable":
             case "Mine":
                 collided = true;
