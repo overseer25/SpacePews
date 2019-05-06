@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lootList:
   - item: {fileID: 6012211749274872227, guid: ed4f108cfe5aa0c49afb0c8b05959cdf, type: 3}
-    chance: 0.75
+    rangeMin: 0
+    rangeMax: 0.75
   - item: {fileID: 7635923636561022482, guid: 3e025d1ff76ba19478dfd638bdc0b58c, type: 3}
-    chance: 0.25
+    rangeMin: 0.75
+    rangeMax: 1

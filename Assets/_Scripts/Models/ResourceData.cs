@@ -11,5 +11,6 @@ using UnityEngine;
 public class ResourceData
 {
     public Item item;
-    public float chance;
+    public float rangeMin;
+    public float rangeMax;
 }

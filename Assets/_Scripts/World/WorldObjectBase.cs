@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// Abstract class that all scripts involving loot tables should inherit from. Provides functionality for spawning
-/// loot from a loot table.
+/// A World Object is an object whose state is maintained by a world chunk. A World Object can have an associated loot table.
 /// </summary>
-public abstract class Lootable : MonoBehaviour
+public abstract class WorldObjectBase : MonoBehaviour
 {
     public LootTable lootTable;
     public int maxResourceCount;
@@ -21,6 +19,22 @@ public abstract class Lootable : MonoBehaviour
     /// Use this for a <see cref="ParticleEffect"/> effect.
     /// </summary>
     public ParticleEffect destroyParticle;
+
+    /// <summary>
+    /// Enables the world object.
+    /// </summary>
+    public void Enable()
+    {
+        gameObject.SetActive(true);
+    }
+    
+    /// <summary>
+    /// Disables the world object.
+    /// </summary>
+    public void Disable()
+    {
+        gameObject.SetActive(false);
+    }
 
     /// <summary>
     /// Play the destroy effect(s). Can play both if they are each not null.
@@ -40,28 +54,28 @@ public abstract class Lootable : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns loot at the lootable object's location.
+    /// Spawns loot at the world object's location.
     /// </summary>
     public void SpawnLoot()
     {
         int amount = Random.Range(minResourceCount, maxResourceCount);
-        float percentage;
-
+        float chance;
         for (int i = 0; i < amount; i++)
         {
-            percentage = Random.Range(0f, 1f);
-            foreach (var loot in lootTable.lootList.OrderBy(e => e.chance))
+            chance = Random.Range(0f, 1f);
+            foreach (var loot in lootTable.lootList)
             {
-                if (loot.chance >= percentage)
+                if (chance >= loot.rangeMin && chance <= loot.rangeMax)
                 {
                     Item pooledItem = ItemPool.current.GetPooledObject() as Item;
                     if (pooledItem == null)
                         return;
-                    pooledItem.Initialize(transform.position, other:loot.item);
+                    pooledItem.Initialize(transform.position, other: loot.item);
                     int angle = Random.Range(0, 360);
                     float randomSpeed = Random.Range(0.05f, 0.25f);
                     Vector2 movementVector = ((Vector2)transform.up).Rotate(angle) * randomSpeed;
                     pooledItem.Activate(movementVector);
+                    break;
                 }
             }
         }

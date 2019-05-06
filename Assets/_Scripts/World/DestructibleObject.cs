@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// An object in the game world that can be shot and destroyed.
 /// </summary>
-public class DestructibleObject : Lootable
+public class DestructibleObject : WorldObjectBase
 {
     public int health;
     public SpriteRenderer healthBar;
@@ -18,6 +18,9 @@ public class DestructibleObject : Lootable
         UpdateHealthBar();
     }
 
+    /// <summary>
+    /// Update the size of the health bar.
+    /// </summary>
     private void UpdateHealthBar()
     {
         healthBar.size = new Vector2(health / 100f, healthBar.size.y);
@@ -26,6 +29,10 @@ public class DestructibleObject : Lootable
         hideHealthBar = StartCoroutine(HideHealthBar());
     }
 
+    /// <summary>
+    /// After 5 seconds, hide the health bar again.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator HideHealthBar()
     {
         yield return new WaitForSeconds(5.0f);
@@ -34,7 +41,7 @@ public class DestructibleObject : Lootable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        switch(collision.gameObject.tag)
+        switch (collision.gameObject.tag)
         {
             case "PlayerProjectile":
                 var projectile = collision.gameObject.GetComponent<Projectile>();

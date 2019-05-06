@@ -6,7 +6,7 @@ using UnityEngine;
 /// A script attached to a world object that allows that object to be mined for resources using mining equipment.
 /// The object can decide the 
 /// </summary>
-public class HarvestableObject : Lootable
+public class HarvestableObject : WorldObjectBase
 {
     /// <summary>
     /// Amount of time it takes to harvest.
@@ -123,5 +123,4 @@ public class HarvestableObject : Lootable
     {
         GetComponent<SpriteRenderer>().sprite = states[currentState];
     }
-
 }
