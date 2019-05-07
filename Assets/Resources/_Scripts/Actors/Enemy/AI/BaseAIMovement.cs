@@ -3,13 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base movement class for all AI. Contains basic methods that move the associated
+/// rigidbody of the AI Actor in simple motion using translate and rotate. Contains
+/// a speed variable that can be used when calling the methods to determine how 
+/// far the body should move or rotate.
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class BaseAIMovement : MonoBehaviour
 {
+    // DEBUG
     public UnityEngine.UI.Text heading;
+    // DEBUG
+    public UnityEngine.UI.Text currentSpeed;
     public float Speed { get; set; } = 0;
+    public float RotationSpeed { get; set; } = 0;
 
-    private Rigidbody rigidbody;
+    protected Rigidbody rigidbody;
 
     private void Start()
     {
@@ -147,8 +157,22 @@ public class BaseAIMovement : MonoBehaviour
         rigidbody.transform.Rotate(0, 0, Math.Abs(amount) * Time.deltaTime);
     }
 
-    private void Update()
+    /// <summary>
+    /// Function to determine which direction a body should rotate towards a target
+    /// vector. True for clockwise, false for counterclockwise.
+    /// </summary>
+    /// <param name="currentVec">The current heading of the body.</param>
+    /// <param name="targetVec">What vector point we are trying to look at.</param>
+    /// <returns>Returns false for clockwise rotation, true for counterclockwise. If the unsigned angle between the two vectors is 180, it will pick clockwise or counterclockwise arbitrarily.</returns>
+    public bool GetRotationDirection(Vector2 currentVec, Vector2 targetVec)
+    {
+        return Vector2.SignedAngle(currentVec, targetVec) < 0;
+    }
+
+    // DEBUG
+    protected virtual void Update()
     {
         heading.text = GetCurrentForwardDirection().ToString();
+        currentSpeed.text = Speed.ToString();
     }
 }
