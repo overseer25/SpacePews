@@ -31,7 +31,8 @@ public class DynamicParticle : MonoBehaviour
             return;
         }
         var clip = possibleSoundEffects[Random.Range(0, possibleSoundEffects.Length - 1)];
-        audioSource.PlayOneShot(clip);
+        if(clip != null)
+            audioSource.PlayOneShot(clip);
         emitter.Play();
 
         // If it is not a looping particle effect, destroy it after time.
