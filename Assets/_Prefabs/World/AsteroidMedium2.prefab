@@ -67,7 +67,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: b18bb1f0ff876854bbc3ddfd0d3b9df2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -130,7 +130,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 76af3a836e741864480b4534cc472750, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -177,12 +177,12 @@ MonoBehaviour:
   lootTable: {fileID: 11400000, guid: 9453ff106f6871c499450beb49cb9fb6, type: 2}
   maxResourceCount: 10
   minResourceCount: 3
-  timeToMine: 2
-  resetSpeed: 1
   destroyParticleDynamic: {fileID: 2739278614768844382, guid: 88e0491313ff205458e4afafa4c28572,
     type: 3}
   destroyParticle: {fileID: 638082576540085997, guid: 6b9393cf582a62344a7b4e2280e723d5,
     type: 3}
+  timeToMine: 2
+  resetSpeed: 1
   miningParticle: {fileID: 2801325702566297139, guid: cdac2d23576740241a62799a13571755,
     type: 3}
   states:
