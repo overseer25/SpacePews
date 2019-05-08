@@ -12,6 +12,8 @@ public class RammingAIMovement : BaseAIMovement
     // DEBUG
     public GameObject targetObj;
 
+    private Vector2 midwayTarget;
+
     /// <summary>
     /// A function to cause a body to rotate towards a target until
     /// fully pointing at the target, and move towards the target until
@@ -22,6 +24,7 @@ public class RammingAIMovement : BaseAIMovement
     /// <param name="rotationSpeed">How fast should the body rotate to point towards target.</param>
     public void FollowMove(Vector2 target, float speed = 1, float rotationSpeed = 1)
     {
+        target = GetAvoidancePoint(target, GetCurrentForwardDirection(), target);
         PointAtTarget(target, rotationSpeed);
         MoveTowardsTarget(target, speed);
     }
@@ -64,6 +67,7 @@ public class RammingAIMovement : BaseAIMovement
     /// <returns>Returns true if the heading is within the acceptable error angle.</returns>
     public bool PointAtTarget(Vector2 target, float rotationSpeed = 1)
     {
+        Debug.Log("Target recieved: " + target.ToString());
         Vector2 currentVec = GetCurrentForwardDirection();
         Vector2 targetDir = target - (Vector2)rigidbody.transform.position;
         if(Vector2.Angle(currentVec, targetDir) < AcceptableAngleMarginOfError)

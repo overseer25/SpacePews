@@ -9,21 +9,25 @@ using UnityEngine;
 /// a speed variable that can be used when calling the methods to determine how 
 /// far the body should move or rotate.
 /// </summary>
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 public class BaseAIMovement : MonoBehaviour
 {
     // DEBUG
     public UnityEngine.UI.Text heading;
     // DEBUG
     public UnityEngine.UI.Text currentSpeed;
-    public float Speed { get; set; } = 0;
-    public float RotationSpeed { get; set; } = 0;
+    public float Speed = 0;
+    public float RotationSpeed = 0;
+    public float AvoidanceDistance = 300f;
 
-    protected Rigidbody rigidbody;
+    protected Rigidbody2D rigidbody;
+    protected Collider2D collider;
 
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
     }
 
     /// <summary>
@@ -66,7 +70,6 @@ public class BaseAIMovement : MonoBehaviour
     public void MoveForward(float amount = 1)
     {
         amount = Math.Abs(amount);
-        Debug.DrawRay(rigidbody.transform.position, rigidbody.transform.up.normalized, Color.red, 2);
         rigidbody.transform.Translate(rigidbody.transform.up.normalized * amount * Time.deltaTime, Space.World);
     }
 
@@ -86,7 +89,6 @@ public class BaseAIMovement : MonoBehaviour
     public void MoveRight(float amount = 1)
     {
         amount = Math.Abs(amount);
-        Debug.DrawRay(rigidbody.transform.position, rigidbody.transform.right.normalized, Color.green, 2);
         rigidbody.transform.Translate(rigidbody.transform.right * amount * Time.deltaTime, Space.World);
     }
 
@@ -106,7 +108,6 @@ public class BaseAIMovement : MonoBehaviour
     public void MoveLeft(float amount = 1)
     {
         amount = Math.Abs(amount);
-        Debug.DrawRay(rigidbody.transform.position, -rigidbody.transform.right.normalized, Color.blue, 2);
         rigidbody.transform.Translate(-rigidbody.transform.right * amount * Time.deltaTime, Space.World);
     }
 
@@ -126,7 +127,6 @@ public class BaseAIMovement : MonoBehaviour
     public void MoveBackward(float amount = 1)
     {
         amount = Math.Abs(amount);
-        Debug.DrawRay(rigidbody.transform.position, -rigidbody.transform.up.normalized, Color.yellow, 2);
         rigidbody.transform.Translate(-rigidbody.transform.up * amount * Time.deltaTime, Space.World);
     }
 
@@ -167,6 +167,32 @@ public class BaseAIMovement : MonoBehaviour
     public bool GetRotationDirection(Vector2 currentVec, Vector2 targetVec)
     {
         return Vector2.SignedAngle(currentVec, targetVec) < 0;
+    }
+
+    public Vector2 GetAvoidancePoint(Vector2 target, Vector2 currentDir, Vector2 goal)
+    {
+        RaycastHit2D hit = Physics2D.BoxCast(rigidbody.transform.position, this.transform.localScale * 0.4f, Vector2.Angle(Vector2.up, rigidbody.transform.up.normalized), currentDir, AvoidanceDistance); // TODO: Add layer mask
+        if (hit.collider != null)
+        {
+            Debug.DrawLine(rigidbody.transform.position, hit.point, Color.red);
+            Vector2 leftTestPoint = Vector2.Perpendicular(currentDir) * 10 + hit.point;
+            Vector2 rightTestPoint = -Vector2.Perpendicular(currentDir) * 10 + hit.point;
+            Vector2 leftDir = leftTestPoint - (Vector2)rigidbody.transform.position;
+            Vector2 rightDir = rightTestPoint - (Vector2)rigidbody.transform.position;
+            leftDir = leftDir.normalized;
+            rightDir = rightDir.normalized;
+            Debug.DrawLine(rigidbody.transform.position, leftTestPoint, Color.blue);
+            Debug.DrawLine(rigidbody.transform.position, rightTestPoint, Color.green);
+            Debug.DrawRay(rigidbody.transform.position, leftDir, Color.cyan);
+            Debug.DrawRay(rigidbody.transform.position, rightDir, Color.yellow);
+            Vector2 leftAttempt = GetAvoidancePoint(leftTestPoint, leftDir, goal);
+            Vector2 rightAttempt = GetAvoidancePoint(rightTestPoint, rightDir, goal);
+            return Vector2.Distance(leftAttempt, goal) < Vector2.Distance(rightAttempt, goal) ? leftAttempt : rightAttempt;
+        }
+        else
+        {
+            return target;
+        }
     }
 
     // DEBUG
