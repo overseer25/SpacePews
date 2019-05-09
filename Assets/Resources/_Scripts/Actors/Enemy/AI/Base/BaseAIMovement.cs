@@ -169,14 +169,22 @@ public class BaseAIMovement : MonoBehaviour
         return Vector2.SignedAngle(currentVec, targetVec) < 0;
     }
 
-    public Vector2 GetAvoidancePoint(Vector2 target, Vector2 currentDir, Vector2 goal)
+    public Vector2 GetAvoidancePoint(Vector2 target, Vector2 currentDir, Vector2 goal, int branch=0)
     {
-        RaycastHit2D hit = Physics2D.BoxCast(rigidbody.transform.position, this.transform.localScale * 0.4f, Vector2.Angle(Vector2.up, rigidbody.transform.up.normalized), currentDir, AvoidanceDistance); // TODO: Add layer mask
+        if(branch > 5 || branch < -5)
+        {
+            Debug.LogError("CUTTING OUT EARLY FOR " + (branch > 0 ? "RIGHT" : "LEFT") + " SIDE.");
+            return target;
+        }
+        int layerValue = 1 << LayerMask.NameToLayer("Obstacle");
+        RaycastHit2D hit = Physics2D.BoxCast(rigidbody.transform.position, this.transform.localScale * 0.4f, Vector2.Angle(Vector2.up, currentDir), currentDir, AvoidanceDistance, layerValue); // TODO: Add layer mask
+        //while(hit.collider != null)
+        Debug.Log(branch);
         if (hit.collider != null)
         {
             Debug.DrawLine(rigidbody.transform.position, hit.point, Color.red);
-            Vector2 leftTestPoint = Vector2.Perpendicular(currentDir) * 10 + hit.point;
-            Vector2 rightTestPoint = -Vector2.Perpendicular(currentDir) * 10 + hit.point;
+            Vector2 leftTestPoint = Vector2.Perpendicular(currentDir) * 8 + hit.point;
+            Vector2 rightTestPoint = -Vector2.Perpendicular(currentDir) * 8 + hit.point;
             Vector2 leftDir = leftTestPoint - (Vector2)rigidbody.transform.position;
             Vector2 rightDir = rightTestPoint - (Vector2)rigidbody.transform.position;
             leftDir = leftDir.normalized;
@@ -185,9 +193,26 @@ public class BaseAIMovement : MonoBehaviour
             Debug.DrawLine(rigidbody.transform.position, rightTestPoint, Color.green);
             Debug.DrawRay(rigidbody.transform.position, leftDir, Color.cyan);
             Debug.DrawRay(rigidbody.transform.position, rightDir, Color.yellow);
-            Vector2 leftAttempt = GetAvoidancePoint(leftTestPoint, leftDir, goal);
-            Vector2 rightAttempt = GetAvoidancePoint(rightTestPoint, rightDir, goal);
-            return Vector2.Distance(leftAttempt, goal) < Vector2.Distance(rightAttempt, goal) ? leftAttempt : rightAttempt;
+            if(branch == 0) //both
+            {
+                Vector2 leftAttempt = GetAvoidancePoint(leftTestPoint, leftDir, goal, --branch);
+                Vector2 rightAttempt = GetAvoidancePoint(rightTestPoint, rightDir, goal, ++branch);
+                bool decision = Vector2.Distance(leftAttempt, goal) < Vector2.Distance(rightAttempt, goal);
+                Debug.Log("Decided to go " + (decision ? "left." : "right."));
+                return decision ? leftAttempt : rightAttempt;
+            }
+            else if(branch > 0) //right only
+            {
+                Vector2 rightAttempt = GetAvoidancePoint(rightTestPoint, rightDir, goal, ++branch);
+                Debug.Log("Branch depth: " + branch);
+                return rightAttempt;
+            }
+            else //left only
+            {
+                Vector2 leftAttempt = GetAvoidancePoint(leftTestPoint, leftDir, goal, --branch);
+                Debug.Log("Branch depth: " + branch);
+                return leftAttempt;
+            }
         }
         else
         {

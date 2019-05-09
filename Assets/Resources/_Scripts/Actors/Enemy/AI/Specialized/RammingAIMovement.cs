@@ -25,8 +25,15 @@ public class RammingAIMovement : BaseAIMovement
     public void FollowMove(Vector2 target, float speed = 1, float rotationSpeed = 1)
     {
         target = GetAvoidancePoint(target, GetCurrentForwardDirection(), target);
-        PointAtTarget(target, rotationSpeed);
-        MoveTowardsTarget(target, speed);
+        bool doneTurning = PointAtTarget(target, rotationSpeed);
+        if (doneTurning)
+        {
+            MoveTowardsTarget(target, speed);
+        }
+        else
+        {
+            MoveTowardsTarget(target, speed/3);
+        }
     }
 
     /// <summary>
@@ -67,7 +74,6 @@ public class RammingAIMovement : BaseAIMovement
     /// <returns>Returns true if the heading is within the acceptable error angle.</returns>
     public bool PointAtTarget(Vector2 target, float rotationSpeed = 1)
     {
-        Debug.Log("Target recieved: " + target.ToString());
         Vector2 currentVec = GetCurrentForwardDirection();
         Vector2 targetDir = target - (Vector2)rigidbody.transform.position;
         if(Vector2.Angle(currentVec, targetDir) < AcceptableAngleMarginOfError)
@@ -172,7 +178,7 @@ public class RammingAIMovement : BaseAIMovement
         base.Update();
         if (following)
         {
-            FollowMove(targetObj, Speed, 20);
+            FollowMove(targetObj, Speed, 60);
         }
     }
 }
