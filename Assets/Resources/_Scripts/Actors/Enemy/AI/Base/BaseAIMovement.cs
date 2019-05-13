@@ -24,7 +24,7 @@ public class BaseAIMovement : MonoBehaviour
     protected Rigidbody2D rigidbody;
     protected Collider2D collider;
 
-    private void Start()
+    private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();

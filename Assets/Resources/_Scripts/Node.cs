@@ -12,6 +12,9 @@ public class Node
 
     public bool isObstacle;
 
+    /// <summary>
+    /// The world position of this node.
+    /// </summary>
     public Vector2 position;
 
     public Node parent;

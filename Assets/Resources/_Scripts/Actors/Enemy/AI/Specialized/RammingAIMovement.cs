@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class RammingAIMovement : BaseAIMovement
 {
-    public float StoppingDistance { get; set; } = 3f;
-    public float AcceptableAngleMarginOfError { get; set; } = 1f;
+    public float StoppingDistance = 3f;
+    public float AcceptableAngleMarginOfError = 1f;
 
     // DEBUG
-    private bool following = false;
+    private static bool following = false;
     // DEBUG
     public GameObject targetObj;
 
-    private Vector2 midwayTarget;
+    private AStarPathfinding pathfinding;
+    private List<Node> path = null;
+
+    private void Start()
+    {
+        pathfinding = GetComponent<AStarPathfinding>();
+    }
 
     /// <summary>
     /// A function to cause a body to rotate towards a target until
@@ -24,7 +30,6 @@ public class RammingAIMovement : BaseAIMovement
     /// <param name="rotationSpeed">How fast should the body rotate to point towards target.</param>
     public void FollowMove(Vector2 target, float speed = 1, float rotationSpeed = 1)
     {
-        target = GetAvoidancePoint(target, GetCurrentForwardDirection(), target);
         bool doneTurning = PointAtTarget(target, rotationSpeed);
         if (doneTurning)
         {
@@ -32,7 +37,7 @@ public class RammingAIMovement : BaseAIMovement
         }
         else
         {
-            MoveTowardsTarget(target, speed/3);
+            MoveTowardsTarget(target, speed / 3);
         }
     }
 
@@ -173,12 +178,19 @@ public class RammingAIMovement : BaseAIMovement
         following = false;
     }
 
+    public List<Node> GetPath()
+    {
+        return path;
+    }
+
     protected override void Update()
     {
         base.Update();
-        if (following)
+        path = pathfinding.FindPath(rigidbody.transform.position, targetObj.transform.position);
+        if (following && path != null)
         {
-            FollowMove(targetObj, Speed, 60);
+            FollowMove(path[0].position, Speed, RotationSpeed);
         }
     }
+
 }

@@ -14,6 +14,7 @@ public class WorldGrid : MonoBehaviour
     public float nodeRadius;
     public float distance;
 
+    private GameObject[] objsToGetPath;
     public List<Node> finalPath;
 
     private Node[,] grid;
@@ -23,8 +24,19 @@ public class WorldGrid : MonoBehaviour
     private int gridSizeX;
     private int gridSizeY;
 
+    public static WorldGrid instance;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
+
     private void Start()
     {
+        objsToGetPath = GameObject.FindGameObjectsWithTag("Enemy");
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(worldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(worldSize.y / nodeDiameter);
@@ -47,6 +59,49 @@ public class WorldGrid : MonoBehaviour
         }
     }
 
+    public Node[,] GetWorldGrid()
+    {
+        return grid;
+    }
+
+    public Node NodeFromWorldPosition(Vector2 worldPos)
+    {
+        float xPoint = (worldPos.x + worldSize.x * 0.5f) / worldSize.x;
+        float yPoint = (worldPos.y + worldSize.y * 0.5f) / worldSize.y;
+
+        xPoint = Mathf.Clamp01(xPoint);
+        yPoint = Mathf.Clamp01(yPoint);
+
+        int x = Mathf.RoundToInt((gridSizeX - 1) * xPoint);
+        int y = Mathf.RoundToInt((gridSizeY - 1) * yPoint);
+
+        return grid[x, y];
+    }
+
+    public List<Node> GetNeighboringNodes(Node currentNode)
+    {
+        List<Node> neighboringNodes = new List<Node>(4);
+
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = -1; y < 2; y++)
+            {
+                if(x == 0 && y == 0)
+                {
+                    continue;
+                }
+                int neighborXSpot = currentNode.gridX + x;
+                int neighborYSpot = currentNode.gridY + y;
+                if (neighborXSpot >= 0 && neighborXSpot < gridSizeX && neighborYSpot >= 0 && neighborYSpot < gridSizeY)
+                {
+                    neighboringNodes.Add(grid[neighborXSpot, neighborYSpot]);
+                }
+            }
+        }
+
+        return neighboringNodes;
+    }
+
     private void OnDrawGizmos() //just for visualizing grid, will be removed once confirmed works
     {
         Gizmos.DrawWireCube(gridCenter, worldSize);
@@ -55,13 +110,24 @@ public class WorldGrid : MonoBehaviour
             foreach(Node node in grid)
             {
                 Gizmos.color = node.isObstacle ? Color.red : Color.green;
-                if(finalPath != null)
+                foreach(GameObject obj in objsToGetPath)
                 {
-                    if (finalPath.Contains(node))
+                    List<Node> thisObjPath = obj.GetComponent<RammingAIMovement>().GetPath();
+                    if(thisObjPath != null)
                     {
-                        Gizmos.color = Color.blue;
+                        if (thisObjPath.Contains(node))
+                        {
+                            Gizmos.color = Color.blue;
+                        }
                     }
                 }
+                //if(finalPath != null)
+                //{
+                //    if (finalPath.Contains(node))
+                //    {
+                //        Gizmos.color = Color.blue;
+                //    }
+                //}
                 Gizmos.DrawCube(node.position, Vector2.one * (nodeDiameter - distance));
             }
         }
