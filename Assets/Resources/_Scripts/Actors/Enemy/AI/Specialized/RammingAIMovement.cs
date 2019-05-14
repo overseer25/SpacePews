@@ -6,6 +6,12 @@ public class RammingAIMovement : BaseAIMovement
 {
     public float StoppingDistance = 3f;
     public float AcceptableAngleMarginOfError = 1f;
+    /// <summary>
+    /// How far away from the target the ship needs to be to check the path once a second.
+    /// Note tho, that if the ship reaches the end of its path before the check path event,
+    /// it will check for a new path regardless of time.
+    /// </summary>
+    public float OneSecondDistance = 100f;
 
     // DEBUG
     private static bool following = false;
@@ -14,6 +20,13 @@ public class RammingAIMovement : BaseAIMovement
 
     private AStarPathfinding pathfinding;
     private List<Node> path = null;
+
+    private float checkTimeThreshold = 1f;
+    private float checkPathTimer = Mathf.Infinity;
+    private float degreesToTarget = 0f;
+    private float rotationSpeedRatio = 0f;
+
+    private int pathIndex = 0;
 
     private void Start()
     {
@@ -30,14 +43,20 @@ public class RammingAIMovement : BaseAIMovement
     /// <param name="rotationSpeed">How fast should the body rotate to point towards target.</param>
     public void FollowMove(Vector2 target, float speed = 1, float rotationSpeed = 1)
     {
-        bool doneTurning = PointAtTarget(target, rotationSpeed);
-        if (doneTurning)
+        rotationSpeedRatio = degreesToTarget / 180f;
+        degreesToTarget = PointAtTarget(target, rotationSpeedRatio * rotationSpeed);
+        float distToTargetLeft;
+        if (degreesToTarget <= AcceptableAngleMarginOfError * 30)
         {
-            MoveTowardsTarget(target, speed);
+            distToTargetLeft = MoveTowardsTarget(target, speed);
         }
         else
         {
-            MoveTowardsTarget(target, speed / 3);
+            distToTargetLeft = MoveTowardsTarget(target, speed / 5);
+        }
+        if(distToTargetLeft <= StoppingDistance)
+        {
+            ++pathIndex;
         }
     }
 
@@ -77,13 +96,13 @@ public class RammingAIMovement : BaseAIMovement
     /// <param name="target">The target vector point that is being oriented towards.</param>
     /// <param name="rotationSpeed">How quickly does the body rotate towards the target.</param>
     /// <returns>Returns true if the heading is within the acceptable error angle.</returns>
-    public bool PointAtTarget(Vector2 target, float rotationSpeed = 1)
+    public float PointAtTarget(Vector2 target, float rotationSpeed = 1)
     {
         Vector2 currentVec = GetCurrentForwardDirection();
         Vector2 targetDir = target - (Vector2)rigidbody.transform.position;
-        if(Vector2.Angle(currentVec, targetDir) < AcceptableAngleMarginOfError)
+        if (Vector2.Angle(currentVec, targetDir) < AcceptableAngleMarginOfError)
         {
-            return true;
+            return Vector2.Angle(currentVec, targetDir);
         }
         bool dir = GetRotationDirection(currentVec, targetDir);
         if (dir)
@@ -95,7 +114,7 @@ public class RammingAIMovement : BaseAIMovement
             RotateCounterClockwise(rotationSpeed);
         }
         currentVec = GetCurrentForwardDirection();
-        return Vector2.Angle(currentVec, targetDir) < AcceptableAngleMarginOfError;
+        return Vector2.Angle(currentVec, targetDir);
     }
 
     /// <summary>
@@ -105,7 +124,7 @@ public class RammingAIMovement : BaseAIMovement
     /// <param name="targetObj">The target object in the scene that is being oriented towards.</param>
     /// <param name="rotationSpeed">How quickly does the body rotate towards the target.</param>
     /// <returns>Returns true if the heading is within the acceptable error angle.</returns>
-    public bool PointAtTarget(GameObject targetObj, float rotationSpeed = 1)
+    public float PointAtTarget(GameObject targetObj, float rotationSpeed = 1)
     {
         Vector2 target = targetObj.transform.position;
         return PointAtTarget(target, rotationSpeed);
@@ -119,7 +138,7 @@ public class RammingAIMovement : BaseAIMovement
     /// <param name="targetY">The target Y coordinate in space that the body is trying to point towards.</param>
     /// <param name="rotationSpeed">How quickly does the body rotate towards the target.</param>
     /// <returns>Returns true if the heading is within the acceptable error angle.</returns>
-    public bool PointAtTarget(float targetX, float targetY, float rotationSpeed = 1)
+    public float PointAtTarget(float targetX, float targetY, float rotationSpeed = 1)
     {
         Vector2 target = new Vector2(targetX, targetY);
         return PointAtTarget(target, rotationSpeed);
@@ -183,13 +202,25 @@ public class RammingAIMovement : BaseAIMovement
         return path;
     }
 
+    private void CheckAndUpdatePath()
+    {
+        if (checkPathTimer > checkTimeThreshold || (path != null && pathIndex >= path.Count))
+        {
+            path = pathfinding.FindPath(rigidbody.transform.position, targetObj.transform.position);
+            checkPathTimer = 0;
+            pathIndex = 0;
+        }
+    }
+
     protected override void Update()
     {
         base.Update();
-        path = pathfinding.FindPath(rigidbody.transform.position, targetObj.transform.position);
+        checkTimeThreshold = Vector2.Distance(rigidbody.transform.position, targetObj.transform.position) / OneSecondDistance;
+        checkPathTimer += Time.deltaTime;
+        CheckAndUpdatePath();
         if (following && path != null)
         {
-            FollowMove(path[0].position, Speed, RotationSpeed);
+            FollowMove(path[pathIndex].position, Speed, RotationSpeed);
         }
     }
 

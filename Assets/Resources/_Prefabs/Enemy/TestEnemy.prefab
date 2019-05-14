@@ -98,10 +98,11 @@ MonoBehaviour:
   heading: {fileID: 0}
   currentSpeed: {fileID: 0}
   Speed: 25
-  RotationSpeed: 75
+  RotationSpeed: 300
   AvoidanceDistance: 300
-  StoppingDistance: 0.1
+  StoppingDistance: 1.5
   AcceptableAngleMarginOfError: 1
+  OneSecondDistance: 100
   targetObj: {fileID: 0}
 --- !u!50 &4889260815687222791
 Rigidbody2D:

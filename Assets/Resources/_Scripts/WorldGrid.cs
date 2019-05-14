@@ -11,8 +11,14 @@ public class WorldGrid : MonoBehaviour
     public Vector2 worldSize;
     public Vector2 gridCenter;
 
-    public float nodeRadius;
-    public float distance;
+    /// <summary>
+    /// Size of each node that will layout the grid.
+    /// </summary>
+    public float nodeRadius = 3f;
+    /// <summary>
+    /// How much spacing there is between grid cells when drawn on gizmos.
+    /// </summary>
+    public float distance = 0.2f;
 
     private GameObject[] objsToGetPath;
     public List<Node> finalPath;

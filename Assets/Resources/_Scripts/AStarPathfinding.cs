@@ -88,6 +88,8 @@ public class AStarPathfinding : MonoBehaviour
 
     private int CalculateManhattanDistance(Node a, Node b)
     {
+        //return (int)Mathf.Sqrt((a.gridX - b.gridX) * (a.gridX - b.gridX) + (a.gridY - b.gridY) * (a.gridY - b.gridY));
         return Mathf.Abs(a.gridX - b.gridX) + Mathf.Abs(a.gridY - b.gridY);
+        //return (int)Mathf.Min(Mathf.Abs(a.gridX - b.gridX), Mathf.Abs(a.gridY - b.gridY));
     }
 }
