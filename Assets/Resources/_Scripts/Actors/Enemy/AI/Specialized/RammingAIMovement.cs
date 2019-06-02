@@ -21,6 +21,8 @@ public class RammingAIMovement : BaseAIMovement
     private AStarPathfinding pathfinding;
     private List<Node> path = null;
 
+    private bool findingPath = false;
+
     private float checkTimeThreshold = 1f;
     private float checkPathTimer = Mathf.Infinity;
     private float degreesToTarget = 0f;
@@ -202,13 +204,16 @@ public class RammingAIMovement : BaseAIMovement
         return path;
     }
 
-    private void CheckAndUpdatePath()
+    private IEnumerator CheckAndUpdatePath()
     {
+        yield return null;
         if (checkPathTimer > checkTimeThreshold || (path != null && pathIndex >= path.Count))
         {
+            findingPath = true;
             path = pathfinding.FindPath(rigidbody.transform.position, targetObj.transform.position);
             checkPathTimer = 0;
             pathIndex = 0;
+            findingPath = false;
         }
     }
 
@@ -217,7 +222,10 @@ public class RammingAIMovement : BaseAIMovement
         base.Update();
         checkTimeThreshold = Vector2.Distance(rigidbody.transform.position, targetObj.transform.position) / OneSecondDistance;
         checkPathTimer += Time.deltaTime;
-        CheckAndUpdatePath();
+        if (!findingPath)
+        {
+            StartCoroutine(CheckAndUpdatePath());
+        }
         if (following && path != null)
         {
             FollowMove(path[pathIndex].position, Speed, RotationSpeed);
