@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseAICombat : MonoBehaviour
+public abstract class BaseAICombat : MonoBehaviour
 {
     public float Damage { get; set; } = 20f;
     public float ReloadTime { get; set; } = 2f;
